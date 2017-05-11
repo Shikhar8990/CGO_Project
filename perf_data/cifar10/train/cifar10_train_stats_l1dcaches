@@ -1,0 +1,904 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010355272            199,890      L1-dcache-load-misses    
+     0.010355272            934,442      L1-dcache-loads          
+     0.020526208            934,329      L1-dcache-load-misses    
+     0.020526208          4,358,783      L1-dcache-loads          
+     0.030674182          1,393,583      L1-dcache-load-misses    
+     0.030674182          5,323,419      L1-dcache-loads          
+     0.040819547            766,173      L1-dcache-load-misses    
+     0.040819547          5,606,841      L1-dcache-loads          
+     0.050974376              4,057      L1-dcache-load-misses    
+     0.050974376          2,273,185      L1-dcache-loads          
+I0509 13:41:53.612546 114392 caffe.cpp:211] Use CPU.
+I0509 13:41:53.612797 114392 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.001
+display: 1
+max_iter: 3
+lr_policy: "fixed"
+momentum: 0.9
+weight_decay: 0.004
+snapshot: 1000
+snapshot_prefix: "examples/cifar10/cifar10_quick"
+solver_mode: CPU
+net: "examples/cifar10/cifar10_quick_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:41:53.612891 114392 solver.cpp:87] Creating training net from net file: examples/cifar10/cifar10_quick_train_test.prototxt
+I0509 13:41:53.613163 114392 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer cifar
+I0509 13:41:53.613183 114392 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0509 13:41:53.613327 114392 net.cpp:51] Initializing net from parameters: 
+name: "CIFAR10_quick"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_train_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.0001
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 60
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 60
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 12
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0509 13:41:53.613423 114392 layer_factory.hpp:77] Creating layer cifar
+I0509 13:41:53.613525 114392 db_lmdb.cpp:35] Opened lmdb examples/cifar10/cifar10_train_lmdb
+I0509 13:41:53.613559 114392 net.cpp:84] Creating Layer cifar
+I0509 13:41:53.613572 114392 net.cpp:380] cifar -> data
+I0509 13:41:53.613596 114392 net.cpp:380] cifar -> label
+I0509 13:41:53.613612 114392 data_transformer.cpp:25] Loading mean file from: examples/cifar10/mean.binaryproto
+I0509 13:41:53.613698 114392 data_layer.cpp:45] output data size: 100,3,32,32
+     0.061127632            152,236      L1-dcache-load-misses    
+     0.061127632          3,196,262      L1-dcache-loads          
+I0509 13:41:53.614264 114392 net.cpp:122] Setting up cifar
+I0509 13:41:53.614290 114392 net.cpp:129] Top shape: 100 3 32 32 (307200)
+I0509 13:41:53.614297 114392 net.cpp:129] Top shape: 100 (100)
+I0509 13:41:53.614302 114392 net.cpp:137] Memory required for data: 1229200
+I0509 13:41:53.614312 114392 layer_factory.hpp:77] Creating layer conv1
+I0509 13:41:53.614331 114392 net.cpp:84] Creating Layer conv1
+I0509 13:41:53.614338 114392 net.cpp:406] conv1 <- data
+I0509 13:41:53.614352 114392 net.cpp:380] conv1 -> conv1
+I0509 13:41:53.614372 114392 base_conv_layer.cpp:121] Group is 1channel is3number of output is 30
+I0509 13:41:53.614445 114392 net.cpp:122] Setting up conv1
+I0509 13:41:53.614454 114392 net.cpp:129] Top shape: 100 30 32 32 (3072000)
+I0509 13:41:53.614459 114392 net.cpp:137] Memory required for data: 13517200
+I0509 13:41:53.614481 114392 layer_factory.hpp:77] Creating layer pool1
+I0509 13:41:53.614491 114392 net.cpp:84] Creating Layer pool1
+I0509 13:41:53.614497 114392 net.cpp:406] pool1 <- conv1
+I0509 13:41:53.614506 114392 net.cpp:380] pool1 -> pool1
+I0509 13:41:53.614526 114392 net.cpp:122] Setting up pool1
+I0509 13:41:53.614533 114392 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:53.614538 114392 net.cpp:137] Memory required for data: 16589200
+I0509 13:41:53.614543 114392 layer_factory.hpp:77] Creating layer relu1
+I0509 13:41:53.614552 114392 net.cpp:84] Creating Layer relu1
+I0509 13:41:53.614557 114392 net.cpp:406] relu1 <- pool1
+I0509 13:41:53.614564 114392 net.cpp:367] relu1 -> pool1 (in-place)
+I0509 13:41:53.614573 114392 net.cpp:122] Setting up relu1
+I0509 13:41:53.614581 114392 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:53.614586 114392 net.cpp:137] Memory required for data: 19661200
+I0509 13:41:53.614590 114392 layer_factory.hpp:77] Creating layer conv2
+I0509 13:41:53.614603 114392 net.cpp:84] Creating Layer conv2
+I0509 13:41:53.614609 114392 net.cpp:406] conv2 <- pool1
+I0509 13:41:53.614616 114392 net.cpp:380] conv2 -> conv2
+I0509 13:41:53.614629 114392 base_conv_layer.cpp:121] Group is 1channel is30number of output is 30
+I0509 13:41:53.615048 114392 net.cpp:122] Setting up conv2
+I0509 13:41:53.615059 114392 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:53.615064 114392 net.cpp:137] Memory required for data: 22733200
+I0509 13:41:53.615075 114392 layer_factory.hpp:77] Creating layer relu2
+I0509 13:41:53.615082 114392 net.cpp:84] Creating Layer relu2
+I0509 13:41:53.615088 114392 net.cpp:406] relu2 <- conv2
+I0509 13:41:53.615095 114392 net.cpp:367] relu2 -> conv2 (in-place)
+I0509 13:41:53.615103 114392 net.cpp:122] Setting up relu2
+I0509 13:41:53.615109 114392 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:53.615115 114392 net.cpp:137] Memory required for data: 25805200
+I0509 13:41:53.615120 114392 layer_factory.hpp:77] Creating layer pool2
+I0509 13:41:53.615128 114392 net.cpp:84] Creating Layer pool2
+I0509 13:41:53.615133 114392 net.cpp:406] pool2 <- conv2
+I0509 13:41:53.615140 114392 net.cpp:380] pool2 -> pool2
+I0509 13:41:53.615150 114392 net.cpp:122] Setting up pool2
+I0509 13:41:53.615157 114392 net.cpp:129] Top shape: 100 30 8 8 (192000)
+I0509 13:41:53.615169 114392 net.cpp:137] Memory required for data: 26573200
+I0509 13:41:53.615175 114392 layer_factory.hpp:77] Creating layer conv3
+I0509 13:41:53.615186 114392 net.cpp:84] Creating Layer conv3
+I0509 13:41:53.615191 114392 net.cpp:406] conv3 <- pool2
+I0509 13:41:53.615200 114392 net.cpp:380] conv3 -> conv3
+I0509 13:41:53.615213 114392 base_conv_layer.cpp:121] Group is 1channel is30number of output is 60
+I0509 13:41:53.616047 114392 net.cpp:122] Setting up conv3
+I0509 13:41:53.616058 114392 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0509 13:41:53.616065 114392 net.cpp:137] Memory required for data: 28109200
+I0509 13:41:53.616076 114392 layer_factory.hpp:77] Creating layer relu3
+I0509 13:41:53.616084 114392 net.cpp:84] Creating Layer relu3
+I0509 13:41:53.616091 114392 net.cpp:406] relu3 <- conv3
+I0509 13:41:53.616098 114392 net.cpp:367] relu3 -> conv3 (in-place)
+I0509 13:41:53.616123 114392 net.cpp:122] Setting up relu3
+I0509 13:41:53.616129 114392 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0509 13:41:53.616143 114392 net.cpp:137] Memory required for data: 29645200
+I0509 13:41:53.616148 114392 layer_factory.hpp:77] Creating layer pool3
+I0509 13:41:53.616156 114392 net.cpp:84] Creating Layer pool3
+I0509 13:41:53.616161 114392 net.cpp:406] pool3 <- conv3
+I0509 13:41:53.616168 114392 net.cpp:380] pool3 -> pool3
+I0509 13:41:53.616178 114392 net.cpp:122] Setting up pool3
+I0509 13:41:53.616185 114392 net.cpp:129] Top shape: 100 60 4 4 (96000)
+I0509 13:41:53.616190 114392 net.cpp:137] Memory required for data: 30029200
+I0509 13:41:53.616195 114392 layer_factory.hpp:77] Creating layer ip1
+I0509 13:41:53.616206 114392 net.cpp:84] Creating Layer ip1
+I0509 13:41:53.616212 114392 net.cpp:406] ip1 <- pool3
+I0509 13:41:53.616221 114392 net.cpp:380] ip1 -> ip1
+I0509 13:41:53.617219 114392 net.cpp:122] Setting up ip1
+I0509 13:41:53.617228 114392 net.cpp:129] Top shape: 100 60 (6000)
+I0509 13:41:53.617233 114392 net.cpp:137] Memory required for data: 30053200
+I0509 13:41:53.617243 114392 layer_factory.hpp:77] Creating layer ip2
+I0509 13:41:53.617252 114392 net.cpp:84] Creating Layer ip2
+I0509 13:41:53.617257 114392 net.cpp:406] ip2 <- ip1
+I0509 13:41:53.617266 114392 net.cpp:380] ip2 -> ip2
+I0509 13:41:53.617295 114392 net.cpp:122] Setting up ip2
+I0509 13:41:53.617303 114392 net.cpp:129] Top shape: 100 12 (1200)
+I0509 13:41:53.617307 114392 net.cpp:137] Memory required for data: 30058000
+I0509 13:41:53.617318 114392 layer_factory.hpp:77] Creating layer loss
+I0509 13:41:53.617326 114392 net.cpp:84] Creating Layer loss
+I0509 13:41:53.617331 114392 net.cpp:406] loss <- ip2
+I0509 13:41:53.617337 114392 net.cpp:406] loss <- label
+I0509 13:41:53.617352 114392 net.cpp:380] loss -> loss
+I0509 13:41:53.617368 114392 layer_factory.hpp:77] Creating layer loss
+I0509 13:41:53.617393 114392 net.cpp:122] Setting up loss
+I0509 13:41:53.617400 114392 net.cpp:129] Top shape: (1)
+I0509 13:41:53.617406 114392 net.cpp:132]     with loss weight 1
+I0509 13:41:53.617424 114392 net.cpp:137] Memory required for data: 30058004
+I0509 13:41:53.617429 114392 net.cpp:198] loss needs backward computation.
+I0509 13:41:53.617437 114392 net.cpp:198] ip2 needs backward computation.
+I0509 13:41:53.617444 114392 net.cpp:198] ip1 needs backward computation.
+I0509 13:41:53.617449 114392 net.cpp:198] pool3 needs backward computation.
+I0509 13:41:53.617455 114392 net.cpp:198] relu3 needs backward computation.
+I0509 13:41:53.617460 114392 net.cpp:198] conv3 needs backward computation.
+I0509 13:41:53.617467 114392 net.cpp:198] pool2 needs backward computation.
+I0509 13:41:53.617471 114392 net.cpp:198] relu2 needs backward computation.
+I0509 13:41:53.617476 114392 net.cpp:198] conv2 needs backward computation.
+I0509 13:41:53.617482 114392 net.cpp:198] relu1 needs backward computation.
+I0509 13:41:53.617488 114392 net.cpp:198] pool1 needs backward computation.
+I0509 13:41:53.617492 114392 net.cpp:198] conv1 needs backward computation.
+I0509 13:41:53.617501 114392 net.cpp:200] cifar does not need backward computation.
+I0509 13:41:53.617509 114392 net.cpp:242] This network produces output loss
+I0509 13:41:53.617527 114392 net.cpp:255] Network initialization done.
+I0509 13:41:53.617583 114392 solver.cpp:56] Solver scaffolding done.
+I0509 13:41:53.617620 114392 caffe.cpp:248] Starting Optimization
+I0509 13:41:53.617626 114392 solver.cpp:272] Solving CIFAR10_quick
+I0509 13:41:53.617631 114392 solver.cpp:273] Learning Rate Policy: fixed
+     0.071237654            365,022      L1-dcache-load-misses    
+     0.071237654         15,441,109      L1-dcache-loads          
+     0.081379989            273,654      L1-dcache-load-misses    
+     0.081379989         15,362,452      L1-dcache-loads          
+     0.091526245            272,876      L1-dcache-load-misses    
+     0.091526245         15,851,091      L1-dcache-loads          
+     0.101671167            286,468      L1-dcache-load-misses    
+     0.101671167         16,521,984      L1-dcache-loads          
+     0.111817103            310,488      L1-dcache-load-misses    
+     0.111817103         17,548,618      L1-dcache-loads          
+     0.121967642            317,908      L1-dcache-load-misses    
+     0.121967642         18,071,713      L1-dcache-loads          
+     0.132119811            328,994      L1-dcache-load-misses    
+     0.132119811         18,807,190      L1-dcache-loads          
+     0.142264962            381,958      L1-dcache-load-misses    
+     0.142264962         21,542,941      L1-dcache-loads          
+     0.152414427            188,212      L1-dcache-load-misses    
+     0.152414427         10,875,091      L1-dcache-loads          
+     0.162563089             84,722      L1-dcache-load-misses    
+     0.162563089          8,708,982      L1-dcache-loads          
+     0.172710951             84,094      L1-dcache-load-misses    
+     0.172710951          8,648,209      L1-dcache-loads          
+     0.182859839            123,611      L1-dcache-load-misses    
+     0.182859839          8,602,058      L1-dcache-loads          
+     0.193006521            674,861      L1-dcache-load-misses    
+     0.193006521         23,704,270      L1-dcache-loads          
+     0.203152683            694,047      L1-dcache-load-misses    
+     0.203152683         23,930,595      L1-dcache-loads          
+     0.213302546            696,744      L1-dcache-load-misses    
+     0.213302546         23,943,253      L1-dcache-loads          
+     0.223448202            696,386      L1-dcache-load-misses    
+     0.223448202         24,081,815      L1-dcache-loads          
+     0.233594302            696,625      L1-dcache-load-misses    
+     0.233594302         24,054,076      L1-dcache-loads          
+     0.243743578            690,211      L1-dcache-load-misses    
+     0.243743578         24,007,599      L1-dcache-loads          
+     0.253888916            696,812      L1-dcache-load-misses    
+     0.253888916         24,075,999      L1-dcache-loads          
+#           time             counts unit events
+     0.264037903            691,752      L1-dcache-load-misses    
+     0.264037903         24,120,631      L1-dcache-loads          
+     0.274187639            696,436      L1-dcache-load-misses    
+     0.274187639         24,100,670      L1-dcache-loads          
+     0.284335200            695,927      L1-dcache-load-misses    
+     0.284335200         24,072,222      L1-dcache-loads          
+     0.294481082            691,067      L1-dcache-load-misses    
+     0.294481082         24,116,546      L1-dcache-loads          
+     0.304627372            514,167      L1-dcache-load-misses    
+     0.304627372         20,713,997      L1-dcache-loads          
+     0.314773665            669,136      L1-dcache-load-misses    
+     0.314773665         25,382,916      L1-dcache-loads          
+     0.324920837            670,583      L1-dcache-load-misses    
+     0.324920837         25,179,962      L1-dcache-loads          
+     0.335068272            663,489      L1-dcache-load-misses    
+     0.335068272         25,333,277      L1-dcache-loads          
+     0.345241402            671,604      L1-dcache-load-misses    
+     0.345241402         25,303,211      L1-dcache-loads          
+     0.355385584            429,626      L1-dcache-load-misses    
+     0.355385584         20,669,823      L1-dcache-loads          
+     0.365541007            655,193      L1-dcache-load-misses    
+     0.365541007         24,933,082      L1-dcache-loads          
+     0.375688001            641,068      L1-dcache-load-misses    
+     0.375688001         25,742,331      L1-dcache-loads          
+     0.385860797            663,144      L1-dcache-load-misses    
+     0.385860797         26,379,048      L1-dcache-loads          
+     0.396017871            660,184      L1-dcache-load-misses    
+     0.396017871         26,682,112      L1-dcache-loads          
+     0.406171451            665,570      L1-dcache-load-misses    
+     0.406171451         26,535,097      L1-dcache-loads          
+     0.416323316            660,964      L1-dcache-load-misses    
+     0.416323316         26,702,294      L1-dcache-loads          
+     0.426485547            666,628      L1-dcache-load-misses    
+     0.426485547         26,523,917      L1-dcache-loads          
+     0.436636145            660,337      L1-dcache-load-misses    
+     0.436636145         26,750,122      L1-dcache-loads          
+     0.446791776            604,504      L1-dcache-load-misses    
+     0.446791776         24,307,755      L1-dcache-loads          
+     0.456943603            442,862      L1-dcache-load-misses    
+     0.456943603         21,917,421      L1-dcache-loads          
+     0.467093988            378,570      L1-dcache-load-misses    
+     0.467093988         22,611,449      L1-dcache-loads          
+     0.477263474            366,901      L1-dcache-load-misses    
+     0.477263474         22,404,063      L1-dcache-loads          
+     0.487415182            342,433      L1-dcache-load-misses    
+     0.487415182         22,424,656      L1-dcache-loads          
+     0.497568854            372,731      L1-dcache-load-misses    
+     0.497568854         22,745,551      L1-dcache-loads          
+     0.507721870            379,132      L1-dcache-load-misses    
+     0.507721870         22,621,589      L1-dcache-loads          
+#           time             counts unit events
+     0.517875290            378,315      L1-dcache-load-misses    
+     0.517875290         22,612,055      L1-dcache-loads          
+     0.528029956            352,591      L1-dcache-load-misses    
+     0.528029956         21,914,694      L1-dcache-loads          
+     0.538182060            348,659      L1-dcache-load-misses    
+     0.538182060         22,759,818      L1-dcache-loads          
+     0.548333692            380,846      L1-dcache-load-misses    
+     0.548333692         22,681,882      L1-dcache-loads          
+     0.558495305            380,543      L1-dcache-load-misses    
+     0.558495305         22,683,755      L1-dcache-loads          
+     0.568649589            381,034      L1-dcache-load-misses    
+     0.568649589         22,709,327      L1-dcache-loads          
+     0.578799930            359,203      L1-dcache-load-misses    
+     0.578799930         22,317,765      L1-dcache-loads          
+     0.588950616            349,414      L1-dcache-load-misses    
+     0.588950616         22,781,668      L1-dcache-loads          
+     0.599114798            378,662      L1-dcache-load-misses    
+     0.599114798         22,739,785      L1-dcache-loads          
+     0.609265420            380,939      L1-dcache-load-misses    
+     0.609265420         22,681,700      L1-dcache-loads          
+     0.619417684            380,344      L1-dcache-load-misses    
+     0.619417684         22,682,116      L1-dcache-loads          
+     0.629572170            363,739      L1-dcache-load-misses    
+     0.629572170         22,376,883      L1-dcache-loads          
+     0.639725268            345,515      L1-dcache-load-misses    
+     0.639725268         22,596,052      L1-dcache-loads          
+     0.649881055            377,332      L1-dcache-load-misses    
+     0.649881055         22,739,742      L1-dcache-loads          
+     0.660045883            380,541      L1-dcache-load-misses    
+     0.660045883         22,710,469      L1-dcache-loads          
+     0.670196084            380,955      L1-dcache-load-misses    
+     0.670196084         22,684,340      L1-dcache-loads          
+     0.680346924            367,224      L1-dcache-load-misses    
+     0.680346924         22,507,427      L1-dcache-loads          
+     0.690497063            348,343      L1-dcache-load-misses    
+     0.690497063         22,590,088      L1-dcache-loads          
+     0.700647241            372,571      L1-dcache-load-misses    
+     0.700647241         22,809,134      L1-dcache-loads          
+     0.710814743            380,914      L1-dcache-load-misses    
+     0.710814743         22,723,480      L1-dcache-loads          
+     0.720967522            381,163      L1-dcache-load-misses    
+     0.720967522         22,684,983      L1-dcache-loads          
+     0.731117373            372,752      L1-dcache-load-misses    
+     0.731117373         22,569,488      L1-dcache-loads          
+     0.741269728            336,264      L1-dcache-load-misses    
+     0.741269728         22,127,038      L1-dcache-loads          
+     0.751394078            371,051      L1-dcache-load-misses    
+     0.751394078         22,350,944      L1-dcache-loads          
+     0.761561704            380,669      L1-dcache-load-misses    
+     0.761561704         22,684,328      L1-dcache-loads          
+#           time             counts unit events
+     0.771713189            380,993      L1-dcache-load-misses    
+     0.771713189         22,672,541      L1-dcache-loads          
+     0.781870181            359,488      L1-dcache-load-misses    
+     0.781870181         22,393,460      L1-dcache-loads          
+     0.792024344            346,695      L1-dcache-load-misses    
+     0.792024344         22,726,662      L1-dcache-loads          
+     0.802175768            377,952      L1-dcache-load-misses    
+     0.802175768         22,660,967      L1-dcache-loads          
+     0.812329157            377,002      L1-dcache-load-misses    
+     0.812329157         22,428,379      L1-dcache-loads          
+     0.822482580            939,498      L1-dcache-load-misses    
+     0.822482580         18,131,822      L1-dcache-loads          
+     0.832639727            486,916      L1-dcache-load-misses    
+     0.832639727         23,194,808      L1-dcache-loads          
+     0.842791089            475,350      L1-dcache-load-misses    
+     0.842791089         23,239,569      L1-dcache-loads          
+     0.852945695            487,481      L1-dcache-load-misses    
+     0.852945695         23,205,720      L1-dcache-loads          
+     0.863116598            474,008      L1-dcache-load-misses    
+     0.863116598         23,149,913      L1-dcache-loads          
+     0.873270998            487,712      L1-dcache-load-misses    
+     0.873270998         23,222,214      L1-dcache-loads          
+I0509 13:41:54.434613 114392 solver.cpp:218] Iteration 0 (0 iter/s, 0.816s/1 iters), loss = 2.48457
+I0509 13:41:54.434644 114392 solver.cpp:237]     Train net output #0: loss = 2.48457 (* 1 = 2.48457 loss)
+I0509 13:41:54.434651 114392 sgd_solver.cpp:105] Iteration 0, lr = 0.001
+     0.883426512            599,609      L1-dcache-load-misses    
+     0.883426512         22,906,781      L1-dcache-loads          
+     0.893578303            464,900      L1-dcache-load-misses    
+     0.893578303         23,815,790      L1-dcache-loads          
+     0.903728610            444,046      L1-dcache-load-misses    
+     0.903728610         23,360,956      L1-dcache-loads          
+     0.913880312            438,731      L1-dcache-load-misses    
+     0.913880312         23,487,988      L1-dcache-loads          
+     0.924034266            441,487      L1-dcache-load-misses    
+     0.924034266         23,287,188      L1-dcache-loads          
+     0.934183804            442,393      L1-dcache-load-misses    
+     0.934183804         23,409,293      L1-dcache-loads          
+     0.944346377            494,132      L1-dcache-load-misses    
+     0.944346377         21,399,866      L1-dcache-loads          
+     0.954513060             90,712      L1-dcache-load-misses    
+     0.954513060          9,327,286      L1-dcache-loads          
+     0.964675557             90,394      L1-dcache-load-misses    
+     0.964675557          9,304,666      L1-dcache-loads          
+     0.974827557             91,657      L1-dcache-load-misses    
+     0.974827557          9,428,784      L1-dcache-loads          
+     0.984980685            601,212      L1-dcache-load-misses    
+     0.984980685         20,654,935      L1-dcache-loads          
+     0.995134579            695,353      L1-dcache-load-misses    
+     0.995134579         23,949,579      L1-dcache-loads          
+     1.005293011            705,592      L1-dcache-load-misses    
+     1.005293011         24,098,241      L1-dcache-loads          
+     1.015449173            702,917      L1-dcache-load-misses    
+     1.015449173         24,350,992      L1-dcache-loads          
+#           time             counts unit events
+     1.025606918            701,299      L1-dcache-load-misses    
+     1.025606918         24,210,228      L1-dcache-loads          
+     1.035768464            701,433      L1-dcache-load-misses    
+     1.035768464         24,236,198      L1-dcache-loads          
+     1.045928685            702,967      L1-dcache-load-misses    
+     1.045928685         24,386,086      L1-dcache-loads          
+     1.056087811            698,309      L1-dcache-load-misses    
+     1.056087811         24,240,898      L1-dcache-loads          
+     1.066246433            692,194      L1-dcache-load-misses    
+     1.066246433         24,097,455      L1-dcache-loads          
+     1.076405135            696,589      L1-dcache-load-misses    
+     1.076405135         23,998,014      L1-dcache-loads          
+     1.086561717            701,069      L1-dcache-load-misses    
+     1.086561717         24,027,150      L1-dcache-loads          
+     1.096719422            567,858      L1-dcache-load-misses    
+     1.096719422         21,769,932      L1-dcache-loads          
+     1.106875257            675,875      L1-dcache-load-misses    
+     1.106875257         25,576,609      L1-dcache-loads          
+     1.117032812            678,677      L1-dcache-load-misses    
+     1.117032812         25,251,449      L1-dcache-loads          
+     1.127190807            670,264      L1-dcache-load-misses    
+     1.127190807         25,369,436      L1-dcache-loads          
+     1.137347562            675,614      L1-dcache-load-misses    
+     1.137347562         25,640,451      L1-dcache-loads          
+     1.147506204            527,809      L1-dcache-load-misses    
+     1.147506204         23,249,878      L1-dcache-loads          
+     1.157663806            666,377      L1-dcache-load-misses    
+     1.157663806         25,869,799      L1-dcache-loads          
+     1.167819971            662,813      L1-dcache-load-misses    
+     1.167819971         26,427,434      L1-dcache-loads          
+     1.177976303            660,240      L1-dcache-load-misses    
+     1.177976303         26,628,902      L1-dcache-loads          
+     1.188135338            664,253      L1-dcache-load-misses    
+     1.188135338         26,452,769      L1-dcache-loads          
+     1.198290956            656,933      L1-dcache-load-misses    
+     1.198290956         26,674,927      L1-dcache-loads          
+     1.208446792            650,974      L1-dcache-load-misses    
+     1.208446792         26,490,791      L1-dcache-loads          
+     1.218602970            653,169      L1-dcache-load-misses    
+     1.218602970         26,672,840      L1-dcache-loads          
+     1.228758362            650,766      L1-dcache-load-misses    
+     1.228758362         26,661,468      L1-dcache-loads          
+     1.238916587            639,928      L1-dcache-load-misses    
+     1.238916587         25,192,674      L1-dcache-loads          
+     1.249086517            437,356      L1-dcache-load-misses    
+     1.249086517         22,260,397      L1-dcache-loads          
+     1.259242985            380,554      L1-dcache-load-misses    
+     1.259242985         22,589,978      L1-dcache-loads          
+     1.269399980            380,651      L1-dcache-load-misses    
+     1.269399980         22,572,969      L1-dcache-loads          
+#           time             counts unit events
+     1.279560208            380,437      L1-dcache-load-misses    
+     1.279560208         22,604,967      L1-dcache-loads          
+     1.289719240            351,563      L1-dcache-load-misses    
+     1.289719240         22,175,157      L1-dcache-loads          
+     1.299877646            359,925      L1-dcache-load-misses    
+     1.299877646         22,912,641      L1-dcache-loads          
+     1.310035794            380,922      L1-dcache-load-misses    
+     1.310035794         22,601,513      L1-dcache-loads          
+     1.320195580            380,867      L1-dcache-load-misses    
+     1.320195580         22,600,518      L1-dcache-loads          
+     1.330353178            379,025      L1-dcache-load-misses    
+     1.330353178         22,579,336      L1-dcache-loads          
+     1.340510163            350,130      L1-dcache-load-misses    
+     1.340510163         22,148,634      L1-dcache-loads          
+     1.350642544            360,751      L1-dcache-load-misses    
+     1.350642544         22,752,893      L1-dcache-loads          
+     1.360794245            369,946      L1-dcache-load-misses    
+     1.360794245         21,519,964      L1-dcache-loads          
+     1.370942456            359,933      L1-dcache-load-misses    
+     1.370942456         21,647,148      L1-dcache-loads          
+     1.381115491            338,878      L1-dcache-load-misses    
+     1.381115491         22,280,326      L1-dcache-loads          
+     1.391275412            380,985      L1-dcache-load-misses    
+     1.391275412         22,591,245      L1-dcache-loads          
+     1.401436790            380,017      L1-dcache-load-misses    
+     1.401436790         22,507,393      L1-dcache-loads          
+     1.411594557            380,893      L1-dcache-load-misses    
+     1.411594557         22,577,133      L1-dcache-loads          
+     1.421746523            355,225      L1-dcache-load-misses    
+     1.421746523         22,240,676      L1-dcache-loads          
+     1.431899635            355,513      L1-dcache-load-misses    
+     1.431899635         22,822,522      L1-dcache-loads          
+     1.442050121            380,770      L1-dcache-load-misses    
+     1.442050121         22,579,833      L1-dcache-loads          
+     1.452202715            380,843      L1-dcache-load-misses    
+     1.452202715         22,580,867      L1-dcache-loads          
+     1.462353944            379,852      L1-dcache-load-misses    
+     1.462353944         22,585,728      L1-dcache-loads          
+     1.472504959            351,970      L1-dcache-load-misses    
+     1.472504959         22,168,251      L1-dcache-loads          
+     1.482659385            359,793      L1-dcache-load-misses    
+     1.482659385         22,886,575      L1-dcache-loads          
+     1.492810944            379,401      L1-dcache-load-misses    
+     1.492810944         22,488,047      L1-dcache-loads          
+     1.502960837            380,607      L1-dcache-load-misses    
+     1.502960837         22,584,406      L1-dcache-loads          
+     1.513111151            367,788      L1-dcache-load-misses    
+     1.513111151         22,164,558      L1-dcache-loads          
+     1.523263315            345,961      L1-dcache-load-misses    
+     1.523263315         22,396,277      L1-dcache-loads          
+#           time             counts unit events
+     1.533415933            373,627      L1-dcache-load-misses    
+     1.533415933         22,679,710      L1-dcache-loads          
+     1.543573572            379,891      L1-dcache-load-misses    
+     1.543573572         22,494,791      L1-dcache-loads          
+     1.553738335            381,061      L1-dcache-load-misses    
+     1.553738335         22,601,946      L1-dcache-loads          
+     1.563888430            362,899      L1-dcache-load-misses    
+     1.563888430         22,327,424      L1-dcache-loads          
+     1.574040182            349,227      L1-dcache-load-misses    
+     1.574040182         22,690,733      L1-dcache-loads          
+     1.584190733            378,698      L1-dcache-load-misses    
+     1.584190733         22,604,214      L1-dcache-loads          
+     1.594342725            380,858      L1-dcache-load-misses    
+     1.594342725         22,585,138      L1-dcache-loads          
+     1.604494528            380,775      L1-dcache-load-misses    
+     1.604494528         22,579,565      L1-dcache-loads          
+     1.614645795            995,603      L1-dcache-load-misses    
+     1.614645795         20,759,175      L1-dcache-loads          
+     1.624797785            469,058      L1-dcache-load-misses    
+     1.624797785         23,129,112      L1-dcache-loads          
+     1.634950734            475,897      L1-dcache-load-misses    
+     1.634950734         23,336,683      L1-dcache-loads          
+     1.645103008            476,059      L1-dcache-load-misses    
+     1.645103008         23,130,550      L1-dcache-loads          
+     1.655255809            468,887      L1-dcache-load-misses    
+     1.655255809         23,333,221      L1-dcache-loads          
+     1.665421071            477,474      L1-dcache-load-misses    
+     1.665421071         23,196,826      L1-dcache-loads          
+I0509 13:41:55.226245 114392 solver.cpp:218] Iteration 1 (1.26422 iter/s, 0.791s/1 iters), loss = 2.48395
+I0509 13:41:55.226276 114392 solver.cpp:237]     Train net output #0: loss = 2.48395 (* 1 = 2.48395 loss)
+I0509 13:41:55.226282 114392 sgd_solver.cpp:105] Iteration 1, lr = 0.001
+     1.675579452            605,910      L1-dcache-load-misses    
+     1.675579452         23,452,292      L1-dcache-loads          
+     1.685732262            447,636      L1-dcache-load-misses    
+     1.685732262         23,491,031      L1-dcache-loads          
+     1.695883016            443,169      L1-dcache-load-misses    
+     1.695883016         23,381,837      L1-dcache-loads          
+     1.706037266            438,947      L1-dcache-load-misses    
+     1.706037266         23,482,761      L1-dcache-loads          
+     1.716188264            443,955      L1-dcache-load-misses    
+     1.716188264         23,389,425      L1-dcache-loads          
+     1.726338173            444,257      L1-dcache-load-misses    
+     1.726338173         23,483,966      L1-dcache-loads          
+     1.736490186            468,088      L1-dcache-load-misses    
+     1.736490186         20,360,796      L1-dcache-loads          
+     1.746640586             96,123      L1-dcache-load-misses    
+     1.746640586          9,884,626      L1-dcache-loads          
+     1.756790795             98,733      L1-dcache-load-misses    
+     1.756790795         10,162,139      L1-dcache-loads          
+     1.766961049            177,851      L1-dcache-load-misses    
+     1.766961049         10,610,170      L1-dcache-loads          
+     1.777112723            701,289      L1-dcache-load-misses    
+     1.777112723         24,212,230      L1-dcache-loads          
+#           time             counts unit events
+     1.787264140            702,670      L1-dcache-load-misses    
+     1.787264140         24,358,564      L1-dcache-loads          
+     1.797420007            698,903      L1-dcache-load-misses    
+     1.797420007         24,327,929      L1-dcache-loads          
+     1.807573745            698,976      L1-dcache-load-misses    
+     1.807573745         24,165,382      L1-dcache-loads          
+     1.817742132            708,922      L1-dcache-load-misses    
+     1.817742132         24,198,649      L1-dcache-loads          
+     1.827892573            703,078      L1-dcache-load-misses    
+     1.827892573         24,355,206      L1-dcache-loads          
+     1.838061371            703,693      L1-dcache-load-misses    
+     1.838061371         24,415,360      L1-dcache-loads          
+     1.848223942            704,659      L1-dcache-load-misses    
+     1.848223942         24,354,248      L1-dcache-loads          
+     1.858379628            703,601      L1-dcache-load-misses    
+     1.858379628         24,350,026      L1-dcache-loads          
+     1.868531692            694,022      L1-dcache-load-misses    
+     1.868531692         24,169,127      L1-dcache-loads          
+     1.878684020            681,641      L1-dcache-load-misses    
+     1.878684020         22,595,075      L1-dcache-loads          
+     1.888839118            579,065      L1-dcache-load-misses    
+     1.888839118         23,803,587      L1-dcache-loads          
+     1.898990693            679,309      L1-dcache-load-misses    
+     1.898990693         25,589,345      L1-dcache-loads          
+     1.909142548            673,985      L1-dcache-load-misses    
+     1.909142548         25,402,886      L1-dcache-loads          
+     1.919298343            664,275      L1-dcache-load-misses    
+     1.919298343         25,253,114      L1-dcache-loads          
+     1.929452178            668,775      L1-dcache-load-misses    
+     1.929452178         25,092,508      L1-dcache-loads          
+     1.939602481            532,417      L1-dcache-load-misses    
+     1.939602481         23,165,718      L1-dcache-loads          
+     1.949754734            649,988      L1-dcache-load-misses    
+     1.949754734         26,695,436      L1-dcache-loads          
+     1.959909376            655,283      L1-dcache-load-misses    
+     1.959909376         26,485,865      L1-dcache-loads          
+     1.970059455            647,761      L1-dcache-load-misses    
+     1.970059455         26,588,294      L1-dcache-loads          
+     1.980211661            648,870      L1-dcache-load-misses    
+     1.980211661         26,542,374      L1-dcache-loads          
+     1.990363897            653,978      L1-dcache-load-misses    
+     1.990363897         26,386,696      L1-dcache-loads          
+     2.000515391            661,259      L1-dcache-load-misses    
+     2.000515391         26,636,835      L1-dcache-loads          
+     2.010678900            666,905      L1-dcache-load-misses    
+     2.010678900         26,492,866      L1-dcache-loads          
+     2.020829240            655,121      L1-dcache-load-misses    
+     2.020829240         26,685,912      L1-dcache-loads          
+     2.030981824            619,251      L1-dcache-load-misses    
+     2.030981824         23,539,067      L1-dcache-loads          
+#           time             counts unit events
+     2.041133048            369,303      L1-dcache-load-misses    
+     2.041133048         22,538,164      L1-dcache-loads          
+     2.051286597            380,973      L1-dcache-load-misses    
+     2.051286597         22,583,111      L1-dcache-loads          
+     2.061437268            379,912      L1-dcache-load-misses    
+     2.061437268         22,497,654      L1-dcache-loads          
+     2.071588808            361,879      L1-dcache-load-misses    
+     2.071588808         22,337,242      L1-dcache-loads          
+     2.081753645            350,562      L1-dcache-load-misses    
+     2.081753645         22,736,151      L1-dcache-loads          
+     2.091917992            379,385      L1-dcache-load-misses    
+     2.091917992         22,638,623      L1-dcache-loads          
+     2.102070303            380,034      L1-dcache-load-misses    
+     2.102070303         22,503,579      L1-dcache-loads          
+     2.112232519            380,886      L1-dcache-load-misses    
+     2.112232519         22,603,633      L1-dcache-loads          
+     2.122389726            358,828      L1-dcache-load-misses    
+     2.122389726         22,298,569      L1-dcache-loads          
+     2.132540872            351,606      L1-dcache-load-misses    
+     2.132540872         22,760,948      L1-dcache-loads          
+     2.142702013            382,240      L1-dcache-load-misses    
+     2.142702013         22,606,030      L1-dcache-loads          
+     2.152852176            380,364      L1-dcache-load-misses    
+     2.152852176         22,489,400      L1-dcache-loads          
+     2.163003302            380,575      L1-dcache-load-misses    
+     2.163003302         22,584,428      L1-dcache-loads          
+     2.173155224            350,654      L1-dcache-load-misses    
+     2.173155224         22,074,798      L1-dcache-loads          
+     2.183320428            360,792      L1-dcache-load-misses    
+     2.183320428         22,902,363      L1-dcache-loads          
+     2.193476557            381,689      L1-dcache-load-misses    
+     2.193476557         22,595,781      L1-dcache-loads          
+     2.203626634            381,690      L1-dcache-load-misses    
+     2.203626634         22,580,929      L1-dcache-loads          
+     2.213778555            373,412      L1-dcache-load-misses    
+     2.213778555         22,335,980      L1-dcache-loads          
+     2.223929338            348,220      L1-dcache-load-misses    
+     2.223929338         22,283,051      L1-dcache-loads          
+     2.234080844            368,362      L1-dcache-load-misses    
+     2.234080844         22,851,135      L1-dcache-loads          
+     2.244231116            379,961      L1-dcache-load-misses    
+     2.244231116         22,346,722      L1-dcache-loads          
+     2.254381117            381,745      L1-dcache-load-misses    
+     2.254381117         22,583,106      L1-dcache-loads          
+     2.264532412            366,460      L1-dcache-load-misses    
+     2.264532412         22,395,515      L1-dcache-loads          
+     2.274683183            346,189      L1-dcache-load-misses    
+     2.274683183         22,511,175      L1-dcache-loads          
+     2.284835883            378,597      L1-dcache-load-misses    
+     2.284835883         22,641,677      L1-dcache-loads          
+#           time             counts unit events
+     2.294986879            381,890      L1-dcache-load-misses    
+     2.294986879         22,587,470      L1-dcache-loads          
+     2.305139719            381,701      L1-dcache-load-misses    
+     2.305139719         22,581,842      L1-dcache-loads          
+     2.315289875            360,517      L1-dcache-load-misses    
+     2.315289875         22,303,899      L1-dcache-loads          
+     2.325453093            350,179      L1-dcache-load-misses    
+     2.325453093         22,767,308      L1-dcache-loads          
+     2.335606956            380,537      L1-dcache-load-misses    
+     2.335606956         22,499,774      L1-dcache-loads          
+     2.345757620            381,732      L1-dcache-load-misses    
+     2.345757620         22,583,977      L1-dcache-loads          
+     2.355909945            381,955      L1-dcache-load-misses    
+     2.355909945         22,582,855      L1-dcache-loads          
+     2.366061008            355,070      L1-dcache-load-misses    
+     2.366061008         22,258,336      L1-dcache-loads          
+     2.376213921            355,367      L1-dcache-load-misses    
+     2.376213921         22,810,502      L1-dcache-loads          
+     2.386363870            381,785      L1-dcache-load-misses    
+     2.386363870         22,586,397      L1-dcache-loads          
+     2.396516030            572,107      L1-dcache-load-misses    
+     2.396516030         19,938,734      L1-dcache-loads          
+     2.406668354            867,922      L1-dcache-load-misses    
+     2.406668354         23,241,817      L1-dcache-loads          
+     2.416818221            476,988      L1-dcache-load-misses    
+     2.416818221         23,315,163      L1-dcache-loads          
+     2.426968209            484,673      L1-dcache-load-misses    
+     2.426968209         23,119,969      L1-dcache-loads          
+     2.437118679            476,463      L1-dcache-load-misses    
+     2.437118679         23,289,787      L1-dcache-loads          
+     2.447282482            485,745      L1-dcache-load-misses    
+     2.447282482         23,176,761      L1-dcache-loads          
+     2.457434731            475,664      L1-dcache-load-misses    
+     2.457434731         23,269,724      L1-dcache-loads          
+I0509 13:41:56.014188 114392 solver.cpp:218] Iteration 2 (1.27065 iter/s, 0.787s/1 iters), loss = 2.4836
+I0509 13:41:56.014247 114392 solver.cpp:237]     Train net output #0: loss = 2.4836 (* 1 = 2.4836 loss)
+I0509 13:41:56.014255 114392 sgd_solver.cpp:105] Iteration 2, lr = 0.001
+I0509 13:41:56.014685 114392 solver.cpp:447] Snapshotting to binary proto file examples/cifar10/cifar10_quick_iter_3.caffemodel
+I0509 13:41:56.016707 114392 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/cifar10/cifar10_quick_iter_3.solverstate
+     2.467586342            549,185      L1-dcache-load-misses    
+     2.467586342         20,447,005      L1-dcache-loads          
+     2.477737394            436,678      L1-dcache-load-misses    
+     2.477737394         23,352,981      L1-dcache-loads          
+     2.487887955            440,448      L1-dcache-load-misses    
+     2.487887955         23,176,301      L1-dcache-loads          
+     2.498039972            443,370      L1-dcache-load-misses    
+     2.498039972         23,509,830      L1-dcache-loads          
+     2.508192538            440,801      L1-dcache-load-misses    
+     2.508192538         23,530,596      L1-dcache-loads          
+     2.518342312            444,771      L1-dcache-load-misses    
+     2.518342312         23,477,450      L1-dcache-loads          
+     2.528492905            444,464      L1-dcache-load-misses    
+     2.528492905         19,430,031      L1-dcache-loads          
+     2.538644709            100,063      L1-dcache-load-misses    
+     2.538644709         10,288,788      L1-dcache-loads          
+#           time             counts unit events
+     2.548795392            101,307      L1-dcache-load-misses    
+     2.548795392         10,423,388      L1-dcache-loads          
+     2.558950284            278,455      L1-dcache-load-misses    
+     2.558950284         13,303,757      L1-dcache-loads          
+     2.569101554            697,091      L1-dcache-load-misses    
+     2.569101554         23,970,035      L1-dcache-loads          
+     2.579253277            697,992      L1-dcache-load-misses    
+     2.579253277         23,922,477      L1-dcache-loads          
+     2.589403420            693,697      L1-dcache-load-misses    
+     2.589403420         24,047,130      L1-dcache-loads          
+     2.599555627            693,551      L1-dcache-load-misses    
+     2.599555627         24,094,950      L1-dcache-loads          
+     2.609706000            699,668      L1-dcache-load-misses    
+     2.609706000         24,095,456      L1-dcache-loads          
+     2.619858100            693,082      L1-dcache-load-misses    
+     2.619858100         24,043,946      L1-dcache-loads          
+     2.630011834            699,316      L1-dcache-load-misses    
+     2.630011834         24,068,959      L1-dcache-loads          
+     2.640163638            700,589      L1-dcache-load-misses    
+     2.640163638         24,189,622      L1-dcache-loads          
+     2.650328503            703,295      L1-dcache-load-misses    
+     2.650328503         24,425,364      L1-dcache-loads          
+     2.660495593            698,676      L1-dcache-load-misses    
+     2.660495593         24,372,549      L1-dcache-loads          
+     2.670647495            629,572      L1-dcache-load-misses    
+     2.670647495         21,833,117      L1-dcache-loads          
+     2.680800046            622,810      L1-dcache-load-misses    
+     2.680800046         24,491,253      L1-dcache-loads          
+     2.690951442            682,718      L1-dcache-load-misses    
+     2.690951442         25,644,170      L1-dcache-loads          
+     2.701105882            674,475      L1-dcache-load-misses    
+     2.701105882         25,401,651      L1-dcache-loads          
+     2.711267500            679,955      L1-dcache-load-misses    
+     2.711267500         25,534,664      L1-dcache-loads          
+     2.721418893            665,805      L1-dcache-load-misses    
+     2.721418893         24,782,342      L1-dcache-loads          
+I0509 13:41:56.277101 114392 solver.cpp:310] Iteration 3, loss = 2.47829
+I0509 13:41:56.277124 114392 solver.cpp:315] Optimization Done.
+I0509 13:41:56.277127 114392 caffe.cpp:259] Optimization Done.
+     2.728347582            135,001      L1-dcache-load-misses    
+     2.728347582          6,097,472      L1-dcache-loads          

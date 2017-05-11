@@ -1,0 +1,882 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010371226          4,012,394      instructions:u           
+     0.010371226          4,068,326      cycles:u                 
+     0.020544330         14,113,375      instructions:u           
+     0.020544330         10,681,105      cycles:u                 
+     0.030694897         17,126,250      instructions:u           
+     0.030694897         12,525,791      cycles:u                 
+     0.040846347         19,140,098      instructions:u           
+     0.040846347         13,130,204      cycles:u                 
+     0.050993503         16,760,886      instructions:u           
+     0.050993503         14,776,990      cycles:u                 
+     0.061135501         13,796,900      instructions:u           
+     0.061135501         11,406,680      cycles:u                 
+I0509 13:35:32.905611 114078 caffe.cpp:211] Use CPU.
+I0509 13:35:32.906014 114078 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 1000
+max_iter: 5
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0
+snapshot: 5
+snapshot_prefix: "examples/siamese/mnist_siamese"
+solver_mode: CPU
+net: "examples/siamese/mnist_siamese_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:35:32.906148 114078 solver.cpp:87] Creating training net from net file: examples/siamese/mnist_siamese_train_test.prototxt
+I0509 13:35:32.906592 114078 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer pair_data
+I0509 13:35:32.906874 114078 net.cpp:51] Initializing net from parameters: 
+name: "mnist_siamese_train_test"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "pair_data"
+  type: "Data"
+  top: "pair_data"
+  top: "sim"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/siamese/mnist_siamese_train_leveldb"
+    batch_size: 64
+  }
+}
+layer {
+  name: "slice_pair"
+  type: "Slice"
+  bottom: "pair_data"
+  top: "data"
+  top: "data_p"
+  slice_param {
+    slice_dim: 1
+    slice_point: 1
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    name: "conv1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv1_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    name: "conv2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv2_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    name: "ip1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip1_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    name: "ip2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip2_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "feat"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "feat"
+  param {
+    name: "feat_w"
+    lr_mult: 1
+  }
+  param {
+    name: "feat_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "conv1_p"
+  type: "Convolution"
+  bottom: "data_p"
+  top: "conv1_p"
+  param {
+    name: "conv1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv1_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1_p"
+  type: "Pooling"
+  bottom: "conv1_p"
+  top: "pool1_p"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_p"
+  type: "Convolution"
+  bottom: "pool1_p"
+  top: "conv2_p"
+  param {
+    name: "conv2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv2_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2_p"
+  type: "Pooling"
+  bottom: "conv2_p"
+  top: "pool2_p"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1_p"
+  type: "InnerProduct"
+  bottom: "pool2_p"
+  top: "ip1_p"
+  param {
+    name: "ip1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip1_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1_p"
+  type: "ReLU"
+  bottom: "ip1_p"
+  top: "ip1_p"
+}
+layer {
+  name: "ip2_p"
+  type: "InnerProduct"
+  bottom: "ip1_p"
+  top: "ip2_p"
+  param {
+    name: "ip2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip2_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "feat_p"
+  type: "InnerProduct"
+  bottom: "ip2_p"
+  top: "feat_p"
+  param {
+    name: "feat_w"
+    lr_mult: 1
+  }
+  param {
+    name: "feat_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "ContrastiveLoss"
+  bottom: "feat"
+  bottom: "feat_p"
+  bottom: "sim"
+  top: "loss"
+  contrastive_loss_param {
+    margin: 1
+  }
+}
+I0509 13:35:32.907043 114078 layer_factory.hpp:77] Creating layer pair_data
+I0509 13:35:32.908524 114078 db_leveldb.cpp:18] Opened leveldb examples/siamese/mnist_siamese_train_leveldb
+I0509 13:35:32.908947 114078 net.cpp:84] Creating Layer pair_data
+I0509 13:35:32.908965 114078 net.cpp:380] pair_data -> pair_data
+I0509 13:35:32.908994 114078 net.cpp:380] pair_data -> sim
+I0509 13:35:32.909034 114078 data_layer.cpp:45] output data size: 64,2,28,28
+I0509 13:35:32.909641 114078 net.cpp:122] Setting up pair_data
+I0509 13:35:32.909658 114078 net.cpp:129] Top shape: 64 2 28 28 (100352)
+I0509 13:35:32.909668 114078 net.cpp:129] Top shape: 64 (64)
+I0509 13:35:32.909673 114078 net.cpp:137] Memory required for data: 401664
+I0509 13:35:32.909682 114078 layer_factory.hpp:77] Creating layer slice_pair
+I0509 13:35:32.909693 114078 net.cpp:84] Creating Layer slice_pair
+I0509 13:35:32.909703 114078 net.cpp:406] slice_pair <- pair_data
+I0509 13:35:32.909715 114078 net.cpp:380] slice_pair -> data
+I0509 13:35:32.909729 114078 net.cpp:380] slice_pair -> data_p
+I0509 13:35:32.909744 114078 net.cpp:122] Setting up slice_pair
+I0509 13:35:32.909754 114078 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:32.909761 114078 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:32.909766 114078 net.cpp:137] Memory required for data: 803072
+I0509 13:35:32.909772 114078 layer_factory.hpp:77] Creating layer conv1
+I0509 13:35:32.909791 114078 net.cpp:84] Creating Layer conv1
+I0509 13:35:32.909797 114078 net.cpp:406] conv1 <- data
+I0509 13:35:32.909807 114078 net.cpp:380] conv1 -> conv1
+I0509 13:35:32.909824 114078 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:32.909870 114078 net.cpp:122] Setting up conv1
+I0509 13:35:32.909881 114078 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:32.909893 114078 net.cpp:137] Memory required for data: 3752192
+I0509 13:35:32.909909 114078 layer_factory.hpp:77] Creating layer pool1
+I0509 13:35:32.909919 114078 net.cpp:84] Creating Layer pool1
+I0509 13:35:32.909924 114078 net.cpp:406] pool1 <- conv1
+I0509 13:35:32.909935 114078 net.cpp:380] pool1 -> pool1
+I0509 13:35:32.909960 114078 net.cpp:122] Setting up pool1
+I0509 13:35:32.909970 114078 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:32.909976 114078 net.cpp:137] Memory required for data: 4489472
+I0509 13:35:32.909981 114078 layer_factory.hpp:77] Creating layer conv2
+I0509 13:35:32.909996 114078 net.cpp:84] Creating Layer conv2
+I0509 13:35:32.910002 114078 net.cpp:406] conv2 <- pool1
+I0509 13:35:32.910017 114078 net.cpp:380] conv2 -> conv2
+I0509 13:35:32.910032 114078 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:32.910384 114078 net.cpp:122] Setting up conv2
+I0509 13:35:32.910396 114078 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:32.910413 114078 net.cpp:137] Memory required for data: 5308672
+I0509 13:35:32.910424 114078 layer_factory.hpp:77] Creating layer pool2
+I0509 13:35:32.910434 114078 net.cpp:84] Creating Layer pool2
+I0509 13:35:32.910440 114078 net.cpp:406] pool2 <- conv2
+I0509 13:35:32.910450 114078 net.cpp:380] pool2 -> pool2
+I0509 13:35:32.910462 114078 net.cpp:122] Setting up pool2
+I0509 13:35:32.910470 114078 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:32.910477 114078 net.cpp:137] Memory required for data: 5513472
+I0509 13:35:32.910482 114078 layer_factory.hpp:77] Creating layer ip1
+I0509 13:35:32.910495 114078 net.cpp:84] Creating Layer ip1
+I0509 13:35:32.910501 114078 net.cpp:406] ip1 <- pool2
+I0509 13:35:32.910511 114078 net.cpp:380] ip1 -> ip1
+I0509 13:35:32.915868 114078 net.cpp:122] Setting up ip1
+I0509 13:35:32.915885 114078 net.cpp:129] Top shape: 64 500 (32000)
+     0.071279637 I0509 13:35:32.915891 114078 net.cpp:137] Memory required for data: 5641472
+        40,074,714      instructions:u           I0509 13:35:32.915908 114078 layer_factory.hpp:77] Creating layer relu1
+
+     0.071279637         22,377,231      I0509 13:35:32.915922 114078 net.cpp:84] Creating Layer relu1
+cycles:u                 
+I0509 13:35:32.915930 114078 net.cpp:406] relu1 <- ip1
+I0509 13:35:32.915940 114078 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:35:32.915951 114078 net.cpp:122] Setting up relu1
+I0509 13:35:32.915958 114078 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:32.915963 114078 net.cpp:137] Memory required for data: 5769472
+I0509 13:35:32.915968 114078 layer_factory.hpp:77] Creating layer ip2
+I0509 13:35:32.915983 114078 net.cpp:84] Creating Layer ip2
+I0509 13:35:32.915989 114078 net.cpp:406] ip2 <- ip1
+I0509 13:35:32.915998 114078 net.cpp:380] ip2 -> ip2
+I0509 13:35:32.916093 114078 net.cpp:122] Setting up ip2
+I0509 13:35:32.916105 114078 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:32.916110 114078 net.cpp:137] Memory required for data: 5772032
+I0509 13:35:32.916118 114078 layer_factory.hpp:77] Creating layer feat
+I0509 13:35:32.916128 114078 net.cpp:84] Creating Layer feat
+I0509 13:35:32.916134 114078 net.cpp:406] feat <- ip2
+I0509 13:35:32.916143 114078 net.cpp:380] feat -> feat
+I0509 13:35:32.916162 114078 net.cpp:122] Setting up feat
+I0509 13:35:32.916170 114078 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:32.916177 114078 net.cpp:137] Memory required for data: 5772544
+I0509 13:35:32.916187 114078 layer_factory.hpp:77] Creating layer conv1_p
+I0509 13:35:32.916198 114078 net.cpp:84] Creating Layer conv1_p
+I0509 13:35:32.916204 114078 net.cpp:406] conv1_p <- data_p
+I0509 13:35:32.916216 114078 net.cpp:380] conv1_p -> conv1_p
+I0509 13:35:32.916231 114078 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:32.916262 114078 net.cpp:122] Setting up conv1_p
+I0509 13:35:32.916271 114078 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:32.916278 114078 net.cpp:137] Memory required for data: 8721664
+I0509 13:35:32.916285 114078 net.cpp:465] Sharing parameters 'conv1_w' owned by layer 'conv1', param index 0
+I0509 13:35:32.916296 114078 net.cpp:465] Sharing parameters 'conv1_b' owned by layer 'conv1', param index 1
+I0509 13:35:32.916302 114078 layer_factory.hpp:77] Creating layer pool1_p
+I0509 13:35:32.916314 114078 net.cpp:84] Creating Layer pool1_p
+I0509 13:35:32.916321 114078 net.cpp:406] pool1_p <- conv1_p
+I0509 13:35:32.916333 114078 net.cpp:380] pool1_p -> pool1_p
+I0509 13:35:32.916344 114078 net.cpp:122] Setting up pool1_p
+I0509 13:35:32.916354 114078 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:32.916359 114078 net.cpp:137] Memory required for data: 9458944
+I0509 13:35:32.916364 114078 layer_factory.hpp:77] Creating layer conv2_p
+I0509 13:35:32.916378 114078 net.cpp:84] Creating Layer conv2_p
+I0509 13:35:32.916384 114078 net.cpp:406] conv2_p <- pool1_p
+I0509 13:35:32.916395 114078 net.cpp:380] conv2_p -> conv2_p
+I0509 13:35:32.916409 114078 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:32.916751 114078 net.cpp:122] Setting up conv2_p
+I0509 13:35:32.916764 114078 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:32.916777 114078 net.cpp:137] Memory required for data: 10278144
+I0509 13:35:32.916785 114078 net.cpp:465] Sharing parameters 'conv2_w' owned by layer 'conv2', param index 0
+I0509 13:35:32.916790 114078 net.cpp:465] Sharing parameters 'conv2_b' owned by layer 'conv2', param index 1
+I0509 13:35:32.916797 114078 layer_factory.hpp:77] Creating layer pool2_p
+I0509 13:35:32.916805 114078 net.cpp:84] Creating Layer pool2_p
+I0509 13:35:32.916811 114078 net.cpp:406] pool2_p <- conv2_p
+I0509 13:35:32.916821 114078 net.cpp:380] pool2_p -> pool2_p
+I0509 13:35:32.916833 114078 net.cpp:122] Setting up pool2_p
+I0509 13:35:32.916841 114078 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:32.916846 114078 net.cpp:137] Memory required for data: 10482944
+I0509 13:35:32.916852 114078 layer_factory.hpp:77] Creating layer ip1_p
+I0509 13:35:32.916864 114078 net.cpp:84] Creating Layer ip1_p
+I0509 13:35:32.916870 114078 net.cpp:406] ip1_p <- pool2_p
+I0509 13:35:32.916879 114078 net.cpp:380] ip1_p -> ip1_p
+I0509 13:35:32.922142 114078 net.cpp:122] Setting up ip1_p
+I0509 13:35:32.922157 114078 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:32.922161 114078 net.cpp:137] Memory required for data: 10610944
+I0509 13:35:32.922168 114078 net.cpp:465] Sharing parameters 'ip1_w' owned by layer 'ip1', param index 0
+I0509 13:35:32.922174 114078 net.cpp:465] Sharing parameters 'ip1_b' owned by layer 'ip1', param index 1
+I0509 13:35:32.922181 114078 layer_factory.hpp:77] Creating layer relu1_p
+I0509 13:35:32.922189 114078 net.cpp:84] Creating Layer relu1_p
+I0509 13:35:32.922195 114078 net.cpp:406] relu1_p <- ip1_p
+I0509 13:35:32.922204 114078 net.cpp:367] relu1_p -> ip1_p (in-place)
+I0509 13:35:32.922214 114078 net.cpp:122] Setting up relu1_p
+I0509 13:35:32.922221 114078 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:32.922226 114078 net.cpp:137] Memory required for data: 10738944
+I0509 13:35:32.922232 114078 layer_factory.hpp:77] Creating layer ip2_p
+I0509 13:35:32.922245 114078 net.cpp:84] Creating Layer ip2_p
+I0509 13:35:32.922251 114078 net.cpp:406] ip2_p <- ip1_p
+I0509 13:35:32.922260 114078 net.cpp:380] ip2_p -> ip2_p
+I0509 13:35:32.922344 114078 net.cpp:122] Setting up ip2_p
+I0509 13:35:32.922355 114078 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:32.922360 114078 net.cpp:137] Memory required for data: 10741504
+I0509 13:35:32.922369 114078 net.cpp:465] Sharing parameters 'ip2_w' owned by layer 'ip2', param index 0
+I0509 13:35:32.922375 114078 net.cpp:465] Sharing parameters 'ip2_b' owned by layer 'ip2', param index 1
+I0509 13:35:32.922382 114078 layer_factory.hpp:77] Creating layer feat_p
+I0509 13:35:32.922391 114078 net.cpp:84] Creating Layer feat_p
+I0509 13:35:32.922396 114078 net.cpp:406] feat_p <- ip2_p
+I0509 13:35:32.922407 114078 net.cpp:380] feat_p -> feat_p
+I0509 13:35:32.922425 114078 net.cpp:122] Setting up feat_p
+I0509 13:35:32.922432 114078 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:32.922437 114078 net.cpp:137] Memory required for data: 10742016
+I0509 13:35:32.922449 114078 net.cpp:465] Sharing parameters 'feat_w' owned by layer 'feat', param index 0
+I0509 13:35:32.922457 114078 net.cpp:465] Sharing parameters 'feat_b' owned by layer 'feat', param index 1
+I0509 13:35:32.922463 114078 layer_factory.hpp:77] Creating layer loss
+I0509 13:35:32.922472 114078 net.cpp:84] Creating Layer loss
+I0509 13:35:32.922477 114078 net.cpp:406] loss <- feat
+I0509 13:35:32.922485 114078 net.cpp:406] loss <- feat_p
+I0509 13:35:32.922492 114078 net.cpp:406] loss <- sim
+I0509 13:35:32.922503 114078 net.cpp:380] loss -> loss
+I0509 13:35:32.922521 114078 net.cpp:122] Setting up loss
+I0509 13:35:32.922529 114078 net.cpp:129] Top shape: (1)
+I0509 13:35:32.922534 114078 net.cpp:132]     with loss weight 1
+I0509 13:35:32.922550 114078 net.cpp:137] Memory required for data: 10742020
+I0509 13:35:32.922556 114078 net.cpp:198] loss needs backward computation.
+I0509 13:35:32.922567 114078 net.cpp:198] feat_p needs backward computation.
+I0509 13:35:32.922574 114078 net.cpp:198] ip2_p needs backward computation.
+I0509 13:35:32.922580 114078 net.cpp:198] relu1_p needs backward computation.
+I0509 13:35:32.922595 114078 net.cpp:198] ip1_p needs backward computation.
+I0509 13:35:32.922601 114078 net.cpp:198] pool2_p needs backward computation.
+I0509 13:35:32.922607 114078 net.cpp:198] conv2_p needs backward computation.
+I0509 13:35:32.922613 114078 net.cpp:198] pool1_p needs backward computation.
+I0509 13:35:32.922619 114078 net.cpp:198] conv1_p needs backward computation.
+I0509 13:35:32.922626 114078 net.cpp:198] feat needs backward computation.
+I0509 13:35:32.922632 114078 net.cpp:198] ip2 needs backward computation.
+I0509 13:35:32.922641 114078 net.cpp:198] relu1 needs backward computation.
+I0509 13:35:32.922646 114078 net.cpp:198] ip1 needs backward computation.
+I0509 13:35:32.922653 114078 net.cpp:198] pool2 needs backward computation.
+I0509 13:35:32.922658 114078 net.cpp:198] conv2 needs backward computation.
+I0509 13:35:32.922664 114078 net.cpp:198] pool1 needs backward computation.
+I0509 13:35:32.922670 114078 net.cpp:198] conv1 needs backward computation.
+I0509 13:35:32.922677 114078 net.cpp:200] slice_pair does not need backward computation.
+I0509 13:35:32.922684 114078 net.cpp:200] pair_data does not need backward computation.
+I0509 13:35:32.922690 114078 net.cpp:242] This network produces output loss
+I0509 13:35:32.922832 114078 net.cpp:255] Network initialization done.
+I0509 13:35:32.922921 114078 solver.cpp:56] Solver scaffolding done.
+I0509 13:35:32.922966 114078 caffe.cpp:248] Starting Optimization
+I0509 13:35:32.922972 114078 solver.cpp:272] Solving mnist_siamese_train_test
+I0509 13:35:32.922977 114078 solver.cpp:273] Learning Rate Policy: inv
+     0.081430633         33,485,627      instructions:u           
+     0.081430633         21,309,941      cycles:u                 
+     0.091574439         43,242,864      instructions:u           
+     0.091574439         24,184,740      cycles:u                 
+     0.101716103         39,393,424      instructions:u           
+     0.101716103         23,409,184      cycles:u                 
+     0.111859894         38,790,882      instructions:u           
+     0.111859894         24,954,950      cycles:u                 
+     0.122002916         46,281,333      instructions:u           
+     0.122002916         25,085,035      cycles:u                 
+     0.132144990         46,243,102      instructions:u           
+     0.132144990         25,063,726      cycles:u                 
+     0.142288748         40,572,641      instructions:u           
+     0.142288748         24,718,892      cycles:u                 
+     0.152432103         43,120,422      instructions:u           
+     0.152432103         24,144,672      cycles:u                 
+     0.162576245         45,877,650      instructions:u           
+     0.162576245         25,343,833      cycles:u                 
+     0.172722500         34,686,297      instructions:u           
+     0.172722500         24,102,912      cycles:u                 
+     0.182874162         46,494,272      instructions:u           
+     0.182874162         25,220,860      cycles:u                 
+     0.193017114         46,214,247      instructions:u           
+     0.193017114         25,080,226      cycles:u                 
+     0.203159362         44,499,443      instructions:u           
+     0.203159362         24,946,016      cycles:u                 
+     0.213302970         41,659,386      instructions:u           
+     0.213302970         24,948,321      cycles:u                 
+     0.223452179         45,914,439      instructions:u           
+     0.223452179         25,187,455      cycles:u                 
+     0.233609005         44,590,083      instructions:u           
+     0.233609005         24,719,914      cycles:u                 
+     0.243765159         46,736,642      instructions:u           
+     0.243765159         25,309,585      cycles:u                 
+     0.253918905         46,635,375      instructions:u           
+     0.253918905         25,262,082      cycles:u                 
+#           time             counts unit events
+     0.264068809         46,527,976      instructions:u           
+     0.264068809         25,255,171      cycles:u                 
+     0.274219841         46,580,145      instructions:u           
+     0.274219841         25,252,324      cycles:u                 
+     0.284368021         46,497,711      instructions:u           
+     0.284368021         25,244,289      cycles:u                 
+     0.294512214         39,440,502      instructions:u           
+     0.294512214         23,140,725      cycles:u                 
+     0.304660407         45,658,052      instructions:u           
+     0.304660407         25,342,934      cycles:u                 
+     0.314813360         45,977,646      instructions:u           
+     0.314813360         25,187,527      cycles:u                 
+     0.324963293         43,562,477      instructions:u           
+     0.324963293         24,540,072      cycles:u                 
+     0.335109489         47,169,056      instructions:u           
+     0.335109489         25,337,720      cycles:u                 
+     0.345263733         46,975,916      instructions:u           
+     0.345263733         25,256,209      cycles:u                 
+     0.355417506         46,890,015      instructions:u           
+     0.355417506         25,269,137      cycles:u                 
+     0.365592129         47,138,152      instructions:u           
+     0.365592129         25,306,867      cycles:u                 
+     0.375748595         47,028,490      instructions:u           
+     0.375748595         25,264,080      cycles:u                 
+     0.385903562         43,457,376      instructions:u           
+     0.385903562         24,127,687      cycles:u                 
+     0.396057892         45,424,677      instructions:u           
+     0.396057892         25,224,947      cycles:u                 
+I0509 13:35:33.249902 114078 solver.cpp:218] Iteration 0 (0 iter/s, 0.326s/1000 iters), loss = 0.25589
+I0509 13:35:33.249938 114078 solver.cpp:237]     Train net output #0: loss = 0.25589 (* 1 = 0.25589 loss)
+I0509 13:35:33.249953 114078 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     0.406211451         42,996,007      instructions:u           
+     0.406211451         24,306,545      cycles:u                 
+     0.416363995         45,173,625      instructions:u           
+     0.416363995         26,092,732      cycles:u                 
+     0.426518224         45,855,164      instructions:u           
+     0.426518224         25,369,195      cycles:u                 
+     0.436672028         37,355,852      instructions:u           
+     0.436672028         25,208,351      cycles:u                 
+     0.446827701         46,976,627      instructions:u           
+     0.446827701         25,370,188      cycles:u                 
+     0.456980541         46,966,237      instructions:u           
+     0.456980541         25,342,223      cycles:u                 
+     0.467143767         42,112,207      instructions:u           
+     0.467143767         25,255,100      cycles:u                 
+     0.477297537         45,710,704      instructions:u           
+     0.477297537         25,357,159      cycles:u                 
+     0.487451716         45,940,654      instructions:u           
+     0.487451716         25,360,333      cycles:u                 
+     0.497607643         37,696,811      instructions:u           
+     0.497607643         25,372,456      cycles:u                 
+     0.507764309         46,502,607      instructions:u           
+     0.507764309         25,342,661      cycles:u                 
+#           time             counts unit events
+     0.517917023         46,935,704      instructions:u           
+     0.517917023         25,362,095      cycles:u                 
+     0.528074236         45,792,017      instructions:u           
+     0.528074236         25,367,031      cycles:u                 
+     0.538228398         42,572,382      instructions:u           
+     0.538228398         25,365,500      cycles:u                 
+     0.548382345         46,311,857      instructions:u           
+     0.548382345         25,359,366      cycles:u                 
+     0.558535068         46,339,149      instructions:u           
+     0.558535068         25,363,433      cycles:u                 
+     0.568688385         47,106,637      instructions:u           
+     0.568688385         25,358,627      cycles:u                 
+     0.578843638         47,098,432      instructions:u           
+     0.578843638         25,369,873      cycles:u                 
+     0.588996701         46,896,957      instructions:u           
+     0.588996701         25,343,373      cycles:u                 
+     0.599149441         47,097,919      instructions:u           
+     0.599149441         25,362,700      cycles:u                 
+     0.609303290         47,057,765      instructions:u           
+     0.609303290         25,360,012      cycles:u                 
+     0.619457957         44,762,842      instructions:u           
+     0.619457957         25,360,980      cycles:u                 
+     0.629610693         45,630,742      instructions:u           
+     0.629610693         25,365,085      cycles:u                 
+     0.639768397         46,218,767      instructions:u           
+     0.639768397         25,368,576      cycles:u                 
+     0.649920916         45,962,083      instructions:u           
+     0.649920916         25,362,089      cycles:u                 
+     0.660075346         47,067,612      instructions:u           
+     0.660075346         25,361,607      cycles:u                 
+     0.670227956         47,113,682      instructions:u           
+     0.670227956         25,362,837      cycles:u                 
+     0.680384433         47,094,647      instructions:u           
+     0.680384433         25,366,343      cycles:u                 
+     0.690536855         47,144,369      instructions:u           
+     0.690536855         25,364,181      cycles:u                 
+     0.700691335         47,098,051      instructions:u           
+     0.700691335         25,361,534      cycles:u                 
+     0.710845595         45,262,155      instructions:u           
+     0.710845595         25,354,733      cycles:u                 
+     0.720998801         45,666,816      instructions:u           
+     0.720998801         25,358,184      cycles:u                 
+     0.731157425         46,632,645      instructions:u           
+     0.731157425         26,774,172      cycles:u                 
+     0.741315981         47,358,454      instructions:u           
+     0.741315981         26,194,588      cycles:u                 
+     0.751473494         41,247,640      instructions:u           
+     0.751473494         26,160,971      cycles:u                 
+     0.761632884         45,510,281      instructions:u           
+     0.761632884         26,168,056      cycles:u                 
+#           time             counts unit events
+     0.771791841         48,569,139      instructions:u           
+     0.771791841         26,272,484      cycles:u                 
+     0.781967633         48,245,312      instructions:u           
+     0.781967633         26,317,282      cycles:u                 
+     0.792126220         43,557,110      instructions:u           
+     0.792126220         26,269,425      cycles:u                 
+     0.802285606         47,518,514      instructions:u           
+     0.802285606         26,279,169      cycles:u                 
+     0.812444970         43,522,215      instructions:u           
+     0.812444970         26,271,352      cycles:u                 
+     0.822603173         43,526,508      instructions:u           
+     0.822603173         26,165,803      cycles:u                 
+     0.832761929         48,282,031      instructions:u           
+     0.832761929         26,157,111      cycles:u                 
+     0.842921146         48,312,806      instructions:u           
+     0.842921146         26,149,530      cycles:u                 
+     0.853081052         43,775,401      instructions:u           
+     0.853081052         26,369,112      cycles:u                 
+     0.863239459         49,888,143      instructions:u           
+     0.863239459         27,295,792      cycles:u                 
+     0.873398365         50,003,795      instructions:u           
+     0.873398365         27,289,286      cycles:u                 
+     0.883557018         50,851,068      instructions:u           
+     0.883557018         27,290,381      cycles:u                 
+     0.893722145         50,869,227      instructions:u           
+     0.893722145         27,317,755      cycles:u                 
+     0.903880921         50,917,876      instructions:u           
+     0.903880921         27,292,334      cycles:u                 
+     0.914040884         50,837,213      instructions:u           
+     0.914040884         27,301,570      cycles:u                 
+     0.924200397         49,473,395      instructions:u           
+     0.924200397         27,291,859      cycles:u                 
+     0.934359240         49,214,492      instructions:u           
+     0.934359240         27,298,548      cycles:u                 
+     0.944518271         49,509,850      instructions:u           
+     0.944518271         27,291,852      cycles:u                 
+     0.954677610         49,509,474      instructions:u           
+     0.954677610         27,302,042      cycles:u                 
+     0.964836603         50,630,332      instructions:u           
+     0.964836603         27,280,577      cycles:u                 
+     0.974995353         50,757,690      instructions:u           
+     0.974995353         27,298,155      cycles:u                 
+     0.985155016         50,506,956      instructions:u           
+     0.985155016         27,190,246      cycles:u                 
+     0.995315003         50,691,680      instructions:u           
+     0.995315003         27,302,491      cycles:u                 
+     1.005472682         50,650,168      instructions:u           
+     1.005472682         27,277,356      cycles:u                 
+     1.015632102         48,877,405      instructions:u           
+     1.015632102         27,293,012      cycles:u                 
+#           time             counts unit events
+     1.025789575         49,164,093      instructions:u           
+     1.025789575         27,297,885      cycles:u                 
+     1.035954045         49,610,820      instructions:u           
+     1.035954045         28,449,146      cycles:u                 
+     1.046115755         49,305,839      instructions:u           
+     1.046115755         27,305,188      cycles:u                 
+     1.056275618         40,597,228      instructions:u           
+     1.056275618         27,079,614      cycles:u                 
+     1.066439424         48,968,520      instructions:u           
+     1.066439424         26,501,152      cycles:u                 
+     1.076630215         48,327,603      instructions:u           
+     1.076630215         26,126,595      cycles:u                 
+     1.086810615         44,127,600      instructions:u           
+     1.086810615         26,331,343      cycles:u                 
+     1.096980338         48,442,349      instructions:u           
+     1.096980338         27,018,303      cycles:u                 
+     1.107137757         49,339,371      instructions:u           
+     1.107137757         27,294,127      cycles:u                 
+     1.117297301         40,962,375      instructions:u           
+     1.117297301         27,291,666      cycles:u                 
+     1.127456337         50,482,517      instructions:u           
+     1.127456337         27,293,616      cycles:u                 
+     1.137613813         50,502,702      instructions:u           
+     1.137613813         27,294,275      cycles:u                 
+     1.147775933         45,878,598      instructions:u           
+     1.147775933         27,300,472      cycles:u                 
+     1.157936326         49,443,800      instructions:u           
+     1.157936326         27,303,787      cycles:u                 
+     1.168094769         49,470,693      instructions:u           
+     1.168094769         27,290,028      cycles:u                 
+     1.178253406         50,681,668      instructions:u           
+     1.178253406         27,297,951      cycles:u                 
+     1.188410816         50,614,219      instructions:u           
+     1.188410816         27,288,481      cycles:u                 
+     1.198567922         50,730,084      instructions:u           
+     1.198567922         27,294,012      cycles:u                 
+     1.208727629         50,645,638      instructions:u           
+     1.208727629         27,294,129      cycles:u                 
+     1.218886938         50,767,958      instructions:u           
+     1.218886938         27,301,392      cycles:u                 
+     1.229046812         48,369,562      instructions:u           
+     1.229046812         27,281,173      cycles:u                 
+     1.239204668         48,969,895      instructions:u           
+     1.239204668         27,190,794      cycles:u                 
+     1.249365925         49,344,014      instructions:u           
+     1.249365925         27,080,938      cycles:u                 
+     1.259525644         49,816,856      instructions:u           
+     1.259525644         27,294,116      cycles:u                 
+     1.269687224         50,675,537      instructions:u           
+     1.269687224         27,308,449      cycles:u                 
+#           time             counts unit events
+     1.279846601         50,394,964      instructions:u           
+     1.279846601         27,169,123      cycles:u                 
+     1.290007127         50,687,588      instructions:u           
+     1.290007127         27,306,365      cycles:u                 
+     1.300164550         50,623,443      instructions:u           
+     1.300164550         27,289,501      cycles:u                 
+     1.310323374         49,600,493      instructions:u           
+     1.310323374         27,298,710      cycles:u                 
+     1.320480513         49,043,416      instructions:u           
+     1.320480513         27,286,769      cycles:u                 
+     1.330641780         46,779,394      instructions:u           
+     1.330641780         27,493,348      cycles:u                 
+     1.340800323         51,767,450      instructions:u           
+     1.340800323         28,172,453      cycles:u                 
+     1.350959406         45,605,924      instructions:u           
+     1.350959406         26,952,873      cycles:u                 
+     1.361117746         43,072,967      instructions:u           
+     1.361117746         26,507,833      cycles:u                 
+     1.371272351         49,587,024      instructions:u           
+     1.371272351         26,818,646      cycles:u                 
+     1.381424867         49,749,022      instructions:u           
+     1.381424867         26,895,480      cycles:u                 
+     1.391594725         44,332,261      instructions:u           
+     1.391594725         26,827,876      cycles:u                 
+     1.401749052         48,696,702      instructions:u           
+     1.401749052         26,943,555      cycles:u                 
+     1.411902248         45,728,283      instructions:u           
+     1.411902248         26,964,367      cycles:u                 
+     1.422055013         44,427,836      instructions:u           
+     1.422055013         27,178,380      cycles:u                 
+     1.432208585         50,422,395      instructions:u           
+     1.432208585         27,278,708      cycles:u                 
+     1.442359469         50,457,574      instructions:u           
+     1.442359469         27,278,206      cycles:u                 
+     1.452513194         45,099,676      instructions:u           
+     1.452513194         27,278,849      cycles:u                 
+     1.462666511         49,688,182      instructions:u           
+     1.462666511         27,284,015      cycles:u                 
+     1.472819610         50,181,080      instructions:u           
+     1.472819610         27,277,893      cycles:u                 
+     1.482971392         50,426,108      instructions:u           
+     1.482971392         27,161,587      cycles:u                 
+     1.493126340         50,604,367      instructions:u           
+     1.493126340         27,281,675      cycles:u                 
+     1.503304473         50,750,250      instructions:u           
+     1.503304473         27,317,498      cycles:u                 
+     1.513460381         50,656,343      instructions:u           
+     1.513460381         27,315,919      cycles:u                 
+     1.523612340         49,125,970      instructions:u           
+     1.523612340         27,273,235      cycles:u                 
+#           time             counts unit events
+     1.533779198         49,337,161      instructions:u           
+     1.533779198         27,319,455      cycles:u                 
+     1.543935136         49,607,002      instructions:u           
+     1.543935136         27,285,559      cycles:u                 
+     1.554088025         49,295,290      instructions:u           
+     1.554088025         27,284,423      cycles:u                 
+     1.564252768         50,689,616      instructions:u           
+     1.564252768         27,307,257      cycles:u                 
+     1.574406067         50,444,298      instructions:u           
+     1.574406067         27,179,545      cycles:u                 
+     1.584557559         50,733,141      instructions:u           
+     1.584557559         27,273,603      cycles:u                 
+     1.594712238         50,411,432      instructions:u           
+     1.594712238         27,184,144      cycles:u                 
+     1.604865181         50,622,343      instructions:u           
+     1.604865181         27,265,517      cycles:u                 
+     1.615018181         48,632,336      instructions:u           
+     1.615018181         27,178,678      cycles:u                 
+     1.625187597         49,132,663      instructions:u           
+     1.625187597         27,212,572      cycles:u                 
+I0509 13:35:34.474218 114078 solver.cpp:447] Snapshotting to binary proto file examples/siamese/mnist_siamese_iter_5.caffemodel
+     1.635348620         31,092,214      instructions:u           
+     1.635348620         20,828,967      cycles:u                 
+     1.645516876         25,552,881      instructions:u           
+     1.645516876         17,730,513      cycles:u                 
+I0509 13:35:34.490602 114078 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/siamese/mnist_siamese_iter_5.solverstate
+I0509 13:35:34.495566 114078 solver.cpp:315] Optimization Done.
+I0509 13:35:34.495579 114078 caffe.cpp:259] Optimization Done.
+     1.655673699         14,484,109      instructions:u           
+     1.655673699         11,400,137      cycles:u                 
+     1.656651743                612      instructions:u           
+     1.656651743             10,369      cycles:u                 

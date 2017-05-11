@@ -1,0 +1,5 @@
+        22,014,380      cache-references:u                                            ( +-  5.26% )
+        23,013,456      cache-references:u                                            ( +-  5.72% )
+        21,889,707      cache-references:u                                            ( +-  3.98% )
+        23,126,830      cache-references:u                                            ( +-  6.29% )
+        21,194,111      cache-references:u                                            ( +-  0.61% )

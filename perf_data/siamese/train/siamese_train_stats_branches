@@ -1,0 +1,751 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010415423             47,171      branch-misses:u          
+     0.010415423            906,560      branches:u               
+     0.020587607             66,187      branch-misses:u          
+     0.020587607          2,920,613      branches:u               
+     0.030727341             70,789      branch-misses:u          
+     0.030727341          3,322,163      branches:u               
+     0.040873431             80,282      branch-misses:u          
+     0.040873431          3,496,464      branches:u               
+     0.051019200             23,760      branch-misses:u          
+     0.051019200          1,009,043      branches:u               
+I0509 13:35:34.569334 114085 caffe.cpp:211] Use CPU.
+I0509 13:35:34.569588 114085 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 1000
+max_iter: 5
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0
+snapshot: 5
+snapshot_prefix: "examples/siamese/mnist_siamese"
+solver_mode: CPU
+net: "examples/siamese/mnist_siamese_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:35:34.569687 114085 solver.cpp:87] Creating training net from net file: examples/siamese/mnist_siamese_train_test.prototxt
+I0509 13:35:34.570042 114085 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer pair_data
+I0509 13:35:34.570269 114085 net.cpp:51] Initializing net from parameters: 
+name: "mnist_siamese_train_test"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "pair_data"
+  type: "Data"
+  top: "pair_data"
+  top: "sim"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/siamese/mnist_siamese_train_leveldb"
+    batch_size: 64
+  }
+}
+layer {
+  name: "slice_pair"
+  type: "Slice"
+  bottom: "pair_data"
+  top: "data"
+  top: "data_p"
+  slice_param {
+    slice_dim: 1
+    slice_point: 1
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    name: "conv1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv1_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    name: "conv2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv2_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    name: "ip1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip1_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    name: "ip2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip2_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "feat"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "feat"
+  param {
+    name: "feat_w"
+    lr_mult: 1
+  }
+  param {
+    name: "feat_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "conv1_p"
+  type: "Convolution"
+  bottom: "data_p"
+  top: "conv1_p"
+  param {
+    name: "conv1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv1_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1_p"
+  type: "Pooling"
+  bottom: "conv1_p"
+  top: "pool1_p"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_p"
+  type: "Convolution"
+  bottom: "pool1_p"
+  top: "conv2_p"
+  param {
+    name: "conv2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "conv2_b"
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2_p"
+  type: "Pooling"
+  bottom: "conv2_p"
+  top: "pool2_p"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1_p"
+  type: "InnerProduct"
+  bottom: "pool2_p"
+  top: "ip1_p"
+  param {
+    name: "ip1_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip1_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1_p"
+  type: "ReLU"
+  bottom: "ip1_p"
+  top: "ip1_p"
+}
+layer {
+  name: "ip2_p"
+  type: "InnerProduct"
+  bottom: "ip1_p"
+  top: "ip2_p"
+  param {
+    name: "ip2_w"
+    lr_mult: 1
+  }
+  param {
+    name: "ip2_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "feat_p"
+  type: "InnerProduct"
+  bottom: "ip2_p"
+  top: "feat_p"
+  param {
+    name: "feat_w"
+    lr_mult: 1
+  }
+  param {
+    name: "feat_b"
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "ContrastiveLoss"
+  bottom: "feat"
+  bottom: "feat_p"
+  bottom: "sim"
+  top: "loss"
+  contrastive_loss_param {
+    margin: 1
+  }
+}
+I0509 13:35:34.570407 114085 layer_factory.hpp:77] Creating layer pair_data
+     0.061158450             84,361      branch-misses:u          
+     0.061158450          3,008,177      branches:u               
+I0509 13:35:34.571871 114085 db_leveldb.cpp:18] Opened leveldb examples/siamese/mnist_siamese_train_leveldb
+I0509 13:35:34.572399 114085 net.cpp:84] Creating Layer pair_data
+I0509 13:35:34.572420 114085 net.cpp:380] pair_data -> pair_data
+I0509 13:35:34.572451 114085 net.cpp:380] pair_data -> sim
+I0509 13:35:34.572489 114085 data_layer.cpp:45] output data size: 64,2,28,28
+I0509 13:35:34.573083 114085 net.cpp:122] Setting up pair_data
+I0509 13:35:34.573107 114085 net.cpp:129] Top shape: 64 2 28 28 (100352)
+I0509 13:35:34.573117 114085 net.cpp:129] Top shape: 64 (64)
+I0509 13:35:34.573122 114085 net.cpp:137] Memory required for data: 401664
+I0509 13:35:34.573129 114085 layer_factory.hpp:77] Creating layer slice_pair
+I0509 13:35:34.573141 114085 net.cpp:84] Creating Layer slice_pair
+I0509 13:35:34.573150 114085 net.cpp:406] slice_pair <- pair_data
+I0509 13:35:34.573164 114085 net.cpp:380] slice_pair -> data
+I0509 13:35:34.573179 114085 net.cpp:380] slice_pair -> data_p
+I0509 13:35:34.573194 114085 net.cpp:122] Setting up slice_pair
+I0509 13:35:34.573204 114085 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:34.573210 114085 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:34.573215 114085 net.cpp:137] Memory required for data: 803072
+I0509 13:35:34.573220 114085 layer_factory.hpp:77] Creating layer conv1
+I0509 13:35:34.573240 114085 net.cpp:84] Creating Layer conv1
+I0509 13:35:34.573246 114085 net.cpp:406] conv1 <- data
+I0509 13:35:34.573256 114085 net.cpp:380] conv1 -> conv1
+I0509 13:35:34.573273 114085 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:34.573318 114085 net.cpp:122] Setting up conv1
+I0509 13:35:34.573328 114085 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:34.573340 114085 net.cpp:137] Memory required for data: 3752192
+I0509 13:35:34.573356 114085 layer_factory.hpp:77] Creating layer pool1
+I0509 13:35:34.573367 114085 net.cpp:84] Creating Layer pool1
+I0509 13:35:34.573374 114085 net.cpp:406] pool1 <- conv1
+I0509 13:35:34.573384 114085 net.cpp:380] pool1 -> pool1
+I0509 13:35:34.573401 114085 net.cpp:122] Setting up pool1
+I0509 13:35:34.573411 114085 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:34.573416 114085 net.cpp:137] Memory required for data: 4489472
+I0509 13:35:34.573421 114085 layer_factory.hpp:77] Creating layer conv2
+I0509 13:35:34.573436 114085 net.cpp:84] Creating Layer conv2
+I0509 13:35:34.573442 114085 net.cpp:406] conv2 <- pool1
+I0509 13:35:34.573453 114085 net.cpp:380] conv2 -> conv2
+I0509 13:35:34.573467 114085 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:34.573778 114085 net.cpp:122] Setting up conv2
+I0509 13:35:34.573791 114085 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:34.573808 114085 net.cpp:137] Memory required for data: 5308672
+I0509 13:35:34.573819 114085 layer_factory.hpp:77] Creating layer pool2
+I0509 13:35:34.573828 114085 net.cpp:84] Creating Layer pool2
+I0509 13:35:34.573837 114085 net.cpp:406] pool2 <- conv2
+I0509 13:35:34.573848 114085 net.cpp:380] pool2 -> pool2
+I0509 13:35:34.573861 114085 net.cpp:122] Setting up pool2
+I0509 13:35:34.573868 114085 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:34.573875 114085 net.cpp:137] Memory required for data: 5513472
+I0509 13:35:34.573880 114085 layer_factory.hpp:77] Creating layer ip1
+I0509 13:35:34.573892 114085 net.cpp:84] Creating Layer ip1
+I0509 13:35:34.573897 114085 net.cpp:406] ip1 <- pool2
+I0509 13:35:34.573907 114085 net.cpp:380] ip1 -> ip1
+I0509 13:35:34.578383 114085 net.cpp:122] Setting up ip1
+I0509 13:35:34.578397 114085 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:34.578403 114085 net.cpp:137] Memory required for data: 5641472
+I0509 13:35:34.578418 114085 layer_factory.hpp:77] Creating layer relu1
+I0509 13:35:34.578430 114085 net.cpp:84] Creating Layer relu1
+I0509 13:35:34.578436 114085 net.cpp:406] relu1 <- ip1
+I0509 13:35:34.578444 114085 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:35:34.578456 114085 net.cpp:122] Setting up relu1
+I0509 13:35:34.578464 114085 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:34.578469 114085 net.cpp:137] Memory required for data: 5769472
+I0509 13:35:34.578474 114085 layer_factory.hpp:77] Creating layer ip2
+I0509 13:35:34.578486 114085 net.cpp:84] Creating Layer ip2
+I0509 13:35:34.578492 114085 net.cpp:406] ip2 <- ip1
+I0509 13:35:34.578501 114085 net.cpp:380] ip2 -> ip2
+I0509 13:35:34.578575 114085 net.cpp:122] Setting up ip2
+I0509 13:35:34.578585 114085 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:34.578589 114085 net.cpp:137] Memory required for data: 5772032
+I0509 13:35:34.578598 114085 layer_factory.hpp:77] Creating layer feat
+I0509 13:35:34.578605 114085 net.cpp:84] Creating Layer feat
+I0509 13:35:34.578613 114085 net.cpp:406] feat <- ip2
+I0509 13:35:34.578621 114085 net.cpp:380] feat -> feat
+I0509 13:35:34.578639 114085 net.cpp:122] Setting up feat
+I0509 13:35:34.578645 114085 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:34.578651 114085 net.cpp:137] Memory required for data: 5772544
+I0509 13:35:34.578662 114085 layer_factory.hpp:77] Creating layer conv1_p
+I0509 13:35:34.578675 114085 net.cpp:84] Creating Layer conv1_p
+I0509 13:35:34.578680 114085 net.cpp:406] conv1_p <- data_p
+I0509 13:35:34.578691 114085 net.cpp:380] conv1_p -> conv1_p
+I0509 13:35:34.578706 114085 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:34.578734 114085 net.cpp:122] Setting up conv1_p
+I0509 13:35:34.578742 114085 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:34.578749 114085 net.cpp:137] Memory required for data: 8721664
+I0509 13:35:34.578755 114085 net.cpp:465] Sharing parameters 'conv1_w' owned by layer 'conv1', param index 0
+I0509 13:35:34.578763 114085 net.cpp:465] Sharing parameters 'conv1_b' owned by layer 'conv1', param index 1
+I0509 13:35:34.578773 114085 layer_factory.hpp:77] Creating layer pool1_p
+I0509 13:35:34.578784 114085 net.cpp:84] Creating Layer pool1_p
+I0509 13:35:34.578790 114085 net.cpp:406] pool1_p <- conv1_p
+I0509 13:35:34.578800 114085 net.cpp:380] pool1_p -> pool1_p
+I0509 13:35:34.578811 114085 net.cpp:122] Setting up pool1_p
+I0509 13:35:34.578820 114085 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:34.578825 114085 net.cpp:137] Memory required for data: 9458944
+I0509 13:35:34.578830 114085 layer_factory.hpp:77] Creating layer conv2_p
+I0509 13:35:34.578842 114085 net.cpp:84] Creating Layer conv2_p
+I0509 13:35:34.578850 114085 net.cpp:406] conv2_p <- pool1_p
+I0509 13:35:34.578860 114085 net.cpp:380] conv2_p -> conv2_p
+I0509 13:35:34.578871 114085 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:34.579172 114085 net.cpp:122] Setting up conv2_p
+I0509 13:35:34.579183 114085 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:34.579200 114085 net.cpp:137] Memory required for data: 10278144
+I0509 13:35:34.579205 114085 net.cpp:465] Sharing parameters 'conv2_w' owned by layer 'conv2', param index 0
+I0509 13:35:34.579212 114085 net.cpp:465] Sharing parameters 'conv2_b' owned by layer 'conv2', param index 1
+I0509 13:35:34.579218 114085 layer_factory.hpp:77] Creating layer pool2_p
+I0509 13:35:34.579226 114085 net.cpp:84] Creating Layer pool2_p
+I0509 13:35:34.579232 114085 net.cpp:406] pool2_p <- conv2_p
+I0509 13:35:34.579242 114085 net.cpp:380] pool2_p -> pool2_p
+I0509 13:35:34.579254 114085 net.cpp:122] Setting up pool2_p
+I0509 13:35:34.579262 114085 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:34.579267 114085 net.cpp:137] Memory required for data: 10482944
+I0509 13:35:34.579272 114085 layer_factory.hpp:77] Creating layer ip1_p
+I0509 13:35:34.579284 114085 net.cpp:84] Creating Layer ip1_p
+I0509 13:35:34.579289 114085 net.cpp:406] ip1_p <- pool2_p
+I0509 13:35:34.579298 114085 net.cpp:380] ip1_p -> ip1_p
+     0.071433413             56,918      branch-misses:u          
+     0.071433413          7,111,560      branches:u               
+I0509 13:35:34.583746 114085 net.cpp:122] Setting up ip1_p
+I0509 13:35:34.583757 114085 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:34.583762 114085 net.cpp:137] Memory required for data: 10610944
+I0509 13:35:34.583768 114085 net.cpp:465] Sharing parameters 'ip1_w' owned by layer 'ip1', param index 0
+I0509 13:35:34.583775 114085 net.cpp:465] Sharing parameters 'ip1_b' owned by layer 'ip1', param index 1
+I0509 13:35:34.583781 114085 layer_factory.hpp:77] Creating layer relu1_p
+I0509 13:35:34.583789 114085 net.cpp:84] Creating Layer relu1_p
+I0509 13:35:34.583796 114085 net.cpp:406] relu1_p <- ip1_p
+I0509 13:35:34.583807 114085 net.cpp:367] relu1_p -> ip1_p (in-place)
+I0509 13:35:34.583818 114085 net.cpp:122] Setting up relu1_p
+I0509 13:35:34.583824 114085 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:34.583829 114085 net.cpp:137] Memory required for data: 10738944
+I0509 13:35:34.583834 114085 layer_factory.hpp:77] Creating layer ip2_p
+I0509 13:35:34.583848 114085 net.cpp:84] Creating Layer ip2_p
+I0509 13:35:34.583853 114085 net.cpp:406] ip2_p <- ip1_p
+I0509 13:35:34.583861 114085 net.cpp:380] ip2_p -> ip2_p
+I0509 13:35:34.583935 114085 net.cpp:122] Setting up ip2_p
+I0509 13:35:34.583945 114085 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:34.583950 114085 net.cpp:137] Memory required for data: 10741504
+I0509 13:35:34.583957 114085 net.cpp:465] Sharing parameters 'ip2_w' owned by layer 'ip2', param index 0
+I0509 13:35:34.583964 114085 net.cpp:465] Sharing parameters 'ip2_b' owned by layer 'ip2', param index 1
+I0509 13:35:34.583971 114085 layer_factory.hpp:77] Creating layer feat_p
+I0509 13:35:34.583979 114085 net.cpp:84] Creating Layer feat_p
+I0509 13:35:34.583984 114085 net.cpp:406] feat_p <- ip2_p
+I0509 13:35:34.583994 114085 net.cpp:380] feat_p -> feat_p
+I0509 13:35:34.584010 114085 net.cpp:122] Setting up feat_p
+I0509 13:35:34.584017 114085 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:34.584022 114085 net.cpp:137] Memory required for data: 10742016
+I0509 13:35:34.584034 114085 net.cpp:465] Sharing parameters 'feat_w' owned by layer 'feat', param index 0
+I0509 13:35:34.584064 114085 net.cpp:465] Sharing parameters 'feat_b' owned by layer 'feat', param index 1
+I0509 13:35:34.584069 114085 layer_factory.hpp:77] Creating layer loss
+I0509 13:35:34.584079 114085 net.cpp:84] Creating Layer loss
+I0509 13:35:34.584084 114085 net.cpp:406] loss <- feat
+I0509 13:35:34.584091 114085 net.cpp:406] loss <- feat_p
+I0509 13:35:34.584097 114085 net.cpp:406] loss <- sim
+I0509 13:35:34.584110 114085 net.cpp:380] loss -> loss
+I0509 13:35:34.584128 114085 net.cpp:122] Setting up loss
+I0509 13:35:34.584136 114085 net.cpp:129] Top shape: (1)
+I0509 13:35:34.584141 114085 net.cpp:132]     with loss weight 1
+I0509 13:35:34.584163 114085 net.cpp:137] Memory required for data: 10742020
+I0509 13:35:34.584169 114085 net.cpp:198] loss needs backward computation.
+I0509 13:35:34.584180 114085 net.cpp:198] feat_p needs backward computation.
+I0509 13:35:34.584187 114085 net.cpp:198] ip2_p needs backward computation.
+I0509 13:35:34.584192 114085 net.cpp:198] relu1_p needs backward computation.
+I0509 13:35:34.584208 114085 net.cpp:198] ip1_p needs backward computation.
+I0509 13:35:34.584214 114085 net.cpp:198] pool2_p needs backward computation.
+I0509 13:35:34.584219 114085 net.cpp:198] conv2_p needs backward computation.
+I0509 13:35:34.584225 114085 net.cpp:198] pool1_p needs backward computation.
+I0509 13:35:34.584231 114085 net.cpp:198] conv1_p needs backward computation.
+I0509 13:35:34.584239 114085 net.cpp:198] feat needs backward computation.
+I0509 13:35:34.584244 114085 net.cpp:198] ip2 needs backward computation.
+I0509 13:35:34.584252 114085 net.cpp:198] relu1 needs backward computation.
+I0509 13:35:34.584257 114085 net.cpp:198] ip1 needs backward computation.
+I0509 13:35:34.584265 114085 net.cpp:198] pool2 needs backward computation.
+I0509 13:35:34.584270 114085 net.cpp:198] conv2 needs backward computation.
+I0509 13:35:34.584276 114085 net.cpp:198] pool1 needs backward computation.
+I0509 13:35:34.584281 114085 net.cpp:198] conv1 needs backward computation.
+I0509 13:35:34.584290 114085 net.cpp:200] slice_pair does not need backward computation.
+I0509 13:35:34.584296 114085 net.cpp:200] pair_data does not need backward computation.
+I0509 13:35:34.584301 114085 net.cpp:242] This network produces output loss
+I0509 13:35:34.584465 114085 net.cpp:255] Network initialization done.
+I0509 13:35:34.584571 114085 solver.cpp:56] Solver scaffolding done.
+I0509 13:35:34.584614 114085 caffe.cpp:248] Starting Optimization
+I0509 13:35:34.584619 114085 solver.cpp:272] Solving mnist_siamese_train_test
+I0509 13:35:34.584625 114085 solver.cpp:273] Learning Rate Policy: inv
+     0.081593400             13,279      branch-misses:u          
+     0.081593400          2,891,061      branches:u               
+     0.091749676             11,386      branch-misses:u          
+     0.091749676          2,231,052      branches:u               
+     0.101907196            146,581      branch-misses:u          
+     0.101907196          4,750,214      branches:u               
+     0.112063326             20,592      branch-misses:u          
+     0.112063326          3,215,566      branches:u               
+     0.122234286             21,241      branch-misses:u          
+     0.122234286          3,380,938      branches:u               
+     0.132392426             74,040      branch-misses:u          
+     0.132392426          3,154,284      branches:u               
+     0.142548225             15,397      branch-misses:u          
+     0.142548225          2,976,891      branches:u               
+     0.152703518            149,147      branch-misses:u          
+     0.152703518          5,542,124      branches:u               
+     0.162860055             25,884      branch-misses:u          
+     0.162860055          4,142,541      branches:u               
+     0.173017424             82,439      branch-misses:u          
+     0.173017424          4,434,786      branches:u               
+     0.183183921             22,988      branch-misses:u          
+     0.183183921          3,240,876      branches:u               
+     0.193339871             28,264      branch-misses:u          
+     0.193339871          4,650,281      branches:u               
+     0.203501334             23,589      branch-misses:u          
+     0.203501334          4,511,498      branches:u               
+     0.213657783             22,833      branch-misses:u          
+     0.213657783          4,626,700      branches:u               
+     0.223815174             24,645      branch-misses:u          
+     0.223815174          4,292,964      branches:u               
+     0.233973673             21,703      branch-misses:u          
+     0.233973673          2,851,393      branches:u               
+     0.244133893             23,579      branch-misses:u          
+     0.244133893          4,599,453      branches:u               
+     0.254289576             22,401      branch-misses:u          
+     0.254289576          4,608,443      branches:u               
+#           time             counts unit events
+     0.264446763             22,685      branch-misses:u          
+     0.264446763          4,626,745      branches:u               
+     0.274607109             23,997      branch-misses:u          
+     0.274607109          4,733,607      branches:u               
+I0509 13:35:34.789307 114085 solver.cpp:218] Iteration 0 (0 iter/s, 0.204s/1000 iters), loss = 0.195344
+I0509 13:35:34.789333 114085 solver.cpp:237]     Train net output #0: loss = 0.195344 (* 1 = 0.195344 loss)
+I0509 13:35:34.789345 114085 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     0.284764086             31,166      branch-misses:u          
+     0.284764086          4,075,033      branches:u               
+     0.294921479            147,034      branch-misses:u          
+     0.294921479          6,013,102      branches:u               
+     0.305077772             31,930      branch-misses:u          
+     0.305077772          4,702,692      branches:u               
+     0.315235918             87,315      branch-misses:u          
+     0.315235918          5,374,786      branches:u               
+     0.325395862             16,888      branch-misses:u          
+     0.325395862          3,238,923      branches:u               
+     0.335552171            156,535      branch-misses:u          
+     0.335552171          6,304,854      branches:u               
+     0.345717491             28,869      branch-misses:u          
+     0.345717491          4,655,407      branches:u               
+     0.355873598             82,371      branch-misses:u          
+     0.355873598          4,093,696      branches:u               
+     0.366034041             23,008      branch-misses:u          
+     0.366034041          3,763,209      branches:u               
+     0.376190034             28,063      branch-misses:u          
+     0.376190034          4,741,568      branches:u               
+     0.386341013             27,657      branch-misses:u          
+     0.386341013          4,631,368      branches:u               
+     0.396495457             25,745      branch-misses:u          
+     0.396495457          4,886,101      branches:u               
+     0.406661290             26,439      branch-misses:u          
+     0.406661290          3,910,964      branches:u               
+     0.416839560             21,844      branch-misses:u          
+     0.416839560          2,988,051      branches:u               
+     0.427020046             26,775      branch-misses:u          
+     0.427020046          4,619,602      branches:u               
+     0.437185843             27,441      branch-misses:u          
+     0.437185843          4,631,820      branches:u               
+     0.447343429             27,011      branch-misses:u          
+     0.447343429          4,630,778      branches:u               
+     0.457503729             25,835      branch-misses:u          
+     0.457503729          4,639,907      branches:u               
+     0.467675549             29,400      branch-misses:u          
+     0.467675549          4,338,880      branches:u               
+     0.477835412            155,632      branch-misses:u          
+     0.477835412          6,263,723      branches:u               
+     0.487993535             28,654      branch-misses:u          
+     0.487993535          4,564,974      branches:u               
+     0.498152628             81,699      branch-misses:u          
+     0.498152628          4,567,804      branches:u               
+     0.508309131             43,519      branch-misses:u          
+     0.508309131          4,525,433      branches:u               
+#           time             counts unit events
+     0.518466424            133,915      branch-misses:u          
+     0.518466424          5,929,839      branches:u               
+     0.528628324             28,934      branch-misses:u          
+     0.528628324          4,652,877      branches:u               
+     0.538785721             80,505      branch-misses:u          
+     0.538785721          3,013,507      branches:u               
+     0.548943321             24,078      branch-misses:u          
+     0.548943321          4,844,376      branches:u               
+     0.559099880             27,063      branch-misses:u          
+     0.559099880          4,646,941      branches:u               
+     0.569256254             26,653      branch-misses:u          
+     0.569256254          4,636,592      branches:u               
+     0.579412860             25,722      branch-misses:u          
+     0.579412860          5,147,684      branches:u               
+     0.589569160             27,372      branch-misses:u          
+     0.589569160          2,821,306      branches:u               
+     0.599726479             22,427      branch-misses:u          
+     0.599726479          4,357,197      branches:u               
+     0.609884612             26,905      branch-misses:u          
+     0.609884612          4,758,339      branches:u               
+     0.620041979             26,649      branch-misses:u          
+     0.620041979          4,640,301      branches:u               
+     0.630199766             25,954      branch-misses:u          
+     0.630199766          5,245,516      branches:u               
+     0.640355232             29,626      branch-misses:u          
+     0.640355232          3,976,046      branches:u               
+     0.650535549             63,832      branch-misses:u          
+     0.650535549          5,055,950      branches:u               
+     0.660692948            116,353      branch-misses:u          
+     0.660692948          5,742,639      branches:u               
+     0.670849121             39,558      branch-misses:u          
+     0.670849121          4,876,582      branches:u               
+     0.681005391             67,417      branch-misses:u          
+     0.681005391          3,979,944      branches:u               
+     0.691163837            154,356      branch-misses:u          
+     0.691163837          6,071,795      branches:u               
+     0.701320511             28,934      branch-misses:u          
+     0.701320511          4,655,607      branches:u               
+     0.711479264             84,412      branch-misses:u          
+     0.711479264          4,914,748      branches:u               
+     0.721636860             21,471      branch-misses:u          
+     0.721636860          3,038,959      branches:u               
+     0.731794990             27,964      branch-misses:u          
+     0.731794990          4,646,132      branches:u               
+     0.741952390             27,512      branch-misses:u          
+     0.741952390          4,632,814      branches:u               
+     0.752110390             28,026      branch-misses:u          
+     0.752110390          4,645,213      branches:u               
+     0.762279803             26,675      branch-misses:u          
+     0.762279803          4,664,327      branches:u               
+#           time             counts unit events
+     0.772438716             22,805      branch-misses:u          
+     0.772438716          2,966,110      branches:u               
+     0.782610439             26,871      branch-misses:u          
+     0.782610439          4,616,432      branches:u               
+     0.792766909             26,792      branch-misses:u          
+     0.792766909          4,622,564      branches:u               
+     0.802925869             27,320      branch-misses:u          
+     0.802925869          4,628,672      branches:u               
+     0.813082335             26,092      branch-misses:u          
+     0.813082335          4,791,368      branches:u               
+     0.823240499             30,983      branch-misses:u          
+     0.823240499          4,357,388      branches:u               
+     0.833397212            154,552      branch-misses:u          
+     0.833397212          6,122,990      branches:u               
+     0.843556905             29,053      branch-misses:u          
+     0.843556905          4,669,687      branches:u               
+     0.853715291             83,827      branch-misses:u          
+     0.853715291          4,907,071      branches:u               
+     0.863873838             20,956      branch-misses:u          
+     0.863873838          3,681,579      branches:u               
+     0.874031218            154,001      branch-misses:u          
+     0.874031218          6,438,131      branches:u               
+     0.884187370             28,939      branch-misses:u          
+     0.884187370          4,650,083      branches:u               
+     0.894343434             82,042      branch-misses:u          
+     0.894343434          3,464,079      branches:u               
+     0.904501347             23,262      branch-misses:u          
+     0.904501347          4,473,522      branches:u               
+     0.914660096             27,718      branch-misses:u          
+     0.914660096          4,644,761      branches:u               
+     0.924818816             27,221      branch-misses:u          
+     0.924818816          4,630,093      branches:u               
+     0.934975196             26,159      branch-misses:u          
+     0.934975196          5,252,448      branches:u               
+     0.945132533             27,436      branch-misses:u          
+     0.945132533          3,156,894      branches:u               
+     0.955290203             22,884      branch-misses:u          
+     0.955290203          3,882,923      branches:u               
+     0.965446806             27,315      branch-misses:u          
+     0.965446806          4,633,911      branches:u               
+     0.975604062             27,592      branch-misses:u          
+     0.975604062          4,633,881      branches:u               
+     0.985760429             26,320      branch-misses:u          
+     0.985760429          5,377,810      branches:u               
+     0.995919208             26,529      branch-misses:u          
+     0.995919208          3,659,752      branches:u               
+I0509 13:35:35.506319 114085 solver.cpp:447] Snapshotting to binary proto file examples/siamese/mnist_siamese_iter_5.caffemodel
+     1.006077578              5,088      branch-misses:u          
+     1.006077578          7,910,961      branches:u               
+I0509 13:35:35.517802 114085 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/siamese/mnist_siamese_iter_5.solverstate
+I0509 13:35:35.521389 114085 solver.cpp:315] Optimization Done.
+I0509 13:35:35.521399 114085 caffe.cpp:259] Optimization Done.
+     1.015615012             16,009      branch-misses:u          
+     1.015615012          4,532,160      branches:u               

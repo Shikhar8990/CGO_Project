@@ -1,0 +1,658 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010386730             84,726      branch-misses:u          
+     0.010386730          2,228,360      branches:u               
+     0.020546542            120,301      branch-misses:u          
+     0.020546542          5,992,391      branches:u               
+     0.030689962             78,609      branch-misses:u          
+     0.030689962          3,330,123      branches:u               
+I0509 13:24:55.397379 113601 caffe.cpp:211] Use CPU.
+I0509 13:24:55.397567 113601 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 10
+max_iter: 20
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 500
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:24:55.397640 113601 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0509 13:24:55.397800 113601 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0509 13:24:55.397814 113601 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0509 13:24:55.397887 113601 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0509 13:24:55.397938 113601 layer_factory.hpp:77] Creating layer mnist
+I0509 13:24:55.398012 113601 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0509 13:24:55.398035 113601 net.cpp:84] Creating Layer mnist
+I0509 13:24:55.398042 113601 net.cpp:380] mnist -> data
+I0509 13:24:55.398059 113601 net.cpp:380] mnist -> label
+I0509 13:24:55.398082 113601 data_layer.cpp:45] output data size: 64,1,28,28
+I0509 13:24:55.398474 113601 net.cpp:122] Setting up mnist
+I0509 13:24:55.398486 113601 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:24:55.398491 113601 net.cpp:129] Top shape: 64 (64)
+I0509 13:24:55.398494 113601 net.cpp:137] Memory required for data: 200960
+I0509 13:24:55.398500 113601 layer_factory.hpp:77] Creating layer conv1
+I0509 13:24:55.398517 113601 net.cpp:84] Creating Layer conv1
+I0509 13:24:55.398524 113601 net.cpp:406] conv1 <- data
+I0509 13:24:55.398532 113601 net.cpp:380] conv1 -> conv1
+I0509 13:24:55.398545 113601 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:24:55.398574 113601 net.cpp:122] Setting up conv1
+I0509 13:24:55.398581 113601 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:24:55.398583 113601 net.cpp:137] Memory required for data: 3150080
+I0509 13:24:55.398597 113601 layer_factory.hpp:77] Creating layer pool1
+I0509 13:24:55.398605 113601 net.cpp:84] Creating Layer pool1
+I0509 13:24:55.398617 113601 net.cpp:406] pool1 <- conv1
+I0509 13:24:55.398622 113601 net.cpp:380] pool1 -> pool1
+I0509 13:24:55.398634 113601 net.cpp:122] Setting up pool1
+I0509 13:24:55.398641 113601 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:24:55.398644 113601 net.cpp:137] Memory required for data: 3887360
+I0509 13:24:55.398648 113601 layer_factory.hpp:77] Creating layer conv2
+I0509 13:24:55.398655 113601 net.cpp:84] Creating Layer conv2
+I0509 13:24:55.398660 113601 net.cpp:406] conv2 <- pool1
+I0509 13:24:55.398666 113601 net.cpp:380] conv2 -> conv2
+I0509 13:24:55.398675 113601 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:24:55.398864 113601 net.cpp:122] Setting up conv2
+I0509 13:24:55.398871 113601 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:24:55.398874 113601 net.cpp:137] Memory required for data: 4706560
+I0509 13:24:55.398881 113601 layer_factory.hpp:77] Creating layer pool2
+I0509 13:24:55.398888 113601 net.cpp:84] Creating Layer pool2
+I0509 13:24:55.398892 113601 net.cpp:406] pool2 <- conv2
+I0509 13:24:55.398897 113601 net.cpp:380] pool2 -> pool2
+I0509 13:24:55.398905 113601 net.cpp:122] Setting up pool2
+I0509 13:24:55.398910 113601 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:24:55.398913 113601 net.cpp:137] Memory required for data: 4911360
+I0509 13:24:55.398917 113601 layer_factory.hpp:77] Creating layer ip1
+I0509 13:24:55.398923 113601 net.cpp:84] Creating Layer ip1
+I0509 13:24:55.398926 113601 net.cpp:406] ip1 <- pool2
+I0509 13:24:55.398933 113601 net.cpp:380] ip1 -> ip1
+     0.040832966             96,452      branch-misses:u          
+     0.040832966          6,132,740      branches:u               
+I0509 13:24:55.401665 113601 net.cpp:122] Setting up ip1
+I0509 13:24:55.401674 113601 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:24:55.401676 113601 net.cpp:137] Memory required for data: 5039360
+I0509 13:24:55.401684 113601 layer_factory.hpp:77] Creating layer relu1
+I0509 13:24:55.401690 113601 net.cpp:84] Creating Layer relu1
+I0509 13:24:55.401693 113601 net.cpp:406] relu1 <- ip1
+I0509 13:24:55.401698 113601 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:24:55.401705 113601 net.cpp:122] Setting up relu1
+I0509 13:24:55.401710 113601 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:24:55.401712 113601 net.cpp:137] Memory required for data: 5167360
+I0509 13:24:55.401715 113601 layer_factory.hpp:77] Creating layer ip2
+I0509 13:24:55.401721 113601 net.cpp:84] Creating Layer ip2
+I0509 13:24:55.401724 113601 net.cpp:406] ip2 <- ip1
+I0509 13:24:55.401729 113601 net.cpp:380] ip2 -> ip2
+I0509 13:24:55.401778 113601 net.cpp:122] Setting up ip2
+I0509 13:24:55.401784 113601 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:24:55.401787 113601 net.cpp:137] Memory required for data: 5169920
+I0509 13:24:55.401793 113601 layer_factory.hpp:77] Creating layer loss
+I0509 13:24:55.401798 113601 net.cpp:84] Creating Layer loss
+I0509 13:24:55.401803 113601 net.cpp:406] loss <- ip2
+I0509 13:24:55.401806 113601 net.cpp:406] loss <- label
+I0509 13:24:55.401811 113601 net.cpp:380] loss -> loss
+I0509 13:24:55.401821 113601 layer_factory.hpp:77] Creating layer loss
+I0509 13:24:55.401834 113601 net.cpp:122] Setting up loss
+I0509 13:24:55.401839 113601 net.cpp:129] Top shape: (1)
+I0509 13:24:55.401842 113601 net.cpp:132]     with loss weight 1
+I0509 13:24:55.401852 113601 net.cpp:137] Memory required for data: 5169924
+I0509 13:24:55.401856 113601 net.cpp:198] loss needs backward computation.
+I0509 13:24:55.401866 113601 net.cpp:198] ip2 needs backward computation.
+I0509 13:24:55.401870 113601 net.cpp:198] relu1 needs backward computation.
+I0509 13:24:55.401873 113601 net.cpp:198] ip1 needs backward computation.
+I0509 13:24:55.401877 113601 net.cpp:198] pool2 needs backward computation.
+I0509 13:24:55.401881 113601 net.cpp:198] conv2 needs backward computation.
+I0509 13:24:55.401885 113601 net.cpp:198] pool1 needs backward computation.
+I0509 13:24:55.401888 113601 net.cpp:198] conv1 needs backward computation.
+I0509 13:24:55.401892 113601 net.cpp:200] mnist does not need backward computation.
+I0509 13:24:55.401895 113601 net.cpp:242] This network produces output loss
+I0509 13:24:55.401904 113601 net.cpp:255] Network initialization done.
+I0509 13:24:55.401942 113601 solver.cpp:56] Solver scaffolding done.
+I0509 13:24:55.401967 113601 caffe.cpp:248] Starting Optimization
+I0509 13:24:55.401970 113601 solver.cpp:272] Solving LeNet
+I0509 13:24:55.401973 113601 solver.cpp:273] Learning Rate Policy: inv
+     0.050974021             16,019      branch-misses:u          
+     0.050974021          3,725,205      branches:u               
+     0.061118789            147,266      branch-misses:u          
+     0.061118789          5,810,668      branches:u               
+     0.071267779             27,750      branch-misses:u          
+     0.071267779          4,413,988      branches:u               
+     0.081408143             82,383      branch-misses:u          
+     0.081408143          4,421,384      branches:u               
+     0.091549697             21,809      branch-misses:u          
+     0.091549697          2,791,216      branches:u               
+     0.101692000             27,001      branch-misses:u          
+     0.101692000          4,442,037      branches:u               
+     0.111831982             27,283      branch-misses:u          
+     0.111831982          4,582,267      branches:u               
+     0.121974019             26,904      branch-misses:u          
+     0.121974019          4,607,499      branches:u               
+     0.132118125             22,499      branch-misses:u          
+     0.132118125          4,289,610      branches:u               
+I0509 13:24:55.497042 113601 solver.cpp:218] Iteration 0 (-2.29637e-37 iter/s, 0.095s/10 iters), loss = 2.5333
+I0509 13:24:55.497066 113601 solver.cpp:237]     Train net output #0: loss = 2.5333 (* 1 = 2.5333 loss)
+I0509 13:24:55.497076 113601 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     0.142275695             20,611      branch-misses:u          
+     0.142275695          3,582,017      branches:u               
+     0.152417287            109,571      branch-misses:u          
+     0.152417287          5,402,371      branches:u               
+     0.162561600             63,868      branch-misses:u          
+     0.162561600          4,944,230      branches:u               
+     0.172714026             72,119      branch-misses:u          
+     0.172714026          5,307,131      branches:u               
+     0.182864949             35,414      branch-misses:u          
+     0.182864949          1,645,007      branches:u               
+     0.193017621             24,750      branch-misses:u          
+     0.193017621          5,188,808      branches:u               
+     0.203168657             26,385      branch-misses:u          
+     0.203168657          4,587,229      branches:u               
+     0.213321066             26,545      branch-misses:u          
+     0.213321066          4,465,124      branches:u               
+     0.223472761             26,260      branch-misses:u          
+     0.223472761          5,054,113      branches:u               
+     0.233624554             24,420      branch-misses:u          
+     0.233624554          3,798,832      branches:u               
+     0.243775503             77,833      branch-misses:u          
+     0.243775503          4,904,331      branches:u               
+     0.253926162             94,847      branch-misses:u          
+     0.253926162          5,369,104      branches:u               
+#           time             counts unit events
+     0.264092648             44,336      branch-misses:u          
+     0.264092648          4,895,733      branches:u               
+     0.274267527             64,449      branch-misses:u          
+     0.274267527          2,439,238      branches:u               
+     0.284422033             23,761      branch-misses:u          
+     0.284422033          4,827,854      branches:u               
+     0.294573459             26,864      branch-misses:u          
+     0.294573459          4,604,097      branches:u               
+     0.304726422             26,815      branch-misses:u          
+     0.304726422          4,618,870      branches:u               
+     0.314878087             25,686      branch-misses:u          
+     0.314878087          5,077,366      branches:u               
+     0.325029090             25,123      branch-misses:u          
+     0.325029090          3,780,323      branches:u               
+     0.335181296             56,301      branch-misses:u          
+     0.335181296          4,555,497      branches:u               
+     0.345333051            123,949      branch-misses:u          
+     0.345333051          5,631,597      branches:u               
+     0.355486791             28,719      branch-misses:u          
+     0.355486791          4,643,941      branches:u               
+     0.365638066             79,728      branch-misses:u          
+     0.365638066          2,987,559      branches:u               
+     0.375792092             23,557      branch-misses:u          
+     0.375792092          4,633,313      branches:u               
+     0.385944281             27,176      branch-misses:u          
+     0.385944281          4,620,074      branches:u               
+     0.396095457             26,681      branch-misses:u          
+     0.396095457          4,473,181      branches:u               
+     0.406267113             26,181      branch-misses:u          
+     0.406267113          5,217,624      branches:u               
+     0.416424215             24,317      branch-misses:u          
+     0.416424215          3,624,611      branches:u               
+     0.426578451             35,173      branch-misses:u          
+     0.426578451          4,428,437      branches:u               
+     0.436730764            140,052      branch-misses:u          
+     0.436730764          5,916,128      branches:u               
+     0.446882466             28,303      branch-misses:u          
+     0.446882466          4,596,201      branches:u               
+     0.457035012             81,928      branch-misses:u          
+     0.457035012          3,227,949      branches:u               
+     0.467190441             23,262      branch-misses:u          
+     0.467190441          4,444,817      branches:u               
+     0.477342960             27,190      branch-misses:u          
+     0.477342960          4,487,962      branches:u               
+     0.487495593             27,545      branch-misses:u          
+     0.487495593          4,568,537      branches:u               
+     0.497648615             26,402      branch-misses:u          
+     0.497648615          5,289,132      branches:u               
+     0.507802104             24,039      branch-misses:u          
+     0.507802104          3,422,531      branches:u               
+#           time             counts unit events
+     0.517953897             22,222      branch-misses:u          
+     0.517953897          4,100,835      branches:u               
+     0.528108146            154,180      branch-misses:u          
+     0.528108146          6,388,429      branches:u               
+     0.538279082             28,663      branch-misses:u          
+     0.538279082          4,560,390      branches:u               
+     0.548433171             81,222      branch-misses:u          
+     0.548433171          3,458,237      branches:u               
+     0.558585817             22,558      branch-misses:u          
+     0.558585817          4,148,271      branches:u               
+     0.568750826             27,084      branch-misses:u          
+     0.568750826          4,563,329      branches:u               
+     0.578902431             27,133      branch-misses:u          
+     0.578902431          4,604,323      branches:u               
+     0.589055771             25,849      branch-misses:u          
+     0.589055771          5,339,615      branches:u               
+     0.599209180             25,371      branch-misses:u          
+     0.599209180          3,520,465      branches:u               
+     0.609360232             21,711      branch-misses:u          
+     0.609360232          3,984,209      branches:u               
+     0.619512148            152,519      branch-misses:u          
+     0.619512148          6,287,299      branches:u               
+     0.629665367             28,690      branch-misses:u          
+     0.629665367          4,644,095      branches:u               
+     0.639817523             81,232      branch-misses:u          
+     0.639817523          3,662,536      branches:u               
+     0.649970722             22,950      branch-misses:u          
+     0.649970722          3,883,751      branches:u               
+     0.660140492             27,182      branch-misses:u          
+     0.660140492          4,607,353      branches:u               
+     0.670292877             26,930      branch-misses:u          
+     0.670292877          4,607,817      branches:u               
+     0.680444549             25,930      branch-misses:u          
+     0.680444549          5,178,267      branches:u               
+     0.690597702             26,987      branch-misses:u          
+     0.690597702          3,669,302      branches:u               
+     0.700750968             20,804      branch-misses:u          
+     0.700750968          4,025,959      branches:u               
+     0.710908907            151,852      branch-misses:u          
+     0.710908907          6,271,077      branches:u               
+     0.721061490             28,072      branch-misses:u          
+     0.721061490          4,550,091      branches:u               
+     0.731212679             81,417      branch-misses:u          
+     0.731212679          3,966,914      branches:u               
+     0.741367528             22,800      branch-misses:u          
+     0.741367528          3,666,195      branches:u               
+     0.751520540             27,088      branch-misses:u          
+     0.751520540          4,606,339      branches:u               
+     0.761674993             26,747      branch-misses:u          
+     0.761674993          4,620,377      branches:u               
+#           time             counts unit events
+     0.771828229             26,635      branch-misses:u          
+     0.771828229          4,522,957      branches:u               
+     0.781984075             26,004      branch-misses:u          
+     0.781984075          4,360,219      branches:u               
+     0.792140823             20,858      branch-misses:u          
+     0.792140823          4,007,326      branches:u               
+     0.802291973            153,109      branch-misses:u          
+     0.802291973          6,198,455      branches:u               
+     0.812449195             28,638      branch-misses:u          
+     0.812449195          4,594,211      branches:u               
+     0.822600518             82,128      branch-misses:u          
+     0.822600518          4,180,435      branches:u               
+     0.832752084             23,040      branch-misses:u          
+     0.832752084          3,448,325      branches:u               
+     0.842904512             27,549      branch-misses:u          
+     0.842904512          4,620,330      branches:u               
+     0.853057205             27,048      branch-misses:u          
+     0.853057205          4,458,424      branches:u               
+     0.863209714             27,314      branch-misses:u          
+     0.863209714          4,597,090      branches:u               
+     0.873373940             25,633      branch-misses:u          
+     0.873373940          4,485,386      branches:u               
+     0.883525736             19,737      branch-misses:u          
+     0.883525736          3,950,984      branches:u               
+     0.893677185            147,237      branch-misses:u          
+     0.893677185          6,167,060      branches:u               
+     0.903828548             28,817      branch-misses:u          
+     0.903828548          4,644,563      branches:u               
+     0.913946480             81,642      branch-misses:u          
+     0.913946480          4,322,939      branches:u               
+     0.924098469             23,279      branch-misses:u          
+     0.924098469          3,303,135      branches:u               
+     0.934265382             27,106      branch-misses:u          
+     0.934265382          4,494,202      branches:u               
+     0.944417200             27,175      branch-misses:u          
+     0.944417200          4,563,313      branches:u               
+     0.954572096             27,135      branch-misses:u          
+     0.954572096          4,605,522      branches:u               
+     0.964725476             24,692      branch-misses:u          
+     0.964725476          4,534,449      branches:u               
+     0.974880362             19,972      branch-misses:u          
+     0.974880362          3,934,915      branches:u               
+     0.985031571            153,367      branch-misses:u          
+     0.985031571          6,125,545      branches:u               
+     0.995184510             28,760      branch-misses:u          
+     0.995184510          4,556,554      branches:u               
+     1.005337145             81,152      branch-misses:u          
+     1.005337145          4,512,485      branches:u               
+     1.015489771             22,757      branch-misses:u          
+     1.015489771          3,058,027      branches:u               
+#           time             counts unit events
+     1.025641844             27,091      branch-misses:u          
+     1.025641844          4,601,388      branches:u               
+     1.035797403             27,060      branch-misses:u          
+     1.035797403          4,606,207      branches:u               
+     1.045950909             26,936      branch-misses:u          
+     1.045950909          4,613,062      branches:u               
+     1.056106738             25,484      branch-misses:u          
+     1.056106738          4,547,557      branches:u               
+I0509 13:24:56.418817 113601 solver.cpp:218] Iteration 10 (10.8578 iter/s, 0.921s/10 iters), loss = 1.69146
+I0509 13:24:56.418843 113601 solver.cpp:237]     Train net output #0: loss = 1.69146 (* 1 = 1.69146 loss)
+I0509 13:24:56.418848 113601 sgd_solver.cpp:105] Iteration 10, lr = 0.00999251
+     1.066277654             22,459      branch-misses:u          
+     1.066277654          3,951,984      branches:u               
+     1.076430996            155,914      branch-misses:u          
+     1.076430996          6,026,417      branches:u               
+     1.086582172             28,044      branch-misses:u          
+     1.086582172          4,542,181      branches:u               
+     1.096734648             83,169      branch-misses:u          
+     1.096734648          4,786,804      branches:u               
+     1.106887483             21,550      branch-misses:u          
+     1.106887483          2,853,488      branches:u               
+     1.117039213             27,731      branch-misses:u          
+     1.117039213          4,612,011      branches:u               
+     1.127191585             27,603      branch-misses:u          
+     1.127191585          4,614,227      branches:u               
+     1.137343211             27,574      branch-misses:u          
+     1.137343211          4,452,689      branches:u               
+     1.147494827             25,793      branch-misses:u          
+     1.147494827          4,701,792      branches:u               
+     1.157659193             22,327      branch-misses:u          
+     1.157659193          3,932,016      branches:u               
+     1.167813999            153,133      branch-misses:u          
+     1.167813999          5,946,042      branches:u               
+     1.177965261             28,401      branch-misses:u          
+     1.177965261          4,636,999      branches:u               
+     1.188136260             83,753      branch-misses:u          
+     1.188136260          4,985,094      branches:u               
+     1.198289273             20,031      branch-misses:u          
+     1.198289273          2,664,978      branches:u               
+     1.208441719             27,295      branch-misses:u          
+     1.208441719          4,516,714      branches:u               
+     1.218592754             27,312      branch-misses:u          
+     1.218592754          4,536,011      branches:u               
+     1.228731500             27,017      branch-misses:u          
+     1.228731500          4,598,720      branches:u               
+     1.238884943             24,808      branch-misses:u          
+     1.238884943          4,759,851      branches:u               
+     1.249040195             21,203      branch-misses:u          
+     1.249040195          3,882,881      branches:u               
+     1.259192901            152,091      branch-misses:u          
+     1.259192901          5,885,547      branches:u               
+     1.269345993             28,712      branch-misses:u          
+     1.269345993          4,627,869      branches:u               
+#           time             counts unit events
+     1.279499162             84,857      branch-misses:u          
+     1.279499162          5,266,187      branches:u               
+     1.289654262             17,119      branch-misses:u          
+     1.289654262          2,349,489      branches:u               
+     1.299806551             27,698      branch-misses:u          
+     1.299806551          4,557,098      branches:u               
+     1.309956980             26,787      branch-misses:u          
+     1.309956980          4,602,626      branches:u               
+     1.320109755             26,663      branch-misses:u          
+     1.320109755          4,619,299      branches:u               
+     1.330287928             26,085      branch-misses:u          
+     1.330287928          4,768,585      branches:u               
+     1.340440581             22,480      branch-misses:u          
+     1.340440581          3,894,087      branches:u               
+     1.350590933            133,128      branch-misses:u          
+     1.350590933          5,756,929      branches:u               
+     1.360736513             38,975      branch-misses:u          
+     1.360736513          4,742,653      branches:u               
+     1.370887531             87,165      branch-misses:u          
+     1.370887531          5,446,053      branches:u               
+     1.381039744             17,084      branch-misses:u          
+     1.381039744          1,410,819      branches:u               
+     1.391200750             26,899      branch-misses:u          
+     1.391200750          5,309,273      branches:u               
+     1.401352276             26,960      branch-misses:u          
+     1.401352276          4,608,521      branches:u               
+     1.411505372             26,925      branch-misses:u          
+     1.411505372          4,619,854      branches:u               
+     1.421652084             25,642      branch-misses:u          
+     1.421652084          4,802,473      branches:u               
+     1.431798985             23,428      branch-misses:u          
+     1.431798985          3,874,878      branches:u               
+     1.441957481            119,032      branch-misses:u          
+     1.441957481          5,445,357      branches:u               
+     1.452107476             56,963      branch-misses:u          
+     1.452107476          4,929,719      branches:u               
+     1.462286234             82,927      branch-misses:u          
+     1.462286234          5,542,855      branches:u               
+     1.472438020             23,485      branch-misses:u          
+     1.472438020          1,330,240      branches:u               
+     1.482593069             25,571      branch-misses:u          
+     1.482593069          5,388,221      branches:u               
+     1.492752388             26,750      branch-misses:u          
+     1.492752388          4,620,041      branches:u               
+     1.502904470             26,437      branch-misses:u          
+     1.502904470          4,531,870      branches:u               
+     1.513055710             25,878      branch-misses:u          
+     1.513055710          4,926,795      branches:u               
+     1.523207579             23,829      branch-misses:u          
+     1.523207579          3,859,491      branches:u               
+#           time             counts unit events
+     1.533360738            100,516      branch-misses:u          
+     1.533360738          5,177,163      branches:u               
+     1.543515877             73,213      branch-misses:u          
+     1.543515877          5,172,875      branches:u               
+     1.553667139             65,580      branch-misses:u          
+     1.553667139          5,244,397      branches:u               
+     1.563826785             40,871      branch-misses:u          
+     1.563826785          1,817,051      branches:u               
+     1.573978518             24,861      branch-misses:u          
+     1.573978518          5,202,024      branches:u               
+     1.584148420             26,986      branch-misses:u          
+     1.584148420          4,615,601      branches:u               
+     1.594300036             26,358      branch-misses:u          
+     1.594300036          4,453,740      branches:u               
+     1.604464765             25,788      branch-misses:u          
+     1.604464765          5,083,712      branches:u               
+     1.614616708             23,841      branch-misses:u          
+     1.614616708          3,809,849      branches:u               
+     1.624771594             82,549      branch-misses:u          
+     1.624771594          4,947,285      branches:u               
+     1.634922713             93,255      branch-misses:u          
+     1.634922713          5,378,563      branches:u               
+     1.645076492             48,629      branch-misses:u          
+     1.645076492          4,945,898      branches:u               
+     1.655229837             58,414      branch-misses:u          
+     1.655229837          2,305,147      branches:u               
+     1.665380850             24,343      branch-misses:u          
+     1.665380850          5,014,697      branches:u               
+     1.675531509             26,664      branch-misses:u          
+     1.675531509          4,475,041      branches:u               
+     1.685682649             27,053      branch-misses:u          
+     1.685682649          4,580,160      branches:u               
+     1.695835237             25,695      branch-misses:u          
+     1.695835237          5,129,558      branches:u               
+     1.705988660             24,732      branch-misses:u          
+     1.705988660          3,795,590      branches:u               
+     1.716141029             63,894      branch-misses:u          
+     1.716141029          4,666,893      branches:u               
+     1.726294465            114,650      branch-misses:u          
+     1.726294465          5,552,381      branches:u               
+     1.736447438             30,772      branch-misses:u          
+     1.736447438          4,688,940      branches:u               
+     1.746601776             76,590      branch-misses:u          
+     1.746601776          2,838,660      branches:u               
+     1.756755073             23,260      branch-misses:u          
+     1.756755073          4,671,812      branches:u               
+     1.766917815             26,918      branch-misses:u          
+     1.766917815          4,591,521      branches:u               
+     1.777070401             26,773      branch-misses:u          
+     1.777070401          4,605,529      branches:u               
+#           time             counts unit events
+     1.787227517             25,692      branch-misses:u          
+     1.787227517          5,166,586      branches:u               
+     1.797385236             25,204      branch-misses:u          
+     1.797385236          3,790,093      branches:u               
+     1.807540248             44,908      branch-misses:u          
+     1.807540248          4,396,867      branches:u               
+     1.817692300            132,648      branch-misses:u          
+     1.817692300          5,781,169      branches:u               
+     1.827843803             28,196      branch-misses:u          
+     1.827843803          4,621,488      branches:u               
+     1.837995512             78,346      branch-misses:u          
+     1.837995512          3,104,766      branches:u               
+     1.848150715             23,104      branch-misses:u          
+     1.848150715          4,468,184      branches:u               
+     1.858302921             26,697      branch-misses:u          
+     1.858302921          4,603,837      branches:u               
+     1.868455176             26,618      branch-misses:u          
+     1.868455176          4,609,885      branches:u               
+     1.878607719             25,393      branch-misses:u          
+     1.878607719          5,192,450      branches:u               
+I0509 13:24:57.248580 113601 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_20.caffemodel
+     1.888759785             24,344      branch-misses:u          
+     1.888759785          3,480,735      branches:u               
+I0509 13:24:57.255895 113601 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/mnist/lenet_iter_20.solverstate
+     1.898911861              4,965      branch-misses:u          
+     1.898911861          7,308,499      branches:u               
+     1.909065226             21,045      branch-misses:u          
+     1.909065226          4,254,763      branches:u               
+     1.919218929            155,090      branch-misses:u          
+     1.919218929          6,286,337      branches:u               
+     1.929371731             30,895      branch-misses:u          
+     1.929371731          4,639,657      branches:u               
+I0509 13:24:57.297382 113601 solver.cpp:310] Iteration 20, loss = 0.9225
+I0509 13:24:57.297400 113601 solver.cpp:315] Optimization Done.
+I0509 13:24:57.297405 113601 caffe.cpp:259] Optimization Done.
+     1.939522540             83,567      branch-misses:u          
+     1.939522540          3,855,539      branches:u               
+     1.941091516                 44      branch-misses:u          
+     1.941091516                169      branches:u               

@@ -1,0 +1,635 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010112873                324      r02c0:u                  
+     0.020260184             14,834      r02c0:u                  
+     0.030389598             21,876      r02c0:u                  
+     0.040517132             16,026      r02c0:u                  
+     0.050615315              1,096      r02c0:u                  
+I0509 13:41:50.874382 114385 caffe.cpp:211] Use CPU.
+I0509 13:41:50.874670 114385 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.001
+display: 1
+max_iter: 3
+lr_policy: "fixed"
+momentum: 0.9
+weight_decay: 0.004
+snapshot: 1000
+snapshot_prefix: "examples/cifar10/cifar10_quick"
+solver_mode: CPU
+net: "examples/cifar10/cifar10_quick_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:41:50.874765 114385 solver.cpp:87] Creating training net from net file: examples/cifar10/cifar10_quick_train_test.prototxt
+I0509 13:41:50.875018 114385 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer cifar
+I0509 13:41:50.875037 114385 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0509 13:41:50.875171 114385 net.cpp:51] Initializing net from parameters: 
+name: "CIFAR10_quick"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_train_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.0001
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 60
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 60
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 12
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0509 13:41:50.875254 114385 layer_factory.hpp:77] Creating layer cifar
+I0509 13:41:50.875360 114385 db_lmdb.cpp:35] Opened lmdb examples/cifar10/cifar10_train_lmdb
+I0509 13:41:50.875394 114385 net.cpp:84] Creating Layer cifar
+I0509 13:41:50.875406 114385 net.cpp:380] cifar -> data
+I0509 13:41:50.875428 114385 net.cpp:380] cifar -> label
+I0509 13:41:50.875443 114385 data_transformer.cpp:25] Loading mean file from: examples/cifar10/mean.binaryproto
+I0509 13:41:50.875524 114385 data_layer.cpp:45] output data size: 100,3,32,32
+I0509 13:41:50.876080 114385 net.cpp:122] Setting up cifar
+I0509 13:41:50.876111 114385 net.cpp:129] Top shape: 100 3 32 32 (307200)
+I0509 13:41:50.876118 114385 net.cpp:129] Top shape: 100 (100)
+I0509 13:41:50.876123 114385 net.cpp:137] Memory required for data: 1229200
+I0509 13:41:50.876132 114385 layer_factory.hpp:77] Creating layer conv1
+I0509 13:41:50.876149 114385 net.cpp:84] Creating Layer conv1
+I0509 13:41:50.876157 114385 net.cpp:406] conv1 <- data
+I0509 13:41:50.876169 114385 net.cpp:380] conv1 -> conv1
+I0509 13:41:50.876188 114385 base_conv_layer.cpp:121] Group is 1channel is3number of output is 30
+I0509 13:41:50.876258 114385 net.cpp:122] Setting up conv1
+I0509 13:41:50.876266 114385 net.cpp:129] Top shape: 100 30 32 32 (3072000)
+I0509 13:41:50.876272 114385 net.cpp:137] Memory required for data: 13517200
+I0509 13:41:50.876292 114385 layer_factory.hpp:77] Creating layer pool1
+I0509 13:41:50.876303 114385 net.cpp:84] Creating Layer pool1
+I0509 13:41:50.876308 114385 net.cpp:406] pool1 <- conv1
+I0509 13:41:50.876317 114385 net.cpp:380] pool1 -> pool1
+I0509 13:41:50.876333 114385 net.cpp:122] Setting up pool1
+I0509 13:41:50.876341 114385 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:50.876345 114385 net.cpp:137] Memory required for data: 16589200
+I0509 13:41:50.876350 114385 layer_factory.hpp:77] Creating layer relu1
+I0509 13:41:50.876364 114385 net.cpp:84] Creating Layer relu1
+I0509 13:41:50.876369 114385 net.cpp:406] relu1 <- pool1
+I0509 13:41:50.876376 114385 net.cpp:367] relu1 -> pool1 (in-place)
+I0509 13:41:50.876384 114385 net.cpp:122] Setting up relu1
+I0509 13:41:50.876391 114385 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:50.876396 114385 net.cpp:137] Memory required for data: 19661200
+I0509 13:41:50.876400 114385 layer_factory.hpp:77] Creating layer conv2
+I0509 13:41:50.876411 114385 net.cpp:84] Creating Layer conv2
+I0509 13:41:50.876416 114385 net.cpp:406] conv2 <- pool1
+I0509 13:41:50.876423 114385 net.cpp:380] conv2 -> conv2
+I0509 13:41:50.876436 114385 base_conv_layer.cpp:121] Group is 1channel is30number of output is 30
+I0509 13:41:50.876832 114385 net.cpp:122] Setting up conv2
+I0509 13:41:50.876843 114385 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:50.876848 114385 net.cpp:137] Memory required for data: 22733200
+I0509 13:41:50.876858 114385 layer_factory.hpp:77] Creating layer relu2
+I0509 13:41:50.876865 114385 net.cpp:84] Creating Layer relu2
+I0509 13:41:50.876871 114385 net.cpp:406] relu2 <- conv2
+I0509 13:41:50.876878 114385 net.cpp:367] relu2 -> conv2 (in-place)
+I0509 13:41:50.876884 114385 net.cpp:122] Setting up relu2
+I0509 13:41:50.876890 114385 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0509 13:41:50.876896 114385 net.cpp:137] Memory required for data: 25805200
+I0509 13:41:50.876902 114385 layer_factory.hpp:77] Creating layer pool2
+I0509 13:41:50.876909 114385 net.cpp:84] Creating Layer pool2
+I0509 13:41:50.876914 114385 net.cpp:406] pool2 <- conv2
+I0509 13:41:50.876920 114385 net.cpp:380] pool2 -> pool2
+I0509 13:41:50.876929 114385 net.cpp:122] Setting up pool2
+I0509 13:41:50.876936 114385 net.cpp:129] Top shape: 100 30 8 8 (192000)
+I0509 13:41:50.876940 114385 net.cpp:137] Memory required for data: 26573200
+I0509 13:41:50.876946 114385 layer_factory.hpp:77] Creating layer conv3
+I0509 13:41:50.876956 114385 net.cpp:84] Creating Layer conv3
+I0509 13:41:50.876961 114385 net.cpp:406] conv3 <- pool2
+I0509 13:41:50.876968 114385 net.cpp:380] conv3 -> conv3
+I0509 13:41:50.876981 114385 base_conv_layer.cpp:121] Group is 1channel is30number of output is 60
+I0509 13:41:50.877754 114385 net.cpp:122] Setting up conv3
+I0509 13:41:50.877764 114385 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0509 13:41:50.877769 114385 net.cpp:137] Memory required for data: 28109200
+I0509 13:41:50.877780 114385 layer_factory.hpp:77] Creating layer relu3
+I0509 13:41:50.877789 114385 net.cpp:84] Creating Layer relu3
+I0509 13:41:50.877794 114385 net.cpp:406] relu3 <- conv3
+I0509 13:41:50.877800 114385 net.cpp:367] relu3 -> conv3 (in-place)
+I0509 13:41:50.877809 114385 net.cpp:122] Setting up relu3
+I0509 13:41:50.877815 114385 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0509 13:41:50.877830 114385 net.cpp:137] Memory required for data: 29645200
+I0509 13:41:50.877835 114385 layer_factory.hpp:77] Creating layer pool3
+I0509 13:41:50.877842 114385 net.cpp:84] Creating Layer pool3
+I0509 13:41:50.877846 114385 net.cpp:406] pool3 <- conv3
+I0509 13:41:50.877853 114385 net.cpp:380] pool3 -> pool3
+I0509 13:41:50.877862 114385 net.cpp:122] Setting up pool3
+I0509 13:41:50.877871 114385 net.cpp:129] Top shape: 100 60 4 4 (96000)
+I0509 13:41:50.877876 114385 net.cpp:137] Memory required for data: 30029200
+I0509 13:41:50.877879 114385 layer_factory.hpp:77] Creating layer ip1
+I0509 13:41:50.877890 114385 net.cpp:84] Creating Layer ip1
+I0509 13:41:50.877897 114385 net.cpp:406] ip1 <- pool3
+I0509 13:41:50.877905 114385 net.cpp:380] ip1 -> ip1
+I0509 13:41:50.878893 114385 net.cpp:122] Setting up ip1
+I0509 13:41:50.878903 114385 net.cpp:129] Top shape: 100 60 (6000)
+I0509 13:41:50.878909 114385 net.cpp:137] Memory required for data: 30053200
+I0509 13:41:50.878918 114385 layer_factory.hpp:77] Creating layer ip2
+I0509 13:41:50.878927 114385 net.cpp:84] Creating Layer ip2
+I0509 13:41:50.878933 114385 net.cpp:406] ip2 <- ip1
+I0509 13:41:50.878942 114385 net.cpp:380] ip2 -> ip2
+I0509 13:41:50.878970 114385 net.cpp:122] Setting up ip2
+I0509 13:41:50.878979 114385 net.cpp:129] Top shape: 100 12 (1200)
+I0509 13:41:50.878984 114385 net.cpp:137] Memory required for data: 30058000
+I0509 13:41:50.878995 114385 layer_factory.hpp:77] Creating layer loss
+I0509 13:41:50.879004 114385 net.cpp:84] Creating Layer loss
+I0509 13:41:50.879007 114385 net.cpp:406] loss <- ip2
+I0509 13:41:50.879014 114385 net.cpp:406] loss <- label
+I0509 13:41:50.879027 114385 net.cpp:380] loss -> loss
+I0509 13:41:50.879048 114385 layer_factory.hpp:77] Creating layer loss
+I0509 13:41:50.879072 114385 net.cpp:122] Setting up loss
+I0509 13:41:50.879081 114385 net.cpp:129] Top shape: (1)
+I0509 13:41:50.879087 114385 net.cpp:132]     with loss weight 1
+I0509 13:41:50.879101 114385 net.cpp:137] Memory required for data: 30058004
+I0509 13:41:50.879106 114385 net.cpp:198] loss needs backward computation.
+I0509 13:41:50.879114 114385 net.cpp:198] ip2 needs backward computation.
+I0509 13:41:50.879120 114385 net.cpp:198] ip1 needs backward computation.
+I0509 13:41:50.879125 114385 net.cpp:198] pool3 needs backward computation.
+I0509 13:41:50.879130 114385 net.cpp:198] relu3 needs backward computation.
+I0509 13:41:50.879134 114385 net.cpp:198] conv3 needs backward computation.
+I0509 13:41:50.879140 114385 net.cpp:198] pool2 needs backward computation.
+I0509 13:41:50.879145 114385 net.cpp:198] relu2 needs backward computation.
+I0509 13:41:50.879150 114385 net.cpp:198] conv2 needs backward computation.
+I0509 13:41:50.879156 114385 net.cpp:198] relu1 needs backward computation.
+I0509 13:41:50.879161 114385 net.cpp:198] pool1 needs backward computation.
+I0509 13:41:50.879166 114385 net.cpp:198] conv1 needs backward computation.
+I0509 13:41:50.879173 114385 net.cpp:200] cifar does not need backward computation.
+I0509 13:41:50.879179 114385 net.cpp:242] This network produces output loss
+I0509 13:41:50.879195 114385 net.cpp:255] Network initialization done.
+I0509 13:41:50.879251 114385 solver.cpp:56] Solver scaffolding done.
+I0509 13:41:50.879289 114385 caffe.cpp:248] Starting Optimization
+I0509 13:41:50.879295 114385 solver.cpp:272] Solving CIFAR10_quick
+I0509 13:41:50.879302 114385 solver.cpp:273] Learning Rate Policy: fixed
+     0.060747009             11,455      r02c0:u                  
+     0.070883321                412      r02c0:u                  
+     0.081010056                 70      r02c0:u                  
+     0.091136946                 74      r02c0:u                  
+     0.101270218                 72      r02c0:u                  
+     0.111395412                 84      r02c0:u                  
+     0.121526125                 78      r02c0:u                  
+     0.131653142                102      r02c0:u                  
+     0.141784933                 66      r02c0:u                  
+     0.151911385                  0      r02c0:u                  
+     0.162038009                  0      r02c0:u                  
+     0.172163086                  0      r02c0:u                  
+     0.182290117                 59      r02c0:u                  
+     0.192416804                 54      r02c0:u                  
+     0.202543250                 54      r02c0:u                  
+     0.212671146                 54      r02c0:u                  
+     0.222798602                 54      r02c0:u                  
+     0.232924756                 54      r02c0:u                  
+     0.243051179                 58      r02c0:u                  
+     0.253178718                 56      r02c0:u                  
+#           time             counts unit events
+     0.263306811                 54      r02c0:u                  
+     0.273441301                 54      r02c0:u                  
+     0.283568123                 54      r02c0:u                  
+     0.293694739                 95      r02c0:u                  
+     0.303824574                120      r02c0:u                  
+     0.313953167                126      r02c0:u                  
+     0.324080403                120      r02c0:u                  
+     0.334207954                126      r02c0:u                  
+     0.344338402                266      r02c0:u                  
+     0.354465145                 66      r02c0:u                  
+     0.364592779                 88      r02c0:u                  
+     0.374719146                 94      r02c0:u                  
+     0.384849703                 90      r02c0:u                  
+     0.394976136                 94      r02c0:u                  
+     0.405106178                 90      r02c0:u                  
+     0.415235071                 94      r02c0:u                  
+     0.425361390                 88      r02c0:u                  
+     0.435488881                 90      r02c0:u                  
+     0.445623171                 28      r02c0:u                  
+     0.455749864                 22      r02c0:u                  
+     0.465881122                 20      r02c0:u                  
+     0.476008425                 24      r02c0:u                  
+     0.486135915                 24      r02c0:u                  
+     0.496264568                 22      r02c0:u                  
+     0.506392751                 20      r02c0:u                  
+#           time             counts unit events
+     0.516521148                 22      r02c0:u                  
+     0.526651597                 24      r02c0:u                  
+     0.536777676                 24      r02c0:u                  
+     0.546907546                 22      r02c0:u                  
+     0.557034049                 18      r02c0:u                  
+     0.567162348                 24      r02c0:u                  
+     0.577288641                 24      r02c0:u                  
+     0.587414859                 22      r02c0:u                  
+     0.597544757                 24      r02c0:u                  
+     0.607673390                 18      r02c0:u                  
+     0.617800424                 24      r02c0:u                  
+     0.627929158                 24      r02c0:u                  
+     0.638045946                 22      r02c0:u                  
+     0.648175579                 22      r02c0:u                  
+     0.658303946                 20      r02c0:u                  
+     0.668431642                 24      r02c0:u                  
+     0.678568988                 24      r02c0:u                  
+     0.688698871                 22      r02c0:u                  
+     0.698825187                 20      r02c0:u                  
+     0.708953892                 22      r02c0:u                  
+     0.719087926                 24      r02c0:u                  
+     0.729228190                 24      r02c0:u                  
+     0.739391911                 22      r02c0:u                  
+     0.749530139                 18      r02c0:u                  
+     0.759669732                 24      r02c0:u                  
+#           time             counts unit events
+     0.769811179                 24      r02c0:u                  
+     0.779953210                 22      r02c0:u                  
+     0.790091884                 22      r02c0:u                  
+     0.800232544                 20      r02c0:u                  
+     0.810375921                 10      r02c0:u                  
+     0.820526685                 64      r02c0:u                  
+     0.830665655                 68      r02c0:u                  
+     0.840803736                 64      r02c0:u                  
+     0.850943113                 68      r02c0:u                  
+     0.861084693                 64      r02c0:u                  
+     0.871223790                 68      r02c0:u                  
+I0509 13:41:51.691212 114385 solver.cpp:218] Iteration 0 (0 iter/s, 0.811s/1 iters), loss = 2.48454
+I0509 13:41:51.691242 114385 solver.cpp:237]     Train net output #0: loss = 2.48454 (* 1 = 2.48454 loss)
+I0509 13:41:51.691249 114385 sgd_solver.cpp:105] Iteration 0, lr = 0.001
+     0.881365430                229      r02c0:u                  
+     0.891505204                102      r02c0:u                  
+     0.901647778                100      r02c0:u                  
+     0.911789238                 98      r02c0:u                  
+     0.921929235                102      r02c0:u                  
+     0.932068322                102      r02c0:u                  
+     0.942209590                 22      r02c0:u                  
+     0.952348970                  0      r02c0:u                  
+     0.962487367                  0      r02c0:u                  
+     0.972626947                 50      r02c0:u                  
+     0.982766597                 54      r02c0:u                  
+     0.992904854                 54      r02c0:u                  
+     1.003044728                 54      r02c0:u                  
+     1.013186678                 54      r02c0:u                  
+#           time             counts unit events
+     1.023287396                 54      r02c0:u                  
+     1.033386267                 54      r02c0:u                  
+     1.043463533                 48      r02c0:u                  
+     1.053583336                 54      r02c0:u                  
+     1.063718323                 48      r02c0:u                  
+     1.073856940                 54      r02c0:u                  
+     1.083991506                 46      r02c0:u                  
+     1.094125947                112      r02c0:u                  
+     1.104261440                120      r02c0:u                  
+     1.114395340                114      r02c0:u                  
+     1.124531486                118      r02c0:u                  
+     1.134665960                116      r02c0:u                  
+     1.144801260                169      r02c0:u                  
+     1.154937943                 80      r02c0:u                  
+     1.165072790                 86      r02c0:u                  
+     1.175208393                 86      r02c0:u                  
+     1.185343646                 86      r02c0:u                  
+     1.195478076                 84      r02c0:u                  
+     1.205613371                 86      r02c0:u                  
+     1.215747414                 88      r02c0:u                  
+     1.225886179                 82      r02c0:u                  
+     1.236031456                 88      r02c0:u                  
+     1.246166462                 40      r02c0:u                  
+     1.256301081                 16      r02c0:u                  
+     1.266435749                 24      r02c0:u                  
+#           time             counts unit events
+     1.276571166                 22      r02c0:u                  
+     1.286712702                 18      r02c0:u                  
+     1.296849487                 24      r02c0:u                  
+     1.306991507                 22      r02c0:u                  
+     1.317129492                 24      r02c0:u                  
+     1.327270232                 18      r02c0:u                  
+     1.337412539                 24      r02c0:u                  
+     1.347552235                 24      r02c0:u                  
+     1.357690307                 22      r02c0:u                  
+     1.367829696                 18      r02c0:u                  
+     1.377973169                 24      r02c0:u                  
+     1.388113216                 24      r02c0:u                  
+     1.398251564                 24      r02c0:u                  
+     1.408392651                 22      r02c0:u                  
+     1.418533540                 18      r02c0:u                  
+     1.428671233                 24      r02c0:u                  
+     1.438810839                 24      r02c0:u                  
+     1.448952882                 24      r02c0:u                  
+     1.459092658                 22      r02c0:u                  
+     1.469232117                 18      r02c0:u                  
+     1.479388757                 24      r02c0:u                  
+     1.489526797                 24      r02c0:u                  
+     1.499666279                 24      r02c0:u                  
+     1.509804132                 22      r02c0:u                  
+     1.519945855                 18      r02c0:u                  
+#           time             counts unit events
+     1.530084230                 24      r02c0:u                  
+     1.540227323                 24      r02c0:u                  
+     1.550369630                 22      r02c0:u                  
+     1.560508775                 24      r02c0:u                  
+     1.570647431                 18      r02c0:u                  
+     1.580787004                 24      r02c0:u                  
+     1.590927740                 24      r02c0:u                  
+     1.601067046                 22      r02c0:u                  
+     1.611206429                 20      r02c0:u                  
+     1.621347415                 36      r02c0:u                  
+     1.631489251                 68      r02c0:u                  
+     1.641628740                 64      r02c0:u                  
+     1.651767137                 68      r02c0:u                  
+     1.661905285                 64      r02c0:u                  
+     1.672043788                 68      r02c0:u                  
+I0509 13:41:52.496235 114385 solver.cpp:218] Iteration 1 (1.24378 iter/s, 0.804s/1 iters), loss = 2.48225
+I0509 13:41:52.496265 114385 solver.cpp:237]     Train net output #0: loss = 2.48225 (* 1 = 2.48225 loss)
+I0509 13:41:52.496270 114385 sgd_solver.cpp:105] Iteration 1, lr = 0.001
+     1.682183681                201      r02c0:u                  
+     1.692324187                102      r02c0:u                  
+     1.702462296                102      r02c0:u                  
+     1.712600375                102      r02c0:u                  
+     1.722740161                 96      r02c0:u                  
+     1.732881428                102      r02c0:u                  
+     1.743022897                 64      r02c0:u                  
+     1.753160776                  0      r02c0:u                  
+     1.763297966                  0      r02c0:u                  
+     1.773438695                 38      r02c0:u                  
+#           time             counts unit events
+     1.783578574                 54      r02c0:u                  
+     1.793734808                 54      r02c0:u                  
+     1.803874061                 54      r02c0:u                  
+     1.814013297                 58      r02c0:u                  
+     1.824151506                 56      r02c0:u                  
+     1.834292049                 54      r02c0:u                  
+     1.844432495                 54      r02c0:u                  
+     1.854572204                 54      r02c0:u                  
+     1.864711640                 58      r02c0:u                  
+     1.874851019                 56      r02c0:u                  
+     1.884989765                 62      r02c0:u                  
+     1.895129835                126      r02c0:u                  
+     1.905271821                126      r02c0:u                  
+     1.915410500                126      r02c0:u                  
+     1.925552296                120      r02c0:u                  
+     1.935690632                221      r02c0:u                  
+     1.945829748                 56      r02c0:u                  
+     1.955971334                 94      r02c0:u                  
+     1.966110593                 90      r02c0:u                  
+     1.976249999                 94      r02c0:u                  
+     1.986389579                 90      r02c0:u                  
+     1.996528448                 94      r02c0:u                  
+     2.006669254                 90      r02c0:u                  
+     2.016808737                 94      r02c0:u                  
+     2.026950777                 90      r02c0:u                  
+#           time             counts unit events
+     2.037089912                 24      r02c0:u                  
+     2.047233472                 22      r02c0:u                  
+     2.057371638                 18      r02c0:u                  
+     2.067512808                 24      r02c0:u                  
+     2.077652680                 24      r02c0:u                  
+     2.087792313                 24      r02c0:u                  
+     2.097934382                 22      r02c0:u                  
+     2.108076192                 18      r02c0:u                  
+     2.118218655                 24      r02c0:u                  
+     2.128356431                 24      r02c0:u                  
+     2.138502727                 24      r02c0:u                  
+     2.148642096                 22      r02c0:u                  
+     2.158782646                 18      r02c0:u                  
+     2.168921995                 24      r02c0:u                  
+     2.179060054                 24      r02c0:u                  
+     2.189199320                 24      r02c0:u                  
+     2.199337148                 22      r02c0:u                  
+     2.209476940                 18      r02c0:u                  
+     2.219616619                 24      r02c0:u                  
+     2.229755593                 24      r02c0:u                  
+     2.239893732                 22      r02c0:u                  
+     2.250031977                 24      r02c0:u                  
+     2.260170418                 18      r02c0:u                  
+     2.270309353                 24      r02c0:u                  
+     2.280449145                 24      r02c0:u                  
+#           time             counts unit events
+     2.290587330                 22      r02c0:u                  
+     2.300728655                 24      r02c0:u                  
+     2.310866873                 18      r02c0:u                  
+     2.321006185                 24      r02c0:u                  
+     2.331145997                 24      r02c0:u                  
+     2.341285132                 22      r02c0:u                  
+     2.351426543                 22      r02c0:u                  
+     2.361568342                 20      r02c0:u                  
+     2.371707107                 24      r02c0:u                  
+     2.381846389                 24      r02c0:u                  
+     2.391986697                 22      r02c0:u                  
+     2.402136353                 20      r02c0:u                  
+     2.412278601                 68      r02c0:u                  
+     2.422416783                 66      r02c0:u                  
+     2.432554705                 66      r02c0:u                  
+     2.442695634                 68      r02c0:u                  
+     2.452843692                 64      r02c0:u                  
+I0509 13:41:53.279719 114385 solver.cpp:218] Iteration 2 (1.27714 iter/s, 0.783s/1 iters), loss = 2.46944
+I0509 13:41:53.279759 114385 solver.cpp:237]     Train net output #0: loss = 2.46944 (* 1 = 2.46944 loss)
+I0509 13:41:53.279765 114385 sgd_solver.cpp:105] Iteration 2, lr = 0.001
+I0509 13:41:53.280155 114385 solver.cpp:447] Snapshotting to binary proto file examples/cifar10/cifar10_quick_iter_3.caffemodel
+     2.462986294                110      r02c0:u                  
+I0509 13:41:53.282191 114385 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/cifar10/cifar10_quick_iter_3.solverstate
+     2.473125476                216      r02c0:u                  
+     2.483266007                 98      r02c0:u                  
+     2.493406069                102      r02c0:u                  
+     2.503544874                102      r02c0:u                  
+     2.513684216                100      r02c0:u                  
+     2.523822184                 98      r02c0:u                  
+     2.533966080                 22      r02c0:u                  
+#           time             counts unit events
+     2.544106108                  0      r02c0:u                  
+     2.554248690                  0      r02c0:u                  
+     2.564389501                 62      r02c0:u                  
+     2.574527743                 58      r02c0:u                  
+     2.584667749                 56      r02c0:u                  
+     2.594807867                 54      r02c0:u                  
+     2.604949772                 54      r02c0:u                  
+     2.615088090                 58      r02c0:u                  
+     2.625228346                 56      r02c0:u                  
+     2.635391015                 54      r02c0:u                  
+     2.645529953                 54      r02c0:u                  
+     2.655668302                 54      r02c0:u                  
+     2.665807507                 60      r02c0:u                  
+     2.675947045                 98      r02c0:u                  
+     2.686087607                126      r02c0:u                  
+     2.696225972                126      r02c0:u                  
+     2.706364487                126      r02c0:u                  
+     2.716503332                124      r02c0:u                  
+I0509 13:41:53.540081 114385 solver.cpp:310] Iteration 3, loss = 2.46204
+I0509 13:41:53.540104 114385 solver.cpp:315] Optimization Done.
+I0509 13:41:53.540108 114385 caffe.cpp:259] Optimization Done.
+     2.725359235                358      r02c0:u                  

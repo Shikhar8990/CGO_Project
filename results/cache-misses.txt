@@ -1,0 +1,5 @@
+         1,373,963      cache-misses:u            #    6.241 % of all cache refs      ( +-  1.01% )
+         1,358,420      cache-misses:u            #    5.903 % of all cache refs      ( +-  2.21% )
+         1,370,371      cache-misses:u            #    6.260 % of all cache refs      ( +-  1.09% )
+         1,328,237      cache-misses:u            #    5.743 % of all cache refs      ( +-  1.35% )
+         1,364,076      cache-misses:u            #    6.436 % of all cache refs      ( +-  1.27% )

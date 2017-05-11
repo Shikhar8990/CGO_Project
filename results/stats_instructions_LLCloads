@@ -1,0 +1,1726 @@
+I0428 21:02:47.227129 168281 caffe.cpp:211] Use CPU.
+I0428 21:02:47.227344 168281 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0428 21:02:47.227427 168281 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:02:47.227617 168281 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0428 21:02:47.227632 168281 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0428 21:02:47.227721 168281 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:02:47.227782 168281 layer_factory.hpp:77] Creating layer mnist
+I0428 21:02:47.227869 168281 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0428 21:02:47.227895 168281 net.cpp:84] Creating Layer mnist
+I0428 21:02:47.227905 168281 net.cpp:380] mnist -> data
+I0428 21:02:47.227924 168281 net.cpp:380] mnist -> label
+I0428 21:02:47.227955 168281 data_layer.cpp:45] output data size: 64,1,28,28
+I0428 21:02:47.228425 168281 net.cpp:122] Setting up mnist
+I0428 21:02:47.228444 168281 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0428 21:02:47.228451 168281 net.cpp:129] Top shape: 64 (64)
+I0428 21:02:47.228453 168281 net.cpp:137] Memory required for data: 200960
+I0428 21:02:47.228461 168281 layer_factory.hpp:77] Creating layer conv1
+I0428 21:02:47.228474 168281 net.cpp:84] Creating Layer conv1
+I0428 21:02:47.228480 168281 net.cpp:406] conv1 <- data
+I0428 21:02:47.228492 168281 net.cpp:380] conv1 -> conv1
+I0428 21:02:47.228531 168281 net.cpp:122] Setting up conv1
+I0428 21:02:47.228539 168281 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0428 21:02:47.228543 168281 net.cpp:137] Memory required for data: 3150080
+I0428 21:02:47.228561 168281 layer_factory.hpp:77] Creating layer pool1
+I0428 21:02:47.228569 168281 net.cpp:84] Creating Layer pool1
+I0428 21:02:47.228581 168281 net.cpp:406] pool1 <- conv1
+I0428 21:02:47.228602 168281 net.cpp:380] pool1 -> pool1
+I0428 21:02:47.228616 168281 net.cpp:122] Setting up pool1
+I0428 21:02:47.228622 168281 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0428 21:02:47.228626 168281 net.cpp:137] Memory required for data: 3887360
+I0428 21:02:47.228631 168281 layer_factory.hpp:77] Creating layer conv2
+I0428 21:02:47.228641 168281 net.cpp:84] Creating Layer conv2
+I0428 21:02:47.228644 168281 net.cpp:406] conv2 <- pool1
+I0428 21:02:47.228652 168281 net.cpp:380] conv2 -> conv2
+I0428 21:02:47.228878 168281 net.cpp:122] Setting up conv2
+I0428 21:02:47.228885 168281 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0428 21:02:47.228889 168281 net.cpp:137] Memory required for data: 4706560
+I0428 21:02:47.228898 168281 layer_factory.hpp:77] Creating layer pool2
+I0428 21:02:47.228905 168281 net.cpp:84] Creating Layer pool2
+I0428 21:02:47.228910 168281 net.cpp:406] pool2 <- conv2
+I0428 21:02:47.228915 168281 net.cpp:380] pool2 -> pool2
+I0428 21:02:47.228924 168281 net.cpp:122] Setting up pool2
+I0428 21:02:47.228931 168281 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0428 21:02:47.228935 168281 net.cpp:137] Memory required for data: 4911360
+I0428 21:02:47.228940 168281 layer_factory.hpp:77] Creating layer ip1
+I0428 21:02:47.228947 168281 net.cpp:84] Creating Layer ip1
+I0428 21:02:47.228952 168281 net.cpp:406] ip1 <- pool2
+I0428 21:02:47.228960 168281 net.cpp:380] ip1 -> ip1
+I0428 21:02:47.232223 168281 net.cpp:122] Setting up ip1
+I0428 21:02:47.232231 168281 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:02:47.232235 168281 net.cpp:137] Memory required for data: 5039360
+I0428 21:02:47.232244 168281 layer_factory.hpp:77] Creating layer relu1
+I0428 21:02:47.232250 168281 net.cpp:84] Creating Layer relu1
+I0428 21:02:47.232255 168281 net.cpp:406] relu1 <- ip1
+I0428 21:02:47.232261 168281 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:02:47.232270 168281 net.cpp:122] Setting up relu1
+I0428 21:02:47.232275 168281 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:02:47.232277 168281 net.cpp:137] Memory required for data: 5167360
+I0428 21:02:47.232282 168281 layer_factory.hpp:77] Creating layer ip2
+I0428 21:02:47.232288 168281 net.cpp:84] Creating Layer ip2
+I0428 21:02:47.232292 168281 net.cpp:406] ip2 <- ip1
+I0428 21:02:47.232298 168281 net.cpp:380] ip2 -> ip2
+I0428 21:02:47.232359 168281 net.cpp:122] Setting up ip2
+I0428 21:02:47.232365 168281 net.cpp:129] Top shape: 64 10 (640)
+I0428 21:02:47.232368 168281 net.cpp:137] Memory required for data: 5169920
+I0428 21:02:47.232375 168281 layer_factory.hpp:77] Creating layer loss
+I0428 21:02:47.232383 168281 net.cpp:84] Creating Layer loss
+I0428 21:02:47.232388 168281 net.cpp:406] loss <- ip2
+I0428 21:02:47.232391 168281 net.cpp:406] loss <- label
+I0428 21:02:47.232398 168281 net.cpp:380] loss -> loss
+I0428 21:02:47.232410 168281 layer_factory.hpp:77] Creating layer loss
+I0428 21:02:47.232424 168281 net.cpp:122] Setting up loss
+I0428 21:02:47.232430 168281 net.cpp:129] Top shape: (1)
+I0428 21:02:47.232434 168281 net.cpp:132]     with loss weight 1
+I0428 21:02:47.232451 168281 net.cpp:137] Memory required for data: 5169924
+I0428 21:02:47.232455 168281 net.cpp:198] loss needs backward computation.
+I0428 21:02:47.232462 168281 net.cpp:198] ip2 needs backward computation.
+I0428 21:02:47.232466 168281 net.cpp:198] relu1 needs backward computation.
+I0428 21:02:47.232471 168281 net.cpp:198] ip1 needs backward computation.
+I0428 21:02:47.232475 168281 net.cpp:198] pool2 needs backward computation.
+I0428 21:02:47.232480 168281 net.cpp:198] conv2 needs backward computation.
+I0428 21:02:47.232483 168281 net.cpp:198] pool1 needs backward computation.
+I0428 21:02:47.232489 168281 net.cpp:198] conv1 needs backward computation.
+I0428 21:02:47.232493 168281 net.cpp:200] mnist does not need backward computation.
+I0428 21:02:47.232497 168281 net.cpp:242] This network produces output loss
+I0428 21:02:47.232508 168281 net.cpp:255] Network initialization done.
+I0428 21:02:47.232662 168281 solver.cpp:172] Creating test net (#0) specified by net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:02:47.232700 168281 net.cpp:294] The NetState phase (1) differed from the phase (0) specified by a rule in layer mnist
+I0428 21:02:47.232794 168281 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:02:47.232864 168281 layer_factory.hpp:77] Creating layer mnist
+I0428 21:02:47.232913 168281 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_test_lmdb
+I0428 21:02:47.232926 168281 net.cpp:84] Creating Layer mnist
+I0428 21:02:47.232933 168281 net.cpp:380] mnist -> data
+I0428 21:02:47.232942 168281 net.cpp:380] mnist -> label
+I0428 21:02:47.232957 168281 data_layer.cpp:45] output data size: 100,1,28,28
+I0428 21:02:47.233006 168281 net.cpp:122] Setting up mnist
+I0428 21:02:47.233016 168281 net.cpp:129] Top shape: 100 1 28 28 (78400)
+I0428 21:02:47.233021 168281 net.cpp:129] Top shape: 100 (100)
+I0428 21:02:47.233024 168281 net.cpp:137] Memory required for data: 314000
+I0428 21:02:47.233029 168281 layer_factory.hpp:77] Creating layer label_mnist_1_split
+I0428 21:02:47.233049 168281 net.cpp:84] Creating Layer label_mnist_1_split
+I0428 21:02:47.233054 168281 net.cpp:406] label_mnist_1_split <- label
+I0428 21:02:47.233062 168281 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_0
+I0428 21:02:47.233072 168281 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_1
+I0428 21:02:47.233080 168281 net.cpp:122] Setting up label_mnist_1_split
+I0428 21:02:47.233085 168281 net.cpp:129] Top shape: 100 (100)
+I0428 21:02:47.233091 168281 net.cpp:129] Top shape: 100 (100)
+I0428 21:02:47.233094 168281 net.cpp:137] Memory required for data: 314800
+I0428 21:02:47.233098 168281 layer_factory.hpp:77] Creating layer conv1
+I0428 21:02:47.233109 168281 net.cpp:84] Creating Layer conv1
+I0428 21:02:47.233115 168281 net.cpp:406] conv1 <- data
+I0428 21:02:47.233122 168281 net.cpp:380] conv1 -> conv1
+I0428 21:02:47.233152 168281 net.cpp:122] Setting up conv1
+I0428 21:02:47.233158 168281 net.cpp:129] Top shape: 100 20 24 24 (1152000)
+I0428 21:02:47.233163 168281 net.cpp:137] Memory required for data: 4922800
+I0428 21:02:47.233186 168281 layer_factory.hpp:77] Creating layer pool1
+I0428 21:02:47.233194 168281 net.cpp:84] Creating Layer pool1
+I0428 21:02:47.233198 168281 net.cpp:406] pool1 <- conv1
+I0428 21:02:47.233206 168281 net.cpp:380] pool1 -> pool1
+I0428 21:02:47.233214 168281 net.cpp:122] Setting up pool1
+I0428 21:02:47.233220 168281 net.cpp:129] Top shape: 100 20 12 12 (288000)
+I0428 21:02:47.233224 168281 net.cpp:137] Memory required for data: 6074800
+I0428 21:02:47.233229 168281 layer_factory.hpp:77] Creating layer conv2
+I0428 21:02:47.233242 168281 net.cpp:84] Creating Layer conv2
+I0428 21:02:47.233245 168281 net.cpp:406] conv2 <- pool1
+I0428 21:02:47.233252 168281 net.cpp:380] conv2 -> conv2
+I0428 21:02:47.233516 168281 net.cpp:122] Setting up conv2
+I0428 21:02:47.233526 168281 net.cpp:129] Top shape: 100 50 8 8 (320000)
+I0428 21:02:47.233530 168281 net.cpp:137] Memory required for data: 7354800
+I0428 21:02:47.233539 168281 layer_factory.hpp:77] Creating layer pool2
+I0428 21:02:47.233548 168281 net.cpp:84] Creating Layer pool2
+I0428 21:02:47.233553 168281 net.cpp:406] pool2 <- conv2
+I0428 21:02:47.233559 168281 net.cpp:380] pool2 -> pool2
+I0428 21:02:47.233567 168281 net.cpp:122] Setting up pool2
+I0428 21:02:47.233574 168281 net.cpp:129] Top shape: 100 50 4 4 (80000)
+I0428 21:02:47.233577 168281 net.cpp:137] Memory required for data: 7674800
+I0428 21:02:47.233582 168281 layer_factory.hpp:77] Creating layer ip1
+I0428 21:02:47.233590 168281 net.cpp:84] Creating Layer ip1
+I0428 21:02:47.233595 168281 net.cpp:406] ip1 <- pool2
+I0428 21:02:47.233602 168281 net.cpp:380] ip1 -> ip1
+I0428 21:02:47.236907 168281 net.cpp:122] Setting up ip1
+I0428 21:02:47.236917 168281 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:02:47.236922 168281 net.cpp:137] Memory required for data: 7874800
+I0428 21:02:47.236932 168281 layer_factory.hpp:77] Creating layer relu1
+I0428 21:02:47.236937 168281 net.cpp:84] Creating Layer relu1
+I0428 21:02:47.236941 168281 net.cpp:406] relu1 <- ip1
+I0428 21:02:47.236948 168281 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:02:47.236954 168281 net.cpp:122] Setting up relu1
+I0428 21:02:47.236959 168281 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:02:47.236963 168281 net.cpp:137] Memory required for data: 8074800
+I0428 21:02:47.236968 168281 layer_factory.hpp:77] Creating layer ip2
+I0428 21:02:47.236976 168281 net.cpp:84] Creating Layer ip2
+I0428 21:02:47.236981 168281 net.cpp:406] ip2 <- ip1
+I0428 21:02:47.236987 168281 net.cpp:380] ip2 -> ip2
+I0428 21:02:47.237040 168281 net.cpp:122] Setting up ip2
+I0428 21:02:47.237045 168281 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:02:47.237048 168281 net.cpp:137] Memory required for data: 8078800
+I0428 21:02:47.237054 168281 layer_factory.hpp:77] Creating layer ip2_ip2_0_split
+I0428 21:02:47.237061 168281 net.cpp:84] Creating Layer ip2_ip2_0_split
+I0428 21:02:47.237066 168281 net.cpp:406] ip2_ip2_0_split <- ip2
+I0428 21:02:47.237071 168281 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_0
+I0428 21:02:47.237079 168281 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_1
+I0428 21:02:47.237087 168281 net.cpp:122] Setting up ip2_ip2_0_split
+I0428 21:02:47.237092 168281 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:02:47.237097 168281 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:02:47.237099 168281 net.cpp:137] Memory required for data: 8086800
+I0428 21:02:47.237104 168281 layer_factory.hpp:77] Creating layer accuracy
+I0428 21:02:47.237110 168281 net.cpp:84] Creating Layer accuracy
+I0428 21:02:47.237114 168281 net.cpp:406] accuracy <- ip2_ip2_0_split_0
+I0428 21:02:47.237119 168281 net.cpp:406] accuracy <- label_mnist_1_split_0
+I0428 21:02:47.237126 168281 net.cpp:380] accuracy -> accuracy
+I0428 21:02:47.237133 168281 net.cpp:122] Setting up accuracy
+I0428 21:02:47.237138 168281 net.cpp:129] Top shape: (1)
+I0428 21:02:47.237141 168281 net.cpp:137] Memory required for data: 8086804
+I0428 21:02:47.237145 168281 layer_factory.hpp:77] Creating layer loss
+I0428 21:02:47.237152 168281 net.cpp:84] Creating Layer loss
+I0428 21:02:47.237161 168281 net.cpp:406] loss <- ip2_ip2_0_split_1
+I0428 21:02:47.237174 168281 net.cpp:406] loss <- label_mnist_1_split_1
+I0428 21:02:47.237180 168281 net.cpp:380] loss -> loss
+I0428 21:02:47.237188 168281 layer_factory.hpp:77] Creating layer loss
+I0428 21:02:47.237203 168281 net.cpp:122] Setting up loss
+I0428 21:02:47.237210 168281 net.cpp:129] Top shape: (1)
+I0428 21:02:47.237213 168281 net.cpp:132]     with loss weight 1
+I0428 21:02:47.237221 168281 net.cpp:137] Memory required for data: 8086808
+I0428 21:02:47.237226 168281 net.cpp:198] loss needs backward computation.
+I0428 21:02:47.237231 168281 net.cpp:200] accuracy does not need backward computation.
+I0428 21:02:47.237236 168281 net.cpp:198] ip2_ip2_0_split needs backward computation.
+I0428 21:02:47.237241 168281 net.cpp:198] ip2 needs backward computation.
+I0428 21:02:47.237244 168281 net.cpp:198] relu1 needs backward computation.
+I0428 21:02:47.237248 168281 net.cpp:198] ip1 needs backward computation.
+I0428 21:02:47.237253 168281 net.cpp:198] pool2 needs backward computation.
+I0428 21:02:47.237257 168281 net.cpp:198] conv2 needs backward computation.
+I0428 21:02:47.237262 168281 net.cpp:198] pool1 needs backward computation.
+I0428 21:02:47.237265 168281 net.cpp:198] conv1 needs backward computation.
+I0428 21:02:47.237270 168281 net.cpp:200] label_mnist_1_split does not need backward computation.
+I0428 21:02:47.237277 168281 net.cpp:200] mnist does not need backward computation.
+I0428 21:02:47.237280 168281 net.cpp:242] This network produces output accuracy
+I0428 21:02:47.237287 168281 net.cpp:242] This network produces output loss
+I0428 21:02:47.237301 168281 net.cpp:255] Network initialization done.
+I0428 21:02:47.237340 168281 solver.cpp:56] Solver scaffolding done.
+I0428 21:02:47.237370 168281 caffe.cpp:248] Starting Optimization
+I0428 21:02:47.237373 168281 solver.cpp:272] Solving LeNet
+I0428 21:02:47.237378 168281 solver.cpp:273] Learning Rate Policy: inv
+I0428 21:02:47.238096 168281 solver.cpp:330] Iteration 0, Testing net (#0)
+#           time             counts unit events
+     1.101882360      7,642,221,421      instructions:u           
+     1.101882360          2,223,503      LLC-loads                
+     2.102108683      8,797,604,302      instructions:u           
+     2.102108683          1,732,247      LLC-loads                
+     3.102315823      7,995,856,695      instructions:u           
+     3.102315823          1,587,158      LLC-loads                
+     4.102509961      7,992,657,397      instructions:u           
+     4.102509961          1,601,891      LLC-loads                
+     5.102685659      7,986,341,342      instructions:u           
+     5.102685659          1,580,962      LLC-loads                
+I0428 21:02:52.494249 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:02:52.712189 168281 solver.cpp:397]     Test net output #0: accuracy = 0.0824
+I0428 21:02:52.712214 168281 solver.cpp:397]     Test net output #1: loss = 2.32083 (* 1 = 2.32083 loss)
+I0428 21:02:52.800297 168281 solver.cpp:218] Iteration 0 (-5.90443e-39 iter/s, 5.562s/100 iters), loss = 2.35203
+I0428 21:02:52.800323 168281 solver.cpp:237]     Train net output #0: loss = 2.35203 (* 1 = 2.35203 loss)
+I0428 21:02:52.800338 168281 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     6.102860367      8,153,733,892      instructions:u           
+     6.102860367          2,964,846      LLC-loads                
+     7.103058045      8,374,497,494      instructions:u           
+     7.103058045          4,286,465      LLC-loads                
+     8.103257425      8,352,660,022      instructions:u           
+     8.103257425          4,119,871      LLC-loads                
+     9.103437511      8,349,439,853      instructions:u           
+     9.103437511          4,272,429      LLC-loads                
+    10.103641591      8,374,535,526      instructions:u           
+    10.103641591          4,110,993      LLC-loads                
+    11.103843630      8,360,271,477      instructions:u           
+    11.103843630          4,309,867      LLC-loads                
+    12.104061594      8,383,686,250      instructions:u           
+    12.104061594          4,090,954      LLC-loads                
+    13.104244323      8,336,326,100      instructions:u           
+    13.104244323          4,338,924      LLC-loads                
+    14.104439019      8,361,026,869      instructions:u           
+    14.104439019          4,277,295      LLC-loads                
+I0428 21:03:01.448194 168281 solver.cpp:218] Iteration 100 (11.5647 iter/s, 8.647s/100 iters), loss = 0.21311
+I0428 21:03:01.448227 168281 solver.cpp:237]     Train net output #0: loss = 0.21311 (* 1 = 0.21311 loss)
+I0428 21:03:01.448233 168281 sgd_solver.cpp:105] Iteration 100, lr = 0.00992565
+    15.104642215      8,358,526,052      instructions:u           
+    15.104642215          4,115,293      LLC-loads                
+    16.104839819      8,381,229,799      instructions:u           
+    16.104839819          4,301,314      LLC-loads                
+    17.105029818      8,372,939,639      instructions:u           
+    17.105029818          4,113,854      LLC-loads                
+    18.105213187      8,361,642,445      instructions:u           
+    18.105213187          4,319,296      LLC-loads                
+    19.105407840      8,371,389,295      instructions:u           
+    19.105407840          4,082,936      LLC-loads                
+    20.105609746      8,363,501,168      instructions:u           
+    20.105609746          4,339,917      LLC-loads                
+    21.105792846      8,384,167,150      instructions:u           
+    21.105792846          4,290,304      LLC-loads                
+    22.106045749      8,375,454,536      instructions:u           
+    22.106045749          4,127,518      LLC-loads                
+I0428 21:03:10.081773 168281 solver.cpp:218] Iteration 200 (11.5835 iter/s, 8.633s/100 iters), loss = 0.142035
+I0428 21:03:10.081804 168281 solver.cpp:237]     Train net output #0: loss = 0.142036 (* 1 = 0.142036 loss)
+I0428 21:03:10.081809 168281 sgd_solver.cpp:105] Iteration 200, lr = 0.00985258
+    23.106242435      8,372,680,308      instructions:u           
+    23.106242435          4,316,128      LLC-loads                
+    24.106426763      8,300,581,268      instructions:u           
+    24.106426763          4,088,734      LLC-loads                
+    25.106561910      7,892,379,977      instructions:u           
+    25.106561910          4,012,917      LLC-loads                
+#           time             counts unit events
+    26.106742692      7,897,009,299      instructions:u           
+    26.106742692          4,010,145      LLC-loads                
+    27.106933299      7,896,233,788      instructions:u           
+    27.106933299          4,017,484      LLC-loads                
+    28.107103286      7,895,289,400      instructions:u           
+    28.107103286          4,019,100      LLC-loads                
+    29.107277416      8,068,881,297      instructions:u           
+    29.107277416          4,027,461      LLC-loads                
+    30.107453847      8,375,426,338      instructions:u           
+    30.107453847          4,293,988      LLC-loads                
+    31.107626002      8,372,089,623      instructions:u           
+    31.107626002          4,103,067      LLC-loads                
+I0428 21:03:18.988907 168281 solver.cpp:218] Iteration 300 (11.2271 iter/s, 8.907s/100 iters), loss = 0.15609
+I0428 21:03:18.988962 168281 solver.cpp:237]     Train net output #0: loss = 0.15609 (* 1 = 0.15609 loss)
+I0428 21:03:18.988970 168281 sgd_solver.cpp:105] Iteration 300, lr = 0.00978075
+    32.107837586      8,363,344,792      instructions:u           
+    32.107837586          4,323,238      LLC-loads                
+    33.108029335      8,377,795,959      instructions:u           
+    33.108029335          4,275,586      LLC-loads                
+    34.108225180      8,351,970,030      instructions:u           
+    34.108225180          4,144,693      LLC-loads                
+    35.108426104      8,390,387,962      instructions:u           
+    35.108426104          4,289,344      LLC-loads                
+    36.108629726      8,375,536,626      instructions:u           
+    36.108629726          4,123,886      LLC-loads                
+    37.108874116      8,373,154,014      instructions:u           
+    37.108874116          4,319,250      LLC-loads                
+    38.109070369      8,383,515,736      instructions:u           
+    38.109070369          4,099,193      LLC-loads                
+    39.109272491      8,358,106,810      instructions:u           
+    39.109272491          4,329,462      LLC-loads                
+    40.109473930      8,392,569,074      instructions:u           
+    40.109473930          4,289,937      LLC-loads                
+I0428 21:03:27.622064 168281 solver.cpp:218] Iteration 400 (11.5835 iter/s, 8.633s/100 iters), loss = 0.0721591
+I0428 21:03:27.622094 168281 solver.cpp:237]     Train net output #0: loss = 0.0721591 (* 1 = 0.0721591 loss)
+I0428 21:03:27.622102 168281 sgd_solver.cpp:105] Iteration 400, lr = 0.00971013
+    41.109652509      8,356,984,338      instructions:u           
+    41.109652509          4,119,672      LLC-loads                
+    42.109893691      8,374,859,393      instructions:u           
+    42.109893691          4,300,844      LLC-loads                
+    43.110086619      8,367,456,877      instructions:u           
+    43.110086619          4,109,567      LLC-loads                
+    44.110285095      8,341,409,318      instructions:u           
+    44.110285095          4,304,872      LLC-loads                
+    45.110468629      8,384,846,726      instructions:u           
+    45.110468629          4,087,395      LLC-loads                
+    46.110667934      8,361,853,005      instructions:u           
+    46.110667934          4,338,998      LLC-loads                
+    47.110970962      8,388,332,589      instructions:u           
+    47.110970962          4,295,619      LLC-loads                
+    48.111170594      8,373,498,259      instructions:u           
+    48.111170594          4,122,014      LLC-loads                
+I0428 21:03:36.175189 168281 solver.cpp:330] Iteration 500, Testing net (#0)
+    49.111352170      8,336,853,693      instructions:u           
+    49.111352170          4,068,426      LLC-loads                
+    50.111548605      8,113,315,116      instructions:u           
+    50.111548605          1,642,779      LLC-loads                
+#           time             counts unit events
+    51.111746921      8,103,948,998      instructions:u           
+    51.111746921          1,667,973      LLC-loads                
+    52.111952879      8,114,196,246      instructions:u           
+    52.111952879          1,641,231      LLC-loads                
+    53.112127660      8,083,381,568      instructions:u           
+    53.112127660          1,677,856      LLC-loads                
+    54.112307541      8,085,212,261      instructions:u           
+    54.112307541          1,659,720      LLC-loads                
+I0428 21:03:41.395875 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:03:41.612123 168281 solver.cpp:397]     Test net output #0: accuracy = 0.972
+I0428 21:03:41.612149 168281 solver.cpp:397]     Test net output #1: loss = 0.0852279 (* 1 = 0.0852279 loss)
+I0428 21:03:41.697208 168281 solver.cpp:218] Iteration 500 (7.1048 iter/s, 14.075s/100 iters), loss = 0.100226
+I0428 21:03:41.697232 168281 solver.cpp:237]     Train net output #0: loss = 0.100226 (* 1 = 0.100226 loss)
+I0428 21:03:41.697239 168281 sgd_solver.cpp:105] Iteration 500, lr = 0.00964069
+    55.112502856      8,292,163,745      instructions:u           
+    55.112502856          3,211,715      LLC-loads                
+    56.112703886      8,372,009,154      instructions:u           
+    56.112703886          4,337,656      LLC-loads                
+    57.112984965      8,392,974,034      instructions:u           
+    57.112984965          4,301,736      LLC-loads                
+    58.113190743      8,375,484,880      instructions:u           
+    58.113190743          4,119,993      LLC-loads                
+    59.113396908      8,367,314,413      instructions:u           
+    59.113396908          4,287,802      LLC-loads                
+    60.113593373      8,378,540,048      instructions:u           
+    60.113593373          4,112,603      LLC-loads                
+    61.113773446      8,366,420,584      instructions:u           
+    61.113773446          4,323,246      LLC-loads                
+    62.114059385      8,390,020,781      instructions:u           
+    62.114059385          4,319,335      LLC-loads                
+    63.114264795      8,377,177,645      instructions:u           
+    63.114264795          4,118,252      LLC-loads                
+I0428 21:03:50.324630 168281 solver.cpp:218] Iteration 600 (11.5915 iter/s, 8.627s/100 iters), loss = 0.099291
+I0428 21:03:50.324816 168281 solver.cpp:237]     Train net output #0: loss = 0.0992909 (* 1 = 0.0992909 loss)
+I0428 21:03:50.324825 168281 sgd_solver.cpp:105] Iteration 600, lr = 0.0095724
+    64.114460168      8,360,974,389      instructions:u           
+    64.114460168          4,271,538      LLC-loads                
+    65.114639475      8,376,127,532      instructions:u           
+    65.114639475          4,121,824      LLC-loads                
+    66.114821657      8,379,209,396      instructions:u           
+    66.114821657          4,324,035      LLC-loads                
+    67.114992835      8,397,907,438      instructions:u           
+    67.114992835          4,098,776      LLC-loads                
+    68.115196535      8,372,040,729      instructions:u           
+    68.115196535          4,348,246      LLC-loads                
+    69.115383175      8,368,254,810      instructions:u           
+    69.115383175          4,276,096      LLC-loads                
+    70.115584817      8,367,975,384      instructions:u           
+    70.115584817          4,120,910      LLC-loads                
+    71.115789134      8,383,286,398      instructions:u           
+    71.115789134          4,313,651      LLC-loads                
+I0428 21:03:58.954939 168281 solver.cpp:218] Iteration 700 (11.5875 iter/s, 8.63s/100 iters), loss = 0.147094
+I0428 21:03:58.954970 168281 solver.cpp:237]     Train net output #0: loss = 0.147094 (* 1 = 0.147094 loss)
+I0428 21:03:58.954978 168281 sgd_solver.cpp:105] Iteration 700, lr = 0.00950522
+    72.116050209      8,388,160,315      instructions:u           
+    72.116050209          4,101,280      LLC-loads                
+    73.116234388      8,346,094,410      instructions:u           
+    73.116234388          4,331,820      LLC-loads                
+    74.116439371      8,379,075,287      instructions:u           
+    74.116439371          4,283,593      LLC-loads                
+    75.116640135      8,359,818,498      instructions:u           
+    75.116640135          4,109,299      LLC-loads                
+#           time             counts unit events
+    76.116844702      8,378,872,319      instructions:u           
+    76.116844702          4,301,715      LLC-loads                
+    77.117046299      8,367,726,026      instructions:u           
+    77.117046299          4,112,254      LLC-loads                
+    78.117231494      8,369,895,696      instructions:u           
+    78.117231494          4,322,920      LLC-loads                
+    79.117430680      8,389,170,142      instructions:u           
+    79.117430680          4,093,975      LLC-loads                
+    80.117640041      8,373,586,012      instructions:u           
+    80.117640041          4,342,705      LLC-loads                
+I0428 21:04:07.588711 168281 solver.cpp:218] Iteration 800 (11.5835 iter/s, 8.633s/100 iters), loss = 0.162179
+I0428 21:04:07.588740 168281 solver.cpp:237]     Train net output #0: loss = 0.162179 (* 1 = 0.162179 loss)
+I0428 21:04:07.588747 168281 sgd_solver.cpp:105] Iteration 800, lr = 0.00943913
+    81.117826152      8,379,598,078      instructions:u           
+    81.117826152          4,295,063      LLC-loads                
+    82.118101119      8,381,416,838      instructions:u           
+    82.118101119          4,127,787      LLC-loads                
+    83.118299127      8,375,715,010      instructions:u           
+    83.118299127          4,316,574      LLC-loads                
+    84.118498279      8,379,252,756      instructions:u           
+    84.118498279          4,091,841      LLC-loads                
+    85.118679019      8,365,236,454      instructions:u           
+    85.118679019          4,339,409      LLC-loads                
+    86.118860436      8,387,878,189      instructions:u           
+    86.118860436          4,289,939      LLC-loads                
+    87.119161570      8,353,279,698      instructions:u           
+    87.119161570          4,123,191      LLC-loads                
+    88.119355852      8,379,101,416      instructions:u           
+    88.119355852          4,305,176      LLC-loads                
+I0428 21:04:16.223647 168281 solver.cpp:218] Iteration 900 (11.5821 iter/s, 8.634s/100 iters), loss = 0.161097
+I0428 21:04:16.223680 168281 solver.cpp:237]     Train net output #0: loss = 0.161097 (* 1 = 0.161097 loss)
+I0428 21:04:16.223685 168281 sgd_solver.cpp:105] Iteration 900, lr = 0.00937411
+    89.119548626      8,353,378,899      instructions:u           
+    89.119548626          4,092,557      LLC-loads                
+    90.119728458      8,358,006,375      instructions:u           
+    90.119728458          4,310,338      LLC-loads                
+    91.119922848      8,392,659,946      instructions:u           
+    91.119922848          4,313,190      LLC-loads                
+I0428 21:04:19.073575 168283 data_layer.cpp:73] Restarting data prefetching from start.
+    92.120191320      8,366,705,058      instructions:u           
+    92.120191320          4,116,416      LLC-loads                
+    93.120372825      8,383,107,663      instructions:u           
+    93.120372825          4,292,368      LLC-loads                
+    94.120561489      8,365,439,070      instructions:u           
+    94.120561489          4,118,370      LLC-loads                
+    95.120756982      8,376,776,038      instructions:u           
+    95.120756982          4,318,741      LLC-loads                
+    96.120960728      8,398,187,599      instructions:u           
+    96.120960728          4,100,943      LLC-loads                
+    97.121158177      8,365,151,625      instructions:u           
+    97.121158177          4,349,715      LLC-loads                
+I0428 21:04:24.768587 168281 solver.cpp:330] Iteration 1000, Testing net (#0)
+    98.121373484      8,249,273,155      instructions:u           
+    98.121373484          2,973,927      LLC-loads                
+    99.121576816      8,114,637,459      instructions:u           
+    99.121576816          1,654,725      LLC-loads                
+   100.121779489      8,104,276,739      instructions:u           
+   100.121779489          1,652,853      LLC-loads                
+#           time             counts unit events
+   101.121961382      8,097,104,488      instructions:u           
+   101.121961382          1,670,877      LLC-loads                
+   102.122158693      8,107,515,757      instructions:u           
+   102.122158693          1,629,740      LLC-loads                
+I0428 21:04:29.985019 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:04:30.201769 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9805
+I0428 21:04:30.201794 168281 solver.cpp:397]     Test net output #1: loss = 0.0594257 (* 1 = 0.0594257 loss)
+I0428 21:04:30.286900 168281 solver.cpp:218] Iteration 1000 (7.11086 iter/s, 14.063s/100 iters), loss = 0.108106
+I0428 21:04:30.286924 168281 solver.cpp:237]     Train net output #0: loss = 0.108106 (* 1 = 0.108106 loss)
+I0428 21:04:30.286931 168281 sgd_solver.cpp:105] Iteration 1000, lr = 0.00931012
+   103.122356675      8,127,083,829      instructions:u           
+   103.122356675          1,889,396      LLC-loads                
+   104.122582439      8,352,241,204      instructions:u           
+   104.122582439          4,104,364      LLC-loads                
+   105.122744279      8,369,066,473      instructions:u           
+   105.122744279          4,306,078      LLC-loads                
+   106.122937767      8,377,421,428      instructions:u           
+   106.122937767          4,105,159      LLC-loads                
+   107.123140377      8,371,405,613      instructions:u           
+   107.123140377          4,334,357      LLC-loads                
+   108.123337110      8,387,836,303      instructions:u           
+   108.123337110          4,306,551      LLC-loads                
+   109.123516775      8,347,033,081      instructions:u           
+   109.123516775          4,099,693      LLC-loads                
+   110.123715820      8,385,275,245      instructions:u           
+   110.123715820          4,297,183      LLC-loads                
+   111.123914377      8,381,084,286      instructions:u           
+   111.123914377          4,118,214      LLC-loads                
+I0428 21:04:38.921154 168281 solver.cpp:218] Iteration 1100 (11.5821 iter/s, 8.634s/100 iters), loss = 0.00641022
+I0428 21:04:38.921186 168281 solver.cpp:237]     Train net output #0: loss = 0.00641011 (* 1 = 0.00641011 loss)
+I0428 21:04:38.921192 168281 sgd_solver.cpp:105] Iteration 1100, lr = 0.00924715
+   112.124130488      8,365,988,420      instructions:u           
+   112.124130488          4,311,371      LLC-loads                
+   113.124310602      8,383,390,941      instructions:u           
+   113.124310602          4,090,429      LLC-loads                
+   114.124489028      8,330,790,006      instructions:u           
+   114.124489028          4,309,210      LLC-loads                
+   115.124683364      8,140,770,217      instructions:u           
+   115.124683364          4,039,644      LLC-loads                
+   116.124881702      8,130,350,460      instructions:u           
+   116.124881702          4,270,875      LLC-loads                
+   117.125071049      8,115,384,313      instructions:u           
+   117.125071049          4,043,474      LLC-loads                
+   118.125277120      8,323,668,780      instructions:u           
+   118.125277120          4,100,717      LLC-loads                
+   119.125478673      8,385,576,165      instructions:u           
+   119.125478673          4,297,315      LLC-loads                
+   120.125677434      8,419,256,487      instructions:u           
+   120.125677434          4,320,480      LLC-loads                
+I0428 21:04:47.644544 168281 solver.cpp:218] Iteration 1200 (11.4639 iter/s, 8.723s/100 iters), loss = 0.0209004
+I0428 21:04:47.644573 168281 solver.cpp:237]     Train net output #0: loss = 0.0209002 (* 1 = 0.0209002 loss)
+I0428 21:04:47.644580 168281 sgd_solver.cpp:105] Iteration 1200, lr = 0.00918515
+   121.125855479      8,392,205,560      instructions:u           
+   121.125855479          4,106,849      LLC-loads                
+   122.126056032      8,409,926,198      instructions:u           
+   122.126056032          4,309,813      LLC-loads                
+   123.126252595      8,418,620,563      instructions:u           
+   123.126252595          4,114,772      LLC-loads                
+   124.126431217      8,371,502,158      instructions:u           
+   124.126431217          4,315,728      LLC-loads                
+   125.126603592      8,409,194,174      instructions:u           
+   125.126603592          4,283,386      LLC-loads                
+#           time             counts unit events
+   126.126784026      8,393,057,675      instructions:u           
+   126.126784026          4,122,225      LLC-loads                
+   127.126988894      8,399,639,794      instructions:u           
+   127.126988894          4,317,847      LLC-loads                
+   128.127185028      8,406,977,563      instructions:u           
+   128.127185028          4,294,020      LLC-loads                
+I0428 21:04:56.252424 168281 solver.cpp:218] Iteration 1300 (11.6184 iter/s, 8.607s/100 iters), loss = 0.0162653
+I0428 21:04:56.252570 168281 solver.cpp:237]     Train net output #0: loss = 0.0162653 (* 1 = 0.0162653 loss)
+I0428 21:04:56.252578 168281 sgd_solver.cpp:105] Iteration 1300, lr = 0.00912412
+   129.127372566      8,373,428,876      instructions:u           
+   129.127372566          4,130,840      LLC-loads                
+   130.127569485      8,410,020,118      instructions:u           
+   130.127569485          4,297,366      LLC-loads                
+   131.127768228      8,409,392,710      instructions:u           
+   131.127768228          4,109,069      LLC-loads                
+   132.128027079      8,394,044,186      instructions:u           
+   132.128027079          4,348,843      LLC-loads                
+   133.128205760      8,408,489,250      instructions:u           
+   133.128205760          4,292,639      LLC-loads                
+   134.128403815      8,374,024,317      instructions:u           
+   134.128403815          4,106,430      LLC-loads                
+   135.128594751      8,387,337,421      instructions:u           
+   135.128594751          4,297,321      LLC-loads                
+   136.128786458      8,416,925,980      instructions:u           
+   136.128786458          4,107,335      LLC-loads                
+   137.129031492      8,386,515,508      instructions:u           
+   137.129031492          4,345,817      LLC-loads                
+I0428 21:05:04.859194 168281 solver.cpp:218] Iteration 1400 (11.6198 iter/s, 8.606s/100 iters), loss = 0.00694655
+I0428 21:05:04.859223 168281 solver.cpp:237]     Train net output #0: loss = 0.00694649 (* 1 = 0.00694649 loss)
+I0428 21:05:04.859230 168281 sgd_solver.cpp:105] Iteration 1400, lr = 0.00906403
+   138.129212564      8,412,312,303      instructions:u           
+   138.129212564          4,295,090      LLC-loads                
+   139.129406859      8,398,611,177      instructions:u           
+   139.129406859          4,106,985      LLC-loads                
+   140.129605558      8,401,772,067      instructions:u           
+   140.129605558          4,327,962      LLC-loads                
+   141.129786725      8,422,695,042      instructions:u           
+   141.129786725          4,307,837      LLC-loads                
+   142.130035896      8,398,645,861      instructions:u           
+   142.130035896          4,125,254      LLC-loads                
+   143.130232271      8,404,619,750      instructions:u           
+   143.130232271          4,322,533      LLC-loads                
+   144.130433520      8,402,558,901      instructions:u           
+   144.130433520          4,095,510      LLC-loads                
+   145.130614683      8,383,509,259      instructions:u           
+   145.130614683          4,330,616      LLC-loads                
+   146.130814539      8,412,403,484      instructions:u           
+   146.130814539          4,298,789      LLC-loads                
+I0428 21:05:13.376518 168281 solver.cpp:330] Iteration 1500, Testing net (#0)
+   147.131000752      8,171,736,752      instructions:u           
+   147.131000752          1,880,801      LLC-loads                
+   148.131192738      8,120,151,851      instructions:u           
+   148.131192738          1,662,479      LLC-loads                
+   149.131368132      8,124,268,792      instructions:u           
+   149.131368132          1,656,521      LLC-loads                
+   150.131543618      8,110,189,121      instructions:u           
+   150.131543618          1,647,252      LLC-loads                
+#           time             counts unit events
+   151.131736558      8,110,629,873      instructions:u           
+   151.131736558          1,668,981      LLC-loads                
+I0428 21:05:18.582545 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:05:18.798461 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9855
+I0428 21:05:18.798485 168281 solver.cpp:397]     Test net output #1: loss = 0.0469612 (* 1 = 0.0469612 loss)
+I0428 21:05:18.883265 168281 solver.cpp:218] Iteration 1500 (7.13063 iter/s, 14.024s/100 iters), loss = 0.0700855
+I0428 21:05:18.883294 168281 solver.cpp:237]     Train net output #0: loss = 0.0700855 (* 1 = 0.0700855 loss)
+I0428 21:05:18.883302 168281 sgd_solver.cpp:105] Iteration 1500, lr = 0.00900485
+   152.131939209      8,264,160,008      instructions:u           
+   152.131939209          2,759,879      LLC-loads                
+   153.132118163      8,380,933,114      instructions:u           
+   153.132118163          4,345,308      LLC-loads                
+   154.132318911      8,396,214,114      instructions:u           
+   154.132318911          4,290,771      LLC-loads                
+   155.132499711      8,399,731,969      instructions:u           
+   155.132499711          4,134,315      LLC-loads                
+   156.132695445      8,396,024,652      instructions:u           
+   156.132695445          4,328,872      LLC-loads                
+   157.132972885      8,416,722,190      instructions:u           
+   157.132972885          4,329,529      LLC-loads                
+   158.133167743      8,396,424,151      instructions:u           
+   158.133167743          4,124,820      LLC-loads                
+   159.133362068      8,389,852,272      instructions:u           
+   159.133362068          4,301,571      LLC-loads                
+   160.133570823      8,410,499,720      instructions:u           
+   160.133570823          4,111,319      LLC-loads                
+I0428 21:05:27.490844 168281 solver.cpp:218] Iteration 1600 (11.6184 iter/s, 8.607s/100 iters), loss = 0.0839809
+I0428 21:05:27.491010 168281 solver.cpp:237]     Train net output #0: loss = 0.0839809 (* 1 = 0.0839809 loss)
+I0428 21:05:27.491020 168281 sgd_solver.cpp:105] Iteration 1600, lr = 0.00894657
+   161.133757528      8,379,904,082      instructions:u           
+   161.133757528          4,337,598      LLC-loads                
+   162.134015168      8,416,235,520      instructions:u           
+   162.134015168          4,297,110      LLC-loads                
+   163.134216984      8,396,783,042      instructions:u           
+   163.134216984          4,131,071      LLC-loads                
+   164.134416161      8,372,141,056      instructions:u           
+   164.134416161          4,298,883      LLC-loads                
+   165.134603925      8,403,892,282      instructions:u           
+   165.134603925          4,092,927      LLC-loads                
+   166.134812696      8,387,757,600      instructions:u           
+   166.134812696          4,349,583      LLC-loads                
+   167.135087789      8,405,792,707      instructions:u           
+   167.135087789          4,298,961      LLC-loads                
+   168.135290274      8,402,514,915      instructions:u           
+   168.135290274          4,123,773      LLC-loads                
+I0428 21:05:36.102413 168281 solver.cpp:218] Iteration 1700 (11.6131 iter/s, 8.611s/100 iters), loss = 0.0224773
+I0428 21:05:36.102445 168281 solver.cpp:237]     Train net output #0: loss = 0.0224773 (* 1 = 0.0224773 loss)
+I0428 21:05:36.102452 168281 sgd_solver.cpp:105] Iteration 1700, lr = 0.00888916
+   169.135476620      8,369,131,722      instructions:u           
+   169.135476620          4,305,581      LLC-loads                
+   170.135682743      8,417,489,422      instructions:u           
+   170.135682743          4,324,679      LLC-loads                
+   171.135864096      8,391,315,381      instructions:u           
+   171.135864096          4,126,774      LLC-loads                
+   172.136119640      8,402,263,344      instructions:u           
+   172.136119640          4,316,781      LLC-loads                
+   173.136304172      8,396,990,923      instructions:u           
+   173.136304172          4,110,446      LLC-loads                
+   174.136506560      8,379,798,208      instructions:u           
+   174.136506560          4,327,574      LLC-loads                
+   175.136705915      8,414,098,181      instructions:u           
+   175.136705915          4,293,399      LLC-loads                
+#           time             counts unit events
+   176.136915634      8,405,305,269      instructions:u           
+   176.136915634          4,131,354      LLC-loads                
+   177.137118291      8,382,048,071      instructions:u           
+   177.137118291          4,324,954      LLC-loads                
+I0428 21:05:44.710116 168281 solver.cpp:218] Iteration 1800 (11.6184 iter/s, 8.607s/100 iters), loss = 0.0216263
+I0428 21:05:44.710147 168281 solver.cpp:237]     Train net output #0: loss = 0.0216263 (* 1 = 0.0216263 loss)
+I0428 21:05:44.710155 168281 sgd_solver.cpp:105] Iteration 1800, lr = 0.0088326
+   178.137311523      8,411,094,464      instructions:u           
+   178.137311523          4,330,975      LLC-loads                
+   179.137512926      8,378,514,912      instructions:u           
+   179.137512926          4,094,712      LLC-loads                
+   180.137713274      8,399,560,836      instructions:u           
+   180.137713274          4,298,688      LLC-loads                
+   181.137893521      8,398,768,583      instructions:u           
+   181.137893521          4,112,783      LLC-loads                
+   182.138149919      8,387,217,523      instructions:u           
+   182.138149919          4,333,366      LLC-loads                
+   183.138347318      8,399,012,274      instructions:u           
+   183.138347318          4,298,788      LLC-loads                
+I0428 21:05:50.741519 168283 data_layer.cpp:73] Restarting data prefetching from start.
+   184.138564633      8,371,876,997      instructions:u           
+   184.138564633          4,097,245      LLC-loads                
+   185.138744726      8,383,872,464      instructions:u           
+   185.138744726          4,294,593      LLC-loads                
+   186.138921789      8,404,569,817      instructions:u           
+   186.138921789          4,111,357      LLC-loads                
+I0428 21:05:53.325089 168281 solver.cpp:218] Iteration 1900 (11.609 iter/s, 8.614s/100 iters), loss = 0.118449
+I0428 21:05:53.325116 168281 solver.cpp:237]     Train net output #0: loss = 0.118449 (* 1 = 0.118449 loss)
+I0428 21:05:53.325122 168281 sgd_solver.cpp:105] Iteration 1900, lr = 0.00877687
+   187.139121727      8,390,334,965      instructions:u           
+   187.139121727          4,342,559      LLC-loads                
+   188.139318050      8,412,687,928      instructions:u           
+   188.139318050          4,297,383      LLC-loads                
+   189.139499887      8,373,048,584      instructions:u           
+   189.139499887          4,101,089      LLC-loads                
+   190.139700884      8,394,257,593      instructions:u           
+   190.139700884          4,317,637      LLC-loads                
+   191.139903118      8,406,522,946      instructions:u           
+   191.139903118          4,100,992      LLC-loads                
+   192.140110450      8,375,796,742      instructions:u           
+   192.140110450          4,344,717      LLC-loads                
+   193.140288208      8,397,552,097      instructions:u           
+   193.140288208          4,293,682      LLC-loads                
+   194.140475346      8,380,836,783      instructions:u           
+   194.140475346          4,112,898      LLC-loads                
+I0428 21:06:01.853402 168281 solver.cpp:330] Iteration 2000, Testing net (#0)
+   195.140681772      8,285,628,328      instructions:u           
+   195.140681772          3,192,643      LLC-loads                
+   196.140880228      8,135,127,321      instructions:u           
+   196.140880228          1,675,310      LLC-loads                
+   197.141132021      8,127,537,370      instructions:u           
+   197.141132021          1,646,376      LLC-loads                
+   198.141315106      8,122,173,922      instructions:u           
+   198.141315106          1,677,725      LLC-loads                
+   199.141509826      8,122,434,402      instructions:u           
+   199.141509826          1,632,691      LLC-loads                
+I0428 21:06:07.056711 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:06:07.272227 168281 solver.cpp:397]     Test net output #0: accuracy = 0.984
+I0428 21:06:07.272258 168281 solver.cpp:397]     Test net output #1: loss = 0.04689 (* 1 = 0.04689 loss)
+   200.141713189      8,127,260,832      instructions:u           
+   200.141713189          1,707,496      LLC-loads                
+I0428 21:06:07.357143 168281 solver.cpp:218] Iteration 2000 (7.12657 iter/s, 14.032s/100 iters), loss = 0.0242694
+I0428 21:06:07.357167 168281 solver.cpp:237]     Train net output #0: loss = 0.0242694 (* 1 = 0.0242694 loss)
+I0428 21:06:07.357174 168281 sgd_solver.cpp:105] Iteration 2000, lr = 0.00872196
+#           time             counts unit events
+   201.141895273      8,405,607,877      instructions:u           
+   201.141895273          4,282,552      LLC-loads                
+   202.142105834      8,408,437,046      instructions:u           
+   202.142105834          4,126,974      LLC-loads                
+   203.142303557      8,391,042,075      instructions:u           
+   203.142303557          4,327,206      LLC-loads                
+   204.142513852      8,399,485,997      instructions:u           
+   204.142513852          4,311,858      LLC-loads                
+   205.142694212      8,385,171,251      instructions:u           
+   205.142694212          4,114,838      LLC-loads                
+   206.142892367      8,401,152,617      instructions:u           
+   206.142892367          4,305,753      LLC-loads                
+   207.143082013      8,397,459,634      instructions:u           
+   207.143082013          4,113,571      LLC-loads                
+   208.143275880      8,386,172,987      instructions:u           
+   208.143275880          4,344,657      LLC-loads                
+I0428 21:06:15.967869 168281 solver.cpp:218] Iteration 2100 (11.6144 iter/s, 8.61s/100 iters), loss = 0.037168
+I0428 21:06:15.967903 168281 solver.cpp:237]     Train net output #0: loss = 0.0371681 (* 1 = 0.0371681 loss)
+I0428 21:06:15.967911 168281 sgd_solver.cpp:105] Iteration 2100, lr = 0.00866784
+   209.143455455      8,389,073,490      instructions:u           
+   209.143455455          4,291,521      LLC-loads                
+   210.143643116      8,388,221,915      instructions:u           
+   210.143643116          4,114,797      LLC-loads                
+   211.143836962      8,401,467,622      instructions:u           
+   211.143836962          4,317,409      LLC-loads                
+   212.144093228      8,410,679,823      instructions:u           
+   212.144093228          4,103,283      LLC-loads                
+   213.144276637      8,374,247,426      instructions:u           
+   213.144276637          4,347,616      LLC-loads                
+   214.144475776      8,394,607,284      instructions:u           
+   214.144475776          4,290,100      LLC-loads                
+   215.144665789      8,398,317,259      instructions:u           
+   215.144665789          4,124,231      LLC-loads                
+   216.144861922      8,391,038,451      instructions:u           
+   216.144861922          4,326,928      LLC-loads                
+   217.145042644      8,413,492,007      instructions:u           
+   217.145042644          4,333,956      LLC-loads                
+I0428 21:06:24.577353 168281 solver.cpp:218] Iteration 2200 (11.6158 iter/s, 8.609s/100 iters), loss = 0.0207439
+I0428 21:06:24.577384 168281 solver.cpp:237]     Train net output #0: loss = 0.0207439 (* 1 = 0.0207439 loss)
+I0428 21:06:24.577390 168281 sgd_solver.cpp:105] Iteration 2200, lr = 0.0086145
+   218.145232260      8,392,253,248      instructions:u           
+   218.145232260          4,121,879      LLC-loads                
+   219.145433897      8,384,209,312      instructions:u           
+   219.145433897          4,298,390      LLC-loads                
+   220.145625041      8,403,024,756      instructions:u           
+   220.145625041          4,114,261      LLC-loads                
+   221.145802923      8,385,942,054      instructions:u           
+   221.145802923          4,348,539      LLC-loads                
+   222.145996150      8,420,989,711      instructions:u           
+   222.145996150          4,300,443      LLC-loads                
+   223.146203197      8,389,657,530      instructions:u           
+   223.146203197          4,127,395      LLC-loads                
+   224.146423101      8,380,758,777      instructions:u           
+   224.146423101          4,315,693      LLC-loads                
+   225.146607801      8,406,571,612      instructions:u           
+   225.146607801          4,101,035      LLC-loads                
+I0428 21:06:33.188499 168281 solver.cpp:218] Iteration 2300 (11.6131 iter/s, 8.611s/100 iters), loss = 0.089495
+I0428 21:06:33.188645 168281 solver.cpp:237]     Train net output #0: loss = 0.0894951 (* 1 = 0.0894951 loss)
+I0428 21:06:33.188655 168281 sgd_solver.cpp:105] Iteration 2300, lr = 0.00856192
+#           time             counts unit events
+   226.146814874      8,377,706,250      instructions:u           
+   226.146814874          4,343,285      LLC-loads                
+   227.147027688      8,401,452,226      instructions:u           
+   227.147027688          4,295,403      LLC-loads                
+   228.147227049      8,404,695,938      instructions:u           
+   228.147227049          4,136,394      LLC-loads                
+   229.147411601      8,370,555,731      instructions:u           
+   229.147411601          4,311,976      LLC-loads                
+   230.147607436      8,420,282,436      instructions:u           
+   230.147607436          4,322,886      LLC-loads                
+   231.147810130      8,356,526,481      instructions:u           
+   231.147810130          4,117,828      LLC-loads                
+   232.148098423      8,412,344,997      instructions:u           
+   232.148098423          4,310,121      LLC-loads                
+   233.148284169      8,395,820,968      instructions:u           
+   233.148284169          4,120,201      LLC-loads                
+   234.148473953      8,379,229,358      instructions:u           
+   234.148473953          4,330,790      LLC-loads                
+I0428 21:06:41.801142 168281 solver.cpp:218] Iteration 2400 (11.6117 iter/s, 8.612s/100 iters), loss = 0.00865939
+I0428 21:06:41.801173 168281 solver.cpp:237]     Train net output #0: loss = 0.00865941 (* 1 = 0.00865941 loss)
+I0428 21:06:41.801180 168281 sgd_solver.cpp:105] Iteration 2400, lr = 0.00851008
+   235.148672600      8,417,459,777      instructions:u           
+   235.148672600          4,305,525      LLC-loads                
+   236.148873222      8,393,888,028      instructions:u           
+   236.148873222          4,123,087      LLC-loads                
+   237.149068737      8,372,485,799      instructions:u           
+   237.149068737          4,282,977      LLC-loads                
+   238.149266329      8,408,443,289      instructions:u           
+   238.149266329          4,116,058      LLC-loads                
+   239.149475346      8,373,205,698      instructions:u           
+   239.149475346          4,332,974      LLC-loads                
+   240.149635860      8,108,525,234      instructions:u           
+   240.149635860          4,023,653      LLC-loads                
+   241.149819771      8,394,702,593      instructions:u           
+   241.149819771          4,321,611      LLC-loads                
+   242.150025561      8,413,792,223      instructions:u           
+   242.150025561          4,096,208      LLC-loads                
+   243.150236281      8,374,876,918      instructions:u           
+   243.150236281          4,329,829      LLC-loads                
+I0428 21:06:50.363119 168281 solver.cpp:330] Iteration 2500, Testing net (#0)
+   244.150444692      8,145,425,784      instructions:u           
+   244.150444692          1,862,071      LLC-loads                
+   245.150628258      8,128,560,478      instructions:u           
+   245.150628258          1,650,596      LLC-loads                
+   246.150805732      8,080,079,373      instructions:u           
+   246.150805732          1,658,466      LLC-loads                
+   247.151086849      8,129,588,758      instructions:u           
+   247.151086849          1,668,229      LLC-loads                
+   248.151298406      8,121,962,770      instructions:u           
+   248.151298406          1,638,048      LLC-loads                
+I0428 21:06:55.572767 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:06:55.789587 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9848
+I0428 21:06:55.789609 168281 solver.cpp:397]     Test net output #1: loss = 0.0466963 (* 1 = 0.0466963 loss)
+I0428 21:06:55.874327 168281 solver.cpp:218] Iteration 2500 (7.10581 iter/s, 14.073s/100 iters), loss = 0.0262413
+I0428 21:06:55.874351 168281 solver.cpp:237]     Train net output #0: loss = 0.0262413 (* 1 = 0.0262413 loss)
+I0428 21:06:55.874359 168281 sgd_solver.cpp:105] Iteration 2500, lr = 0.00845897
+   249.151481093      8,239,174,536      instructions:u           
+   249.151481093          2,986,437      LLC-loads                
+   250.151681119      8,413,180,328      instructions:u           
+   250.151681119          4,119,189      LLC-loads                
+#           time             counts unit events
+   251.151882922      8,397,742,650      instructions:u           
+   251.151882922          4,347,060      LLC-loads                
+   252.152077079      8,371,543,912      instructions:u           
+   252.152077079          4,279,317      LLC-loads                
+   253.152253971      8,388,828,161      instructions:u           
+   253.152253971          4,116,029      LLC-loads                
+   254.152450510      8,378,288,621      instructions:u           
+   254.152450510          4,304,988      LLC-loads                
+   255.152630816      8,203,042,071      instructions:u           
+   255.152630816          4,076,296      LLC-loads                
+   256.152811805      8,398,196,179      instructions:u           
+   256.152811805          4,312,635      LLC-loads                
+   257.153128412      8,399,507,825      instructions:u           
+   257.153128412          4,120,743      LLC-loads                
+I0428 21:07:04.512462 168281 solver.cpp:218] Iteration 2600 (11.5768 iter/s, 8.638s/100 iters), loss = 0.0468573
+I0428 21:07:04.512626 168281 solver.cpp:237]     Train net output #0: loss = 0.0468573 (* 1 = 0.0468573 loss)
+I0428 21:07:04.512635 168281 sgd_solver.cpp:105] Iteration 2600, lr = 0.00840857
+   258.153309091      8,367,973,793      instructions:u           
+   258.153309091          4,326,827      LLC-loads                
+   259.153506013      8,398,871,453      instructions:u           
+   259.153506013          4,300,560      LLC-loads                
+   260.153700311      8,394,342,041      instructions:u           
+   260.153700311          4,123,465      LLC-loads                
+   261.153888727      8,390,565,469      instructions:u           
+   261.153888727          4,312,096      LLC-loads                
+   262.154164572      8,411,642,819      instructions:u           
+   262.154164572          4,112,751      LLC-loads                
+   263.154366883      8,391,652,784      instructions:u           
+   263.154366883          4,347,744      LLC-loads                
+   264.154597155      8,232,023,959      instructions:u           
+   264.154597155          4,036,945      LLC-loads                
+   265.154781416      8,392,541,903      instructions:u           
+   265.154781416          4,328,940      LLC-loads                
+I0428 21:07:13.142709 168281 solver.cpp:218] Iteration 2700 (11.5875 iter/s, 8.63s/100 iters), loss = 0.0433331
+I0428 21:07:13.142741 168281 solver.cpp:237]     Train net output #0: loss = 0.0433331 (* 1 = 0.0433331 loss)
+I0428 21:07:13.142748 168281 sgd_solver.cpp:105] Iteration 2700, lr = 0.00835886
+   266.154978197      8,411,809,732      instructions:u           
+   266.154978197          4,295,223      LLC-loads                
+   267.155172067      8,237,050,383      instructions:u           
+   267.155172067          4,095,803      LLC-loads                
+   268.155373045      8,408,553,471      instructions:u           
+   268.155373045          4,302,523      LLC-loads                
+   269.155569448      8,388,351,054      instructions:u           
+   269.155569448          4,099,254      LLC-loads                
+   270.155755037      8,209,125,726      instructions:u           
+   270.155755037          4,256,636      LLC-loads                
+   271.155950820      8,383,903,380      instructions:u           
+   271.155950820          4,127,260      LLC-loads                
+   272.156223144      8,397,610,761      instructions:u           
+   272.156223144          4,327,170      LLC-loads                
+   273.156404797      8,391,062,310      instructions:u           
+   273.156404797          4,308,950      LLC-loads                
+   274.156583668      8,386,910,691      instructions:u           
+   274.156583668          4,111,114      LLC-loads                
+I0428 21:07:21.795281 168281 solver.cpp:218] Iteration 2800 (11.558 iter/s, 8.652s/100 iters), loss = 0.00744589
+I0428 21:07:21.795313 168281 solver.cpp:237]     Train net output #0: loss = 0.00744591 (* 1 = 0.00744591 loss)
+I0428 21:07:21.795320 168281 sgd_solver.cpp:105] Iteration 2800, lr = 0.00830984
+   275.156763649      8,406,198,715      instructions:u           
+   275.156763649          4,310,593      LLC-loads                
+I0428 21:07:22.485314 168283 data_layer.cpp:73] Restarting data prefetching from start.
+#           time             counts unit events
+   276.156949540      8,341,490,887      instructions:u           
+   276.156949540          4,098,472      LLC-loads                
+   277.157145701      8,397,815,765      instructions:u           
+   277.157145701          4,330,720      LLC-loads                
+   278.157342630      8,427,353,992      instructions:u           
+   278.157342630          4,327,941      LLC-loads                
+   279.157543007      8,228,455,699      instructions:u           
+   279.157543007          4,076,445      LLC-loads                
+   280.157744477      8,417,591,849      instructions:u           
+   280.157744477          4,298,715      LLC-loads                
+   281.157924298      8,388,213,876      instructions:u           
+   281.157924298          4,126,574      LLC-loads                
+   282.158214376      8,391,950,222      instructions:u           
+   282.158214376          4,307,163      LLC-loads                
+   283.158427306      8,410,545,265      instructions:u           
+   283.158427306          4,101,857      LLC-loads                
+I0428 21:07:30.425222 168281 solver.cpp:218] Iteration 2900 (11.5888 iter/s, 8.629s/100 iters), loss = 0.0220584
+I0428 21:07:30.425252 168281 solver.cpp:237]     Train net output #0: loss = 0.0220584 (* 1 = 0.0220584 loss)
+I0428 21:07:30.425258 168281 sgd_solver.cpp:105] Iteration 2900, lr = 0.00826148
+   284.158629299      8,369,175,559      instructions:u           
+   284.158629299          4,334,303      LLC-loads                
+   285.158813328      8,295,386,334      instructions:u           
+   285.158813328          4,278,260      LLC-loads                
+   286.159020681      8,394,597,467      instructions:u           
+   286.159020681          4,113,948      LLC-loads                
+   287.159226749      8,412,801,543      instructions:u           
+   287.159226749          4,314,475      LLC-loads                
+   288.159422944      8,367,788,087      instructions:u           
+   288.159422944          4,099,313      LLC-loads                
+   289.159605316      8,374,241,580      instructions:u           
+   289.159605316          4,319,607      LLC-loads                
+   290.159809200      8,419,867,585      instructions:u           
+   290.159809200          4,305,653      LLC-loads                
+   291.159961150      8,233,310,710      instructions:u           
+   291.159961150          4,091,112      LLC-loads                
+I0428 21:07:39.005223 168281 solver.cpp:330] Iteration 3000, Testing net (#0)
+   292.160176121      8,154,968,251      instructions:u           
+   292.160176121          3,373,166      LLC-loads                
+   293.160371007      8,123,501,231      instructions:u           
+   293.160371007          1,655,874      LLC-loads                
+   294.160548504      8,042,126,751      instructions:u           
+   294.160548504          1,660,335      LLC-loads                
+   295.160742666      7,972,866,111      instructions:u           
+   295.160742666          1,630,958      LLC-loads                
+   296.160938878      8,139,554,067      instructions:u           
+   296.160938878          1,640,083      LLC-loads                
+I0428 21:07:44.251420 168284 data_layer.cpp:73] Restarting data prefetching from start.
+   297.161169494      8,004,186,563      instructions:u           
+   297.161169494          1,643,257      LLC-loads                
+I0428 21:07:44.466912 168281 solver.cpp:397]     Test net output #0: accuracy = 0.988
+I0428 21:07:44.466936 168281 solver.cpp:397]     Test net output #1: loss = 0.0382333 (* 1 = 0.0382333 loss)
+I0428 21:07:44.551647 168281 solver.cpp:218] Iteration 3000 (7.07914 iter/s, 14.126s/100 iters), loss = 0.00629555
+I0428 21:07:44.551669 168281 solver.cpp:237]     Train net output #0: loss = 0.00629557 (* 1 = 0.00629557 loss)
+I0428 21:07:44.551677 168281 sgd_solver.cpp:105] Iteration 3000, lr = 0.00821377
+   298.161360482      8,368,442,760      instructions:u           
+   298.161360482          3,871,380      LLC-loads                
+   299.161561436      8,383,229,461      instructions:u           
+   299.161561436          4,110,788      LLC-loads                
+   300.161753623      8,363,251,199      instructions:u           
+   300.161753623          4,301,242      LLC-loads                
+#           time             counts unit events
+   301.161935433      8,417,765,925      instructions:u           
+   301.161935433          4,111,693      LLC-loads                
+   302.162148350      8,399,427,409      instructions:u           
+   302.162148350          4,353,902      LLC-loads                
+   303.162350923      8,406,131,338      instructions:u           
+   303.162350923          4,299,558      LLC-loads                
+   304.162574418      8,402,714,924      instructions:u           
+   304.162574418          4,103,837      LLC-loads                
+   305.162749592      8,395,174,146      instructions:u           
+   305.162749592          4,345,283      LLC-loads                
+I0428 21:07:53.158076 168281 solver.cpp:218] Iteration 3100 (11.6198 iter/s, 8.606s/100 iters), loss = 0.0336981
+I0428 21:07:53.158107 168281 solver.cpp:237]     Train net output #0: loss = 0.0336981 (* 1 = 0.0336981 loss)
+I0428 21:07:53.158113 168281 sgd_solver.cpp:105] Iteration 3100, lr = 0.0081667
+   306.162929642      8,430,156,918      instructions:u           
+   306.162929642          4,296,540      LLC-loads                
+   307.163217273      8,400,676,768      instructions:u           
+   307.163217273          4,133,611      LLC-loads                
+   308.163414861      8,400,133,725      instructions:u           
+   308.163414861          4,328,183      LLC-loads                
+   309.163595524      8,324,176,922      instructions:u           
+   309.163595524          4,073,417      LLC-loads                
+   310.163795573      8,409,061,509      instructions:u           
+   310.163795573          4,351,683      LLC-loads                
+   311.163992942      8,421,185,231      instructions:u           
+   311.163992942          4,312,866      LLC-loads                
+   312.164255409      8,399,959,233      instructions:u           
+   312.164255409          4,117,074      LLC-loads                
+   313.164446274      8,395,259,330      instructions:u           
+   313.164446274          4,330,962      LLC-loads                
+   314.164671648      8,408,033,264      instructions:u           
+   314.164671648          4,304,202      LLC-loads                
+I0428 21:08:01.768229 168281 solver.cpp:218] Iteration 3200 (11.6144 iter/s, 8.61s/100 iters), loss = 0.0055782
+I0428 21:08:01.768261 168281 solver.cpp:237]     Train net output #0: loss = 0.0055782 (* 1 = 0.0055782 loss)
+I0428 21:08:01.768275 168281 sgd_solver.cpp:105] Iteration 3200, lr = 0.00812025
+   315.164872013      8,381,199,496      instructions:u           
+   315.164872013          4,103,395      LLC-loads                
+   316.165072586      8,407,922,221      instructions:u           
+   316.165072586          4,315,402      LLC-loads                
+   317.165362084      8,406,135,555      instructions:u           
+   317.165362084          4,119,230      LLC-loads                
+   318.165544273      8,328,357,435      instructions:u           
+   318.165544273          4,312,428      LLC-loads                
+   319.165751608      8,402,924,689      instructions:u           
+   319.165751608          4,300,120      LLC-loads                
+   320.165954166      8,397,044,032      instructions:u           
+   320.165954166          4,124,890      LLC-loads                
+   321.166100974      8,391,256,018      instructions:u           
+   321.166100974          4,300,822      LLC-loads                
+   322.166306324      8,414,980,286      instructions:u           
+   322.166306324          4,116,118      LLC-loads                
+   323.166504677      8,388,386,815      instructions:u           
+   323.166504677          4,345,010      LLC-loads                
+I0428 21:08:10.381757 168281 solver.cpp:218] Iteration 3300 (11.6104 iter/s, 8.613s/100 iters), loss = 0.0171239
+I0428 21:08:10.381902 168281 solver.cpp:237]     Train net output #0: loss = 0.0171239 (* 1 = 0.0171239 loss)
+I0428 21:08:10.381909 168281 sgd_solver.cpp:105] Iteration 3300, lr = 0.00807442
+   324.166703930      8,383,898,957      instructions:u           
+   324.166703930          4,279,677      LLC-loads                
+   325.166887342      8,390,227,701      instructions:u           
+   325.166887342          4,127,310      LLC-loads                
+#           time             counts unit events
+   326.167080038      8,389,044,729      instructions:u           
+   326.167080038          4,318,778      LLC-loads                
+   327.167281156      8,417,329,052      instructions:u           
+   327.167281156          4,269,663      LLC-loads                
+   328.167480509      8,396,111,057      instructions:u           
+   328.167480509          4,188,436      LLC-loads                
+   329.167677936      8,388,138,259      instructions:u           
+   329.167677936          4,288,188      LLC-loads                
+   330.167867728      8,390,863,388      instructions:u           
+   330.167867728          4,106,624      LLC-loads                
+   331.168067858      8,390,522,669      instructions:u           
+   331.168067858          4,330,179      LLC-loads                
+I0428 21:08:18.993427 168281 solver.cpp:218] Iteration 3400 (11.6131 iter/s, 8.611s/100 iters), loss = 0.00873327
+I0428 21:08:18.993458 168281 solver.cpp:237]     Train net output #0: loss = 0.00873325 (* 1 = 0.00873325 loss)
+I0428 21:08:18.993464 168281 sgd_solver.cpp:105] Iteration 3400, lr = 0.00802918
+   332.168281866      8,417,088,634      instructions:u           
+   332.168281866          4,312,457      LLC-loads                
+   333.168478354      8,384,869,923      instructions:u           
+   333.168478354          4,125,435      LLC-loads                
+   334.168683581      8,378,003,595      instructions:u           
+   334.168683581          4,295,670      LLC-loads                
+   335.168888380      8,396,367,293      instructions:u           
+   335.168888380          4,105,705      LLC-loads                
+   336.169082195      8,389,548,484      instructions:u           
+   336.169082195          4,337,069      LLC-loads                
+   337.169286575      8,403,353,382      instructions:u           
+   337.169286575          4,291,465      LLC-loads                
+   338.169489664      8,394,137,433      instructions:u           
+   338.169489664          4,129,403      LLC-loads                
+   339.169694047      8,371,194,132      instructions:u           
+   339.169694047          4,306,219      LLC-loads                
+   340.169905808      8,407,755,019      instructions:u           
+   340.169905808          4,096,957      LLC-loads                
+I0428 21:08:27.523221 168281 solver.cpp:330] Iteration 3500, Testing net (#0)
+   341.170087241      8,184,917,321      instructions:u           
+   341.170087241          2,331,231      LLC-loads                
+   342.170298500      8,121,722,993      instructions:u           
+   342.170298500          1,669,595      LLC-loads                
+   343.170485311      8,129,168,010      instructions:u           
+   343.170485311          1,666,003      LLC-loads                
+   344.170680182      8,103,182,303      instructions:u           
+   344.170680182          1,647,902      LLC-loads                
+   345.170862959      8,094,509,602      instructions:u           
+   345.170862959          1,670,259      LLC-loads                
+I0428 21:08:32.732547 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:08:32.948099 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9871
+I0428 21:08:32.948125 168281 solver.cpp:397]     Test net output #1: loss = 0.0412516 (* 1 = 0.0412516 loss)
+I0428 21:08:33.032829 168281 solver.cpp:218] Iteration 3500 (7.12301 iter/s, 14.039s/100 iters), loss = 0.0054603
+I0428 21:08:33.032855 168281 solver.cpp:237]     Train net output #0: loss = 0.00546028 (* 1 = 0.00546028 loss)
+I0428 21:08:33.032860 168281 sgd_solver.cpp:105] Iteration 3500, lr = 0.00798454
+   346.171062392      8,231,427,853      instructions:u           
+   346.171062392          2,560,360      LLC-loads                
+   347.171326379      8,387,410,285      instructions:u           
+   347.171326379          4,303,063      LLC-loads                
+   348.171522690      8,407,914,412      instructions:u           
+   348.171522690          4,124,132      LLC-loads                
+   349.171695228      8,367,650,166      instructions:u           
+   349.171695228          4,333,891      LLC-loads                
+   350.171887881      8,431,180,162      instructions:u           
+   350.171887881          4,303,323      LLC-loads                
+#           time             counts unit events
+   351.172088005      8,410,558,728      instructions:u           
+   351.172088005          4,137,882      LLC-loads                
+   352.172293210      8,401,055,431      instructions:u           
+   352.172293210          4,332,343      LLC-loads                
+   353.172468909      8,411,088,686      instructions:u           
+   353.172468909          4,320,852      LLC-loads                
+   354.172651719      8,393,543,882      instructions:u           
+   354.172651719          4,117,773      LLC-loads                
+I0428 21:08:41.637377 168281 solver.cpp:218] Iteration 3600 (11.6225 iter/s, 8.604s/100 iters), loss = 0.0299738
+I0428 21:08:41.637519 168281 solver.cpp:237]     Train net output #0: loss = 0.0299737 (* 1 = 0.0299737 loss)
+I0428 21:08:41.637526 168281 sgd_solver.cpp:105] Iteration 3600, lr = 0.00794046
+   355.172848163      8,405,571,391      instructions:u           
+   355.172848163          4,313,824      LLC-loads                
+   356.173048732      8,411,763,107      instructions:u           
+   356.173048732          4,119,167      LLC-loads                
+   357.173335065      8,388,738,242      instructions:u           
+   357.173335065          4,349,716      LLC-loads                
+   358.173538990      8,420,844,271      instructions:u           
+   358.173538990          4,311,468      LLC-loads                
+   359.173741768      8,392,850,448      instructions:u           
+   359.173741768          4,121,102      LLC-loads                
+   360.173947605      8,387,438,374      instructions:u           
+   360.173947605          4,317,729      LLC-loads                
+   361.174133780      8,410,258,254      instructions:u           
+   361.174133780          4,329,255      LLC-loads                
+   362.174421423      8,386,747,036      instructions:u           
+   362.174421423          4,121,006      LLC-loads                
+I0428 21:08:50.242770 168281 solver.cpp:218] Iteration 3700 (11.6212 iter/s, 8.605s/100 iters), loss = 0.014639
+I0428 21:08:50.242802 168281 solver.cpp:237]     Train net output #0: loss = 0.014639 (* 1 = 0.014639 loss)
+I0428 21:08:50.242808 168281 sgd_solver.cpp:105] Iteration 3700, lr = 0.00789695
+   363.174634738      8,402,660,300      instructions:u           
+   363.174634738          4,311,634      LLC-loads                
+   364.174833142      8,393,440,664      instructions:u           
+   364.174833142          4,101,783      LLC-loads                
+   365.175021811      8,388,308,046      instructions:u           
+   365.175021811          4,348,798      LLC-loads                
+   366.175205766      8,417,232,490      instructions:u           
+   366.175205766          4,305,932      LLC-loads                
+I0428 21:08:54.118819 168283 data_layer.cpp:73] Restarting data prefetching from start.
+   367.175418966      8,387,066,575      instructions:u           
+   367.175418966          4,133,791      LLC-loads                
+   368.175616273      8,391,246,566      instructions:u           
+   368.175616273          4,319,487      LLC-loads                
+   369.175797787      8,384,654,887      instructions:u           
+   369.175797787          4,086,895      LLC-loads                
+   370.175997816      8,392,106,212      instructions:u           
+   370.175997816          4,345,596      LLC-loads                
+   371.176200261      8,403,361,231      instructions:u           
+   371.176200261          4,303,916      LLC-loads                
+I0428 21:08:58.852607 168281 solver.cpp:218] Iteration 3800 (11.6158 iter/s, 8.609s/100 iters), loss = 0.00534006
+I0428 21:08:58.852639 168281 solver.cpp:237]     Train net output #0: loss = 0.00534 (* 1 = 0.00534 loss)
+I0428 21:08:58.852645 168281 sgd_solver.cpp:105] Iteration 3800, lr = 0.007854
+   372.176471063      8,411,542,125      instructions:u           
+   372.176471063          4,136,827      LLC-loads                
+   373.176652960      8,386,919,832      instructions:u           
+   373.176652960          4,329,533      LLC-loads                
+   374.176852502      8,391,054,537      instructions:u           
+   374.176852502          4,302,716      LLC-loads                
+   375.177032929      8,289,531,491      instructions:u           
+   375.177032929          4,082,422      LLC-loads                
+#           time             counts unit events
+   376.177204451      8,411,915,001      instructions:u           
+   376.177204451          4,286,826      LLC-loads                
+   377.177378858      8,394,723,913      instructions:u           
+   377.177378858          4,123,277      LLC-loads                
+   378.177560961      8,399,426,740      instructions:u           
+   378.177560961          4,328,009      LLC-loads                
+   379.177765937      8,400,238,271      instructions:u           
+   379.177765937          4,179,116      LLC-loads                
+   380.177965851      8,395,923,043      instructions:u           
+   380.177965851          4,251,703      LLC-loads                
+I0428 21:09:07.472731 168281 solver.cpp:218] Iteration 3900 (11.6009 iter/s, 8.62s/100 iters), loss = 0.0323298
+I0428 21:09:07.472760 168281 solver.cpp:237]     Train net output #0: loss = 0.0323298 (* 1 = 0.0323298 loss)
+I0428 21:09:07.472767 168281 sgd_solver.cpp:105] Iteration 3900, lr = 0.00781158
+   381.178149498      8,395,984,445      instructions:u           
+   381.178149498          4,302,662      LLC-loads                
+   382.178430428      8,408,540,882      instructions:u           
+   382.178430428          4,118,845      LLC-loads                
+   383.178631511      8,395,415,313      instructions:u           
+   383.178631511          4,346,892      LLC-loads                
+   384.178830838      8,400,355,476      instructions:u           
+   384.178830838          4,269,513      LLC-loads                
+   385.179025869      8,384,511,379      instructions:u           
+   385.179025869          4,113,417      LLC-loads                
+   386.179234935      8,401,869,543      instructions:u           
+   386.179234935          4,321,644      LLC-loads                
+   387.179419742      8,406,533,260      instructions:u           
+   387.179419742          4,101,970      LLC-loads                
+   388.179615185      8,389,745,761      instructions:u           
+   388.179615185          4,348,689      LLC-loads                
+I0428 21:09:15.996981 168281 solver.cpp:330] Iteration 4000, Testing net (#0)
+   389.179802625      8,295,582,772      instructions:u           
+   389.179802625          3,387,814      LLC-loads                
+   390.179986575      8,131,627,048      instructions:u           
+   390.179986575          1,673,814      LLC-loads                
+   391.180178666      8,132,109,827      instructions:u           
+   391.180178666          1,650,193      LLC-loads                
+   392.180433334      8,128,693,112      instructions:u           
+   392.180433334          1,678,759      LLC-loads                
+   393.180616685      8,119,022,261      instructions:u           
+   393.180616685          1,638,563      LLC-loads                
+I0428 21:09:21.202038 168284 data_layer.cpp:73] Restarting data prefetching from start.
+   394.180821767      8,119,635,255      instructions:u           
+   394.180821767          1,678,129      LLC-loads                
+I0428 21:09:21.417279 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9898
+I0428 21:09:21.417304 168281 solver.cpp:397]     Test net output #1: loss = 0.031005 (* 1 = 0.031005 loss)
+I0428 21:09:21.502038 168281 solver.cpp:218] Iteration 4000 (7.12809 iter/s, 14.029s/100 iters), loss = 0.0148587
+I0428 21:09:21.502060 168281 solver.cpp:237]     Train net output #0: loss = 0.0148586 (* 1 = 0.0148586 loss)
+I0428 21:09:21.502068 168281 sgd_solver.cpp:105] Iteration 4000, lr = 0.0077697
+   395.181025822      8,396,984,372      instructions:u           
+   395.181025822          3,878,679      LLC-loads                
+   396.181233227      8,391,931,027      instructions:u           
+   396.181233227          4,345,135      LLC-loads                
+   397.181423993      8,406,670,401      instructions:u           
+   397.181423993          4,302,638      LLC-loads                
+   398.181621848      8,413,666,789      instructions:u           
+   398.181621848          4,126,348      LLC-loads                
+   399.181829850      8,378,614,530      instructions:u           
+   399.181829850          4,319,322      LLC-loads                
+   400.182014360      8,420,850,998      instructions:u           
+   400.182014360          4,313,966      LLC-loads                
+#           time             counts unit events
+   401.182200969      8,394,551,067      instructions:u           
+   401.182200969          4,124,123      LLC-loads                
+   402.182434625      8,401,919,335      instructions:u           
+   402.182434625          4,319,541      LLC-loads                
+I0428 21:09:30.105015 168281 solver.cpp:218] Iteration 4100 (11.6252 iter/s, 8.602s/100 iters), loss = 0.0172958
+I0428 21:09:30.105044 168281 solver.cpp:237]     Train net output #0: loss = 0.0172957 (* 1 = 0.0172957 loss)
+I0428 21:09:30.105051 168281 sgd_solver.cpp:105] Iteration 4100, lr = 0.00772833
+   403.182639569      8,409,072,680      instructions:u           
+   403.182639569          4,097,885      LLC-loads                
+   404.182846300      8,370,132,733      instructions:u           
+   404.182846300          4,333,817      LLC-loads                
+   405.183037742      8,399,586,485      instructions:u           
+   405.183037742          4,289,315      LLC-loads                
+   406.183245187      8,405,446,047      instructions:u           
+   406.183245187          4,128,890      LLC-loads                
+   407.183508015      8,392,092,228      instructions:u           
+   407.183508015          4,329,656      LLC-loads                
+   408.183716162      8,423,086,267      instructions:u           
+   408.183716162          4,319,515      LLC-loads                
+   409.183907175      8,369,309,786      instructions:u           
+   409.183907175          4,113,375      LLC-loads                
+   410.184104471      8,405,672,007      instructions:u           
+   410.184104471          4,307,635      LLC-loads                
+   411.184304371      8,407,421,931      instructions:u           
+   411.184304371          4,107,654      LLC-loads                
+I0428 21:09:38.713168 168281 solver.cpp:218] Iteration 4200 (11.6171 iter/s, 8.608s/100 iters), loss = 0.00880015
+I0428 21:09:38.713201 168281 solver.cpp:237]     Train net output #0: loss = 0.00880013 (* 1 = 0.00880013 loss)
+I0428 21:09:38.713207 168281 sgd_solver.cpp:105] Iteration 4200, lr = 0.00768748
+   412.184524257      8,391,311,331      instructions:u           
+   412.184524257          4,342,632      LLC-loads                
+   413.184705714      8,402,370,455      instructions:u           
+   413.184705714          4,286,661      LLC-loads                
+   414.184877163      8,349,317,458      instructions:u           
+   414.184877163          4,112,792      LLC-loads                
+   415.185052690      8,397,439,050      instructions:u           
+   415.185052690          4,312,796      LLC-loads                
+   416.185237237      8,409,055,745      instructions:u           
+   416.185237237          4,101,671      LLC-loads                
+   417.185466137      8,380,437,480      instructions:u           
+   417.185466137          4,345,543      LLC-loads                
+   418.185660830      8,406,693,618      instructions:u           
+   418.185660830          4,299,828      LLC-loads                
+   419.185849089      8,393,750,619      instructions:u           
+   419.185849089          4,117,645      LLC-loads                
+I0428 21:09:47.327451 168281 solver.cpp:218] Iteration 4300 (11.609 iter/s, 8.614s/100 iters), loss = 0.047128
+I0428 21:09:47.327602 168281 solver.cpp:237]     Train net output #0: loss = 0.047128 (* 1 = 0.047128 loss)
+I0428 21:09:47.327610 168281 sgd_solver.cpp:105] Iteration 4300, lr = 0.00764712
+   420.186026037      8,383,574,047      instructions:u           
+   420.186026037          4,317,028      LLC-loads                
+   421.186206470      8,406,639,181      instructions:u           
+   421.186206470          4,317,753      LLC-loads                
+   422.186494877      8,386,949,079      instructions:u           
+   422.186494877          4,116,419      LLC-loads                
+   423.186689645      8,398,716,464      instructions:u           
+   423.186689645          4,304,089      LLC-loads                
+   424.186897596      8,392,190,917      instructions:u           
+   424.186897596          4,103,273      LLC-loads                
+   425.187083511      8,384,917,252      instructions:u           
+   425.187083511          4,332,821      LLC-loads                
+#           time             counts unit events
+   426.187269708      8,413,718,207      instructions:u           
+   426.187269708          4,296,807      LLC-loads                
+   427.187481927      8,390,627,602      instructions:u           
+   427.187481927          4,122,744      LLC-loads                
+   428.187683980      8,404,672,777      instructions:u           
+   428.187683980          4,325,904      LLC-loads                
+I0428 21:09:55.937495 168281 solver.cpp:218] Iteration 4400 (11.6158 iter/s, 8.609s/100 iters), loss = 0.0296137
+I0428 21:09:55.937530 168281 solver.cpp:237]     Train net output #0: loss = 0.0296137 (* 1 = 0.0296137 loss)
+I0428 21:09:55.937538 168281 sgd_solver.cpp:105] Iteration 4400, lr = 0.00760726
+   429.187874175      8,397,889,331      instructions:u           
+   429.187874175          4,084,619      LLC-loads                
+   430.188084309      8,397,934,261      instructions:u           
+   430.188084309          4,343,161      LLC-loads                
+   431.188289695      8,412,070,378      instructions:u           
+   431.188289695          4,299,685      LLC-loads                
+   432.188549698      8,412,830,433      instructions:u           
+   432.188549698          4,121,388      LLC-loads                
+   433.188744439      8,385,840,105      instructions:u           
+   433.188744439          4,348,069      LLC-loads                
+   434.188942922      8,394,968,370      instructions:u           
+   434.188942922          4,284,577      LLC-loads                
+   435.189144481      8,393,094,384      instructions:u           
+   435.189144481          4,121,663      LLC-loads                
+   436.189357869      8,405,089,570      instructions:u           
+   436.189357869          4,323,619      LLC-loads                
+   437.189602182      8,405,907,926      instructions:u           
+   437.189602182          4,098,860      LLC-loads                
+I0428 21:10:04.458077 168281 solver.cpp:330] Iteration 4500, Testing net (#0)
+   438.189783637      8,163,725,783      instructions:u           
+   438.189783637          2,108,754      LLC-loads                
+   439.189986179      8,140,829,443      instructions:u           
+   439.189986179          1,650,831      LLC-loads                
+   440.190191911      8,123,802,271      instructions:u           
+   440.190191911          1,673,783      LLC-loads                
+   441.190364037      8,133,216,981      instructions:u           
+   441.190364037          1,653,545      LLC-loads                
+   442.190630679      8,120,920,804      instructions:u           
+   442.190630679          1,663,279      LLC-loads                
+I0428 21:10:09.659065 168284 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:10:09.874542 168281 solver.cpp:397]     Test net output #0: accuracy = 0.9872
+I0428 21:10:09.874565 168281 solver.cpp:397]     Test net output #1: loss = 0.0391779 (* 1 = 0.0391779 loss)
+I0428 21:10:09.959559 168281 solver.cpp:218] Iteration 4500 (7.13165 iter/s, 14.022s/100 iters), loss = 0.00504218
+I0428 21:10:09.959584 168281 solver.cpp:237]     Train net output #0: loss = 0.00504216 (* 1 = 0.00504216 loss)
+I0428 21:10:09.959591 168281 sgd_solver.cpp:105] Iteration 4500, lr = 0.00756788
+   443.190863496      8,249,533,196      instructions:u           
+   443.190863496          2,780,169      LLC-loads                
+   444.191062515      8,383,724,929      instructions:u           
+   444.191062515          4,286,893      LLC-loads                
+   445.191259196      8,405,465,045      instructions:u           
+   445.191259196          4,093,033      LLC-loads                
+   446.191458216      8,391,516,238      instructions:u           
+   446.191458216          4,345,862      LLC-loads                
+   447.191704885      8,409,419,232      instructions:u           
+   447.191704885          4,300,885      LLC-loads                
+   448.191909380      8,405,792,592      instructions:u           
+   448.191909380          4,125,001      LLC-loads                
+   449.192092713      8,379,768,546      instructions:u           
+   449.192092713          4,308,709      LLC-loads                
+   450.192276714      8,411,742,259      instructions:u           
+   450.192276714          4,309,213      LLC-loads                
+#           time             counts unit events
+   451.192472802      8,395,560,891      instructions:u           
+   451.192472802          4,122,786      LLC-loads                
+I0428 21:10:18.567600 168281 solver.cpp:218] Iteration 4600 (11.6171 iter/s, 8.608s/100 iters), loss = 0.0118753
+I0428 21:10:18.567742 168281 solver.cpp:237]     Train net output #0: loss = 0.0118752 (* 1 = 0.0118752 loss)
+I0428 21:10:18.567749 168281 sgd_solver.cpp:105] Iteration 4600, lr = 0.00752897
+   452.192694462      8,400,798,343      instructions:u           
+   452.192694462          4,315,369      LLC-loads                
+   453.192876074      8,396,734,846      instructions:u           
+   453.192876074          4,104,867      LLC-loads                
+   454.193072124      8,375,839,193      instructions:u           
+   454.193072124          4,333,383      LLC-loads                
+   455.193280458      8,415,843,331      instructions:u           
+   455.193280458          4,293,517      LLC-loads                
+   456.193474503      8,398,100,754      instructions:u           
+   456.193474503          4,131,484      LLC-loads                
+   457.193714294      8,383,260,624      instructions:u           
+   457.193714294          4,317,563      LLC-loads                
+   458.193927906      8,409,322,840      instructions:u           
+   458.193927906          4,326,399      LLC-loads                
+I0428 21:10:25.715320 168283 data_layer.cpp:73] Restarting data prefetching from start.
+   459.194126052      8,385,234,113      instructions:u           
+   459.194126052          4,115,521      LLC-loads                
+I0428 21:10:27.177150 168281 solver.cpp:218] Iteration 4700 (11.6158 iter/s, 8.609s/100 iters), loss = 0.00476422
+I0428 21:10:27.177181 168281 solver.cpp:237]     Train net output #0: loss = 0.00476418 (* 1 = 0.00476418 loss)
+I0428 21:10:27.177187 168281 sgd_solver.cpp:105] Iteration 4700, lr = 0.00749052
+   460.194326792      8,406,573,019      instructions:u           
+   460.194326792          4,308,658      LLC-loads                
+   461.194507424      8,398,933,141      instructions:u           
+   461.194507424          4,115,768      LLC-loads                
+   462.194760953      8,388,606,112      instructions:u           
+   462.194760953          4,345,800      LLC-loads                
+   463.194960350      8,421,722,816      instructions:u           
+   463.194960350          4,297,780      LLC-loads                
+   464.195157892      8,375,828,366      instructions:u           
+   464.195157892          4,120,948      LLC-loads                
+   465.195339860      8,388,798,539      instructions:u           
+   465.195339860          4,310,950      LLC-loads                
+   466.195540227      8,404,082,339      instructions:u           
+   466.195540227          4,094,831      LLC-loads                
+   467.195742026      8,392,962,632      instructions:u           
+   467.195742026          4,343,495      LLC-loads                
+   468.195934856      8,405,627,209      instructions:u           
+   468.195934856          4,297,828      LLC-loads                
+I0428 21:10:35.785791 168281 solver.cpp:218] Iteration 4800 (11.6171 iter/s, 8.608s/100 iters), loss = 0.0146217
+I0428 21:10:35.785823 168281 solver.cpp:237]     Train net output #0: loss = 0.0146216 (* 1 = 0.0146216 loss)
+I0428 21:10:35.785850 168281 sgd_solver.cpp:105] Iteration 4800, lr = 0.00745253
+   469.196114025      8,381,199,727      instructions:u           
+   469.196114025          4,109,090      LLC-loads                
+   470.196331330      8,394,781,660      instructions:u           
+   470.196331330          4,321,950      LLC-loads                
+   471.196533957      8,419,020,613      instructions:u           
+   471.196533957          4,311,425      LLC-loads                
+   472.196738396      8,394,762,200      instructions:u           
+   472.196738396          4,122,776      LLC-loads                
+   473.196920068      8,391,180,288      instructions:u           
+   473.196920068          4,303,560      LLC-loads                
+   474.197106791      8,386,910,200      instructions:u           
+   474.197106791          4,096,451      LLC-loads                
+   475.197302836      8,396,016,483      instructions:u           
+   475.197302836          4,333,141      LLC-loads                
+#           time             counts unit events
+   476.197503894      8,409,786,289      instructions:u           
+   476.197503894          4,288,055      LLC-loads                
+   477.197690953      8,387,719,242      instructions:u           
+   477.197690953          4,116,943      LLC-loads                
+I0428 21:10:44.395637 168281 solver.cpp:218] Iteration 4900 (11.6158 iter/s, 8.609s/100 iters), loss = 0.00547074
+I0428 21:10:44.395664 168281 solver.cpp:237]     Train net output #0: loss = 0.0054707 (* 1 = 0.0054707 loss)
+I0428 21:10:44.395671 168281 sgd_solver.cpp:105] Iteration 4900, lr = 0.00741498
+   478.197884365      8,395,963,093      instructions:u           
+   478.197884365          4,317,057      LLC-loads                
+   479.198084646      8,407,863,390      instructions:u           
+   479.198084646          4,079,002      LLC-loads                
+   480.198274245      8,386,136,977      instructions:u           
+   480.198274245          4,333,098      LLC-loads                
+   481.198456950      8,399,579,826      instructions:u           
+   481.198456950          4,290,261      LLC-loads                
+   482.198722840      8,402,387,521      instructions:u           
+   482.198722840          4,107,540      LLC-loads                
+   483.198926615      8,392,476,388      instructions:u           
+   483.198926615          4,336,580      LLC-loads                
+   484.199124403      8,409,388,832      instructions:u           
+   484.199124403          4,283,396      LLC-loads                
+   485.199311059      8,386,381,151      instructions:u           
+   485.199311059          4,111,556      LLC-loads                
+I0428 21:10:52.919018 168281 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5000.caffemodel
+F0428 21:10:53.002064 168281 io.cpp:69] Check failed: proto.SerializeToOstream(&output) 
+*** Check failure stack trace: ***
+    @     0x7fe986bf85cd  google::LogMessage::Fail()
+    @     0x7fe986bfa433  google::LogMessage::SendToLog()
+    @     0x7fe986bf815b  google::LogMessage::Flush()
+    @     0x7fe986bfae1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fe986fa2e55  caffe::WriteProtoToBinaryFile()
+    @     0x7fe9870e8076  caffe::Solver<>::SnapshotToBinaryProto()
+    @     0x7fe9870e817a  caffe::Solver<>::Snapshot()
+    @     0x7fe9870ebce6  caffe::Solver<>::Step()
+    @     0x7fe9870ec72a  caffe::Solver<>::Solve()
+    @           0x40a5c4  train()
+    @           0x406fa0  main
+    @     0x7fe985b69830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+Aborted (core dumped)
+   485.998921259      4,614,441,884      instructions:u           
+   485.998921259          2,463,781      LLC-loads                

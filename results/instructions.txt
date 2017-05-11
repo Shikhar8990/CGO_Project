@@ -1,0 +1,5 @@
+     2,421,157,562      instructions:u            #    1.29  insns per cycle          ( +-  0.18% )
+     2,411,472,964      instructions:u            #    1.21  insns per cycle          ( +-  0.31% )
+     2,418,424,148      instructions:u            #    1.19  insns per cycle          ( +-  0.31% )
+     2,420,842,311      instructions:u            #    1.08  insns per cycle          ( +-  0.10% )
+     2,414,877,609      instructions:u            #    1.30  insns per cycle          ( +-  0.47% )

@@ -1,0 +1,1732 @@
+I0428 20:54:38.305332 168267 caffe.cpp:211] Use CPU.
+I0428 20:54:38.305534 168267 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0428 20:54:38.305615 168267 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0428 20:54:38.305765 168267 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0428 20:54:38.305778 168267 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0428 20:54:38.305846 168267 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 20:54:38.305896 168267 layer_factory.hpp:77] Creating layer mnist
+I0428 20:54:38.305974 168267 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0428 20:54:38.305995 168267 net.cpp:84] Creating Layer mnist
+I0428 20:54:38.306005 168267 net.cpp:380] mnist -> data
+I0428 20:54:38.306022 168267 net.cpp:380] mnist -> label
+I0428 20:54:38.306047 168267 data_layer.cpp:45] output data size: 64,1,28,28
+I0428 20:54:38.306419 168267 net.cpp:122] Setting up mnist
+I0428 20:54:38.306445 168267 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0428 20:54:38.306450 168267 net.cpp:129] Top shape: 64 (64)
+I0428 20:54:38.306453 168267 net.cpp:137] Memory required for data: 200960
+I0428 20:54:38.306458 168267 layer_factory.hpp:77] Creating layer conv1
+I0428 20:54:38.306471 168267 net.cpp:84] Creating Layer conv1
+I0428 20:54:38.306476 168267 net.cpp:406] conv1 <- data
+I0428 20:54:38.306485 168267 net.cpp:380] conv1 -> conv1
+I0428 20:54:38.306524 168267 net.cpp:122] Setting up conv1
+I0428 20:54:38.306530 168267 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0428 20:54:38.306535 168267 net.cpp:137] Memory required for data: 3150080
+I0428 20:54:38.306550 168267 layer_factory.hpp:77] Creating layer pool1
+I0428 20:54:38.306555 168267 net.cpp:84] Creating Layer pool1
+I0428 20:54:38.306565 168267 net.cpp:406] pool1 <- conv1
+I0428 20:54:38.306576 168267 net.cpp:380] pool1 -> pool1
+I0428 20:54:38.306588 168267 net.cpp:122] Setting up pool1
+I0428 20:54:38.306594 168267 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0428 20:54:38.306598 168267 net.cpp:137] Memory required for data: 3887360
+I0428 20:54:38.306602 168267 layer_factory.hpp:77] Creating layer conv2
+I0428 20:54:38.306608 168267 net.cpp:84] Creating Layer conv2
+I0428 20:54:38.306612 168267 net.cpp:406] conv2 <- pool1
+I0428 20:54:38.306617 168267 net.cpp:380] conv2 -> conv2
+I0428 20:54:38.306802 168267 net.cpp:122] Setting up conv2
+I0428 20:54:38.306809 168267 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0428 20:54:38.306813 168267 net.cpp:137] Memory required for data: 4706560
+I0428 20:54:38.306820 168267 layer_factory.hpp:77] Creating layer pool2
+I0428 20:54:38.306826 168267 net.cpp:84] Creating Layer pool2
+I0428 20:54:38.306829 168267 net.cpp:406] pool2 <- conv2
+I0428 20:54:38.306833 168267 net.cpp:380] pool2 -> pool2
+I0428 20:54:38.306841 168267 net.cpp:122] Setting up pool2
+I0428 20:54:38.306845 168267 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0428 20:54:38.306849 168267 net.cpp:137] Memory required for data: 4911360
+I0428 20:54:38.306852 168267 layer_factory.hpp:77] Creating layer ip1
+I0428 20:54:38.306859 168267 net.cpp:84] Creating Layer ip1
+I0428 20:54:38.306861 168267 net.cpp:406] ip1 <- pool2
+I0428 20:54:38.306867 168267 net.cpp:380] ip1 -> ip1
+I0428 20:54:38.309588 168267 net.cpp:122] Setting up ip1
+I0428 20:54:38.309597 168267 net.cpp:129] Top shape: 64 500 (32000)
+I0428 20:54:38.309600 168267 net.cpp:137] Memory required for data: 5039360
+I0428 20:54:38.309608 168267 layer_factory.hpp:77] Creating layer relu1
+I0428 20:54:38.309613 168267 net.cpp:84] Creating Layer relu1
+I0428 20:54:38.309617 168267 net.cpp:406] relu1 <- ip1
+I0428 20:54:38.309623 168267 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 20:54:38.309628 168267 net.cpp:122] Setting up relu1
+I0428 20:54:38.309633 168267 net.cpp:129] Top shape: 64 500 (32000)
+I0428 20:54:38.309635 168267 net.cpp:137] Memory required for data: 5167360
+I0428 20:54:38.309638 168267 layer_factory.hpp:77] Creating layer ip2
+I0428 20:54:38.309643 168267 net.cpp:84] Creating Layer ip2
+I0428 20:54:38.309646 168267 net.cpp:406] ip2 <- ip1
+I0428 20:54:38.309651 168267 net.cpp:380] ip2 -> ip2
+I0428 20:54:38.309697 168267 net.cpp:122] Setting up ip2
+I0428 20:54:38.309702 168267 net.cpp:129] Top shape: 64 10 (640)
+I0428 20:54:38.309705 168267 net.cpp:137] Memory required for data: 5169920
+I0428 20:54:38.309710 168267 layer_factory.hpp:77] Creating layer loss
+I0428 20:54:38.309715 168267 net.cpp:84] Creating Layer loss
+I0428 20:54:38.309718 168267 net.cpp:406] loss <- ip2
+I0428 20:54:38.309722 168267 net.cpp:406] loss <- label
+I0428 20:54:38.309728 168267 net.cpp:380] loss -> loss
+I0428 20:54:38.309738 168267 layer_factory.hpp:77] Creating layer loss
+I0428 20:54:38.309751 168267 net.cpp:122] Setting up loss
+I0428 20:54:38.309756 168267 net.cpp:129] Top shape: (1)
+I0428 20:54:38.309758 168267 net.cpp:132]     with loss weight 1
+I0428 20:54:38.309769 168267 net.cpp:137] Memory required for data: 5169924
+I0428 20:54:38.309773 168267 net.cpp:198] loss needs backward computation.
+I0428 20:54:38.309778 168267 net.cpp:198] ip2 needs backward computation.
+I0428 20:54:38.309782 168267 net.cpp:198] relu1 needs backward computation.
+I0428 20:54:38.309785 168267 net.cpp:198] ip1 needs backward computation.
+I0428 20:54:38.309788 168267 net.cpp:198] pool2 needs backward computation.
+I0428 20:54:38.309792 168267 net.cpp:198] conv2 needs backward computation.
+I0428 20:54:38.309795 168267 net.cpp:198] pool1 needs backward computation.
+I0428 20:54:38.309798 168267 net.cpp:198] conv1 needs backward computation.
+I0428 20:54:38.309803 168267 net.cpp:200] mnist does not need backward computation.
+I0428 20:54:38.309804 168267 net.cpp:242] This network produces output loss
+I0428 20:54:38.309813 168267 net.cpp:255] Network initialization done.
+I0428 20:54:38.309937 168267 solver.cpp:172] Creating test net (#0) specified by net file: examples/mnist/lenet_train_test.prototxt
+I0428 20:54:38.309969 168267 net.cpp:294] The NetState phase (1) differed from the phase (0) specified by a rule in layer mnist
+I0428 20:54:38.310042 168267 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 20:54:38.310101 168267 layer_factory.hpp:77] Creating layer mnist
+I0428 20:54:38.310139 168267 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_test_lmdb
+I0428 20:54:38.310153 168267 net.cpp:84] Creating Layer mnist
+I0428 20:54:38.310158 168267 net.cpp:380] mnist -> data
+I0428 20:54:38.310166 168267 net.cpp:380] mnist -> label
+I0428 20:54:38.310178 168267 data_layer.cpp:45] output data size: 100,1,28,28
+I0428 20:54:38.310217 168267 net.cpp:122] Setting up mnist
+I0428 20:54:38.310240 168267 net.cpp:129] Top shape: 100 1 28 28 (78400)
+I0428 20:54:38.310245 168267 net.cpp:129] Top shape: 100 (100)
+I0428 20:54:38.310247 168267 net.cpp:137] Memory required for data: 314000
+I0428 20:54:38.310250 168267 layer_factory.hpp:77] Creating layer label_mnist_1_split
+I0428 20:54:38.310258 168267 net.cpp:84] Creating Layer label_mnist_1_split
+I0428 20:54:38.310262 168267 net.cpp:406] label_mnist_1_split <- label
+I0428 20:54:38.310267 168267 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_0
+I0428 20:54:38.310284 168267 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_1
+I0428 20:54:38.310292 168267 net.cpp:122] Setting up label_mnist_1_split
+I0428 20:54:38.310297 168267 net.cpp:129] Top shape: 100 (100)
+I0428 20:54:38.310299 168267 net.cpp:129] Top shape: 100 (100)
+I0428 20:54:38.310302 168267 net.cpp:137] Memory required for data: 314800
+I0428 20:54:38.310304 168267 layer_factory.hpp:77] Creating layer conv1
+I0428 20:54:38.310315 168267 net.cpp:84] Creating Layer conv1
+I0428 20:54:38.310318 168267 net.cpp:406] conv1 <- data
+I0428 20:54:38.310340 168267 net.cpp:380] conv1 -> conv1
+I0428 20:54:38.310367 168267 net.cpp:122] Setting up conv1
+I0428 20:54:38.310374 168267 net.cpp:129] Top shape: 100 20 24 24 (1152000)
+I0428 20:54:38.310377 168267 net.cpp:137] Memory required for data: 4922800
+I0428 20:54:38.310395 168267 layer_factory.hpp:77] Creating layer pool1
+I0428 20:54:38.310401 168267 net.cpp:84] Creating Layer pool1
+I0428 20:54:38.310405 168267 net.cpp:406] pool1 <- conv1
+I0428 20:54:38.310410 168267 net.cpp:380] pool1 -> pool1
+I0428 20:54:38.310417 168267 net.cpp:122] Setting up pool1
+I0428 20:54:38.310421 168267 net.cpp:129] Top shape: 100 20 12 12 (288000)
+I0428 20:54:38.310425 168267 net.cpp:137] Memory required for data: 6074800
+I0428 20:54:38.310428 168267 layer_factory.hpp:77] Creating layer conv2
+I0428 20:54:38.310437 168267 net.cpp:84] Creating Layer conv2
+I0428 20:54:38.310441 168267 net.cpp:406] conv2 <- pool1
+I0428 20:54:38.310446 168267 net.cpp:380] conv2 -> conv2
+I0428 20:54:38.310631 168267 net.cpp:122] Setting up conv2
+I0428 20:54:38.310636 168267 net.cpp:129] Top shape: 100 50 8 8 (320000)
+I0428 20:54:38.310639 168267 net.cpp:137] Memory required for data: 7354800
+I0428 20:54:38.310647 168267 layer_factory.hpp:77] Creating layer pool2
+I0428 20:54:38.310654 168267 net.cpp:84] Creating Layer pool2
+I0428 20:54:38.310657 168267 net.cpp:406] pool2 <- conv2
+I0428 20:54:38.310662 168267 net.cpp:380] pool2 -> pool2
+I0428 20:54:38.310669 168267 net.cpp:122] Setting up pool2
+I0428 20:54:38.310673 168267 net.cpp:129] Top shape: 100 50 4 4 (80000)
+I0428 20:54:38.310677 168267 net.cpp:137] Memory required for data: 7674800
+I0428 20:54:38.310679 168267 layer_factory.hpp:77] Creating layer ip1
+I0428 20:54:38.310686 168267 net.cpp:84] Creating Layer ip1
+I0428 20:54:38.310690 168267 net.cpp:406] ip1 <- pool2
+I0428 20:54:38.310694 168267 net.cpp:380] ip1 -> ip1
+I0428 20:54:38.313356 168267 net.cpp:122] Setting up ip1
+I0428 20:54:38.313366 168267 net.cpp:129] Top shape: 100 500 (50000)
+I0428 20:54:38.313369 168267 net.cpp:137] Memory required for data: 7874800
+I0428 20:54:38.313379 168267 layer_factory.hpp:77] Creating layer relu1
+I0428 20:54:38.313385 168267 net.cpp:84] Creating Layer relu1
+I0428 20:54:38.313388 168267 net.cpp:406] relu1 <- ip1
+I0428 20:54:38.313393 168267 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 20:54:38.313415 168267 net.cpp:122] Setting up relu1
+I0428 20:54:38.313418 168267 net.cpp:129] Top shape: 100 500 (50000)
+I0428 20:54:38.313421 168267 net.cpp:137] Memory required for data: 8074800
+I0428 20:54:38.313426 168267 layer_factory.hpp:77] Creating layer ip2
+I0428 20:54:38.313433 168267 net.cpp:84] Creating Layer ip2
+I0428 20:54:38.313436 168267 net.cpp:406] ip2 <- ip1
+I0428 20:54:38.313442 168267 net.cpp:380] ip2 -> ip2
+I0428 20:54:38.313486 168267 net.cpp:122] Setting up ip2
+I0428 20:54:38.313491 168267 net.cpp:129] Top shape: 100 10 (1000)
+I0428 20:54:38.313494 168267 net.cpp:137] Memory required for data: 8078800
+I0428 20:54:38.313500 168267 layer_factory.hpp:77] Creating layer ip2_ip2_0_split
+I0428 20:54:38.313504 168267 net.cpp:84] Creating Layer ip2_ip2_0_split
+I0428 20:54:38.313508 168267 net.cpp:406] ip2_ip2_0_split <- ip2
+I0428 20:54:38.313513 168267 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_0
+I0428 20:54:38.313520 168267 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_1
+I0428 20:54:38.313526 168267 net.cpp:122] Setting up ip2_ip2_0_split
+I0428 20:54:38.313530 168267 net.cpp:129] Top shape: 100 10 (1000)
+I0428 20:54:38.313534 168267 net.cpp:129] Top shape: 100 10 (1000)
+I0428 20:54:38.313537 168267 net.cpp:137] Memory required for data: 8086800
+I0428 20:54:38.313540 168267 layer_factory.hpp:77] Creating layer accuracy
+I0428 20:54:38.313545 168267 net.cpp:84] Creating Layer accuracy
+I0428 20:54:38.313549 168267 net.cpp:406] accuracy <- ip2_ip2_0_split_0
+I0428 20:54:38.313554 168267 net.cpp:406] accuracy <- label_mnist_1_split_0
+I0428 20:54:38.313558 168267 net.cpp:380] accuracy -> accuracy
+I0428 20:54:38.313565 168267 net.cpp:122] Setting up accuracy
+I0428 20:54:38.313568 168267 net.cpp:129] Top shape: (1)
+I0428 20:54:38.313572 168267 net.cpp:137] Memory required for data: 8086804
+I0428 20:54:38.313575 168267 layer_factory.hpp:77] Creating layer loss
+I0428 20:54:38.313581 168267 net.cpp:84] Creating Layer loss
+I0428 20:54:38.313587 168267 net.cpp:406] loss <- ip2_ip2_0_split_1
+I0428 20:54:38.313598 168267 net.cpp:406] loss <- label_mnist_1_split_1
+I0428 20:54:38.313603 168267 net.cpp:380] loss -> loss
+I0428 20:54:38.313609 168267 layer_factory.hpp:77] Creating layer loss
+I0428 20:54:38.313624 168267 net.cpp:122] Setting up loss
+I0428 20:54:38.313629 168267 net.cpp:129] Top shape: (1)
+I0428 20:54:38.313632 168267 net.cpp:132]     with loss weight 1
+I0428 20:54:38.313639 168267 net.cpp:137] Memory required for data: 8086808
+I0428 20:54:38.313642 168267 net.cpp:198] loss needs backward computation.
+I0428 20:54:38.313647 168267 net.cpp:200] accuracy does not need backward computation.
+I0428 20:54:38.313652 168267 net.cpp:198] ip2_ip2_0_split needs backward computation.
+I0428 20:54:38.313654 168267 net.cpp:198] ip2 needs backward computation.
+I0428 20:54:38.313658 168267 net.cpp:198] relu1 needs backward computation.
+I0428 20:54:38.313663 168267 net.cpp:198] ip1 needs backward computation.
+I0428 20:54:38.313665 168267 net.cpp:198] pool2 needs backward computation.
+I0428 20:54:38.313668 168267 net.cpp:198] conv2 needs backward computation.
+I0428 20:54:38.313671 168267 net.cpp:198] pool1 needs backward computation.
+I0428 20:54:38.313675 168267 net.cpp:198] conv1 needs backward computation.
+I0428 20:54:38.313679 168267 net.cpp:200] label_mnist_1_split does not need backward computation.
+I0428 20:54:38.313683 168267 net.cpp:200] mnist does not need backward computation.
+I0428 20:54:38.313686 168267 net.cpp:242] This network produces output accuracy
+I0428 20:54:38.313693 168267 net.cpp:242] This network produces output loss
+I0428 20:54:38.313704 168267 net.cpp:255] Network initialization done.
+I0428 20:54:38.313755 168267 solver.cpp:56] Solver scaffolding done.
+I0428 20:54:38.313778 168267 caffe.cpp:248] Starting Optimization
+I0428 20:54:38.313783 168267 solver.cpp:272] Solving LeNet
+I0428 20:54:38.313786 168267 solver.cpp:273] Learning Rate Policy: inv
+I0428 20:54:38.314404 168267 solver.cpp:330] Iteration 0, Testing net (#0)
+#           time             counts unit events
+     1.000394070        444,257,621      branches:u               
+     1.000394070         30,458,742      cache-references:u       
+     2.000592983        508,512,047      branches:u               
+     2.000592983         35,611,802      cache-references:u       
+     3.000768915        505,682,174      branches:u               
+     3.000768915         36,013,315      cache-references:u       
+     4.000951604        493,001,045      branches:u               
+     4.000951604         34,380,541      cache-references:u       
+     5.001126172        489,558,995      branches:u               
+     5.001126172         34,865,737      cache-references:u       
+I0428 20:54:43.663825 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:54:43.889137 168267 solver.cpp:397]     Test net output #0: accuracy = 0.0568
+I0428 20:54:43.889164 168267 solver.cpp:397]     Test net output #1: loss = 2.37333 (* 1 = 2.37333 loss)
+I0428 20:54:43.983630 168267 solver.cpp:218] Iteration 0 (-4.65496e-39 iter/s, 5.669s/100 iters), loss = 2.38389
+I0428 20:54:43.983659 168267 solver.cpp:237]     Train net output #0: loss = 2.38389 (* 1 = 2.38389 loss)
+I0428 20:54:43.983669 168267 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     6.001314018        480,289,306      branches:u               
+     6.001314018         34,697,654      cache-references:u       
+     7.001488856        470,333,202      branches:u               
+     7.001488856         37,296,184      cache-references:u       
+     8.001667785        469,708,067      branches:u               
+     8.001667785         36,968,651      cache-references:u       
+     9.001847280        469,075,558      branches:u               
+     9.001847280         37,091,001      cache-references:u       
+    10.002022122        467,829,721      branches:u               
+    10.002022122         36,483,397      cache-references:u       
+    11.002210707        467,906,841      branches:u               
+    11.002210707         37,325,696      cache-references:u       
+    12.002399236        469,238,443      branches:u               
+    12.002399236         36,602,575      cache-references:u       
+    13.002574267        468,755,309      branches:u               
+    13.002574267         37,242,786      cache-references:u       
+    14.002748447        467,578,565      branches:u               
+    14.002748447         36,649,840      cache-references:u       
+I0428 20:54:52.692888 168267 solver.cpp:218] Iteration 100 (11.4824 iter/s, 8.709s/100 iters), loss = 0.182562
+I0428 20:54:52.692920 168267 solver.cpp:237]     Train net output #0: loss = 0.182562 (* 1 = 0.182562 loss)
+I0428 20:54:52.692926 168267 sgd_solver.cpp:105] Iteration 100, lr = 0.00992565
+    15.002920449        470,472,536      branches:u               
+    15.002920449         37,226,878      cache-references:u       
+    16.003101451        466,405,728      branches:u               
+    16.003101451         36,618,168      cache-references:u       
+    17.003278136        469,913,965      branches:u               
+    17.003278136         37,264,354      cache-references:u       
+    18.003464554        466,412,680      branches:u               
+    18.003464554         36,548,953      cache-references:u       
+    19.003642749        470,084,164      branches:u               
+    19.003642749         37,104,710      cache-references:u       
+    20.003820783        467,501,758      branches:u               
+    20.003820783         36,707,512      cache-references:u       
+    21.004009188        470,149,133      branches:u               
+    21.004009188         37,078,635      cache-references:u       
+    22.004184804        467,065,110      branches:u               
+    22.004184804         36,808,773      cache-references:u       
+    23.004354444        468,953,884      branches:u               
+    23.004354444         36,806,128      cache-references:u       
+I0428 20:55:01.404656 168267 solver.cpp:218] Iteration 200 (11.4797 iter/s, 8.711s/100 iters), loss = 0.143153
+I0428 20:55:01.404688 168267 solver.cpp:237]     Train net output #0: loss = 0.143153 (* 1 = 0.143153 loss)
+I0428 20:55:01.404695 168267 sgd_solver.cpp:105] Iteration 200, lr = 0.00985258
+    24.004525271        466,446,559      branches:u               
+    24.004525271         36,950,418      cache-references:u       
+    25.004694253        470,162,629      branches:u               
+    25.004694253         36,773,814      cache-references:u       
+#           time             counts unit events
+    26.004879354        467,515,715      branches:u               
+    26.004879354         37,132,755      cache-references:u       
+    27.005063312        468,887,990      branches:u               
+    27.005063312         36,786,796      cache-references:u       
+    28.005238046        467,970,056      branches:u               
+    28.005238046         37,124,954      cache-references:u       
+    29.005415477        468,464,900      branches:u               
+    29.005415477         36,813,879      cache-references:u       
+    30.005593281        469,171,401      branches:u               
+    30.005593281         37,074,130      cache-references:u       
+    31.005830686        469,239,844      branches:u               
+    31.005830686         36,814,239      cache-references:u       
+I0428 20:55:10.112853 168267 solver.cpp:218] Iteration 300 (11.4837 iter/s, 8.708s/100 iters), loss = 0.196263
+I0428 20:55:10.113052 168267 solver.cpp:237]     Train net output #0: loss = 0.196263 (* 1 = 0.196263 loss)
+I0428 20:55:10.113060 168267 sgd_solver.cpp:105] Iteration 300, lr = 0.00978075
+    32.006024014        469,269,402      branches:u               
+    32.006024014         37,021,030      cache-references:u       
+    33.006198301        468,151,966      branches:u               
+    33.006198301         36,815,274      cache-references:u       
+    34.006383485        469,082,773      branches:u               
+    34.006383485         37,020,890      cache-references:u       
+    35.006565923        469,522,517      branches:u               
+    35.006565923         36,867,090      cache-references:u       
+    36.006764253        469,351,217      branches:u               
+    36.006764253         37,002,953      cache-references:u       
+    37.006939618        469,297,385      branches:u               
+    37.006939618         36,850,688      cache-references:u       
+    38.007115698        465,853,411      branches:u               
+    38.007115698         36,849,541      cache-references:u       
+    39.007291536        470,153,083      branches:u               
+    39.007291536         36,482,494      cache-references:u       
+    40.007470926        468,396,348      branches:u               
+    40.007470926         37,399,836      cache-references:u       
+I0428 20:55:18.817842 168267 solver.cpp:218] Iteration 400 (11.489 iter/s, 8.704s/100 iters), loss = 0.0755593
+I0428 20:55:18.817873 168267 solver.cpp:237]     Train net output #0: loss = 0.0755592 (* 1 = 0.0755592 loss)
+I0428 20:55:18.817879 168267 sgd_solver.cpp:105] Iteration 400, lr = 0.00971013
+    41.007703174        470,706,068      branches:u               
+    41.007703174         36,724,972      cache-references:u       
+    42.007878305        469,019,080      branches:u               
+    42.007878305         37,240,261      cache-references:u       
+    43.008056095        469,171,810      branches:u               
+    43.008056095         36,485,860      cache-references:u       
+    44.008232933        468,301,716      branches:u               
+    44.008232933         37,378,966      cache-references:u       
+    45.008421073        470,161,439      branches:u               
+    45.008421073         36,507,336      cache-references:u       
+    46.008669757        468,341,939      branches:u               
+    46.008669757         37,305,836      cache-references:u       
+    47.008846678        469,984,956      branches:u               
+    47.008846678         36,560,447      cache-references:u       
+    48.009023758        468,336,325      branches:u               
+    48.009023758         37,263,979      cache-references:u       
+    49.009212854        469,265,069      branches:u               
+    49.009212854         36,682,196      cache-references:u       
+I0428 20:55:27.433285 168267 solver.cpp:330] Iteration 500, Testing net (#0)
+    50.009387532        504,561,316      branches:u               
+    50.009387532         36,442,760      cache-references:u       
+#           time             counts unit events
+    51.009626496        516,686,988      branches:u               
+    51.009626496         36,825,978      cache-references:u       
+    52.009799336        516,421,965      branches:u               
+    52.009799336         36,195,776      cache-references:u       
+    53.009975710        517,442,657      branches:u               
+    53.009975710         35,967,913      cache-references:u       
+    54.010168350        515,845,777      branches:u               
+    54.010168350         36,645,785      cache-references:u       
+I0428 20:55:32.676364 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:55:32.893414 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9726
+I0428 20:55:32.893440 168267 solver.cpp:397]     Test net output #1: loss = 0.0877344 (* 1 = 0.0877344 loss)
+I0428 20:55:32.979475 168267 solver.cpp:218] Iteration 500 (7.06165 iter/s, 14.161s/100 iters), loss = 0.0985648
+I0428 20:55:32.979497 168267 solver.cpp:237]     Train net output #0: loss = 0.0985647 (* 1 = 0.0985647 loss)
+I0428 20:55:32.979504 168267 sgd_solver.cpp:105] Iteration 500, lr = 0.00964069
+    55.010343419        504,450,119      branches:u               
+    55.010343419         36,232,235      cache-references:u       
+    56.010575440        468,109,301      branches:u               
+    56.010575440         37,135,832      cache-references:u       
+    57.010754060        470,855,224      branches:u               
+    57.010754060         36,776,520      cache-references:u       
+    58.010930287        467,840,991      branches:u               
+    58.010930287         37,118,740      cache-references:u       
+    59.011120343        471,059,730      branches:u               
+    59.011120343         36,826,144      cache-references:u       
+    60.011296337        468,028,018      branches:u               
+    60.011296337         37,111,420      cache-references:u       
+    61.011482364        471,063,967      branches:u               
+    61.011482364         36,843,333      cache-references:u       
+    62.011659896        467,774,636      branches:u               
+    62.011659896         37,075,162      cache-references:u       
+    63.011839276        469,846,726      branches:u               
+    63.011839276         36,733,878      cache-references:u       
+I0428 20:55:41.676645 168267 solver.cpp:218] Iteration 600 (11.4982 iter/s, 8.697s/100 iters), loss = 0.10825
+I0428 20:55:41.676811 168267 solver.cpp:237]     Train net output #0: loss = 0.10825 (* 1 = 0.10825 loss)
+I0428 20:55:41.676820 168267 sgd_solver.cpp:105] Iteration 600, lr = 0.0095724
+    64.012016866        468,047,238      branches:u               
+    64.012016866         37,145,399      cache-references:u       
+    65.012210406        470,421,638      branches:u               
+    65.012210406         36,769,589      cache-references:u       
+    66.012398718        468,195,886      branches:u               
+    66.012398718         37,139,555      cache-references:u       
+    67.012578548        471,028,404      branches:u               
+    67.012578548         36,796,198      cache-references:u       
+    68.012761415        467,337,106      branches:u               
+    68.012761415         37,056,410      cache-references:u       
+    69.012942661        470,956,167      branches:u               
+    69.012942661         36,742,330      cache-references:u       
+    70.013118772        467,731,785      branches:u               
+    70.013118772         37,110,573      cache-references:u       
+    71.013300890        470,932,681      branches:u               
+    71.013300890         36,806,688      cache-references:u       
+    72.013481866        468,273,019      branches:u               
+    72.013481866         37,111,249      cache-references:u       
+I0428 20:55:50.373275 168267 solver.cpp:218] Iteration 700 (11.4995 iter/s, 8.696s/100 iters), loss = 0.109885
+I0428 20:55:50.373308 168267 solver.cpp:237]     Train net output #0: loss = 0.109885 (* 1 = 0.109885 loss)
+I0428 20:55:50.373316 168267 sgd_solver.cpp:105] Iteration 700, lr = 0.00950522
+    73.013666422        469,336,718      branches:u               
+    73.013666422         36,706,201      cache-references:u       
+    74.013849322        468,160,625      branches:u               
+    74.013849322         37,088,673      cache-references:u       
+    75.014039385        470,447,517      branches:u               
+    75.014039385         36,770,390      cache-references:u       
+#           time             counts unit events
+    76.014233174        468,357,214      branches:u               
+    76.014233174         37,122,258      cache-references:u       
+    77.014421284        470,186,754      branches:u               
+    77.014421284         36,759,753      cache-references:u       
+    78.014601726        467,436,015      branches:u               
+    78.014601726         37,054,607      cache-references:u       
+    79.014783089        469,468,360      branches:u               
+    79.014783089         36,758,723      cache-references:u       
+    80.014964505        469,167,037      branches:u               
+    80.014964505         37,092,585      cache-references:u       
+I0428 20:55:59.073266 168267 solver.cpp:218] Iteration 800 (11.4956 iter/s, 8.699s/100 iters), loss = 0.177221
+I0428 20:55:59.073297 168267 solver.cpp:237]     Train net output #0: loss = 0.177221 (* 1 = 0.177221 loss)
+I0428 20:55:59.073304 168267 sgd_solver.cpp:105] Iteration 800, lr = 0.00943913
+    81.015172358        469,923,450      branches:u               
+    81.015172358         36,762,480      cache-references:u       
+    82.015372020        468,371,134      branches:u               
+    82.015372020         37,040,049      cache-references:u       
+    83.015544732        467,875,580      branches:u               
+    83.015544732         36,747,516      cache-references:u       
+    84.015721021        468,783,825      branches:u               
+    84.015721021         37,022,322      cache-references:u       
+    85.015889173        468,749,129      branches:u               
+    85.015889173         36,813,216      cache-references:u       
+    86.016064373        469,102,258      branches:u               
+    86.016064373         36,992,677      cache-references:u       
+    87.016238035        468,673,796      branches:u               
+    87.016238035         36,868,764      cache-references:u       
+    88.016416597        468,448,829      branches:u               
+    88.016416597         36,965,972      cache-references:u       
+    89.016561492        469,434,716      branches:u               
+    89.016561492         36,928,271      cache-references:u       
+I0428 20:56:07.780732 168267 solver.cpp:218] Iteration 900 (11.485 iter/s, 8.707s/100 iters), loss = 0.191905
+I0428 20:56:07.780763 168267 solver.cpp:237]     Train net output #0: loss = 0.191905 (* 1 = 0.191905 loss)
+I0428 20:56:07.780769 168267 sgd_solver.cpp:105] Iteration 900, lr = 0.00937411
+    90.016736354        469,163,697      branches:u               
+    90.016736354         36,955,577      cache-references:u       
+    91.016891589        469,507,599      branches:u               
+    91.016891589         36,888,580      cache-references:u       
+    92.017069775        469,321,378      branches:u               
+    92.017069775         36,929,081      cache-references:u       
+I0428 20:56:10.652441 168269 data_layer.cpp:73] Restarting data prefetching from start.
+    93.017248647        468,522,789      branches:u               
+    93.017248647         36,819,814      cache-references:u       
+    94.017423963        469,257,318      branches:u               
+    94.017423963         37,019,411      cache-references:u       
+    95.017598935        469,607,386      branches:u               
+    95.017598935         36,934,221      cache-references:u       
+    96.017787187        469,697,733      branches:u               
+    96.017787187         36,973,977      cache-references:u       
+    97.017963782        469,698,747      branches:u               
+    97.017963782         36,934,102      cache-references:u       
+    98.018173991        468,221,074      branches:u               
+    98.018173991         36,968,907      cache-references:u       
+I0428 20:56:16.393811 168267 solver.cpp:330] Iteration 1000, Testing net (#0)
+    99.018355009        506,884,512      branches:u               
+    99.018355009         35,972,827      cache-references:u       
+   100.018533978        517,019,895      branches:u               
+   100.018533978         36,553,999      cache-references:u       
+#           time             counts unit events
+   101.018742223        516,577,064      branches:u               
+   101.018742223         36,502,756      cache-references:u       
+   102.018925698        516,377,397      branches:u               
+   102.018925698         35,840,129      cache-references:u       
+   103.019104807        516,987,432      branches:u               
+   103.019104807         36,405,940      cache-references:u       
+I0428 20:56:21.636521 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:56:21.853858 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9814
+I0428 20:56:21.853883 168267 solver.cpp:397]     Test net output #1: loss = 0.0592497 (* 1 = 0.0592497 loss)
+I0428 20:56:21.939867 168267 solver.cpp:218] Iteration 1000 (7.06265 iter/s, 14.159s/100 iters), loss = 0.0908004
+I0428 20:56:21.939891 168267 solver.cpp:237]     Train net output #0: loss = 0.0908003 (* 1 = 0.0908003 loss)
+I0428 20:56:21.939899 168267 sgd_solver.cpp:105] Iteration 1000, lr = 0.00931012
+   104.019291172        500,709,721      branches:u               
+   104.019291172         36,505,632      cache-references:u       
+   105.019492281        470,835,518      branches:u               
+   105.019492281         36,924,727      cache-references:u       
+   106.019677395        467,793,647      branches:u               
+   106.019677395         36,912,261      cache-references:u       
+   107.019850840        470,987,297      branches:u               
+   107.019850840         36,954,934      cache-references:u       
+   108.020028719        467,586,319      branches:u               
+   108.020028719         36,960,480      cache-references:u       
+   109.020204630        470,703,866      branches:u               
+   109.020204630         36,926,698      cache-references:u       
+   110.020383518        468,088,521      branches:u               
+   110.020383518         36,940,787      cache-references:u       
+   111.020574490        470,875,888      branches:u               
+   111.020574490         36,921,648      cache-references:u       
+   112.020753035        467,962,678      branches:u               
+   112.020753035         36,931,151      cache-references:u       
+I0428 20:56:30.637162 168267 solver.cpp:218] Iteration 1100 (11.4982 iter/s, 8.697s/100 iters), loss = 0.00457836
+I0428 20:56:30.637194 168267 solver.cpp:237]     Train net output #0: loss = 0.00457822 (* 1 = 0.00457822 loss)
+I0428 20:56:30.637199 168267 sgd_solver.cpp:105] Iteration 1100, lr = 0.00924715
+   113.020931137        469,566,050      branches:u               
+   113.020931137         36,801,056      cache-references:u       
+   114.021108927        467,184,507      branches:u               
+   114.021108927         36,955,724      cache-references:u       
+   115.021288439        471,135,608      branches:u               
+   115.021288439         36,825,083      cache-references:u       
+   116.021476737        468,405,273      branches:u               
+   116.021476737         37,013,179      cache-references:u       
+   117.021654482        470,399,795      branches:u               
+   117.021654482         36,851,498      cache-references:u       
+   118.021833053        466,611,328      branches:u               
+   118.021833053         36,986,339      cache-references:u       
+   119.022011471        470,753,302      branches:u               
+   119.022011471         36,785,789      cache-references:u       
+   120.022188349        468,117,373      branches:u               
+   120.022188349         37,104,674      cache-references:u       
+   121.022376604        470,719,078      branches:u               
+   121.022376604         36,807,527      cache-references:u       
+I0428 20:56:39.338568 168267 solver.cpp:218] Iteration 1200 (11.4929 iter/s, 8.701s/100 iters), loss = 0.0378476
+I0428 20:56:39.338598 168267 solver.cpp:237]     Train net output #0: loss = 0.0378475 (* 1 = 0.0378475 loss)
+I0428 20:56:39.338603 168267 sgd_solver.cpp:105] Iteration 1200, lr = 0.00918515
+   122.022572038        467,103,048      branches:u               
+   122.022572038         37,051,024      cache-references:u       
+   123.022749376        469,199,924      branches:u               
+   123.022749376         36,751,125      cache-references:u       
+   124.022930434        468,777,803      branches:u               
+   124.022930434         37,061,478      cache-references:u       
+   125.023108805        471,009,204      branches:u               
+   125.023108805         36,779,275      cache-references:u       
+#           time             counts unit events
+   126.023292771        468,116,121      branches:u               
+   126.023292771         37,087,638      cache-references:u       
+   127.023465633        470,179,950      branches:u               
+   127.023465633         36,723,097      cache-references:u       
+   128.023641962        467,703,804      branches:u               
+   128.023641962         37,069,024      cache-references:u       
+   129.023816379        469,280,179      branches:u               
+   129.023816379         36,722,484      cache-references:u       
+I0428 20:56:48.039908 168267 solver.cpp:218] Iteration 1300 (11.4929 iter/s, 8.701s/100 iters), loss = 0.0158359
+I0428 20:56:48.040056 168267 solver.cpp:237]     Train net output #0: loss = 0.0158358 (* 1 = 0.0158358 loss)
+I0428 20:56:48.040063 168267 sgd_solver.cpp:105] Iteration 1300, lr = 0.00912412
+   130.024011097        468,621,173      branches:u               
+   130.024011097         37,051,339      cache-references:u       
+   131.024193407        468,833,504      branches:u               
+   131.024193407         36,767,478      cache-references:u       
+   132.024365508        470,192,476      branches:u               
+   132.024365508         37,095,749      cache-references:u       
+   133.024536350        468,327,968      branches:u               
+   133.024536350         36,742,804      cache-references:u       
+   134.024709769        470,038,942      branches:u               
+   134.024709769         37,094,465      cache-references:u       
+   135.024886597        470,173,361      branches:u               
+   135.024886597         36,780,004      cache-references:u       
+   136.025131414        469,630,283      branches:u               
+   136.025131414         37,103,720      cache-references:u       
+   137.025320669        470,154,782      branches:u               
+   137.025320669         36,728,951      cache-references:u       
+   138.025499533        467,786,108      branches:u               
+   138.025499533         37,083,797      cache-references:u       
+I0428 20:56:56.736099 168267 solver.cpp:218] Iteration 1400 (11.4995 iter/s, 8.696s/100 iters), loss = 0.0089841
+I0428 20:56:56.736131 168267 solver.cpp:237]     Train net output #0: loss = 0.00898397 (* 1 = 0.00898397 loss)
+I0428 20:56:56.736137 168267 sgd_solver.cpp:105] Iteration 1400, lr = 0.00906403
+   139.025677070        470,508,748      branches:u               
+   139.025677070         36,782,012      cache-references:u       
+   140.025852527        468,770,345      branches:u               
+   140.025852527         37,089,186      cache-references:u       
+   141.026038264        471,060,557      branches:u               
+   141.026038264         36,756,103      cache-references:u       
+   142.026216568        468,239,436      branches:u               
+   142.026216568         37,115,703      cache-references:u       
+   143.026391669        469,904,343      branches:u               
+   143.026391669         36,707,128      cache-references:u       
+   144.026563997        468,468,132      branches:u               
+   144.026563997         37,077,531      cache-references:u       
+   145.026740267        471,344,454      branches:u               
+   145.026740267         36,825,591      cache-references:u       
+   146.026924800        468,168,254      branches:u               
+   146.026924800         37,097,063      cache-references:u       
+   147.027101267        470,436,356      branches:u               
+   147.027101267         36,796,172      cache-references:u       
+I0428 20:57:05.344038 168267 solver.cpp:330] Iteration 1500, Testing net (#0)
+   148.027279927        508,991,165      branches:u               
+   148.027279927         36,229,613      cache-references:u       
+   149.027458888        516,725,123      branches:u               
+   149.027458888         36,681,108      cache-references:u       
+   150.027632318        516,465,782      branches:u               
+   150.027632318         36,255,782      cache-references:u       
+#           time             counts unit events
+   151.027816886        518,321,196      branches:u               
+   151.027816886         35,995,369      cache-references:u       
+   152.027991525        515,775,264      branches:u               
+   152.027991525         36,696,913      cache-references:u       
+I0428 20:57:10.584689 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:57:10.802091 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9853
+I0428 20:57:10.802115 168267 solver.cpp:397]     Test net output #1: loss = 0.0479909 (* 1 = 0.0479909 loss)
+I0428 20:57:10.887984 168267 solver.cpp:218] Iteration 1500 (7.06664 iter/s, 14.151s/100 iters), loss = 0.105734
+I0428 20:57:10.888008 168267 solver.cpp:237]     Train net output #0: loss = 0.105734 (* 1 = 0.105734 loss)
+I0428 20:57:10.888015 168267 sgd_solver.cpp:105] Iteration 1500, lr = 0.00900485
+   153.028164699        498,915,837      branches:u               
+   153.028164699         36,590,274      cache-references:u       
+   154.028338232        467,895,551      branches:u               
+   154.028338232         36,679,193      cache-references:u       
+   155.028510675        470,504,442      branches:u               
+   155.028510675         37,159,061      cache-references:u       
+   156.028689254        466,939,857      branches:u               
+   156.028689254         36,625,407      cache-references:u       
+   157.028858717        471,783,042      branches:u               
+   157.028858717         37,301,406      cache-references:u       
+   158.029029662        466,106,774      branches:u               
+   158.029029662         36,606,370      cache-references:u       
+   159.029204229        471,289,435      branches:u               
+   159.029204229         37,308,355      cache-references:u       
+   160.029394682        467,538,191      branches:u               
+   160.029394682         36,616,405      cache-references:u       
+   161.029578063        471,371,171      branches:u               
+   161.029578063         37,321,285      cache-references:u       
+I0428 20:57:19.589393 168267 solver.cpp:218] Iteration 1600 (11.4929 iter/s, 8.701s/100 iters), loss = 0.136705
+I0428 20:57:19.589565 168267 solver.cpp:237]     Train net output #0: loss = 0.136705 (* 1 = 0.136705 loss)
+I0428 20:57:19.589572 168267 sgd_solver.cpp:105] Iteration 1600, lr = 0.00894657
+   162.029745599        467,016,941      branches:u               
+   162.029745599         36,604,636      cache-references:u       
+   163.029919399        469,680,270      branches:u               
+   163.029919399         37,211,882      cache-references:u       
+   164.030109516        467,951,726      branches:u               
+   164.030109516         36,674,279      cache-references:u       
+   165.030310676        470,820,178      branches:u               
+   165.030310676         37,280,084      cache-references:u       
+   166.030514969        467,747,930      branches:u               
+   166.030514969         36,604,427      cache-references:u       
+   167.030697005        470,754,231      branches:u               
+   167.030697005         37,232,664      cache-references:u       
+   168.030874849        467,401,717      branches:u               
+   168.030874849         36,648,927      cache-references:u       
+   169.031053949        470,856,667      branches:u               
+   169.031053949         37,246,270      cache-references:u       
+   170.031234585        467,543,231      branches:u               
+   170.031234585         36,664,044      cache-references:u       
+I0428 20:57:28.291460 168267 solver.cpp:218] Iteration 1700 (11.4929 iter/s, 8.701s/100 iters), loss = 0.0298602
+I0428 20:57:28.291491 168267 solver.cpp:237]     Train net output #0: loss = 0.0298601 (* 1 = 0.0298601 loss)
+I0428 20:57:28.291497 168267 sgd_solver.cpp:105] Iteration 1700, lr = 0.00888916
+   171.031434615        471,120,712      branches:u               
+   171.031434615         37,260,208      cache-references:u       
+   172.031614961        468,431,205      branches:u               
+   172.031614961         36,703,151      cache-references:u       
+   173.031796841        469,426,536      branches:u               
+   173.031796841         37,156,300      cache-references:u       
+   174.031976990        467,770,372      branches:u               
+   174.031976990         36,702,697      cache-references:u       
+   175.032159300        470,576,703      branches:u               
+   175.032159300         37,165,867      cache-references:u       
+#           time             counts unit events
+   176.032408687        468,423,021      branches:u               
+   176.032408687         36,774,145      cache-references:u       
+   177.032601530        470,669,094      branches:u               
+   177.032601530         37,198,870      cache-references:u       
+   178.032776116        467,265,853      branches:u               
+   178.032776116         36,675,485      cache-references:u       
+I0428 20:57:36.989500 168267 solver.cpp:218] Iteration 1800 (11.4969 iter/s, 8.698s/100 iters), loss = 0.0123556
+I0428 20:57:36.989532 168267 solver.cpp:237]     Train net output #0: loss = 0.0123554 (* 1 = 0.0123554 loss)
+I0428 20:57:36.989537 168267 sgd_solver.cpp:105] Iteration 1800, lr = 0.0088326
+   179.032951213        471,089,924      branches:u               
+   179.032951213         37,213,374      cache-references:u       
+   180.033135149        468,041,535      branches:u               
+   180.033135149         36,713,637      cache-references:u       
+   181.033321031        471,057,208      branches:u               
+   181.033321031         37,234,823      cache-references:u       
+   182.033498477        467,502,545      branches:u               
+   182.033498477         36,664,546      cache-references:u       
+   183.033674070        469,883,616      branches:u               
+   183.033674070         37,122,933      cache-references:u       
+   184.033853412        454,314,025      branches:u               
+   184.033853412         35,950,647      cache-references:u       
+I0428 20:57:43.138725 168269 data_layer.cpp:73] Restarting data prefetching from start.
+   185.034028145        455,206,769      branches:u               
+   185.034028145         35,805,384      cache-references:u       
+   186.034212558        456,321,331      branches:u               
+   186.034212558         35,744,079      cache-references:u       
+   187.034391057        473,243,281      branches:u               
+   187.034391057         37,427,500      cache-references:u       
+I0428 20:57:45.766548 168267 solver.cpp:218] Iteration 1900 (11.3934 iter/s, 8.777s/100 iters), loss = 0.0879268
+I0428 20:57:45.766582 168267 solver.cpp:237]     Train net output #0: loss = 0.0879267 (* 1 = 0.0879267 loss)
+I0428 20:57:45.766587 168267 sgd_solver.cpp:105] Iteration 1900, lr = 0.00877687
+   188.034570163        470,453,938      branches:u               
+   188.034570163         36,858,189      cache-references:u       
+   189.034747498        470,956,622      branches:u               
+   189.034747498         37,356,038      cache-references:u       
+   190.034924715        470,792,895      branches:u               
+   190.034924715         36,732,997      cache-references:u       
+   191.035109173        471,503,950      branches:u               
+   191.035109173         37,451,484      cache-references:u       
+   192.035285600        470,640,975      branches:u               
+   192.035285600         36,912,258      cache-references:u       
+   193.035463318        471,138,336      branches:u               
+   193.035463318         37,191,586      cache-references:u       
+   194.035639464        472,065,600      branches:u               
+   194.035639464         36,870,172      cache-references:u       
+   195.035813673        470,481,609      branches:u               
+   195.035813673         37,246,732      cache-references:u       
+   196.036062676        473,231,849      branches:u               
+   196.036062676         37,218,775      cache-references:u       
+I0428 20:57:54.342964 168267 solver.cpp:330] Iteration 2000, Testing net (#0)
+   197.036265618        510,872,854      branches:u               
+   197.036265618         36,501,773      cache-references:u       
+   198.036448584        516,936,505      branches:u               
+   198.036448584         36,563,495      cache-references:u       
+   199.036628667        520,245,141      branches:u               
+   199.036628667         35,942,238      cache-references:u       
+   200.036804822        517,636,913      branches:u               
+   200.036804822         36,799,175      cache-references:u       
+#           time             counts unit events
+   201.037001255        517,386,124      branches:u               
+   201.037001255         36,215,672      cache-references:u       
+I0428 20:57:59.568531 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:57:59.785112 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9857
+I0428 20:57:59.785136 168267 solver.cpp:397]     Test net output #1: loss = 0.0414392 (* 1 = 0.0414392 loss)
+I0428 20:57:59.870617 168267 solver.cpp:218] Iteration 2000 (7.09019 iter/s, 14.104s/100 iters), loss = 0.0202675
+I0428 20:57:59.870640 168267 solver.cpp:237]     Train net output #0: loss = 0.0202673 (* 1 = 0.0202673 loss)
+I0428 20:57:59.870646 168267 sgd_solver.cpp:105] Iteration 2000, lr = 0.00872196
+   202.037172426        499,689,965      branches:u               
+   202.037172426         36,718,706      cache-references:u       
+   203.037348058        471,808,299      branches:u               
+   203.037348058         37,111,935      cache-references:u       
+   204.037524004        470,315,975      branches:u               
+   204.037524004         36,941,855      cache-references:u       
+   205.037697299        474,088,129      branches:u               
+   205.037697299         37,371,192      cache-references:u       
+   206.037884142        469,833,560      branches:u               
+   206.037884142         36,800,978      cache-references:u       
+   207.038081220        471,309,245      branches:u               
+   207.038081220         37,463,228      cache-references:u       
+   208.038274488        470,691,558      branches:u               
+   208.038274488         36,961,589      cache-references:u       
+   209.038460676        471,463,993      branches:u               
+   209.038460676         37,081,521      cache-references:u       
+   210.038630063        472,508,878      branches:u               
+   210.038630063         36,867,167      cache-references:u       
+I0428 20:58:08.529067 168267 solver.cpp:218] Iteration 2100 (11.55 iter/s, 8.658s/100 iters), loss = 0.020428
+I0428 20:58:08.529099 168267 solver.cpp:237]     Train net output #0: loss = 0.0204279 (* 1 = 0.0204279 loss)
+I0428 20:58:08.529105 168267 sgd_solver.cpp:105] Iteration 2100, lr = 0.00866784
+   211.038875270        471,706,350      branches:u               
+   211.038875270         37,272,605      cache-references:u       
+   212.039007837        473,005,428      branches:u               
+   212.039007837         37,193,413      cache-references:u       
+   213.039184214        469,920,847      branches:u               
+   213.039184214         36,874,237      cache-references:u       
+   214.039356092        473,680,887      branches:u               
+   214.039356092         37,384,388      cache-references:u       
+   215.039528699        469,837,998      branches:u               
+   215.039528699         36,829,322      cache-references:u       
+   216.039711478        470,037,556      branches:u               
+   216.039711478         37,433,727      cache-references:u       
+   217.039888163        472,493,429      branches:u               
+   217.039888163         37,010,047      cache-references:u       
+   218.040063575        470,348,056      branches:u               
+   218.040063575         37,067,316      cache-references:u       
+I0428 20:58:17.187090 168267 solver.cpp:218] Iteration 2200 (11.5513 iter/s, 8.657s/100 iters), loss = 0.0147213
+I0428 20:58:17.187121 168267 solver.cpp:237]     Train net output #0: loss = 0.0147211 (* 1 = 0.0147211 loss)
+I0428 20:58:17.187129 168267 sgd_solver.cpp:105] Iteration 2200, lr = 0.0086145
+   219.040237516        470,994,545      branches:u               
+   219.040237516         36,888,717      cache-references:u       
+   220.040409430        471,105,846      branches:u               
+   220.040409430         37,177,892      cache-references:u       
+   221.040585897        472,264,073      branches:u               
+   221.040585897         36,925,216      cache-references:u       
+   222.040757061        469,487,752      branches:u               
+   222.040757061         37,101,281      cache-references:u       
+   223.040937756        471,971,660      branches:u               
+   223.040937756         37,161,587      cache-references:u       
+   224.041109511        470,531,603      branches:u               
+   224.041109511         36,968,300      cache-references:u       
+   225.041275180        473,686,015      branches:u               
+   225.041275180         37,396,629      cache-references:u       
+#           time             counts unit events
+   226.041452714        469,482,725      branches:u               
+   226.041452714         36,818,006      cache-references:u       
+   227.041624902        470,282,382      branches:u               
+   227.041624902         37,428,692      cache-references:u       
+I0428 20:58:25.848809 168267 solver.cpp:218] Iteration 2300 (11.546 iter/s, 8.661s/100 iters), loss = 0.128651
+I0428 20:58:25.848943 168267 solver.cpp:237]     Train net output #0: loss = 0.12865 (* 1 = 0.12865 loss)
+I0428 20:58:25.848951 168267 sgd_solver.cpp:105] Iteration 2300, lr = 0.00856192
+   228.041813527        471,601,737      branches:u               
+   228.041813527         37,026,748      cache-references:u       
+   229.041991105        471,598,016      branches:u               
+   229.041991105         37,093,961      cache-references:u       
+   230.042168396        470,866,317      branches:u               
+   230.042168396         36,879,248      cache-references:u       
+   231.042362461        471,872,615      branches:u               
+   231.042362461         37,217,421      cache-references:u       
+   232.042560109        473,021,480      branches:u               
+   232.042560109         37,099,644      cache-references:u       
+   233.042741194        469,425,619      branches:u               
+   233.042741194         36,995,520      cache-references:u       
+   234.042923435        472,630,450      branches:u               
+   234.042923435         37,323,743      cache-references:u       
+   235.043103090        470,139,737      branches:u               
+   235.043103090         36,795,587      cache-references:u       
+   236.043293568        472,344,230      branches:u               
+   236.043293568         37,417,569      cache-references:u       
+I0428 20:58:34.510100 168267 solver.cpp:218] Iteration 2400 (11.546 iter/s, 8.661s/100 iters), loss = 0.00821456
+I0428 20:58:34.510130 168267 solver.cpp:237]     Train net output #0: loss = 0.00821445 (* 1 = 0.00821445 loss)
+I0428 20:58:34.510136 168267 sgd_solver.cpp:105] Iteration 2400, lr = 0.00851008
+   237.043469379        470,443,854      branches:u               
+   237.043469379         36,723,985      cache-references:u       
+   238.043659417        470,627,401      branches:u               
+   238.043659417         37,463,097      cache-references:u       
+   239.043843816        471,488,444      branches:u               
+   239.043843816         36,957,235      cache-references:u       
+   240.044027820        471,542,204      branches:u               
+   240.044027820         37,120,489      cache-references:u       
+   241.044284479        472,510,581      branches:u               
+   241.044284479         36,844,493      cache-references:u       
+   242.044467386        469,554,498      branches:u               
+   242.044467386         37,167,289      cache-references:u       
+   243.044651787        471,839,286      branches:u               
+   243.044651787         37,024,817      cache-references:u       
+   244.044835532        470,462,229      branches:u               
+   244.044835532         37,011,346      cache-references:u       
+I0428 20:58:43.086292 168267 solver.cpp:330] Iteration 2500, Testing net (#0)
+   245.045018783        476,674,743      branches:u               
+   245.045018783         37,117,263      cache-references:u       
+   246.045208103        520,637,304      branches:u               
+   246.045208103         36,381,229      cache-references:u       
+   247.045384202        518,945,295      branches:u               
+   247.045384202         36,776,107      cache-references:u       
+   248.045569466        520,111,981      branches:u               
+   248.045569466         35,915,499      cache-references:u       
+   249.045743790        518,160,811      branches:u               
+   249.045743790         36,842,709      cache-references:u       
+   250.045914638        517,155,745      branches:u               
+   250.045914638         36,188,303      cache-references:u       
+I0428 20:58:48.306380 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 20:58:48.522825 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9841
+I0428 20:58:48.522847 168267 solver.cpp:397]     Test net output #1: loss = 0.0490667 (* 1 = 0.0490667 loss)
+I0428 20:58:48.608317 168267 solver.cpp:218] Iteration 2500 (7.0932 iter/s, 14.098s/100 iters), loss = 0.0254517
+I0428 20:58:48.608341 168267 solver.cpp:237]     Train net output #0: loss = 0.0254516 (* 1 = 0.0254516 loss)
+I0428 20:58:48.608348 168267 sgd_solver.cpp:105] Iteration 2500, lr = 0.00845897
+#           time             counts unit events
+   251.046098802        487,246,293      branches:u               
+   251.046098802         36,773,151      cache-references:u       
+   252.046298176        472,387,965      branches:u               
+   252.046298176         37,442,753      cache-references:u       
+   253.046468524        470,263,979      branches:u               
+   253.046468524         36,732,825      cache-references:u       
+   254.046646238        470,976,064      branches:u               
+   254.046646238         37,504,192      cache-references:u       
+   255.046820396        471,613,684      branches:u               
+   255.046820396         36,969,804      cache-references:u       
+   256.047068104        472,432,504      branches:u               
+   256.047068104         37,221,890      cache-references:u       
+   257.047245331        473,380,557      branches:u               
+   257.047245331         37,063,698      cache-references:u       
+   258.047419811        469,780,246      branches:u               
+   258.047419811         37,100,427      cache-references:u       
+   259.047592826        473,199,102      branches:u               
+   259.047592826         37,384,735      cache-references:u       
+I0428 20:58:57.263240 168267 solver.cpp:218] Iteration 2600 (11.5553 iter/s, 8.654s/100 iters), loss = 0.0556793
+I0428 20:58:57.263406 168267 solver.cpp:237]     Train net output #0: loss = 0.0556791 (* 1 = 0.0556791 loss)
+I0428 20:58:57.263415 168267 sgd_solver.cpp:105] Iteration 2600, lr = 0.00840857
+   260.047770650        470,179,028      branches:u               
+   260.047770650         36,761,921      cache-references:u       
+   261.047959024        472,408,302      branches:u               
+   261.047959024         37,442,975      cache-references:u       
+   262.048147728        470,725,299      branches:u               
+   262.048147728         36,688,339      cache-references:u       
+   263.048329085        470,833,331      branches:u               
+   263.048329085         37,482,937      cache-references:u       
+   264.048511653        471,263,669      branches:u               
+   264.048511653         36,926,569      cache-references:u       
+   265.048692560        472,170,966      branches:u               
+   265.048692560         37,164,944      cache-references:u       
+   266.048880691        472,563,484      branches:u               
+   266.048880691         36,913,276      cache-references:u       
+   267.049064721        470,604,185      branches:u               
+   267.049064721         37,149,481      cache-references:u       
+I0428 20:59:05.920897 168267 solver.cpp:218] Iteration 2700 (11.5513 iter/s, 8.657s/100 iters), loss = 0.0768587
+I0428 20:59:05.920933 168267 solver.cpp:237]     Train net output #0: loss = 0.0768586 (* 1 = 0.0768586 loss)
+I0428 20:59:05.920940 168267 sgd_solver.cpp:105] Iteration 2700, lr = 0.00835886
+   268.049252135        471,914,301      branches:u               
+   268.049252135         37,238,523      cache-references:u       
+   269.049445799        470,464,452      branches:u               
+   269.049445799         36,942,020      cache-references:u       
+   270.049621673        473,190,002      branches:u               
+   270.049621673         37,458,953      cache-references:u       
+   271.049806983        470,767,738      branches:u               
+   271.049806983         36,788,299      cache-references:u       
+   272.049982210        471,432,833      branches:u               
+   272.049982210         37,489,699      cache-references:u       
+   273.050175115        471,047,998      branches:u               
+   273.050175115         36,946,099      cache-references:u       
+   274.050351015        472,168,831      branches:u               
+   274.050351015         37,198,243      cache-references:u       
+   275.050530475        473,258,425      branches:u               
+   275.050530475         37,036,475      cache-references:u       
+#           time             counts unit events
+   276.050717499        470,716,434      branches:u               
+   276.050717499         37,134,451      cache-references:u       
+I0428 20:59:14.573110 168267 solver.cpp:218] Iteration 2800 (11.558 iter/s, 8.652s/100 iters), loss = 0.00077495
+I0428 20:59:14.573139 168267 solver.cpp:237]     Train net output #0: loss = 0.000774838 (* 1 = 0.000774838 loss)
+I0428 20:59:14.573145 168267 sgd_solver.cpp:105] Iteration 2800, lr = 0.00830984
+   277.050897762        473,126,197      branches:u               
+   277.050897762         37,373,470      cache-references:u       
+I0428 20:59:15.267532 168269 data_layer.cpp:73] Restarting data prefetching from start.
+   278.051074343        469,662,140      branches:u               
+   278.051074343         36,775,230      cache-references:u       
+   279.051251186        472,479,238      branches:u               
+   279.051251186         37,478,160      cache-references:u       
+   280.051427710        471,284,372      branches:u               
+   280.051427710         37,089,537      cache-references:u       
+   281.051613990        472,512,878      branches:u               
+   281.051613990         37,210,356      cache-references:u       
+   282.051792477        472,037,645      branches:u               
+   282.051792477         36,888,623      cache-references:u       
+   283.051973327        470,392,674      branches:u               
+   283.051973327         37,193,953      cache-references:u       
+   284.052149067        473,151,859      branches:u               
+   284.052149067         37,100,305      cache-references:u       
+   285.052325607        471,020,714      branches:u               
+   285.052325607         37,045,160      cache-references:u       
+I0428 20:59:23.226431 168267 solver.cpp:218] Iteration 2900 (11.5567 iter/s, 8.653s/100 iters), loss = 0.0131729
+I0428 20:59:23.226459 168267 solver.cpp:237]     Train net output #0: loss = 0.0131728 (* 1 = 0.0131728 loss)
+I0428 20:59:23.226465 168267 sgd_solver.cpp:105] Iteration 2900, lr = 0.00826148
+   286.052511078        472,535,788      branches:u               
+   286.052511078         37,419,146      cache-references:u       
+   287.052687981        470,985,974      branches:u               
+   287.052687981         36,819,593      cache-references:u       
+   288.052880621        470,324,691      branches:u               
+   288.052880621         37,279,536      cache-references:u       
+   289.053061594        471,615,463      branches:u               
+   289.053061594         37,153,643      cache-references:u       
+   290.053243924        471,691,565      branches:u               
+   290.053243924         37,063,312      cache-references:u       
+   291.053433224        471,489,355      branches:u               
+   291.053433224         36,868,795      cache-references:u       
+   292.053574114        471,794,628      branches:u               
+   292.053574114         37,182,564      cache-references:u       
+   293.053759771        471,805,376      branches:u               
+   293.053759771         36,992,233      cache-references:u       
+I0428 20:59:31.799348 168267 solver.cpp:330] Iteration 3000, Testing net (#0)
+   294.053950354        490,229,581      branches:u               
+   294.053950354         36,755,443      cache-references:u       
+   295.054125151        518,453,899      branches:u               
+   295.054125151         36,653,693      cache-references:u       
+   296.054381368        519,220,732      branches:u               
+   296.054381368         35,926,643      cache-references:u       
+   297.054553888        517,699,969      branches:u               
+   297.054553888         36,752,882      cache-references:u       
+   298.054728164        516,777,414      branches:u               
+   298.054728164         36,354,827      cache-references:u       
+I0428 20:59:37.026304 168270 data_layer.cpp:73] Restarting data prefetching from start.
+   299.054903620        519,876,425      branches:u               
+   299.054903620         36,107,931      cache-references:u       
+I0428 20:59:37.243126 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9867
+I0428 20:59:37.243149 168267 solver.cpp:397]     Test net output #1: loss = 0.0402569 (* 1 = 0.0402569 loss)
+I0428 20:59:37.328394 168267 solver.cpp:218] Iteration 3000 (7.0917 iter/s, 14.101s/100 iters), loss = 0.0178347
+I0428 20:59:37.328418 168267 solver.cpp:237]     Train net output #0: loss = 0.0178346 (* 1 = 0.0178346 loss)
+I0428 20:59:37.328424 168267 sgd_solver.cpp:105] Iteration 3000, lr = 0.00821377
+   300.055074843        472,701,563      branches:u               
+   300.055074843         37,227,179      cache-references:u       
+#           time             counts unit events
+   301.055260280        470,353,543      branches:u               
+   301.055260280         37,147,101      cache-references:u       
+   302.055436374        471,863,242      branches:u               
+   302.055436374         37,191,475      cache-references:u       
+   303.055607262        469,434,974      branches:u               
+   303.055607262         36,881,831      cache-references:u       
+   304.055785579        456,936,936      branches:u               
+   304.055785579         36,256,939      cache-references:u       
+   305.055954433        458,043,999      branches:u               
+   305.055954433         35,744,640      cache-references:u       
+   306.056130901        457,383,359      branches:u               
+   306.056130901         36,248,508      cache-references:u       
+   307.056297687        471,059,533      branches:u               
+   307.056297687         36,842,965      cache-references:u       
+I0428 20:59:46.079788 168267 solver.cpp:218] Iteration 3100 (11.4273 iter/s, 8.751s/100 iters), loss = 0.00798564
+I0428 20:59:46.079820 168267 solver.cpp:237]     Train net output #0: loss = 0.00798553 (* 1 = 0.00798553 loss)
+I0428 20:59:46.079828 168267 sgd_solver.cpp:105] Iteration 3100, lr = 0.0081667
+   308.056482140        471,374,032      branches:u               
+   308.056482140         37,436,697      cache-references:u       
+   309.056665479        471,096,746      branches:u               
+   309.056665479         36,892,422      cache-references:u       
+   310.056834122        471,945,782      branches:u               
+   310.056834122         37,226,859      cache-references:u       
+   311.057082207        473,165,011      branches:u               
+   311.057082207         37,046,780      cache-references:u       
+   312.057255546        470,574,987      branches:u               
+   312.057255546         37,088,578      cache-references:u       
+   313.057446023        472,252,870      branches:u               
+   313.057446023         37,312,492      cache-references:u       
+   314.057621482        470,143,916      branches:u               
+   314.057621482         36,792,949      cache-references:u       
+   315.057798461        472,619,118      branches:u               
+   315.057798461         37,491,634      cache-references:u       
+   316.058106988        472,002,100      branches:u               
+   316.058106988         37,201,790      cache-references:u       
+I0428 20:59:54.732659 168267 solver.cpp:218] Iteration 3200 (11.558 iter/s, 8.652s/100 iters), loss = 0.0128572
+I0428 20:59:54.732692 168267 solver.cpp:237]     Train net output #0: loss = 0.0128571 (* 1 = 0.0128571 loss)
+I0428 20:59:54.732698 168267 sgd_solver.cpp:105] Iteration 3200, lr = 0.00812025
+   317.058315612        471,950,843      branches:u               
+   317.058315612         37,116,675      cache-references:u       
+   318.058494901        470,438,874      branches:u               
+   318.058494901         36,897,429      cache-references:u       
+   319.058690884        471,950,866      branches:u               
+   319.058690884         37,246,423      cache-references:u       
+   320.058869390        472,796,763      branches:u               
+   320.058869390         37,057,122      cache-references:u       
+   321.059055886        470,338,939      branches:u               
+   321.059055886         37,053,657      cache-references:u       
+   322.059254299        472,280,945      branches:u               
+   322.059254299         37,309,853      cache-references:u       
+   323.059432731        469,624,551      branches:u               
+   323.059432731         36,755,656      cache-references:u       
+   324.059611084        472,610,334      branches:u               
+   324.059611084         37,462,658      cache-references:u       
+   325.059791450        470,943,526      branches:u               
+   325.059791450         36,722,557      cache-references:u       
+I0428 21:00:03.390652 168267 solver.cpp:218] Iteration 3300 (11.5513 iter/s, 8.657s/100 iters), loss = 0.0358723
+I0428 21:00:03.390796 168267 solver.cpp:237]     Train net output #0: loss = 0.0358722 (* 1 = 0.0358722 loss)
+I0428 21:00:03.390805 168267 sgd_solver.cpp:105] Iteration 3300, lr = 0.00807442
+#           time             counts unit events
+   326.059975499        471,295,403      branches:u               
+   326.059975499         37,501,597      cache-references:u       
+   327.060156338        471,044,910      branches:u               
+   327.060156338         36,923,415      cache-references:u       
+   328.060343065        471,479,504      branches:u               
+   328.060343065         37,212,826      cache-references:u       
+   329.060542024        472,645,403      branches:u               
+   329.060542024         36,947,776      cache-references:u       
+   330.060725259        469,873,100      branches:u               
+   330.060725259         37,147,957      cache-references:u       
+   331.060919449        473,047,728      branches:u               
+   331.060919449         37,238,763      cache-references:u       
+   332.061102525        469,991,866      branches:u               
+   332.061102525         36,860,981      cache-references:u       
+   333.061286820        472,631,420      branches:u               
+   333.061286820         37,353,421      cache-references:u       
+I0428 21:00:12.051452 168267 solver.cpp:218] Iteration 3400 (11.5473 iter/s, 8.66s/100 iters), loss = 0.0124586
+I0428 21:00:12.051484 168267 solver.cpp:237]     Train net output #0: loss = 0.0124585 (* 1 = 0.0124585 loss)
+I0428 21:00:12.051491 168267 sgd_solver.cpp:105] Iteration 3400, lr = 0.00802918
+   334.061469296        469,922,692      branches:u               
+   334.061469296         36,846,388      cache-references:u       
+   335.061650542        470,404,039      branches:u               
+   335.061650542         37,442,762      cache-references:u       
+   336.061910324        472,589,321      branches:u               
+   336.061910324         37,048,136      cache-references:u       
+   337.062090024        472,357,844      branches:u               
+   337.062090024         37,158,486      cache-references:u       
+   338.062294180        471,931,431      branches:u               
+   338.062294180         36,866,138      cache-references:u       
+   339.062480749        470,678,263      branches:u               
+   339.062480749         37,281,956      cache-references:u       
+   340.062671561        473,081,766      branches:u               
+   340.062671561         37,230,920      cache-references:u       
+   341.062920461        470,784,101      branches:u               
+   341.062920461         36,964,485      cache-references:u       
+   342.063095816        473,133,607      branches:u               
+   342.063095816         37,415,149      cache-references:u       
+I0428 21:00:20.619673 168267 solver.cpp:330] Iteration 3500, Testing net (#0)
+   343.063267735        497,945,071      branches:u               
+   343.063267735         36,687,965      cache-references:u       
+   344.063441074        520,083,799      branches:u               
+   344.063441074         36,057,967      cache-references:u       
+   345.063612230        518,086,548      branches:u               
+   345.063612230         36,819,641      cache-references:u       
+   346.063789962        517,137,126      branches:u               
+   346.063789962         35,969,864      cache-references:u       
+   347.063971877        520,966,755      branches:u               
+   347.063971877         36,538,990      cache-references:u       
+I0428 21:00:25.841403 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:00:26.058946 168267 solver.cpp:397]     Test net output #0: accuracy = 0.985
+I0428 21:00:26.058975 168267 solver.cpp:397]     Test net output #1: loss = 0.043721 (* 1 = 0.043721 loss)
+I0428 21:00:26.144577 168267 solver.cpp:218] Iteration 3500 (7.09572 iter/s, 14.093s/100 iters), loss = 0.00456692
+I0428 21:00:26.144601 168267 solver.cpp:237]     Train net output #0: loss = 0.00456683 (* 1 = 0.00456683 loss)
+I0428 21:00:26.144609 168267 sgd_solver.cpp:105] Iteration 3500, lr = 0.00798454
+   348.064145299        510,873,280      branches:u               
+   348.064145299         36,521,775      cache-references:u       
+   349.064322998        471,089,973      branches:u               
+   349.064322998         37,332,479      cache-references:u       
+   350.064497589        470,912,488      branches:u               
+   350.064497589         36,739,816      cache-references:u       
+#           time             counts unit events
+   351.064746056        471,758,738      branches:u               
+   351.064746056         37,564,391      cache-references:u       
+   352.064924931        471,401,772      branches:u               
+   352.064924931         36,922,870      cache-references:u       
+   353.065104726        470,928,759      branches:u               
+   353.065104726         37,165,167      cache-references:u       
+   354.065281902        472,571,437      branches:u               
+   354.065281902         36,940,434      cache-references:u       
+   355.065460864        470,293,426      branches:u               
+   355.065460864         37,166,169      cache-references:u       
+   356.065649029        473,075,622      branches:u               
+   356.065649029         37,292,830      cache-references:u       
+I0428 21:00:34.802439 168267 solver.cpp:218] Iteration 3600 (11.5513 iter/s, 8.657s/100 iters), loss = 0.0260997
+I0428 21:00:34.802575 168267 solver.cpp:237]     Train net output #0: loss = 0.0260996 (* 1 = 0.0260996 loss)
+I0428 21:00:34.802583 168267 sgd_solver.cpp:105] Iteration 3600, lr = 0.00794046
+   357.065824475        469,846,295      branches:u               
+   357.065824475         36,817,415      cache-references:u       
+   358.066002556        472,731,221      branches:u               
+   358.066002556         37,347,602      cache-references:u       
+   359.066186885        470,202,840      branches:u               
+   359.066186885         36,819,370      cache-references:u       
+   360.066368503        471,634,053      branches:u               
+   360.066368503         37,490,874      cache-references:u       
+   361.066561819        471,462,774      branches:u               
+   361.066561819         36,967,807      cache-references:u       
+   362.066744674        471,097,125      branches:u               
+   362.066744674         37,098,480      cache-references:u       
+   363.066936266        471,292,986      branches:u               
+   363.066936266         36,838,077      cache-references:u       
+   364.067114828        471,246,637      branches:u               
+   364.067114828         37,220,925      cache-references:u       
+   365.067291016        473,026,332      branches:u               
+   365.067291016         37,152,959      cache-references:u       
+I0428 21:00:43.460964 168267 solver.cpp:218] Iteration 3700 (11.55 iter/s, 8.658s/100 iters), loss = 0.0234712
+I0428 21:00:43.460996 168267 solver.cpp:237]     Train net output #0: loss = 0.0234711 (* 1 = 0.0234711 loss)
+I0428 21:00:43.461002 168267 sgd_solver.cpp:105] Iteration 3700, lr = 0.00789695
+   366.067476385        469,706,455      branches:u               
+   366.067476385         36,914,356      cache-references:u       
+   367.067652866        473,142,403      branches:u               
+   367.067652866         37,387,287      cache-references:u       
+   368.067828811        469,867,818      branches:u               
+   368.067828811         36,825,891      cache-references:u       
+   369.068015140        470,884,082      branches:u               
+   369.068015140         37,280,732      cache-references:u       
+I0428 21:00:47.361165 168269 data_layer.cpp:73] Restarting data prefetching from start.
+   370.068196235        471,219,010      branches:u               
+   370.068196235         37,092,149      cache-references:u       
+   371.068343699        471,522,681      branches:u               
+   371.068343699         37,144,970      cache-references:u       
+   372.068520304        470,739,974      branches:u               
+   372.068520304         36,890,934      cache-references:u       
+   373.068695932        471,354,515      branches:u               
+   373.068695932         37,185,236      cache-references:u       
+I0428 21:00:52.122731 168267 solver.cpp:218] Iteration 3800 (11.546 iter/s, 8.661s/100 iters), loss = 0.0114127
+I0428 21:00:52.122779 168267 solver.cpp:237]     Train net output #0: loss = 0.0114126 (* 1 = 0.0114126 loss)
+I0428 21:00:52.122786 168267 sgd_solver.cpp:105] Iteration 3800, lr = 0.007854
+   374.068885311        472,398,321      branches:u               
+   374.068885311         36,914,972      cache-references:u       
+   375.069058496        470,189,793      branches:u               
+   375.069058496         37,183,239      cache-references:u       
+#           time             counts unit events
+   376.069244194        472,724,127      branches:u               
+   376.069244194         37,194,550      cache-references:u       
+   377.069425102        470,563,596      branches:u               
+   377.069425102         36,882,848      cache-references:u       
+   378.069603730        472,760,466      branches:u               
+   378.069603730         37,336,047      cache-references:u       
+   379.069781268        470,287,654      branches:u               
+   379.069781268         36,830,383      cache-references:u       
+   380.069958780        471,831,476      branches:u               
+   380.069958780         37,509,209      cache-references:u       
+   381.070197506        471,833,562      branches:u               
+   381.070197506         36,932,588      cache-references:u       
+   382.070375014        472,098,116      branches:u               
+   382.070375014         37,185,269      cache-references:u       
+I0428 21:01:00.776661 168267 solver.cpp:218] Iteration 3900 (11.5567 iter/s, 8.653s/100 iters), loss = 0.034705
+I0428 21:01:00.776693 168267 solver.cpp:237]     Train net output #0: loss = 0.0347049 (* 1 = 0.0347049 loss)
+I0428 21:01:00.776700 168267 sgd_solver.cpp:105] Iteration 3900, lr = 0.00781158
+   383.070549948        472,223,639      branches:u               
+   383.070549948         36,957,407      cache-references:u       
+   384.070729213        470,293,876      branches:u               
+   384.070729213         37,105,683      cache-references:u       
+   385.070903531        473,224,640      branches:u               
+   385.070903531         37,278,544      cache-references:u       
+   386.071097002        470,300,020      branches:u               
+   386.071097002         36,800,158      cache-references:u       
+   387.071276220        472,470,142      branches:u               
+   387.071276220         37,411,159      cache-references:u       
+   388.071453405        469,705,901      branches:u               
+   388.071453405         36,685,748      cache-references:u       
+   389.071631770        471,109,462      branches:u               
+   389.071631770         37,485,282      cache-references:u       
+   390.071810881        471,072,679      branches:u               
+   390.071810881         36,961,554      cache-references:u       
+   391.072056049        471,932,649      branches:u               
+   391.072056049         37,100,623      cache-references:u       
+I0428 21:01:09.350875 168267 solver.cpp:330] Iteration 4000, Testing net (#0)
+   392.072234647        512,080,859      branches:u               
+   392.072234647         36,406,376      cache-references:u       
+   393.072419385        519,508,055      branches:u               
+   393.072419385         36,422,794      cache-references:u       
+   394.072604023        519,535,097      branches:u               
+   394.072604023         36,861,538      cache-references:u       
+   395.072778778        516,647,718      branches:u               
+   395.072778778         36,042,972      cache-references:u       
+   396.072965332        519,809,306      branches:u               
+   396.072965332         36,711,149      cache-references:u       
+I0428 21:01:14.574465 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:01:14.791072 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9896
+I0428 21:01:14.791096 168267 solver.cpp:397]     Test net output #1: loss = 0.0302606 (* 1 = 0.0302606 loss)
+I0428 21:01:14.876683 168267 solver.cpp:218] Iteration 4000 (7.0927 iter/s, 14.099s/100 iters), loss = 0.0129728
+I0428 21:01:14.876706 168267 solver.cpp:237]     Train net output #0: loss = 0.0129727 (* 1 = 0.0129727 loss)
+I0428 21:01:14.876714 168267 sgd_solver.cpp:105] Iteration 4000, lr = 0.0077697
+   397.073142047        497,568,899      branches:u               
+   397.073142047         36,701,547      cache-references:u       
+   398.073324632        471,080,109      branches:u               
+   398.073324632         37,154,154      cache-references:u       
+   399.073504732        473,031,804      branches:u               
+   399.073504732         36,914,832      cache-references:u       
+   400.073685860        471,139,166      branches:u               
+   400.073685860         37,183,495      cache-references:u       
+#           time             counts unit events
+   401.073878415        473,047,001      branches:u               
+   401.073878415         37,290,107      cache-references:u       
+   402.074063176        469,885,459      branches:u               
+   402.074063176         36,751,141      cache-references:u       
+   403.074244774        472,418,989      branches:u               
+   403.074244774         37,391,029      cache-references:u       
+   404.074428562        470,742,145      branches:u               
+   404.074428562         36,727,993      cache-references:u       
+   405.074609702        471,866,322      branches:u               
+   405.074609702         37,509,085      cache-references:u       
+I0428 21:01:23.531002 168267 solver.cpp:218] Iteration 4100 (11.5553 iter/s, 8.654s/100 iters), loss = 0.01742
+I0428 21:01:23.531031 168267 solver.cpp:237]     Train net output #0: loss = 0.0174199 (* 1 = 0.0174199 loss)
+I0428 21:01:23.531038 168267 sgd_solver.cpp:105] Iteration 4100, lr = 0.00772833
+   406.074802347        471,137,186      branches:u               
+   406.074802347         36,923,129      cache-references:u       
+   407.074984568        472,403,653      branches:u               
+   407.074984568         37,206,604      cache-references:u       
+   408.075183392        472,763,394      branches:u               
+   408.075183392         37,007,006      cache-references:u       
+   409.075371260        469,917,750      branches:u               
+   409.075371260         37,049,175      cache-references:u       
+   410.075550491        472,150,869      branches:u               
+   410.075550491         37,177,701      cache-references:u       
+   411.075735568        470,051,470      branches:u               
+   411.075735568         36,806,739      cache-references:u       
+   412.075905052        472,953,972      branches:u               
+   412.075905052         37,360,058      cache-references:u       
+   413.076073972        469,416,498      branches:u               
+   413.076073972         36,723,424      cache-references:u       
+I0428 21:01:32.193792 168267 solver.cpp:218] Iteration 4200 (11.5447 iter/s, 8.662s/100 iters), loss = 0.0170912
+I0428 21:01:32.193825 168267 solver.cpp:237]     Train net output #0: loss = 0.0170911 (* 1 = 0.0170911 loss)
+I0428 21:01:32.193830 168267 sgd_solver.cpp:105] Iteration 4200, lr = 0.00768748
+   414.076243204        469,898,413      branches:u               
+   414.076243204         37,293,678      cache-references:u       
+   415.076410325        471,849,033      branches:u               
+   415.076410325         37,123,214      cache-references:u       
+   416.076603683        471,872,624      branches:u               
+   416.076603683         37,075,177      cache-references:u       
+   417.076772262        472,243,030      branches:u               
+   417.076772262         36,865,971      cache-references:u       
+   418.076953601        470,203,774      branches:u               
+   418.076953601         37,196,111      cache-references:u       
+   419.077126131        472,955,456      branches:u               
+   419.077126131         37,069,352      cache-references:u       
+   420.077294708        470,356,270      branches:u               
+   420.077294708         37,007,771      cache-references:u       
+   421.077440946        473,245,459      branches:u               
+   421.077440946         37,429,458      cache-references:u       
+   422.077618837        470,111,629      branches:u               
+   422.077618837         36,776,719      cache-references:u       
+I0428 21:01:40.850467 168267 solver.cpp:218] Iteration 4300 (11.5527 iter/s, 8.656s/100 iters), loss = 0.0466045
+I0428 21:01:40.850613 168267 solver.cpp:237]     Train net output #0: loss = 0.0466044 (* 1 = 0.0466044 loss)
+I0428 21:01:40.850620 168267 sgd_solver.cpp:105] Iteration 4300, lr = 0.00764712
+   423.077781647        470,885,701      branches:u               
+   423.077781647         37,264,310      cache-references:u       
+   424.077957284        470,503,849      branches:u               
+   424.077957284         36,712,634      cache-references:u       
+   425.078158952        471,470,282      branches:u               
+   425.078158952         37,492,309      cache-references:u       
+#           time             counts unit events
+   426.078346196        470,686,385      branches:u               
+   426.078346196         36,893,516      cache-references:u       
+   427.078535350        471,595,631      branches:u               
+   427.078535350         37,134,744      cache-references:u       
+   428.078717368        471,743,689      branches:u               
+   428.078717368         36,825,401      cache-references:u       
+   429.078898868        470,528,584      branches:u               
+   429.078898868         37,211,431      cache-references:u       
+   430.079079168        472,050,407      branches:u               
+   430.079079168         37,012,627      cache-references:u       
+   431.079271279        470,262,564      branches:u               
+   431.079271279         36,973,497      cache-references:u       
+I0428 21:01:49.513062 168267 solver.cpp:218] Iteration 4400 (11.5447 iter/s, 8.662s/100 iters), loss = 0.0256656
+I0428 21:01:49.513093 168267 solver.cpp:237]     Train net output #0: loss = 0.0256655 (* 1 = 0.0256655 loss)
+I0428 21:01:49.513100 168267 sgd_solver.cpp:105] Iteration 4400, lr = 0.00760726
+   432.079452383        473,782,768      branches:u               
+   432.079452383         37,414,338      cache-references:u       
+   433.079638034        469,942,604      branches:u               
+   433.079638034         36,817,695      cache-references:u       
+   434.079814187        470,605,869      branches:u               
+   434.079814187         37,328,722      cache-references:u       
+   435.079975774        471,857,653      branches:u               
+   435.079975774         37,190,186      cache-references:u       
+   436.080166009        471,954,226      branches:u               
+   436.080166009         37,122,845      cache-references:u       
+   437.080343385        472,457,969      branches:u               
+   437.080343385         36,886,578      cache-references:u       
+   438.080519106        470,066,539      branches:u               
+   438.080519106         37,192,813      cache-references:u       
+   439.080698447        473,363,438      branches:u               
+   439.080698447         37,133,563      cache-references:u       
+I0428 21:01:58.082664 168267 solver.cpp:330] Iteration 4500, Testing net (#0)
+   440.080887227        478,810,054      branches:u               
+   440.080887227         37,225,924      cache-references:u       
+   441.081071991        517,305,161      branches:u               
+   441.081071991         35,955,248      cache-references:u       
+   442.081249869        520,473,535      branches:u               
+   442.081249869         36,634,341      cache-references:u       
+   443.081379301        517,932,141      branches:u               
+   443.081379301         36,463,407      cache-references:u       
+   444.081545608        520,111,671      branches:u               
+   444.081545608         36,055,611      cache-references:u       
+   445.081713098        518,276,925      branches:u               
+   445.081713098         36,829,840      cache-references:u       
+I0428 21:02:03.303249 168270 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:02:03.519321 168267 solver.cpp:397]     Test net output #0: accuracy = 0.9883
+I0428 21:02:03.519345 168267 solver.cpp:397]     Test net output #1: loss = 0.0379875 (* 1 = 0.0379875 loss)
+I0428 21:02:03.605017 168267 solver.cpp:218] Iteration 4500 (7.09673 iter/s, 14.091s/100 iters), loss = 0.010126
+I0428 21:02:03.605041 168267 solver.cpp:237]     Train net output #0: loss = 0.0101259 (* 1 = 0.0101259 loss)
+I0428 21:02:03.605047 168267 sgd_solver.cpp:105] Iteration 4500, lr = 0.00756788
+   446.081951342        485,801,228      branches:u               
+   446.081951342         36,819,698      cache-references:u       
+   447.082127319        470,320,451      branches:u               
+   447.082127319         36,838,297      cache-references:u       
+   448.082323443        472,246,833      branches:u               
+   448.082323443         37,388,557      cache-references:u       
+   449.082499157        470,669,239      branches:u               
+   449.082499157         36,713,810      cache-references:u       
+   450.082672817        471,411,267      branches:u               
+   450.082672817         37,518,678      cache-references:u       
+#           time             counts unit events
+   451.082912691        471,579,238      branches:u               
+   451.082912691         36,906,395      cache-references:u       
+   452.083092398        472,586,893      branches:u               
+   452.083092398         37,230,808      cache-references:u       
+   453.083269248        472,211,833      branches:u               
+   453.083269248         36,989,158      cache-references:u       
+   454.083444705        470,297,638      branches:u               
+   454.083444705         37,089,073      cache-references:u       
+I0428 21:02:12.261209 168267 solver.cpp:218] Iteration 4600 (11.5527 iter/s, 8.656s/100 iters), loss = 0.00804731
+I0428 21:02:12.261351 168267 solver.cpp:237]     Train net output #0: loss = 0.00804726 (* 1 = 0.00804726 loss)
+I0428 21:02:12.261358 168267 sgd_solver.cpp:105] Iteration 4600, lr = 0.00752897
+   455.083629325        472,965,944      branches:u               
+   455.083629325         37,296,884      cache-references:u       
+   456.083824085        470,060,128      branches:u               
+   456.083824085         36,693,049      cache-references:u       
+   457.083963975        472,410,055      branches:u               
+   457.083963975         37,406,865      cache-references:u       
+   458.084140195        470,132,022      branches:u               
+   458.084140195         36,633,699      cache-references:u       
+   459.084317368        471,364,856      branches:u               
+   459.084317368         37,480,297      cache-references:u       
+   460.084501768        471,011,417      branches:u               
+   460.084501768         36,885,642      cache-references:u       
+   461.084744649        471,836,769      branches:u               
+   461.084744649         37,099,417      cache-references:u       
+I0428 21:02:19.449157 168269 data_layer.cpp:73] Restarting data prefetching from start.
+   462.084925419        472,730,600      branches:u               
+   462.084925419         36,857,629      cache-references:u       
+I0428 21:02:20.919426 168267 solver.cpp:218] Iteration 4700 (11.55 iter/s, 8.658s/100 iters), loss = 0.00436995
+I0428 21:02:20.919463 168267 solver.cpp:237]     Train net output #0: loss = 0.00436989 (* 1 = 0.00436989 loss)
+I0428 21:02:20.919471 168267 sgd_solver.cpp:105] Iteration 4700, lr = 0.00749052
+   463.085107466        469,797,717      branches:u               
+   463.085107466         37,179,651      cache-references:u       
+   464.085251492        472,942,654      branches:u               
+   464.085251492         37,197,456      cache-references:u       
+   465.085432309        470,306,123      branches:u               
+   465.085432309         36,906,718      cache-references:u       
+   466.085626106        473,425,990      branches:u               
+   466.085626106         37,332,218      cache-references:u       
+   467.085806015        469,627,707      branches:u               
+   467.085806015         36,830,711      cache-references:u       
+   468.085987496        470,022,787      branches:u               
+   468.085987496         37,381,669      cache-references:u       
+   469.086167712        471,828,648      branches:u               
+   469.086167712         37,085,618      cache-references:u       
+   470.086348505        470,906,838      branches:u               
+   470.086348505         37,037,812      cache-references:u       
+   471.086591926        470,956,484      branches:u               
+   471.086591926         36,857,403      cache-references:u       
+I0428 21:02:29.580770 168267 solver.cpp:218] Iteration 4800 (11.546 iter/s, 8.661s/100 iters), loss = 0.0126058
+I0428 21:02:29.580802 168267 solver.cpp:237]     Train net output #0: loss = 0.0126057 (* 1 = 0.0126057 loss)
+I0428 21:02:29.580808 168267 sgd_solver.cpp:105] Iteration 4800, lr = 0.00745253
+   472.086771534        471,709,565      branches:u               
+   472.086771534         37,171,400      cache-references:u       
+   473.086946495        471,200,832      branches:u               
+   473.086946495         36,803,755      cache-references:u       
+   474.087123554        469,865,171      branches:u               
+   474.087123554         37,177,608      cache-references:u       
+   475.087298376        472,774,114      branches:u               
+   475.087298376         37,170,550      cache-references:u       
+#           time             counts unit events
+   476.087482768        470,476,920      branches:u               
+   476.087482768         36,916,212      cache-references:u       
+   477.087661795        473,538,684      branches:u               
+   477.087661795         37,362,170      cache-references:u       
+   478.087835420        469,046,303      branches:u               
+   478.087835420         36,774,801      cache-references:u       
+   479.088011227        470,504,097      branches:u               
+   479.088011227         37,384,215      cache-references:u       
+I0428 21:02:38.242596 168267 solver.cpp:218] Iteration 4900 (11.546 iter/s, 8.661s/100 iters), loss = 0.0055336
+I0428 21:02:38.242635 168267 solver.cpp:237]     Train net output #0: loss = 0.00553352 (* 1 = 0.00553352 loss)
+I0428 21:02:38.242642 168267 sgd_solver.cpp:105] Iteration 4900, lr = 0.00741498
+   480.088200631        472,242,995      branches:u               
+   480.088200631         37,089,199      cache-references:u       
+   481.088377451        471,986,566      branches:u               
+   481.088377451         37,115,887      cache-references:u       
+   482.088549507        472,248,141      branches:u               
+   482.088549507         36,860,667      cache-references:u       
+   483.088683110        469,460,814      branches:u               
+   483.088683110         37,162,996      cache-references:u       
+   484.088814952        456,902,815      branches:u               
+   484.088814952         35,758,885      cache-references:u       
+   485.088932738        456,858,787      branches:u               
+   485.088932738         36,180,728      cache-references:u       
+   486.089059253        458,195,516      branches:u               
+   486.089059253         35,936,749      cache-references:u       
+   487.089232643        469,006,616      branches:u               
+   487.089232643         36,863,604      cache-references:u       
+   488.089408606        472,580,213      branches:u               
+   488.089408606         37,335,818      cache-references:u       
+I0428 21:02:46.911237 168267 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5000.caffemodel
+F0428 21:02:46.920008 168267 io.cpp:69] Check failed: proto.SerializeToOstream(&output) 
+*** Check failure stack trace: ***
+    @     0x7fd3ebf045cd  google::LogMessage::Fail()
+    @     0x7fd3ebf06433  google::LogMessage::SendToLog()
+    @     0x7fd3ebf0415b  google::LogMessage::Flush()
+    @     0x7fd3ebf06e1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fd3ec2aee55  caffe::WriteProtoToBinaryFile()
+    @     0x7fd3ec3f4076  caffe::Solver<>::SnapshotToBinaryProto()
+    @     0x7fd3ec3f417a  caffe::Solver<>::Snapshot()
+    @     0x7fd3ec3f7ce6  caffe::Solver<>::Step()
+    @     0x7fd3ec3f872a  caffe::Solver<>::Solve()
+    @           0x40a5c4  train()
+    @           0x406fa0  main
+    @     0x7fd3eae75830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+Aborted (core dumped)
+   489.010964493        327,619,718      branches:u               
+   489.010964493         24,752,652      cache-references:u       

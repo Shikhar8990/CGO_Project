@@ -1,0 +1,25 @@
+<temporal density_cacheline 0>174511025
+<temporal density_cacheline 1>175521079
+<temporal density_cacheline 2>67913159
+<temporal density_cacheline 3-4>362605526
+<temporal density_cacheline 5-8>324585790
+<temporal density_cacheline 9-16>26007990
+<temporal density_cacheline 17-32>64463045
+<temporal density_cacheline 33-64>38517895
+<temporal density_cacheline 65-128>12098584
+<temporal density_cacheline 129-256>96495149
+<temporal density_cacheline 257-512>4552607
+<temporal density_cacheline 513-1024>5916155
+<temporal density_cacheline 1025-2048>1927587
+<temporal density_cacheline 2049-4096>7336689
+<temporal density_cacheline 4097-8192>6813518
+<temporal density_cacheline 8193-16384>766788
+<temporal density_cacheline 16385-32768>434301
+<temporal density_cacheline 32769-65536>1762497
+<temporal density_cacheline 4mb-8mb>956939
+<temporal density_cacheline 8mb-16mb>1010295
+<temporal density_cacheline 16mb-32mb>881437
+<temporal density_cacheline 32mb-64mb>0
+<temporal density_cacheline 64mb-128mb>0
+<temporal density_cacheline 128mb-256mb>0
+<temporal density_cacheline greater than 256mb>475160

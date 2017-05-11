@@ -1,0 +1,442 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010297646            107,173      branch-misses:u          
+     0.010297646          2,991,386      branches:u               
+     0.020410583            119,008      branch-misses:u          
+     0.020410583          3,400,966      branches:u               
+     0.030527151             84,071      branch-misses:u          
+     0.030527151          3,681,764      branches:u               
+     0.040652134             75,814      branch-misses:u          
+     0.040652134          4,388,794      branches:u               
+     0.050796335             77,651      branch-misses:u          
+     0.050796335          4,434,154      branches:u               
+     0.060924424             50,410      branch-misses:u          
+     0.060924424          3,472,553      branches:u               
+     0.071053450             32,813      branch-misses:u          
+     0.071053450          3,146,180      branches:u               
+     0.081184954             29,056      branch-misses:u          
+     0.081184954          3,652,516      branches:u               
+     0.091316473             42,277      branch-misses:u          
+     0.091316473          4,847,641      branches:u               
+     0.101403269             27,518      branch-misses:u          
+     0.101403269          4,153,199      branches:u               
+     0.111524375            112,061      branch-misses:u          
+     0.111524375          6,541,511      branches:u               
+     0.121646967             20,371      branch-misses:u          
+     0.121646967          4,794,976      branches:u               
+     0.131765804             71,342      branch-misses:u          
+     0.131765804          6,441,516      branches:u               
+     0.141886161             27,219      branch-misses:u          
+     0.141886161          5,113,992      branches:u               
+     0.152026217             43,189      branch-misses:u          
+     0.152026217          5,331,015      branches:u               
+     0.162118858             70,302      branch-misses:u          
+     0.162118858          4,533,144      branches:u               
+     0.172234556             77,076      branch-misses:u          
+     0.172234556          5,016,225      branches:u               
+     0.182352605            138,890      branch-misses:u          
+     0.182352605          6,574,420      branches:u               
+     0.192471561            155,718      branch-misses:u          
+     0.192471561          6,893,528      branches:u               
+     0.202588844             90,669      branch-misses:u          
+     0.202588844          4,568,531      branches:u               
+     0.212710091            119,232      branch-misses:u          
+     0.212710091          4,030,586      branches:u               
+     0.222832756            213,469      branch-misses:u          
+     0.222832756          9,447,858      branches:u               
+     0.232925037            219,760      branch-misses:u          
+     0.232925037          7,320,839      branches:u               
+     0.243046552            223,887      branch-misses:u          
+     0.243046552          7,018,567      branches:u               
+     0.253167278             62,663      branch-misses:u          
+     0.253167278         11,526,247      branches:u               
+#           time             counts unit events
+     0.263289906            179,351      branch-misses:u          
+     0.263289906          7,023,374      branches:u               
+     0.273436702            240,959      branch-misses:u          
+     0.273436702          8,019,572      branches:u               
+     0.283562532            242,444      branch-misses:u          
+     0.283562532          8,440,004      branches:u               
+     0.293705968            189,448      branch-misses:u          
+     0.293705968          9,420,013      branches:u               
+     0.303828137            195,660      branch-misses:u          
+     0.303828137          8,005,259      branches:u               
+     0.313956795            112,378      branch-misses:u          
+     0.313956795         10,632,608      branches:u               
+     0.324079271            143,522      branch-misses:u          
+     0.324079271          9,528,188      branches:u               
+     0.334199991            185,949      branch-misses:u          
+     0.334199991          7,972,462      branches:u               
+     0.344324322             84,272      branch-misses:u          
+     0.344324322          9,263,939      branches:u               
+     0.354447161            185,855      branch-misses:u          
+     0.354447161          9,805,439      branches:u               
+     0.364569809            205,197      branch-misses:u          
+     0.364569809          8,476,363      branches:u               
+     0.374693831            209,137      branch-misses:u          
+     0.374693831          7,444,244      branches:u               
+     0.384817495            215,302      branch-misses:u          
+     0.384817495          7,822,696      branches:u               
+     0.394939730            186,274      branch-misses:u          
+     0.394939730          7,968,693      branches:u               
+     0.405062388            212,983      branch-misses:u          
+     0.405062388          7,783,476      branches:u               
+     0.415184703            220,092      branch-misses:u          
+     0.415184703          6,820,527      branches:u               
+     0.425308075            223,712      branch-misses:u          
+     0.425308075          5,960,232      branches:u               
+     0.435430166            270,529      branch-misses:u          
+     0.435430166          6,978,969      branches:u               
+     0.445554340            196,367      branch-misses:u          
+     0.445554340          7,325,314      branches:u               
+     0.455676137            274,300      branch-misses:u          
+     0.455676137         10,438,094      branches:u               
+     0.465803142            284,407      branch-misses:u          
+     0.465803142         12,474,290      branches:u               
+     0.475940526            278,973      branch-misses:u          
+     0.475940526         11,975,984      branches:u               
+     0.486089143            283,395      branch-misses:u          
+     0.486089143         12,117,659      branches:u               
+     0.496224758            279,730      branch-misses:u          
+     0.496224758         12,339,340      branches:u               
+     0.506348582            283,529      branch-misses:u          
+     0.506348582         12,588,371      branches:u               
+#           time             counts unit events
+     0.516472776            282,680      branch-misses:u          
+     0.516472776         11,997,496      branches:u               
+     0.526598242            306,692      branch-misses:u          
+     0.526598242          9,044,283      branches:u               
+     0.536720318            320,971      branch-misses:u          
+     0.536720318          8,704,013      branches:u               
+     0.546843534            218,143      branch-misses:u          
+     0.546843534          8,261,852      branches:u               
+     0.556964862            193,641      branch-misses:u          
+     0.556964862          9,427,936      branches:u               
+     0.567086921            133,585      branch-misses:u          
+     0.567086921         11,133,619      branches:u               
+     0.577208252            150,914      branch-misses:u          
+     0.577208252         10,537,159      branches:u               
+     0.587329800             64,381      branch-misses:u          
+     0.587329800         11,372,550      branches:u               
+     0.597454132            102,403      branch-misses:u          
+     0.597454132         11,207,606      branches:u               
+     0.607579104            146,972      branch-misses:u          
+     0.607579104          8,391,852      branches:u               
+     0.617710524            127,401      branch-misses:u          
+     0.617710524          7,471,595      branches:u               
+     0.627834827             76,884      branch-misses:u          
+     0.627834827         11,158,875      branches:u               
+     0.637956065             76,815      branch-misses:u          
+     0.637956065         12,069,363      branches:u               
+     0.648079307            129,113      branch-misses:u          
+     0.648079307          9,002,871      branches:u               
+     0.658203417            113,514      branch-misses:u          
+     0.658203417          4,302,975      branches:u               
+     0.668377757            162,618      branch-misses:u          
+     0.668377757          6,921,791      branches:u               
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0509 13:42:19.119833 114431 _caffe.cpp:139] DEPRECATION WARNING - deprecated use of Python interface
+W0509 13:42:19.119856 114431 _caffe.cpp:140] Use this instead (with the named "weights" parameter):
+W0509 13:42:19.119859 114431 _caffe.cpp:142] Net('examples/cifar10/cifar10_quick.prototxt', 1, weights='examples/cifar10/cifar10_quick_iter_5000.caffemodel.h5')
+     0.678530972            169,625      branch-misses:u          
+     0.678530972          8,355,605      branches:u               
+I0509 13:42:19.121333 114431 net.cpp:51] Initializing net from parameters: 
+name: "CIFAR10_quick_test"
+state {
+  phase: TEST
+  level: 0
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 3
+      dim: 32
+      dim: 32
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 64
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 64
+  }
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+  }
+}
+layer {
+  name: "prob"
+  type: "Softmax"
+  bottom: "ip2"
+  top: "prob"
+}
+I0509 13:42:19.121377 114431 layer_factory.hpp:77] Creating layer data
+I0509 13:42:19.121389 114431 net.cpp:84] Creating Layer data
+I0509 13:42:19.121393 114431 net.cpp:380] data -> data
+I0509 13:42:19.121413 114431 net.cpp:122] Setting up data
+I0509 13:42:19.121420 114431 net.cpp:129] Top shape: 1 3 32 32 (3072)
+I0509 13:42:19.121423 114431 net.cpp:137] Memory required for data: 12288
+I0509 13:42:19.121426 114431 layer_factory.hpp:77] Creating layer conv1
+I0509 13:42:19.121434 114431 net.cpp:84] Creating Layer conv1
+I0509 13:42:19.121438 114431 net.cpp:406] conv1 <- data
+I0509 13:42:19.121449 114431 net.cpp:380] conv1 -> conv1
+I0509 13:42:19.121459 114431 base_conv_layer.cpp:121] Group is 1channel is3number of output is 32
+I0509 13:42:19.121481 114431 net.cpp:122] Setting up conv1
+I0509 13:42:19.121486 114431 net.cpp:129] Top shape: 1 32 32 32 (32768)
+I0509 13:42:19.121490 114431 net.cpp:137] Memory required for data: 143360
+I0509 13:42:19.121498 114431 layer_factory.hpp:77] Creating layer pool1
+I0509 13:42:19.121505 114431 net.cpp:84] Creating Layer pool1
+I0509 13:42:19.121507 114431 net.cpp:406] pool1 <- conv1
+I0509 13:42:19.121512 114431 net.cpp:380] pool1 -> pool1
+I0509 13:42:19.121521 114431 net.cpp:122] Setting up pool1
+I0509 13:42:19.121526 114431 net.cpp:129] Top shape: 1 32 16 16 (8192)
+I0509 13:42:19.121527 114431 net.cpp:137] Memory required for data: 176128
+I0509 13:42:19.121546 114431 layer_factory.hpp:77] Creating layer relu1
+I0509 13:42:19.121549 114431 net.cpp:84] Creating Layer relu1
+I0509 13:42:19.121552 114431 net.cpp:406] relu1 <- pool1
+I0509 13:42:19.121556 114431 net.cpp:367] relu1 -> pool1 (in-place)
+I0509 13:42:19.121562 114431 net.cpp:122] Setting up relu1
+I0509 13:42:19.121564 114431 net.cpp:129] Top shape: 1 32 16 16 (8192)
+I0509 13:42:19.121567 114431 net.cpp:137] Memory required for data: 208896
+I0509 13:42:19.121569 114431 layer_factory.hpp:77] Creating layer conv2
+I0509 13:42:19.121575 114431 net.cpp:84] Creating Layer conv2
+I0509 13:42:19.121578 114431 net.cpp:406] conv2 <- pool1
+I0509 13:42:19.121582 114431 net.cpp:380] conv2 -> conv2
+I0509 13:42:19.121589 114431 base_conv_layer.cpp:121] Group is 1channel is32number of output is 32
+I0509 13:42:19.121644 114431 net.cpp:122] Setting up conv2
+I0509 13:42:19.121649 114431 net.cpp:129] Top shape: 1 32 16 16 (8192)
+I0509 13:42:19.121651 114431 net.cpp:137] Memory required for data: 241664
+I0509 13:42:19.121657 114431 layer_factory.hpp:77] Creating layer relu2
+I0509 13:42:19.121662 114431 net.cpp:84] Creating Layer relu2
+I0509 13:42:19.121665 114431 net.cpp:406] relu2 <- conv2
+I0509 13:42:19.121670 114431 net.cpp:367] relu2 -> conv2 (in-place)
+I0509 13:42:19.121673 114431 net.cpp:122] Setting up relu2
+I0509 13:42:19.121677 114431 net.cpp:129] Top shape: 1 32 16 16 (8192)
+I0509 13:42:19.121680 114431 net.cpp:137] Memory required for data: 274432
+I0509 13:42:19.121682 114431 layer_factory.hpp:77] Creating layer pool2
+I0509 13:42:19.121686 114431 net.cpp:84] Creating Layer pool2
+I0509 13:42:19.121690 114431 net.cpp:406] pool2 <- conv2
+I0509 13:42:19.121693 114431 net.cpp:380] pool2 -> pool2
+I0509 13:42:19.121700 114431 net.cpp:122] Setting up pool2
+I0509 13:42:19.121703 114431 net.cpp:129] Top shape: 1 32 8 8 (2048)
+I0509 13:42:19.121706 114431 net.cpp:137] Memory required for data: 282624
+I0509 13:42:19.121708 114431 layer_factory.hpp:77] Creating layer conv3
+I0509 13:42:19.121713 114431 net.cpp:84] Creating Layer conv3
+I0509 13:42:19.121716 114431 net.cpp:406] conv3 <- pool2
+I0509 13:42:19.121721 114431 net.cpp:380] conv3 -> conv3
+I0509 13:42:19.121727 114431 base_conv_layer.cpp:121] Group is 1channel is32number of output is 64
+I0509 13:42:19.121816 114431 net.cpp:122] Setting up conv3
+I0509 13:42:19.121822 114431 net.cpp:129] Top shape: 1 64 8 8 (4096)
+I0509 13:42:19.121824 114431 net.cpp:137] Memory required for data: 299008
+I0509 13:42:19.121831 114431 layer_factory.hpp:77] Creating layer relu3
+I0509 13:42:19.121836 114431 net.cpp:84] Creating Layer relu3
+I0509 13:42:19.121839 114431 net.cpp:406] relu3 <- conv3
+I0509 13:42:19.121843 114431 net.cpp:367] relu3 -> conv3 (in-place)
+I0509 13:42:19.121847 114431 net.cpp:122] Setting up relu3
+I0509 13:42:19.121850 114431 net.cpp:129] Top shape: 1 64 8 8 (4096)
+I0509 13:42:19.121853 114431 net.cpp:137] Memory required for data: 315392
+I0509 13:42:19.121856 114431 layer_factory.hpp:77] Creating layer pool3
+I0509 13:42:19.121860 114431 net.cpp:84] Creating Layer pool3
+I0509 13:42:19.121862 114431 net.cpp:406] pool3 <- conv3
+I0509 13:42:19.121866 114431 net.cpp:380] pool3 -> pool3
+I0509 13:42:19.121871 114431 net.cpp:122] Setting up pool3
+I0509 13:42:19.121876 114431 net.cpp:129] Top shape: 1 64 4 4 (1024)
+I0509 13:42:19.121881 114431 net.cpp:137] Memory required for data: 319488
+I0509 13:42:19.121883 114431 layer_factory.hpp:77] Creating layer ip1
+I0509 13:42:19.121892 114431 net.cpp:84] Creating Layer ip1
+I0509 13:42:19.121896 114431 net.cpp:406] ip1 <- pool3
+I0509 13:42:19.121899 114431 net.cpp:380] ip1 -> ip1
+I0509 13:42:19.122006 114431 net.cpp:122] Setting up ip1
+I0509 13:42:19.122012 114431 net.cpp:129] Top shape: 1 64 (64)
+I0509 13:42:19.122014 114431 net.cpp:137] Memory required for data: 319744
+I0509 13:42:19.122020 114431 layer_factory.hpp:77] Creating layer ip2
+I0509 13:42:19.122023 114431 net.cpp:84] Creating Layer ip2
+I0509 13:42:19.122026 114431 net.cpp:406] ip2 <- ip1
+I0509 13:42:19.122031 114431 net.cpp:380] ip2 -> ip2
+I0509 13:42:19.122041 114431 net.cpp:122] Setting up ip2
+I0509 13:42:19.122045 114431 net.cpp:129] Top shape: 1 10 (10)
+I0509 13:42:19.122047 114431 net.cpp:137] Memory required for data: 319784
+I0509 13:42:19.122053 114431 layer_factory.hpp:77] Creating layer prob
+I0509 13:42:19.122057 114431 net.cpp:84] Creating Layer prob
+I0509 13:42:19.122061 114431 net.cpp:406] prob <- ip2
+I0509 13:42:19.122064 114431 net.cpp:380] prob -> prob
+I0509 13:42:19.122071 114431 net.cpp:122] Setting up prob
+I0509 13:42:19.122074 114431 net.cpp:129] Top shape: 1 10 (10)
+I0509 13:42:19.122077 114431 net.cpp:137] Memory required for data: 319824
+I0509 13:42:19.122081 114431 net.cpp:200] prob does not need backward computation.
+I0509 13:42:19.122083 114431 net.cpp:200] ip2 does not need backward computation.
+I0509 13:42:19.122087 114431 net.cpp:200] ip1 does not need backward computation.
+I0509 13:42:19.122088 114431 net.cpp:200] pool3 does not need backward computation.
+I0509 13:42:19.122092 114431 net.cpp:200] relu3 does not need backward computation.
+I0509 13:42:19.122094 114431 net.cpp:200] conv3 does not need backward computation.
+I0509 13:42:19.122097 114431 net.cpp:200] pool2 does not need backward computation.
+I0509 13:42:19.122100 114431 net.cpp:200] relu2 does not need backward computation.
+I0509 13:42:19.122103 114431 net.cpp:200] conv2 does not need backward computation.
+I0509 13:42:19.122105 114431 net.cpp:200] relu1 does not need backward computation.
+I0509 13:42:19.122108 114431 net.cpp:200] pool1 does not need backward computation.
+I0509 13:42:19.122110 114431 net.cpp:200] conv1 does not need backward computation.
+I0509 13:42:19.122114 114431 net.cpp:200] data does not need backward computation.
+I0509 13:42:19.122117 114431 net.cpp:242] This network produces output prob
+I0509 13:42:19.122124 114431 net.cpp:255] Network initialization done.
+I0509 13:42:19.122912 114431 net.cpp:798] Ignoring source layer cifar
+I0509 13:42:19.122985 114431 hdf5.cpp:32] Datatype class: H5T_FLOAT
+F0509 13:42:19.122995 114431 hdf5.cpp:79] Check failed: blob_dims == blob->shape() Cannot load blob from hdf5; shape mismatch. Source shape is 32 1 5 5 (800) target shape is 32 3 5 5 (2400)
+*** Check failure stack trace: ***
+     0.688672355             21,116      branch-misses:u          
+     0.688672355          1,083,794      branches:u               
+     0.698814178      <not counted>      branch-misses:u          
+     0.698814178      <not counted>      branches:u               
+     0.708949700      <not counted>      branch-misses:u          
+     0.708949700      <not counted>      branches:u               
+     0.719086099      <not counted>      branch-misses:u          
+     0.719086099      <not counted>      branches:u               
+     0.729222472      <not counted>      branch-misses:u          
+     0.729222472      <not counted>      branches:u               
+     0.739355749      <not counted>      branch-misses:u          
+     0.739355749      <not counted>      branches:u               
+     0.749491110      <not counted>      branch-misses:u          
+     0.749491110      <not counted>      branches:u               
+     0.759627616      <not counted>      branch-misses:u          
+     0.759627616      <not counted>      branches:u               
+#           time             counts unit events
+     0.769762616      <not counted>      branch-misses:u          
+     0.769762616      <not counted>      branches:u               
+     0.779907719      <not counted>      branch-misses:u          
+     0.779907719      <not counted>      branches:u               
+     0.790041154      <not counted>      branch-misses:u          
+     0.790041154      <not counted>      branches:u               
+     0.800177990                  0      branch-misses:u          
+     0.800177990                  0      branches:u               
+     0.801868868                  0      branch-misses:u          
+     0.801868868                  0      branches:u               
+python: Aborted

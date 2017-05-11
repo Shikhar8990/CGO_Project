@@ -1,0 +1,306 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010120273                315      r02c0:u                  
+     0.020283129              3,142      r02c0:u                  
+     0.030388537             17,856      r02c0:u                  
+     0.040525424                  1      r02c0:u                  
+     0.050632518                  1      r02c0:u                  
+     0.060744079                  0      r02c0:u                  
+     0.070861306                 95      r02c0:u                  
+     0.080979301                 37      r02c0:u                  
+     0.091093945                 69      r02c0:u                  
+     0.101203613                  9      r02c0:u                  
+     0.111306819             37,582      r02c0:u                  
+     0.121406560                  0      r02c0:u                  
+     0.131503455                 31      r02c0:u                  
+     0.141610127                414      r02c0:u                  
+     0.151736092                  1      r02c0:u                  
+     0.161844443                334      r02c0:u                  
+     0.171951523                  0      r02c0:u                  
+     0.182060435                 19      r02c0:u                  
+     0.192170711             11,190      r02c0:u                  
+     0.202307061             34,203      r02c0:u                  
+     0.212421770             45,028      r02c0:u                  
+     0.222534314             45,361      r02c0:u                  
+     0.232616889              7,594      r02c0:u                  
+     0.242731629              1,688      r02c0:u                  
+     0.252847326              2,064      r02c0:u                  
+#           time             counts unit events
+     0.262962566                497      r02c0:u                  
+     0.273078922              1,632      r02c0:u                  
+     0.283191471              2,360      r02c0:u                  
+     0.293305308             11,553      r02c0:u                  
+     0.303417820                602      r02c0:u                  
+     0.313530502                158      r02c0:u                  
+     0.323646975                145      r02c0:u                  
+     0.333758755                432      r02c0:u                  
+     0.343870850                439      r02c0:u                  
+     0.353984821                307      r02c0:u                  
+     0.364097221              3,140      r02c0:u                  
+     0.374209389                749      r02c0:u                  
+     0.384320821              2,001      r02c0:u                  
+     0.394400995              1,791      r02c0:u                  
+     0.404512388              1,323      r02c0:u                  
+     0.414592531              1,249      r02c0:u                  
+     0.424706463             11,021      r02c0:u                  
+     0.434814035              9,302      r02c0:u                  
+     0.444924684              3,172      r02c0:u                  
+     0.455030076              1,960      r02c0:u                  
+     0.465143141                616      r02c0:u                  
+     0.475256205              2,205      r02c0:u                  
+     0.485370521              1,558      r02c0:u                  
+     0.495484952                403      r02c0:u                  
+     0.505595176                259      r02c0:u                  
+#           time             counts unit events
+     0.515710248                250      r02c0:u                  
+     0.525823429                261      r02c0:u                  
+     0.535936521                256      r02c0:u                  
+     0.546051157                261      r02c0:u                  
+     0.556165238                245      r02c0:u                  
+     0.566288275                626      r02c0:u                  
+     0.576402826                769      r02c0:u                  
+     0.586524482              1,242      r02c0:u                  
+     0.596681945                218      r02c0:u                  
+     0.606825605                114      r02c0:u                  
+     0.616970532              1,053      r02c0:u                  
+     0.627077165              3,698      r02c0:u                  
+     0.637190280              1,477      r02c0:u                  
+     0.647302488              1,754      r02c0:u                  
+     0.657415581                737      r02c0:u                  
+     0.667532840              2,523      r02c0:u                  
+     0.677645680              2,416      r02c0:u                  
+     0.687761743              2,086      r02c0:u                  
+     0.697875356              1,489      r02c0:u                  
+     0.707994965                577      r02c0:u                  
+     0.718128920              8,374      r02c0:u                  
+     0.728261151             14,226      r02c0:u                  
+     0.738387921              7,927      r02c0:u                  
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0509 13:35:46.703001 114203 _caffe.cpp:139] DEPRECATION WARNING - deprecated use of Python interface
+W0509 13:35:46.703033 114203 _caffe.cpp:140] Use this instead (with the named "weights" parameter):
+W0509 13:35:46.703038 114203 _caffe.cpp:142] Net('examples/siamese/mnist_siamese.prototxt', 1, weights='examples/siamese/mnist_siamese_iter_5.caffemodel')
+I0509 13:35:46.705397 114203 net.cpp:51] Initializing net from parameters: 
+name: "mnist_siamese"
+state {
+  phase: TEST
+  level: 0
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 64
+      dim: 1
+      dim: 28
+      dim: 28
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+  }
+}
+layer {
+  name: "feat"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "feat"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+  }
+}
+I0509 13:35:46.705468 114203 layer_factory.hpp:77] Creating layer data
+I0509 13:35:46.705482 114203 net.cpp:84] Creating Layer data
+I0509 13:35:46.705494 114203 net.cpp:380] data -> data
+I0509 13:35:46.705518 114203 net.cpp:122] Setting up data
+I0509 13:35:46.705528 114203 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:46.705534 114203 net.cpp:137] Memory required for data: 200704
+I0509 13:35:46.705539 114203 layer_factory.hpp:77] Creating layer conv1
+I0509 13:35:46.705551 114203 net.cpp:84] Creating Layer conv1
+I0509 13:35:46.705556 114203 net.cpp:406] conv1 <- data
+I0509 13:35:46.705566 114203 net.cpp:380] conv1 -> conv1
+I0509 13:35:46.705581 114203 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:46.705606 114203 net.cpp:122] Setting up conv1
+I0509 13:35:46.705615 114203 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:46.705620 114203 net.cpp:137] Memory required for data: 3149824
+I0509 13:35:46.705634 114203 layer_factory.hpp:77] Creating layer pool1
+I0509 13:35:46.705652 114203 net.cpp:84] Creating Layer pool1
+I0509 13:35:46.705657 114203 net.cpp:406] pool1 <- conv1
+I0509 13:35:46.705665 114203 net.cpp:380] pool1 -> pool1
+I0509 13:35:46.705679 114203 net.cpp:122] Setting up pool1
+I0509 13:35:46.705687 114203 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:46.705691 114203 net.cpp:137] Memory required for data: 3887104
+I0509 13:35:46.705696 114203 layer_factory.hpp:77] Creating layer conv2
+I0509 13:35:46.705705 114203 net.cpp:84] Creating Layer conv2
+I0509 13:35:46.705710 114203 net.cpp:406] conv2 <- pool1
+I0509 13:35:46.705718 114203 net.cpp:380] conv2 -> conv2
+I0509 13:35:46.705730 114203 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:46.705821 114203 net.cpp:122] Setting up conv2
+I0509 13:35:46.705829 114203 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:46.705834 114203 net.cpp:137] Memory required for data: 4706304
+I0509 13:35:46.705845 114203 layer_factory.hpp:77] Creating layer pool2
+I0509 13:35:46.705854 114203 net.cpp:84] Creating Layer pool2
+I0509 13:35:46.705859 114203 net.cpp:406] pool2 <- conv2
+I0509 13:35:46.705866 114203 net.cpp:380] pool2 -> pool2
+I0509 13:35:46.705878 114203 net.cpp:122] Setting up pool2
+I0509 13:35:46.705886 114203 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:46.705890 114203 net.cpp:137] Memory required for data: 4911104
+I0509 13:35:46.705895 114203 layer_factory.hpp:77] Creating layer ip1
+I0509 13:35:46.705904 114203 net.cpp:84] Creating Layer ip1
+I0509 13:35:46.705909 114203 net.cpp:406] ip1 <- pool2
+I0509 13:35:46.705915 114203 net.cpp:380] ip1 -> ip1
+I0509 13:35:46.706854 114203 net.cpp:122] Setting up ip1
+I0509 13:35:46.706866 114203 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:46.706869 114203 net.cpp:137] Memory required for data: 5039104
+I0509 13:35:46.706881 114203 layer_factory.hpp:77] Creating layer relu1
+I0509 13:35:46.706888 114203 net.cpp:84] Creating Layer relu1
+I0509 13:35:46.706894 114203 net.cpp:406] relu1 <- ip1
+I0509 13:35:46.706902 114203 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:35:46.706910 114203 net.cpp:122] Setting up relu1
+I0509 13:35:46.706917 114203 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:46.706921 114203 net.cpp:137] Memory required for data: 5167104
+I0509 13:35:46.706925 114203 layer_factory.hpp:77] Creating layer ip2
+I0509 13:35:46.706933 114203 net.cpp:84] Creating Layer ip2
+I0509 13:35:46.706938 114203 net.cpp:406] ip2 <- ip1
+I0509 13:35:46.706945 114203 net.cpp:380] ip2 -> ip2
+I0509 13:35:46.706965 114203 net.cpp:122] Setting up ip2
+I0509 13:35:46.706971 114203 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:46.706976 114203 net.cpp:137] Memory required for data: 5169664
+I0509 13:35:46.706984 114203 layer_factory.hpp:77] Creating layer feat
+I0509 13:35:46.706993 114203 net.cpp:84] Creating Layer feat
+I0509 13:35:46.706998 114203 net.cpp:406] feat <- ip2
+I0509 13:35:46.707005 114203 net.cpp:380] feat -> feat
+I0509 13:35:46.707020 114203 net.cpp:122] Setting up feat
+I0509 13:35:46.707026 114203 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:46.707031 114203 net.cpp:137] Memory required for data: 5170176
+I0509 13:35:46.707041 114203 net.cpp:200] feat does not need backward computation.
+I0509 13:35:46.707046 114203 net.cpp:200] ip2 does not need backward computation.
+I0509 13:35:46.707052 114203 net.cpp:200] relu1 does not need backward computation.
+I0509 13:35:46.707056 114203 net.cpp:200] ip1 does not need backward computation.
+I0509 13:35:46.707062 114203 net.cpp:200] pool2 does not need backward computation.
+I0509 13:35:46.707067 114203 net.cpp:200] conv2 does not need backward computation.
+I0509 13:35:46.707072 114203 net.cpp:200] pool1 does not need backward computation.
+I0509 13:35:46.707077 114203 net.cpp:200] conv1 does not need backward computation.
+I0509 13:35:46.707082 114203 net.cpp:200] data does not need backward computation.
+I0509 13:35:46.707087 114203 net.cpp:242] This network produces output feat
+I0509 13:35:46.707103 114203 net.cpp:255] Network initialization done.
+     0.748521584              9,476      r02c0:u                  
+I0509 13:35:46.711155 114203 net.cpp:744] Ignoring source layer pair_data
+I0509 13:35:46.711170 114203 net.cpp:744] Ignoring source layer slice_pair
+I0509 13:35:46.711575 114203 net.cpp:744] Ignoring source layer conv1_p
+I0509 13:35:46.711580 114203 net.cpp:744] Ignoring source layer pool1_p
+I0509 13:35:46.711585 114203 net.cpp:744] Ignoring source layer conv2_p
+I0509 13:35:46.711589 114203 net.cpp:744] Ignoring source layer pool2_p
+I0509 13:35:46.711594 114203 net.cpp:744] Ignoring source layer ip1_p
+I0509 13:35:46.711598 114203 net.cpp:744] Ignoring source layer relu1_p
+I0509 13:35:46.711603 114203 net.cpp:744] Ignoring source layer ip2_p
+I0509 13:35:46.711607 114203 net.cpp:744] Ignoring source layer feat_p
+I0509 13:35:46.711612 114203 net.cpp:744] Ignoring source layer loss
+     0.758662781                147      r02c0:u                  
+#           time             counts unit events
+     0.768794542                259      r02c0:u                  
+     0.778929521                141      r02c0:u                  
+     0.789059625                163      r02c0:u                  
+     0.799190391                167      r02c0:u                  
+     0.809322076                 68      r02c0:u                  
+     0.819455601                  1      r02c0:u                  
+     0.829589777                  1      r02c0:u                  
+     0.839723522                  4      r02c0:u                  
+     0.849855273                  6      r02c0:u                  
+     0.850694326                  0      r02c0:u                  

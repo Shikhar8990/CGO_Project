@@ -1,0 +1,385 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010341828              1,555      LLC-load-misses          
+     0.010341828             64,585      LLC-loads                
+     0.020502376             10,952      LLC-load-misses          
+     0.020502376             59,852      LLC-loads                
+     0.030662938              8,498      LLC-load-misses          
+     0.030662938             83,132      LLC-loads                
+     0.040806964                194      LLC-load-misses          
+     0.040806964             74,260      LLC-loads                
+     0.050949478                  2      LLC-load-misses          
+     0.050949478              8,403      LLC-loads                
+     0.061075515                239      LLC-load-misses          
+     0.061075515             40,387      LLC-loads                
+     0.071200619                  0      LLC-load-misses          
+     0.071200619                 92      LLC-loads                
+     0.081324635                762      LLC-load-misses          
+     0.081324635              2,479      LLC-loads                
+     0.091446292                 89      LLC-load-misses          
+     0.091446292             67,789      LLC-loads                
+     0.101571390                  0      LLC-load-misses          
+     0.101571390                 20      LLC-loads                
+     0.111689812                  0      LLC-load-misses          
+     0.111689812                  6      LLC-loads                
+     0.121803620                423      LLC-load-misses          
+     0.121803620             56,072      LLC-loads                
+     0.131935694              2,629      LLC-load-misses          
+     0.131935694             40,516      LLC-loads                
+     0.142084092              4,412      LLC-load-misses          
+     0.142084092             30,060      LLC-loads                
+     0.152241398              1,658      LLC-load-misses          
+     0.152241398             51,231      LLC-loads                
+     0.162375130             12,163      LLC-load-misses          
+     0.162375130            277,767      LLC-loads                
+     0.172484761              8,109      LLC-load-misses          
+     0.172484761            429,232      LLC-loads                
+     0.182602639              6,226      LLC-load-misses          
+     0.182602639            203,838      LLC-loads                
+     0.192718937             15,719      LLC-load-misses          
+     0.192718937            143,241      LLC-loads                
+     0.202837207                627      LLC-load-misses          
+     0.202837207              8,938      LLC-loads                
+     0.212953178             17,865      LLC-load-misses          
+     0.212953178            109,367      LLC-loads                
+     0.223071602              3,053      LLC-load-misses          
+     0.223071602             86,858      LLC-loads                
+     0.233187145              2,790      LLC-load-misses          
+     0.233187145             92,259      LLC-loads                
+     0.243302799              5,903      LLC-load-misses          
+     0.243302799            145,520      LLC-loads                
+     0.253418832              3,030      LLC-load-misses          
+     0.253418832             56,973      LLC-loads                
+#           time             counts unit events
+     0.263537666              6,386      LLC-load-misses          
+     0.263537666            140,792      LLC-loads                
+     0.273656186                748      LLC-load-misses          
+     0.273656186            116,888      LLC-loads                
+     0.283771598                865      LLC-load-misses          
+     0.283771598            117,769      LLC-loads                
+     0.293886778                 83      LLC-load-misses          
+     0.293886778             88,767      LLC-loads                
+     0.303975418              1,216      LLC-load-misses          
+     0.303975418            122,792      LLC-loads                
+     0.314100681                820      LLC-load-misses          
+     0.314100681             96,918      LLC-loads                
+     0.324211964                281      LLC-load-misses          
+     0.324211964             95,983      LLC-loads                
+     0.334327312              6,752      LLC-load-misses          
+     0.334327312            149,383      LLC-loads                
+     0.344438363                516      LLC-load-misses          
+     0.344438363             46,395      LLC-loads                
+     0.354562708                503      LLC-load-misses          
+     0.354562708            140,146      LLC-loads                
+     0.364678887              1,059      LLC-load-misses          
+     0.364678887             95,214      LLC-loads                
+     0.374799261                890      LLC-load-misses          
+     0.374799261            119,685      LLC-loads                
+     0.384916322              2,107      LLC-load-misses          
+     0.384916322            168,262      LLC-loads                
+     0.395034054                785      LLC-load-misses          
+     0.395034054            118,020      LLC-loads                
+     0.405151280              4,909      LLC-load-misses          
+     0.405151280            160,336      LLC-loads                
+     0.415269586              5,288      LLC-load-misses          
+     0.415269586            152,162      LLC-loads                
+     0.425386566              3,995      LLC-load-misses          
+     0.425386566            162,143      LLC-loads                
+     0.435505444             66,398      LLC-load-misses          
+     0.435505444            289,286      LLC-loads                
+     0.445624584              7,180      LLC-load-misses          
+     0.445624584            306,717      LLC-loads                
+     0.455741063              4,838      LLC-load-misses          
+     0.455741063            160,224      LLC-loads                
+     0.465860015              1,714      LLC-load-misses          
+     0.465860015            111,805      LLC-loads                
+     0.475950520                 29      LLC-load-misses          
+     0.475950520             61,908      LLC-loads                
+     0.486069059                 19      LLC-load-misses          
+     0.486069059             64,661      LLC-loads                
+     0.496185280                 24      LLC-load-misses          
+     0.496185280             65,339      LLC-loads                
+     0.506303769                 20      LLC-load-misses          
+     0.506303769             66,264      LLC-loads                
+#           time             counts unit events
+     0.516420560                 20      LLC-load-misses          
+     0.516420560             66,772      LLC-loads                
+     0.526538107                111      LLC-load-misses          
+     0.526538107             70,326      LLC-loads                
+     0.536657003                480      LLC-load-misses          
+     0.536657003             77,318      LLC-loads                
+     0.546775138                 84      LLC-load-misses          
+     0.546775138             97,990      LLC-loads                
+     0.556893236              1,708      LLC-load-misses          
+     0.556893236            121,953      LLC-loads                
+     0.567008742              4,056      LLC-load-misses          
+     0.567008742             98,890      LLC-loads                
+     0.577125810                308      LLC-load-misses          
+     0.577125810             77,398      LLC-loads                
+     0.587243193              1,324      LLC-load-misses          
+     0.587243193             60,095      LLC-loads                
+     0.597359550                413      LLC-load-misses          
+     0.597359550             63,295      LLC-loads                
+     0.607475128                  2      LLC-load-misses          
+     0.607475128             23,468      LLC-loads                
+     0.617599426                335      LLC-load-misses          
+     0.617599426             92,896      LLC-loads                
+     0.627718126                 59      LLC-load-misses          
+     0.627718126            110,384      LLC-loads                
+     0.637841428                110      LLC-load-misses          
+     0.637841428            124,003      LLC-loads                
+     0.647930095                 10      LLC-load-misses          
+     0.647930095             58,611      LLC-loads                
+     0.658045989                  7      LLC-load-misses          
+     0.658045989             42,394      LLC-loads                
+     0.668136948                 19      LLC-load-misses          
+     0.668136948            101,873      LLC-loads                
+     0.678249896                952      LLC-load-misses          
+     0.678249896            104,955      LLC-loads                
+     0.688358118              5,479      LLC-load-misses          
+     0.688358118             43,816      LLC-loads                
+     0.698470415              2,340      LLC-load-misses          
+     0.698470415            114,756      LLC-loads                
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0509 13:25:10.478924 113692 _caffe.cpp:139] DEPRECATION WARNING - deprecated use of Python interface
+W0509 13:25:10.478950 113692 _caffe.cpp:140] Use this instead (with the named "weights" parameter):
+W0509 13:25:10.478952 113692 _caffe.cpp:142] Net('examples/mnist/lenet.prototxt', 1, weights='examples/mnist/lenet_iter_5000.caffemodel')
+I0509 13:25:10.480449 113692 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+  level: 0
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 64
+      dim: 1
+      dim: 28
+      dim: 28
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "prob"
+  type: "Softmax"
+  bottom: "ip2"
+  top: "prob"
+}
+I0509 13:25:10.480494 113692 layer_factory.hpp:77] Creating layer data
+I0509 13:25:10.480502 113692 net.cpp:84] Creating Layer data
+I0509 13:25:10.480510 113692 net.cpp:380] data -> data
+I0509 13:25:10.480523 113692 net.cpp:122] Setting up data
+I0509 13:25:10.480530 113692 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:25:10.480533 113692 net.cpp:137] Memory required for data: 200704
+I0509 13:25:10.480537 113692 layer_factory.hpp:77] Creating layer conv1
+I0509 13:25:10.480545 113692 net.cpp:84] Creating Layer conv1
+I0509 13:25:10.480554 113692 net.cpp:406] conv1 <- data
+I0509 13:25:10.480561 113692 net.cpp:380] conv1 -> conv1
+I0509 13:25:10.480572 113692 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:25:10.480933 113692 net.cpp:122] Setting up conv1
+I0509 13:25:10.480940 113692 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:25:10.480943 113692 net.cpp:137] Memory required for data: 3149824
+I0509 13:25:10.480952 113692 layer_factory.hpp:77] Creating layer pool1
+I0509 13:25:10.480958 113692 net.cpp:84] Creating Layer pool1
+I0509 13:25:10.480962 113692 net.cpp:406] pool1 <- conv1
+I0509 13:25:10.480967 113692 net.cpp:380] pool1 -> pool1
+I0509 13:25:10.480975 113692 net.cpp:122] Setting up pool1
+I0509 13:25:10.480980 113692 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:25:10.480983 113692 net.cpp:137] Memory required for data: 3887104
+I0509 13:25:10.480986 113692 layer_factory.hpp:77] Creating layer conv2
+I0509 13:25:10.480993 113692 net.cpp:84] Creating Layer conv2
+I0509 13:25:10.480995 113692 net.cpp:406] conv2 <- pool1
+I0509 13:25:10.481000 113692 net.cpp:380] conv2 -> conv2
+I0509 13:25:10.481009 113692 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:25:10.481196 113692 net.cpp:122] Setting up conv2
+I0509 13:25:10.481204 113692 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:25:10.481206 113692 net.cpp:137] Memory required for data: 4706304
+I0509 13:25:10.481212 113692 layer_factory.hpp:77] Creating layer pool2
+I0509 13:25:10.481218 113692 net.cpp:84] Creating Layer pool2
+I0509 13:25:10.481221 113692 net.cpp:406] pool2 <- conv2
+I0509 13:25:10.481225 113692 net.cpp:380] pool2 -> pool2
+I0509 13:25:10.481233 113692 net.cpp:122] Setting up pool2
+I0509 13:25:10.481237 113692 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:25:10.481240 113692 net.cpp:137] Memory required for data: 4911104
+I0509 13:25:10.481243 113692 layer_factory.hpp:77] Creating layer ip1
+I0509 13:25:10.481250 113692 net.cpp:84] Creating Layer ip1
+I0509 13:25:10.481252 113692 net.cpp:406] ip1 <- pool2
+I0509 13:25:10.481257 113692 net.cpp:380] ip1 -> ip1
+I0509 13:25:10.483935 113692 net.cpp:122] Setting up ip1
+I0509 13:25:10.483942 113692 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:25:10.483944 113692 net.cpp:137] Memory required for data: 5039104
+I0509 13:25:10.483952 113692 layer_factory.hpp:77] Creating layer relu1
+I0509 13:25:10.483956 113692 net.cpp:84] Creating Layer relu1
+I0509 13:25:10.483959 113692 net.cpp:406] relu1 <- ip1
+I0509 13:25:10.483963 113692 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:25:10.483968 113692 net.cpp:122] Setting up relu1
+I0509 13:25:10.483973 113692 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:25:10.483975 113692 net.cpp:137] Memory required for data: 5167104
+I0509 13:25:10.483978 113692 layer_factory.hpp:77] Creating layer ip2
+I0509 13:25:10.483983 113692 net.cpp:84] Creating Layer ip2
+I0509 13:25:10.483985 113692 net.cpp:406] ip2 <- ip1
+I0509 13:25:10.483990 113692 net.cpp:380] ip2 -> ip2
+I0509 13:25:10.484030 113692 net.cpp:122] Setting up ip2
+I0509 13:25:10.484040 113692 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:25:10.484043 113692 net.cpp:137] Memory required for data: 5169664
+I0509 13:25:10.484050 113692 layer_factory.hpp:77] Creating layer prob
+I0509 13:25:10.484055 113692 net.cpp:84] Creating Layer prob
+I0509 13:25:10.484057 113692 net.cpp:406] prob <- ip2
+I0509 13:25:10.484062 113692 net.cpp:380] prob -> prob
+I0509 13:25:10.484069 113692 net.cpp:122] Setting up prob
+I0509 13:25:10.484073 113692 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:25:10.484076 113692 net.cpp:137] Memory required for data: 5172224
+I0509 13:25:10.484078 113692 net.cpp:200] prob does not need backward computation.
+I0509 13:25:10.484082 113692 net.cpp:200] ip2 does not need backward computation.
+I0509 13:25:10.484086 113692 net.cpp:200] relu1 does not need backward computation.
+I0509 13:25:10.484088 113692 net.cpp:200] ip1 does not need backward computation.
+I0509 13:25:10.484091 113692 net.cpp:200] pool2 does not need backward computation.
+I0509 13:25:10.484094 113692 net.cpp:200] conv2 does not need backward computation.
+I0509 13:25:10.484102 113692 net.cpp:200] pool1 does not need backward computation.
+I0509 13:25:10.484105 113692 net.cpp:200] conv1 does not need backward computation.
+I0509 13:25:10.484108 113692 net.cpp:200] data does not need backward computation.
+I0509 13:25:10.484112 113692 net.cpp:242] This network produces output prob
+I0509 13:25:10.484118 113692 net.cpp:255] Network initialization done.
+     0.708584210             10,873      LLC-load-misses          
+     0.708584210             81,324      LLC-loads                
+I0509 13:25:10.485724 113692 net.cpp:744] Ignoring source layer mnist
+I0509 13:25:10.485977 113692 net.cpp:744] Ignoring source layer loss
+     0.718700152              1,774      LLC-load-misses          
+     0.718700152             25,889      LLC-loads                
+     0.728816371                 17      LLC-load-misses          
+     0.728816371              5,947      LLC-loads                
+     0.738934939                  0      LLC-load-misses          
+     0.738934939             26,882      LLC-loads                
+     0.749049313                  6      LLC-load-misses          
+     0.749049313             22,850      LLC-loads                
+     0.759165186             82,067      LLC-load-misses          
+     0.759165186            168,578      LLC-loads                
+#           time             counts unit events
+     0.769280224             64,419      LLC-load-misses          
+     0.769280224            409,796      LLC-loads                
+     0.779399212             54,648      LLC-load-misses          
+     0.779399212            199,887      LLC-loads                
+     0.789516565             53,368      LLC-load-misses          
+     0.789516565            202,298      LLC-loads                
+     0.792915106                  0      LLC-load-misses          
+     0.792915106                  0      LLC-loads                

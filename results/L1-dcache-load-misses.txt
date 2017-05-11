@@ -1,0 +1,5 @@
+        36,937,721      L1-dcache-load-misses     #    5.59% of all L1-dcache hits    ( +-  0.24% )
+        36,654,332      L1-dcache-load-misses     #    5.53% of all L1-dcache hits    ( +-  0.77% )
+        36,087,383      L1-dcache-load-misses     #    5.42% of all L1-dcache hits    ( +-  1.86% )
+        43,389,121      L1-dcache-load-misses     #    6.56% of all L1-dcache hits    ( +-  8.75% )
+        39,768,633      L1-dcache-load-misses     #    5.98% of all L1-dcache hits    ( +-  8.04% )

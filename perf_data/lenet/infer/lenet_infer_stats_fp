@@ -1,0 +1,301 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010114122                319      r02c0:u                  
+     0.020270975              3,613      r02c0:u                  
+     0.030388907             17,379      r02c0:u                  
+     0.040512216                127      r02c0:u                  
+     0.050618285                 22      r02c0:u                  
+     0.060714142                  1      r02c0:u                  
+     0.070811061                 68      r02c0:u                  
+     0.080905218              7,086      r02c0:u                  
+     0.090998737             30,544      r02c0:u                  
+     0.101092575                732      r02c0:u                  
+     0.111182539                 18      r02c0:u                  
+     0.121269872             12,248      r02c0:u                  
+     0.131359457             21,853      r02c0:u                  
+     0.141447322             27,655      r02c0:u                  
+     0.151556681             32,973      r02c0:u                  
+     0.161675418             42,843      r02c0:u                  
+     0.171779833              6,116      r02c0:u                  
+     0.181886615              1,328      r02c0:u                  
+     0.191994100              2,061      r02c0:u                  
+     0.202101394                494      r02c0:u                  
+     0.212207106              1,636      r02c0:u                  
+     0.222316194              1,665      r02c0:u                  
+     0.232424299             12,248      r02c0:u                  
+     0.242530329                602      r02c0:u                  
+     0.252636651                158      r02c0:u                  
+#           time             counts unit events
+     0.262742775                136      r02c0:u                  
+     0.272853180                416      r02c0:u                  
+     0.282960650                388      r02c0:u                  
+     0.293067784                381      r02c0:u                  
+     0.303178119              3,137      r02c0:u                  
+     0.313286775                753      r02c0:u                  
+     0.323392847              2,002      r02c0:u                  
+     0.333499558              1,677      r02c0:u                  
+     0.343606140              1,126      r02c0:u                  
+     0.353712316              1,554      r02c0:u                  
+     0.363818843             10,411      r02c0:u                  
+     0.373926811              9,910      r02c0:u                  
+     0.384033074              3,177      r02c0:u                  
+     0.394142777              1,868      r02c0:u                  
+     0.404251132                711      r02c0:u                  
+     0.414358964              1,899      r02c0:u                  
+     0.424472019              1,861      r02c0:u                  
+     0.434578284                374      r02c0:u                  
+     0.444684050                259      r02c0:u                  
+     0.454794228                246      r02c0:u                  
+     0.464901117                262      r02c0:u                  
+     0.475008266                243      r02c0:u                  
+     0.485115616                259      r02c0:u                  
+     0.495221429                246      r02c0:u                  
+     0.505331597                525      r02c0:u                  
+#           time             counts unit events
+     0.515439569                722      r02c0:u                  
+     0.525552529              1,377      r02c0:u                  
+     0.535659929                242      r02c0:u                  
+     0.545766685                119      r02c0:u                  
+     0.555872626                145      r02c0:u                  
+     0.565978693              3,238      r02c0:u                  
+     0.576084850              1,640      r02c0:u                  
+     0.586193693              2,630      r02c0:u                  
+     0.596280579                908      r02c0:u                  
+     0.606387122              1,324      r02c0:u                  
+     0.616496309              3,642      r02c0:u                  
+     0.626603653              1,809      r02c0:u                  
+     0.636713667              1,655      r02c0:u                  
+     0.646832236                396      r02c0:u                  
+     0.656962145              9,666      r02c0:u                  
+     0.667080717             23,226      r02c0:u                  
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0509 13:25:11.244781 113722 _caffe.cpp:139] DEPRECATION WARNING - deprecated use of Python interface
+W0509 13:25:11.244806 113722 _caffe.cpp:140] Use this instead (with the named "weights" parameter):
+W0509 13:25:11.244808 113722 _caffe.cpp:142] Net('examples/mnist/lenet.prototxt', 1, weights='examples/mnist/lenet_iter_5000.caffemodel')
+I0509 13:25:11.246280 113722 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+  level: 0
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 64
+      dim: 1
+      dim: 28
+      dim: 28
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "prob"
+  type: "Softmax"
+  bottom: "ip2"
+  top: "prob"
+}
+I0509 13:25:11.246327 113722 layer_factory.hpp:77] Creating layer data
+I0509 13:25:11.246336 113722 net.cpp:84] Creating Layer data
+I0509 13:25:11.246345 113722 net.cpp:380] data -> data
+I0509 13:25:11.246363 113722 net.cpp:122] Setting up data
+I0509 13:25:11.246371 113722 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:25:11.246374 113722 net.cpp:137] Memory required for data: 200704
+I0509 13:25:11.246377 113722 layer_factory.hpp:77] Creating layer conv1
+I0509 13:25:11.246386 113722 net.cpp:84] Creating Layer conv1
+I0509 13:25:11.246389 113722 net.cpp:406] conv1 <- data
+I0509 13:25:11.246395 113722 net.cpp:380] conv1 -> conv1
+I0509 13:25:11.246405 113722 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:25:11.246769 113722 net.cpp:122] Setting up conv1
+I0509 13:25:11.246775 113722 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:25:11.246779 113722 net.cpp:137] Memory required for data: 3149824
+I0509 13:25:11.246788 113722 layer_factory.hpp:77] Creating layer pool1
+I0509 13:25:11.246794 113722 net.cpp:84] Creating Layer pool1
+I0509 13:25:11.246798 113722 net.cpp:406] pool1 <- conv1
+I0509 13:25:11.246803 113722 net.cpp:380] pool1 -> pool1
+I0509 13:25:11.246811 113722 net.cpp:122] Setting up pool1
+I0509 13:25:11.246821 113722 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:25:11.246824 113722 net.cpp:137] Memory required for data: 3887104
+I0509 13:25:11.246827 113722 layer_factory.hpp:77] Creating layer conv2
+I0509 13:25:11.246834 113722 net.cpp:84] Creating Layer conv2
+I0509 13:25:11.246837 113722 net.cpp:406] conv2 <- pool1
+I0509 13:25:11.246842 113722 net.cpp:380] conv2 -> conv2
+I0509 13:25:11.246850 113722 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:25:11.247037 113722 net.cpp:122] Setting up conv2
+I0509 13:25:11.247043 113722 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:25:11.247046 113722 net.cpp:137] Memory required for data: 4706304
+I0509 13:25:11.247052 113722 layer_factory.hpp:77] Creating layer pool2
+I0509 13:25:11.247058 113722 net.cpp:84] Creating Layer pool2
+I0509 13:25:11.247061 113722 net.cpp:406] pool2 <- conv2
+I0509 13:25:11.247066 113722 net.cpp:380] pool2 -> pool2
+I0509 13:25:11.247073 113722 net.cpp:122] Setting up pool2
+I0509 13:25:11.247077 113722 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:25:11.247081 113722 net.cpp:137] Memory required for data: 4911104
+I0509 13:25:11.247083 113722 layer_factory.hpp:77] Creating layer ip1
+I0509 13:25:11.247089 113722 net.cpp:84] Creating Layer ip1
+I0509 13:25:11.247092 113722 net.cpp:406] ip1 <- pool2
+I0509 13:25:11.247097 113722 net.cpp:380] ip1 -> ip1
+I0509 13:25:11.249779 113722 net.cpp:122] Setting up ip1
+I0509 13:25:11.249788 113722 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:25:11.249790 113722 net.cpp:137] Memory required for data: 5039104
+I0509 13:25:11.249797 113722 layer_factory.hpp:77] Creating layer relu1
+I0509 13:25:11.249804 113722 net.cpp:84] Creating Layer relu1
+I0509 13:25:11.249806 113722 net.cpp:406] relu1 <- ip1
+I0509 13:25:11.249810 113722 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:25:11.249816 113722 net.cpp:122] Setting up relu1
+I0509 13:25:11.249819 113722 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:25:11.249822 113722 net.cpp:137] Memory required for data: 5167104
+I0509 13:25:11.249825 113722 layer_factory.hpp:77] Creating layer ip2
+I0509 13:25:11.249830 113722 net.cpp:84] Creating Layer ip2
+I0509 13:25:11.249832 113722 net.cpp:406] ip2 <- ip1
+I0509 13:25:11.249837 113722 net.cpp:380] ip2 -> ip2
+I0509 13:25:11.249878 113722 net.cpp:122] Setting up ip2
+I0509 13:25:11.249882 113722 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:25:11.249886 113722 net.cpp:137] Memory required for data: 5169664
+I0509 13:25:11.249891 113722 layer_factory.hpp:77] Creating layer prob
+I0509 13:25:11.249897 113722 net.cpp:84] Creating Layer prob
+I0509 13:25:11.249899 113722 net.cpp:406] prob <- ip2
+I0509 13:25:11.249903 113722 net.cpp:380] prob -> prob
+I0509 13:25:11.249912 113722 net.cpp:122] Setting up prob
+I0509 13:25:11.249914 113722 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:25:11.249917 113722 net.cpp:137] Memory required for data: 5172224
+I0509 13:25:11.249920 113722 net.cpp:200] prob does not need backward computation.
+I0509 13:25:11.249924 113722 net.cpp:200] ip2 does not need backward computation.
+I0509 13:25:11.249927 113722 net.cpp:200] relu1 does not need backward computation.
+I0509 13:25:11.249929 113722 net.cpp:200] ip1 does not need backward computation.
+I0509 13:25:11.249933 113722 net.cpp:200] pool2 does not need backward computation.
+I0509 13:25:11.249936 113722 net.cpp:200] conv2 does not need backward computation.
+I0509 13:25:11.249939 113722 net.cpp:200] pool1 does not need backward computation.
+I0509 13:25:11.249943 113722 net.cpp:200] conv1 does not need backward computation.
+I0509 13:25:11.249945 113722 net.cpp:200] data does not need backward computation.
+I0509 13:25:11.249948 113722 net.cpp:242] This network produces output prob
+I0509 13:25:11.249955 113722 net.cpp:255] Network initialization done.
+I0509 13:25:11.251554 113722 net.cpp:744] Ignoring source layer mnist
+I0509 13:25:11.251804 113722 net.cpp:744] Ignoring source layer loss
+     0.677199441              7,495      r02c0:u                  
+     0.687319173                313      r02c0:u                  
+     0.697445257                212      r02c0:u                  
+     0.707565129                216      r02c0:u                  
+     0.717682607                185      r02c0:u                  
+     0.727800638                  0      r02c0:u                  
+     0.737922304                  0      r02c0:u                  
+     0.748042269                  2      r02c0:u                  
+     0.758057311                  4      r02c0:u                  

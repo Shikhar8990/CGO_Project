@@ -1,0 +1,10 @@
+//----------------- MNIST Database perf Results -----------------------//
+1,057,753,825	L1-dcache-loads                                             
+186,295,554	L1-dcache-stores                                            
+3,761,433,435 	instructions:u 
+
+//----------------- SIAMESE Database Perf Results ---------------------//
+2,077,378,010	L1-dcache-loads                                             
+357,665,267	L1-dcache-stores                                            
+7,395,241,894	instructions:u
+

@@ -1,0 +1,379 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010372821         13,140,756      instructions:u           
+     0.010372821          9,157,925      cycles:u                 
+     0.020542673         15,396,195      instructions:u           
+     0.020542673         10,430,748      cycles:u                 
+     0.030708310         19,971,688      instructions:u           
+     0.030708310         14,800,048      cycles:u                 
+     0.040892453          3,857,083      instructions:u           
+     0.040892453         17,201,615      cycles:u                 
+     0.051044280          4,261,061      instructions:u           
+     0.051044280         20,606,049      cycles:u                 
+     0.061181466          5,853,937      instructions:u           
+     0.061181466         24,322,640      cycles:u                 
+     0.071323453         11,472,674      instructions:u           
+     0.071323453         30,346,648      cycles:u                 
+     0.081463403          5,525,385      instructions:u           
+     0.081463403         27,604,931      cycles:u                 
+     0.091599263          8,046,370      instructions:u           
+     0.091599263         31,750,627      cycles:u                 
+     0.101732328         15,485,796      instructions:u           
+     0.101732328         40,409,581      cycles:u                 
+     0.111863208          6,532,404      instructions:u           
+     0.111863208         32,694,959      cycles:u                 
+     0.121989062          6,858,028      instructions:u           
+     0.121989062         34,323,865      cycles:u                 
+     0.132118311         18,972,790      instructions:u           
+     0.132118311         52,639,191      cycles:u                 
+     0.142243052         18,191,348      instructions:u           
+     0.142243052         55,066,975      cycles:u                 
+     0.152359267         22,080,562      instructions:u           
+     0.152359267         56,684,886      cycles:u                 
+     0.162492277         27,796,949      instructions:u           
+     0.162492277         25,788,271      cycles:u                 
+     0.172620514         21,681,217      instructions:u           
+     0.172620514         20,619,880      cycles:u                 
+     0.182744866         33,582,534      instructions:u           
+     0.182744866         26,975,980      cycles:u                 
+     0.192871391         34,147,100      instructions:u           
+     0.192871391         24,117,319      cycles:u                 
+     0.202998401         36,134,058      instructions:u           
+     0.202998401         24,418,207      cycles:u                 
+     0.213133590         29,869,757      instructions:u           
+     0.213133590         24,330,576      cycles:u                 
+     0.223260408         24,878,301      instructions:u           
+     0.223260408         17,751,227      cycles:u                 
+     0.233391137         42,412,266      instructions:u           
+     0.233391137         23,745,008      cycles:u                 
+     0.243519208         35,647,222      instructions:u           
+     0.243519208         21,532,294      cycles:u                 
+     0.253645421         26,483,909      instructions:u           
+     0.253645421         20,896,468      cycles:u                 
+#           time             counts unit events
+     0.263773934         52,088,650      instructions:u           
+     0.263773934         24,802,509      cycles:u                 
+     0.273905114         30,547,290      instructions:u           
+     0.273905114         21,877,096      cycles:u                 
+     0.284032790         34,524,889      instructions:u           
+     0.284032790         22,307,885      cycles:u                 
+     0.294173150         32,173,050      instructions:u           
+     0.294173150         22,188,705      cycles:u                 
+     0.304326705         43,421,279      instructions:u           
+     0.304326705         24,583,593      cycles:u                 
+     0.314488672         35,809,402      instructions:u           
+     0.314488672         23,027,647      cycles:u                 
+     0.324619946         37,808,551      instructions:u           
+     0.324619946         24,064,181      cycles:u                 
+     0.334748088         46,280,336      instructions:u           
+     0.334748088         24,371,708      cycles:u                 
+     0.344874545         39,263,184      instructions:u           
+     0.344874545         23,928,702      cycles:u                 
+     0.355034976         31,932,843      instructions:u           
+     0.355034976         21,777,855      cycles:u                 
+     0.365163672         35,559,716      instructions:u           
+     0.365163672         23,633,367      cycles:u                 
+     0.375292427         44,198,228      instructions:u           
+     0.375292427         23,957,280      cycles:u                 
+     0.385423327         35,089,661      instructions:u           
+     0.385423327         24,035,098      cycles:u                 
+     0.395553639         32,836,259      instructions:u           
+     0.395553639         22,505,907      cycles:u                 
+     0.405680001         31,856,648      instructions:u           
+     0.405680001         22,618,306      cycles:u                 
+     0.415806607         35,205,212      instructions:u           
+     0.415806607         22,326,186      cycles:u                 
+     0.425932801         33,265,642      instructions:u           
+     0.425932801         22,435,193      cycles:u                 
+     0.436059140         28,829,084      instructions:u           
+     0.436059140         20,814,905      cycles:u                 
+     0.446187025         22,380,997      instructions:u           
+     0.446187025         21,874,403      cycles:u                 
+     0.456314699         23,162,607      instructions:u           
+     0.456314699         24,094,322      cycles:u                 
+     0.466444041         31,667,161      instructions:u           
+     0.466444041         21,312,481      cycles:u                 
+     0.476569156         33,091,670      instructions:u           
+     0.476569156         21,853,082      cycles:u                 
+     0.486697090         47,597,763      instructions:u           
+     0.486697090         25,029,138      cycles:u                 
+     0.496822568         48,188,721      instructions:u           
+     0.496822568         24,959,226      cycles:u                 
+     0.506947265         47,951,420      instructions:u           
+     0.506947265         25,018,007      cycles:u                 
+#           time             counts unit events
+     0.517072001         47,534,060      instructions:u           
+     0.517072001         24,884,949      cycles:u                 
+     0.527206700         49,394,592      instructions:u           
+     0.527206700         25,623,605      cycles:u                 
+     0.537333410         48,709,719      instructions:u           
+     0.537333410         25,626,804      cycles:u                 
+     0.547466633         44,131,068      instructions:u           
+     0.547466633         25,362,426      cycles:u                 
+     0.557598187         37,118,434      instructions:u           
+     0.557598187         25,520,933      cycles:u                 
+     0.567729422         37,968,970      instructions:u           
+     0.567729422         24,656,253      cycles:u                 
+     0.577861947         36,229,623      instructions:u           
+     0.577861947         22,613,499      cycles:u                 
+     0.587995793         47,678,445      instructions:u           
+     0.587995793         24,478,899      cycles:u                 
+     0.598127502         55,720,796      instructions:u           
+     0.598127502         25,361,300      cycles:u                 
+     0.608259431         46,318,728      instructions:u           
+     0.608259431         24,484,872      cycles:u                 
+     0.618414317         56,384,526      instructions:u           
+     0.618414317         25,579,441      cycles:u                 
+     0.628565291         50,110,184      instructions:u           
+     0.628565291         25,148,194      cycles:u                 
+     0.638696441         38,608,607      instructions:u           
+     0.638696441         23,874,782      cycles:u                 
+     0.648827702         32,245,882      instructions:u           
+     0.648827702         21,468,497      cycles:u                 
+     0.658996837         52,150,886      instructions:u           
+     0.658996837         25,525,007      cycles:u                 
+     0.669138211         58,667,565      instructions:u           
+     0.669138211         25,495,041      cycles:u                 
+     0.679283652         41,947,961      instructions:u           
+     0.679283652         24,396,858      cycles:u                 
+     0.689397880         28,305,881      instructions:u           
+     0.689397880         19,353,584      cycles:u                 
+     0.699521303         15,454,004      instructions:u           
+     0.699521303         11,036,808      cycles:u                 
+     0.709642337         38,663,446      instructions:u           
+     0.709642337         22,985,143      cycles:u                 
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+W0509 13:35:44.336525 114113 _caffe.cpp:139] DEPRECATION WARNING - deprecated use of Python interface
+W0509 13:35:44.336549 114113 _caffe.cpp:140] Use this instead (with the named "weights" parameter):
+W0509 13:35:44.336552 114113 _caffe.cpp:142] Net('examples/siamese/mnist_siamese.prototxt', 1, weights='examples/siamese/mnist_siamese_iter_5.caffemodel')
+I0509 13:35:44.337994 114113 net.cpp:51] Initializing net from parameters: 
+name: "mnist_siamese"
+state {
+  phase: TEST
+  level: 0
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 64
+      dim: 1
+      dim: 28
+      dim: 28
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+  }
+}
+layer {
+  name: "feat"
+  type: "InnerProduct"
+  bottom: "ip2"
+  top: "feat"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 2
+  }
+}
+I0509 13:35:44.338057 114113 layer_factory.hpp:77] Creating layer data
+I0509 13:35:44.338066 114113 net.cpp:84] Creating Layer data
+I0509 13:35:44.338074 114113 net.cpp:380] data -> data
+I0509 13:35:44.338089 114113 net.cpp:122] Setting up data
+I0509 13:35:44.338095 114113 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:35:44.338099 114113 net.cpp:137] Memory required for data: 200704
+I0509 13:35:44.338102 114113 layer_factory.hpp:77] Creating layer conv1
+I0509 13:35:44.338109 114113 net.cpp:84] Creating Layer conv1
+I0509 13:35:44.338112 114113 net.cpp:406] conv1 <- data
+I0509 13:35:44.338119 114113 net.cpp:380] conv1 -> conv1
+I0509 13:35:44.338134 114113 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:35:44.338150 114113 net.cpp:122] Setting up conv1
+I0509 13:35:44.338155 114113 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:35:44.338157 114113 net.cpp:137] Memory required for data: 3149824
+I0509 13:35:44.338166 114113 layer_factory.hpp:77] Creating layer pool1
+I0509 13:35:44.338172 114113 net.cpp:84] Creating Layer pool1
+I0509 13:35:44.338174 114113 net.cpp:406] pool1 <- conv1
+I0509 13:35:44.338179 114113 net.cpp:380] pool1 -> pool1
+I0509 13:35:44.338187 114113 net.cpp:122] Setting up pool1
+I0509 13:35:44.338192 114113 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:35:44.338194 114113 net.cpp:137] Memory required for data: 3887104
+I0509 13:35:44.338197 114113 layer_factory.hpp:77] Creating layer conv2
+I0509 13:35:44.338202 114113 net.cpp:84] Creating Layer conv2
+I0509 13:35:44.338205 114113 net.cpp:406] conv2 <- pool1
+I0509 13:35:44.338209 114113 net.cpp:380] conv2 -> conv2
+I0509 13:35:44.338217 114113 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:35:44.338274 114113 net.cpp:122] Setting up conv2
+I0509 13:35:44.338279 114113 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:35:44.338281 114113 net.cpp:137] Memory required for data: 4706304
+I0509 13:35:44.338289 114113 layer_factory.hpp:77] Creating layer pool2
+I0509 13:35:44.338294 114113 net.cpp:84] Creating Layer pool2
+I0509 13:35:44.338296 114113 net.cpp:406] pool2 <- conv2
+I0509 13:35:44.338300 114113 net.cpp:380] pool2 -> pool2
+I0509 13:35:44.338307 114113 net.cpp:122] Setting up pool2
+I0509 13:35:44.338311 114113 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:35:44.338315 114113 net.cpp:137] Memory required for data: 4911104
+I0509 13:35:44.338316 114113 layer_factory.hpp:77] Creating layer ip1
+I0509 13:35:44.338322 114113 net.cpp:84] Creating Layer ip1
+I0509 13:35:44.338325 114113 net.cpp:406] ip1 <- pool2
+I0509 13:35:44.338328 114113 net.cpp:380] ip1 -> ip1
+I0509 13:35:44.338939 114113 net.cpp:122] Setting up ip1
+I0509 13:35:44.338946 114113 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:44.338948 114113 net.cpp:137] Memory required for data: 5039104
+I0509 13:35:44.338955 114113 layer_factory.hpp:77] Creating layer relu1
+I0509 13:35:44.338959 114113 net.cpp:84] Creating Layer relu1
+I0509 13:35:44.338963 114113 net.cpp:406] relu1 <- ip1
+I0509 13:35:44.338968 114113 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:35:44.338971 114113 net.cpp:122] Setting up relu1
+I0509 13:35:44.338975 114113 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:35:44.338979 114113 net.cpp:137] Memory required for data: 5167104
+I0509 13:35:44.338980 114113 layer_factory.hpp:77] Creating layer ip2
+I0509 13:35:44.338984 114113 net.cpp:84] Creating Layer ip2
+I0509 13:35:44.338987 114113 net.cpp:406] ip2 <- ip1
+I0509 13:35:44.338992 114113 net.cpp:380] ip2 -> ip2
+I0509 13:35:44.339004 114113 net.cpp:122] Setting up ip2
+I0509 13:35:44.339007 114113 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:35:44.339010 114113 net.cpp:137] Memory required for data: 5169664
+I0509 13:35:44.339015 114113 layer_factory.hpp:77] Creating layer feat
+I0509 13:35:44.339020 114113 net.cpp:84] Creating Layer feat
+I0509 13:35:44.339022 114113 net.cpp:406] feat <- ip2
+I0509 13:35:44.339027 114113 net.cpp:380] feat -> feat
+I0509 13:35:44.339035 114113 net.cpp:122] Setting up feat
+I0509 13:35:44.339040 114113 net.cpp:129] Top shape: 64 2 (128)
+I0509 13:35:44.339041 114113 net.cpp:137] Memory required for data: 5170176
+I0509 13:35:44.339047 114113 net.cpp:200] feat does not need backward computation.
+I0509 13:35:44.339051 114113 net.cpp:200] ip2 does not need backward computation.
+I0509 13:35:44.339054 114113 net.cpp:200] relu1 does not need backward computation.
+I0509 13:35:44.339056 114113 net.cpp:200] ip1 does not need backward computation.
+I0509 13:35:44.339059 114113 net.cpp:200] pool2 does not need backward computation.
+I0509 13:35:44.339062 114113 net.cpp:200] conv2 does not need backward computation.
+I0509 13:35:44.339066 114113 net.cpp:200] pool1 does not need backward computation.
+I0509 13:35:44.339074 114113 net.cpp:200] conv1 does not need backward computation.
+I0509 13:35:44.339077 114113 net.cpp:200] data does not need backward computation.
+I0509 13:35:44.339081 114113 net.cpp:242] This network produces output feat
+I0509 13:35:44.339088 114113 net.cpp:255] Network initialization done.
+I0509 13:35:44.341833 114113 net.cpp:744] Ignoring source layer pair_data
+I0509 13:35:44.341843 114113 net.cpp:744] Ignoring source layer slice_pair
+I0509 13:35:44.342082 114113 net.cpp:744] Ignoring source layer conv1_p
+I0509 13:35:44.342087 114113 net.cpp:744] Ignoring source layer pool1_p
+I0509 13:35:44.342088 114113 net.cpp:744] Ignoring source layer conv2_p
+I0509 13:35:44.342092 114113 net.cpp:744] Ignoring source layer pool2_p
+I0509 13:35:44.342094 114113 net.cpp:744] Ignoring source layer ip1_p
+I0509 13:35:44.342097 114113 net.cpp:744] Ignoring source layer relu1_p
+I0509 13:35:44.342098 114113 net.cpp:744] Ignoring source layer ip2_p
+I0509 13:35:44.342102 114113 net.cpp:744] Ignoring source layer feat_p
+I0509 13:35:44.342104 114113 net.cpp:744] Ignoring source layer loss
+     0.719771169         30,390,043      instructions:u           
+     0.719771169         19,164,763      cycles:u                 
+     0.729898060         64,506,439      instructions:u           
+     0.729898060         21,175,654      cycles:u                 
+     0.740022673         79,473,622      instructions:u           
+     0.740022673         24,702,048      cycles:u                 
+     0.750159691         77,550,154      instructions:u           
+     0.750159691         25,536,435      cycles:u                 
+     0.760282540         72,776,544      instructions:u           
+     0.760282540         25,259,465      cycles:u                 
+#           time             counts unit events
+     0.770408347         11,497,189      instructions:u           
+     0.770408347         23,035,006      cycles:u                 
+     0.780537516         18,751,220      instructions:u           
+     0.780537516         24,284,632      cycles:u                 
+     0.790663412         15,132,743      instructions:u           
+     0.790663412         22,114,804      cycles:u                 
+     0.800504347          9,666,576      instructions:u           
+     0.800504347         10,871,091      cycles:u                 

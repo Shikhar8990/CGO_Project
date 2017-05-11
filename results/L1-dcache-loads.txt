@@ -1,0 +1,5 @@
+       661,037,680      L1-dcache-loads                                               ( +-  0.29% )
+       662,501,266      L1-dcache-loads                                               ( +-  0.34% )
+       665,276,527      L1-dcache-loads                                               ( +-  0.18% )
+       661,045,622      L1-dcache-loads                                               ( +-  0.44% )
+       664,915,959      L1-dcache-loads                                               ( +-  0.32% )

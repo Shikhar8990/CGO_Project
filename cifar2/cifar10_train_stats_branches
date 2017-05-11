@@ -1,0 +1,533 @@
+I0510 10:09:48.140676 129404 caffe.cpp:211] Use CPU.
+I0510 10:09:48.140918 129404 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.001
+display: 1
+max_iter: 10
+lr_policy: "fixed"
+momentum: 0.9
+weight_decay: 0.004
+snapshot: 1000
+snapshot_prefix: "examples/cifar10/cifar10_quick"
+solver_mode: CPU
+net: "examples/cifar10/cifar10_quick_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0510 10:09:48.141014 129404 solver.cpp:87] Creating training net from net file: examples/cifar10/cifar10_quick_train_test.prototxt
+I0510 10:09:48.141265 129404 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer cifar
+I0510 10:09:48.141283 129404 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0510 10:09:48.141419 129404 net.cpp:51] Initializing net from parameters: 
+name: "CIFAR10_quick"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_train_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.0001
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 60
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 60
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 12
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0510 10:09:48.141501 129404 layer_factory.hpp:77] Creating layer cifar
+I0510 10:09:48.141600 129404 db_lmdb.cpp:35] Opened lmdb examples/cifar10/cifar10_train_lmdb
+I0510 10:09:48.141633 129404 net.cpp:84] Creating Layer cifar
+I0510 10:09:48.141644 129404 net.cpp:380] cifar -> data
+I0510 10:09:48.141665 129404 net.cpp:380] cifar -> label
+I0510 10:09:48.141680 129404 data_transformer.cpp:25] Loading mean file from: examples/cifar10/mean.binaryproto
+I0510 10:09:48.141762 129404 data_layer.cpp:45] output data size: 100,3,32,32
+I0510 10:09:48.142304 129404 net.cpp:122] Setting up cifar
+I0510 10:09:48.142328 129404 net.cpp:129] Top shape: 100 3 32 32 (307200)
+I0510 10:09:48.142335 129404 net.cpp:129] Top shape: 100 (100)
+I0510 10:09:48.142339 129404 net.cpp:137] Memory required for data: 1229200
+I0510 10:09:48.142349 129404 layer_factory.hpp:77] Creating layer conv1
+I0510 10:09:48.142366 129404 net.cpp:84] Creating Layer conv1
+I0510 10:09:48.142374 129404 net.cpp:406] conv1 <- data
+I0510 10:09:48.142386 129404 net.cpp:380] conv1 -> conv1
+I0510 10:09:48.142405 129404 base_conv_layer.cpp:121] Group is 1channel is3number of output is 30
+I0510 10:09:48.142473 129404 net.cpp:122] Setting up conv1
+I0510 10:09:48.142482 129404 net.cpp:129] Top shape: 100 30 32 32 (3072000)
+I0510 10:09:48.142488 129404 net.cpp:137] Memory required for data: 13517200
+I0510 10:09:48.142508 129404 layer_factory.hpp:77] Creating layer pool1
+I0510 10:09:48.142516 129404 net.cpp:84] Creating Layer pool1
+I0510 10:09:48.142521 129404 net.cpp:406] pool1 <- conv1
+I0510 10:09:48.142531 129404 net.cpp:380] pool1 -> pool1
+I0510 10:09:48.142549 129404 net.cpp:122] Setting up pool1
+I0510 10:09:48.142556 129404 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:09:48.142561 129404 net.cpp:137] Memory required for data: 16589200
+I0510 10:09:48.142566 129404 layer_factory.hpp:77] Creating layer relu1
+I0510 10:09:48.142573 129404 net.cpp:84] Creating Layer relu1
+I0510 10:09:48.142578 129404 net.cpp:406] relu1 <- pool1
+I0510 10:09:48.142585 129404 net.cpp:367] relu1 -> pool1 (in-place)
+I0510 10:09:48.142592 129404 net.cpp:122] Setting up relu1
+I0510 10:09:48.142601 129404 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:09:48.142606 129404 net.cpp:137] Memory required for data: 19661200
+I0510 10:09:48.142611 129404 layer_factory.hpp:77] Creating layer conv2
+I0510 10:09:48.142621 129404 net.cpp:84] Creating Layer conv2
+I0510 10:09:48.142627 129404 net.cpp:406] conv2 <- pool1
+I0510 10:09:48.142633 129404 net.cpp:380] conv2 -> conv2
+I0510 10:09:48.142645 129404 base_conv_layer.cpp:121] Group is 1channel is30number of output is 30
+I0510 10:09:48.143045 129404 net.cpp:122] Setting up conv2
+I0510 10:09:48.143055 129404 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:09:48.143059 129404 net.cpp:137] Memory required for data: 22733200
+I0510 10:09:48.143069 129404 layer_factory.hpp:77] Creating layer relu2
+I0510 10:09:48.143076 129404 net.cpp:84] Creating Layer relu2
+I0510 10:09:48.143082 129404 net.cpp:406] relu2 <- conv2
+I0510 10:09:48.143088 129404 net.cpp:367] relu2 -> conv2 (in-place)
+I0510 10:09:48.143095 129404 net.cpp:122] Setting up relu2
+I0510 10:09:48.143102 129404 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:09:48.143108 129404 net.cpp:137] Memory required for data: 25805200
+I0510 10:09:48.143112 129404 layer_factory.hpp:77] Creating layer pool2
+I0510 10:09:48.143118 129404 net.cpp:84] Creating Layer pool2
+I0510 10:09:48.143123 129404 net.cpp:406] pool2 <- conv2
+I0510 10:09:48.143131 129404 net.cpp:380] pool2 -> pool2
+I0510 10:09:48.143139 129404 net.cpp:122] Setting up pool2
+I0510 10:09:48.143146 129404 net.cpp:129] Top shape: 100 30 8 8 (192000)
+I0510 10:09:48.143151 129404 net.cpp:137] Memory required for data: 26573200
+I0510 10:09:48.143155 129404 layer_factory.hpp:77] Creating layer conv3
+I0510 10:09:48.143165 129404 net.cpp:84] Creating Layer conv3
+I0510 10:09:48.143169 129404 net.cpp:406] conv3 <- pool2
+I0510 10:09:48.143177 129404 net.cpp:380] conv3 -> conv3
+I0510 10:09:48.143190 129404 base_conv_layer.cpp:121] Group is 1channel is30number of output is 60
+I0510 10:09:48.143961 129404 net.cpp:122] Setting up conv3
+I0510 10:09:48.143970 129404 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0510 10:09:48.143975 129404 net.cpp:137] Memory required for data: 28109200
+I0510 10:09:48.143985 129404 layer_factory.hpp:77] Creating layer relu3
+I0510 10:09:48.143993 129404 net.cpp:84] Creating Layer relu3
+I0510 10:09:48.143997 129404 net.cpp:406] relu3 <- conv3
+I0510 10:09:48.144003 129404 net.cpp:367] relu3 -> conv3 (in-place)
+I0510 10:09:48.144011 129404 net.cpp:122] Setting up relu3
+I0510 10:09:48.144022 129404 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0510 10:09:48.144033 129404 net.cpp:137] Memory required for data: 29645200
+I0510 10:09:48.144055 129404 layer_factory.hpp:77] Creating layer pool3
+I0510 10:09:48.144063 129404 net.cpp:84] Creating Layer pool3
+I0510 10:09:48.144068 129404 net.cpp:406] pool3 <- conv3
+I0510 10:09:48.144074 129404 net.cpp:380] pool3 -> pool3
+I0510 10:09:48.144084 129404 net.cpp:122] Setting up pool3
+I0510 10:09:48.144093 129404 net.cpp:129] Top shape: 100 60 4 4 (96000)
+I0510 10:09:48.144096 129404 net.cpp:137] Memory required for data: 30029200
+I0510 10:09:48.144101 129404 layer_factory.hpp:77] Creating layer ip1
+I0510 10:09:48.144112 129404 net.cpp:84] Creating Layer ip1
+I0510 10:09:48.144119 129404 net.cpp:406] ip1 <- pool3
+I0510 10:09:48.144126 129404 net.cpp:380] ip1 -> ip1
+I0510 10:09:48.145078 129404 net.cpp:122] Setting up ip1
+I0510 10:09:48.145087 129404 net.cpp:129] Top shape: 100 60 (6000)
+I0510 10:09:48.145092 129404 net.cpp:137] Memory required for data: 30053200
+I0510 10:09:48.145099 129404 layer_factory.hpp:77] Creating layer ip2
+I0510 10:09:48.145108 129404 net.cpp:84] Creating Layer ip2
+I0510 10:09:48.145113 129404 net.cpp:406] ip2 <- ip1
+I0510 10:09:48.145122 129404 net.cpp:380] ip2 -> ip2
+I0510 10:09:48.145148 129404 net.cpp:122] Setting up ip2
+I0510 10:09:48.145156 129404 net.cpp:129] Top shape: 100 12 (1200)
+I0510 10:09:48.145160 129404 net.cpp:137] Memory required for data: 30058000
+I0510 10:09:48.145171 129404 layer_factory.hpp:77] Creating layer loss
+I0510 10:09:48.145177 129404 net.cpp:84] Creating Layer loss
+I0510 10:09:48.145182 129404 net.cpp:406] loss <- ip2
+I0510 10:09:48.145187 129404 net.cpp:406] loss <- label
+I0510 10:09:48.145200 129404 net.cpp:380] loss -> loss
+I0510 10:09:48.145241 129404 layer_factory.hpp:77] Creating layer loss
+I0510 10:09:48.145267 129404 net.cpp:122] Setting up loss
+I0510 10:09:48.145272 129404 net.cpp:129] Top shape: (1)
+I0510 10:09:48.145277 129404 net.cpp:132]     with loss weight 1
+I0510 10:09:48.145295 129404 net.cpp:137] Memory required for data: 30058004
+I0510 10:09:48.145300 129404 net.cpp:198] loss needs backward computation.
+I0510 10:09:48.145308 129404 net.cpp:198] ip2 needs backward computation.
+I0510 10:09:48.145313 129404 net.cpp:198] ip1 needs backward computation.
+I0510 10:09:48.145318 129404 net.cpp:198] pool3 needs backward computation.
+I0510 10:09:48.145323 129404 net.cpp:198] relu3 needs backward computation.
+I0510 10:09:48.145328 129404 net.cpp:198] conv3 needs backward computation.
+I0510 10:09:48.145334 129404 net.cpp:198] pool2 needs backward computation.
+I0510 10:09:48.145337 129404 net.cpp:198] relu2 needs backward computation.
+I0510 10:09:48.145342 129404 net.cpp:198] conv2 needs backward computation.
+I0510 10:09:48.145346 129404 net.cpp:198] relu1 needs backward computation.
+I0510 10:09:48.145351 129404 net.cpp:198] pool1 needs backward computation.
+I0510 10:09:48.145356 129404 net.cpp:198] conv1 needs backward computation.
+I0510 10:09:48.145364 129404 net.cpp:200] cifar does not need backward computation.
+I0510 10:09:48.145367 129404 net.cpp:242] This network produces output loss
+I0510 10:09:48.145383 129404 net.cpp:255] Network initialization done.
+I0510 10:09:48.145437 129404 solver.cpp:56] Solver scaffolding done.
+I0510 10:09:48.145473 129404 caffe.cpp:248] Starting Optimization
+I0510 10:09:48.145478 129404 solver.cpp:272] Solving CIFAR10_quick
+I0510 10:09:48.145483 129404 solver.cpp:273] Learning Rate Policy: fixed
+#           time             counts unit events
+     0.100376048            481,432      branch-misses:u          
+     0.100376048         31,083,893      branches:u               
+     0.200565412          1,905,763      branch-misses:u          
+     0.200565412         55,116,104      branches:u               
+     0.300728436            355,982      branch-misses:u          
+     0.300728436         55,465,202      branches:u               
+     0.400876671            248,378      branch-misses:u          
+     0.400876671         44,223,384      branches:u               
+     0.501041899            197,776      branch-misses:u          
+     0.501041899         39,567,080      branches:u               
+     0.601189666            190,934      branch-misses:u          
+     0.601189666         36,580,824      branches:u               
+     0.701336867            191,061      branch-misses:u          
+     0.701336867         36,566,796      branches:u               
+     0.801487622            213,019      branch-misses:u          
+     0.801487622         41,584,631      branches:u               
+I0510 10:09:48.906000 129404 solver.cpp:218] Iteration 0 (0 iter/s, 0.76s/1 iters), loss = 2.48553
+I0510 10:09:48.906033 129404 solver.cpp:237]     Train net output #0: loss = 2.48553 (* 1 = 2.48553 loss)
+I0510 10:09:48.906039 129404 sgd_solver.cpp:105] Iteration 0, lr = 0.001
+     0.901654541          1,339,360      branch-misses:u          
+     0.901654541         53,359,732      branches:u               
+     1.001821162            731,365      branch-misses:u          
+     1.001821162         58,593,610      branches:u               
+     1.101972081            279,977      branch-misses:u          
+     1.101972081         50,371,886      branches:u               
+     1.202128682            233,881      branch-misses:u          
+     1.202128682         41,671,052      branches:u               
+     1.302299006            187,570      branch-misses:u          
+     1.302299006         35,807,279      branches:u               
+     1.402454594            190,398      branch-misses:u          
+     1.402454594         36,501,841      branches:u               
+     1.502614889            185,919      branch-misses:u          
+     1.502614889         39,810,174      branches:u               
+I0510 10:09:49.642122 129404 solver.cpp:218] Iteration 1 (1.3587 iter/s, 0.736s/1 iters), loss = 2.4846
+I0510 10:09:49.642150 129404 solver.cpp:237]     Train net output #0: loss = 2.4846 (* 1 = 2.4846 loss)
+I0510 10:09:49.642155 129404 sgd_solver.cpp:105] Iteration 1, lr = 0.001
+     1.602775989            276,004      branch-misses:u          
+     1.602775989         44,862,427      branches:u               
+     1.702938677          1,568,263      branch-misses:u          
+     1.702938677         64,212,735      branches:u               
+     1.803097266            308,814      branch-misses:u          
+     1.803097266         55,294,418      branches:u               
+     1.903279876            250,955      branch-misses:u          
+     1.903279876         42,765,336      branches:u               
+     2.003482949            190,608      branch-misses:u          
+     2.003482949         36,598,442      branches:u               
+     2.103648142            189,602      branch-misses:u          
+     2.103648142         36,604,260      branches:u               
+     2.203810879            189,095      branch-misses:u          
+     2.203810879         36,568,499      branches:u               
+I0510 10:09:50.373555 129404 solver.cpp:218] Iteration 2 (1.36799 iter/s, 0.731s/1 iters), loss = 2.47934
+I0510 10:09:50.373600 129404 solver.cpp:237]     Train net output #0: loss = 2.47934 (* 1 = 2.47934 loss)
+I0510 10:09:50.373605 129404 sgd_solver.cpp:105] Iteration 2, lr = 0.001
+     2.303969951            258,674      branch-misses:u          
+     2.303969951         45,801,884      branches:u               
+     2.404137644          1,425,202      branch-misses:u          
+     2.404137644         61,274,047      branches:u               
+     2.504325061            345,445      branch-misses:u          
+     2.504325061         55,959,840      branches:u               
+#           time             counts unit events
+     2.604486554            250,546      branch-misses:u          
+     2.604486554         45,008,278      branches:u               
+     2.704649533            195,860      branch-misses:u          
+     2.704649533         40,096,924      branches:u               
+     2.804811899            188,045      branch-misses:u          
+     2.804811899         36,404,791      branches:u               
+     2.904984595            188,522      branch-misses:u          
+     2.904984595         35,975,445      branches:u               
+     3.005145786            227,632      branch-misses:u          
+     3.005145786         43,084,438      branches:u               
+I0510 10:09:51.102960 129404 solver.cpp:218] Iteration 3 (1.37174 iter/s, 0.729s/1 iters), loss = 2.47293
+I0510 10:09:51.102989 129404 solver.cpp:237]     Train net output #0: loss = 2.47293 (* 1 = 2.47293 loss)
+I0510 10:09:51.102994 129404 sgd_solver.cpp:105] Iteration 3, lr = 0.001
+     3.105319346          1,366,839      branch-misses:u          
+     3.105319346         58,866,283      branches:u               
+     3.205484976            381,172      branch-misses:u          
+     3.205484976         57,119,890      branches:u               
+     3.305642435            248,086      branch-misses:u          
+     3.305642435         48,775,992      branches:u               
+     3.405800565            212,202      branch-misses:u          
+     3.405800565         41,291,815      branches:u               
+     3.505960324            187,497      branch-misses:u          
+     3.505960324         36,535,722      branches:u               
+     3.606115340            186,899      branch-misses:u          
+     3.606115340         35,824,720      branches:u               
+     3.706273860            202,407      branch-misses:u          
+     3.706273860         41,237,562      branches:u               
+I0510 10:09:51.830857 129404 solver.cpp:218] Iteration 4 (1.37552 iter/s, 0.727s/1 iters), loss = 2.45144
+I0510 10:09:51.830883 129404 solver.cpp:237]     Train net output #0: loss = 2.45144 (* 1 = 2.45144 loss)
+I0510 10:09:51.830888 129404 sgd_solver.cpp:105] Iteration 4, lr = 0.001
+     3.806440913            390,096      branch-misses:u          
+     3.806440913         47,835,516      branches:u               
+     3.906604686          1,302,450      branch-misses:u          
+     3.906604686         64,915,294      branches:u               
+     4.006762967            279,995      branch-misses:u          
+     4.006762967         53,013,860      branches:u               
+     4.106921024            242,812      branch-misses:u          
+     4.106921024         42,168,895      branches:u               
+     4.207096148            193,605      branch-misses:u          
+     4.207096148         36,584,858      branches:u               
+     4.307254068            188,375      branch-misses:u          
+     4.307254068         35,908,125      branches:u               
+     4.407417431            190,843      branch-misses:u          
+     4.407417431         36,456,824      branches:u               
+I0510 10:09:52.558806 129404 solver.cpp:218] Iteration 5 (1.37552 iter/s, 0.727s/1 iters), loss = 2.44106
+I0510 10:09:52.558836 129404 solver.cpp:237]     Train net output #0: loss = 2.44106 (* 1 = 2.44106 loss)
+I0510 10:09:52.558841 129404 sgd_solver.cpp:105] Iteration 5, lr = 0.001
+     4.507591528            257,280      branch-misses:u          
+     4.507591528         47,578,342      branches:u               
+     4.607755228          1,357,869      branch-misses:u          
+     4.607755228         64,268,162      branches:u               
+     4.707916231            322,350      branch-misses:u          
+     4.707916231         53,191,802      branches:u               
+     4.808073368            248,453      branch-misses:u          
+     4.808073368         47,537,036      branches:u               
+     4.908230054            195,350      branch-misses:u          
+     4.908230054         36,604,664      branches:u               
+     5.008390465            193,074      branch-misses:u          
+     5.008390465         36,546,444      branches:u               
+#           time             counts unit events
+     5.108546181            194,031      branch-misses:u          
+     5.108546181         35,825,376      branches:u               
+I0510 10:09:53.286187 129404 solver.cpp:218] Iteration 6 (1.37552 iter/s, 0.727s/1 iters), loss = 2.40409
+I0510 10:09:53.286226 129404 solver.cpp:237]     Train net output #0: loss = 2.40409 (* 1 = 2.40409 loss)
+I0510 10:09:53.286231 129404 sgd_solver.cpp:105] Iteration 6, lr = 0.001
+     5.208708385            253,206      branch-misses:u          
+     5.208708385         45,657,756      branches:u               
+     5.308873456          1,315,189      branch-misses:u          
+     5.308873456         60,743,168      branches:u               
+     5.409036140            353,917      branch-misses:u          
+     5.409036140         57,395,363      branches:u               
+     5.509192822            258,709      branch-misses:u          
+     5.509192822         45,011,462      branches:u               
+     5.609348883            199,408      branch-misses:u          
+     5.609348883         40,384,940      branches:u               
+     5.709505663            188,377      branch-misses:u          
+     5.709505663         36,596,764      branches:u               
+     5.809663663            183,754      branch-misses:u          
+     5.809663663         36,084,363      branches:u               
+     5.909836084            220,105      branch-misses:u          
+     5.909836084         42,455,761      branches:u               
+I0510 10:09:54.013662 129404 solver.cpp:218] Iteration 7 (1.37552 iter/s, 0.727s/1 iters), loss = 2.38967
+I0510 10:09:54.013689 129404 solver.cpp:237]     Train net output #0: loss = 2.38967 (* 1 = 2.38967 loss)
+I0510 10:09:54.013695 129404 sgd_solver.cpp:105] Iteration 7, lr = 0.001
+     6.010019613          1,242,182      branch-misses:u          
+     6.010019613         57,538,432      branches:u               
+     6.110189501            456,280      branch-misses:u          
+     6.110189501         58,128,032      branches:u               
+     6.210348031            253,460      branch-misses:u          
+     6.210348031         49,540,551      branches:u               
+     6.310503831            218,370      branch-misses:u          
+     6.310503831         41,274,673      branches:u               
+     6.410660422            195,067      branch-misses:u          
+     6.410660422         36,607,194      branches:u               
+     6.510821009            194,642      branch-misses:u          
+     6.510821009         36,582,463      branches:u               
+     6.610980866            198,276      branch-misses:u          
+     6.610980866         40,444,077      branches:u               
+I0510 10:09:54.740871 129404 solver.cpp:218] Iteration 8 (1.37552 iter/s, 0.727s/1 iters), loss = 2.46897
+I0510 10:09:54.740897 129404 solver.cpp:237]     Train net output #0: loss = 2.46897 (* 1 = 2.46897 loss)
+I0510 10:09:54.740903 129404 sgd_solver.cpp:105] Iteration 8, lr = 0.001
+     6.711142867            268,063      branch-misses:u          
+     6.711142867         45,188,463      branches:u               
+     6.811304614          1,398,150      branch-misses:u          
+     6.811304614         66,376,837      branches:u               
+     6.911481299            286,293      branch-misses:u          
+     6.911481299         53,127,536      branches:u               
+     7.011670428            241,148      branch-misses:u          
+     7.011670428         42,823,152      branches:u               
+     7.111835649            187,386      branch-misses:u          
+     7.111835649         35,823,155      branches:u               
+     7.212002110            190,874      branch-misses:u          
+     7.212002110         36,586,637      branches:u               
+     7.312157024            188,487      branch-misses:u          
+     7.312157024         36,571,497      branches:u               
+I0510 10:09:55.471534 129404 solver.cpp:218] Iteration 9 (1.36986 iter/s, 0.73s/1 iters), loss = 2.41396
+I0510 10:09:55.471562 129404 solver.cpp:237]     Train net output #0: loss = 2.41396 (* 1 = 2.41396 loss)
+I0510 10:09:55.471567 129404 sgd_solver.cpp:105] Iteration 9, lr = 0.001
+I0510 10:09:55.471937 129404 solver.cpp:447] Snapshotting to binary proto file examples/cifar10/cifar10_quick_iter_10.caffemodel
+I0510 10:09:55.473803 129404 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/cifar10/cifar10_quick_iter_10.solverstate
+     7.412326596            258,001      branch-misses:u          
+     7.412326596         47,776,608      branches:u               
+     7.512515434          1,363,979      branch-misses:u          
+     7.512515434         62,612,705      branches:u               
+#           time             counts unit events
+     7.612677919            343,119      branch-misses:u          
+     7.612677919         54,903,599      branches:u               
+I0510 10:09:55.713784 129404 solver.cpp:310] Iteration 10, loss = 2.38676
+I0510 10:09:55.713805 129404 solver.cpp:315] Optimization Done.
+I0510 10:09:55.713809 129404 caffe.cpp:259] Optimization Done.
+     7.632885385             49,329      branch-misses:u          
+     7.632885385          9,338,114      branches:u               

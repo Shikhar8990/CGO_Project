@@ -1,0 +1,5 @@
+           544,752      LLC-load-misses           #    6.76% of all LL-cache hits     ( +-  3.16% )
+           540,540      LLC-load-misses           #    6.69% of all LL-cache hits     ( +-  2.58% )
+           539,989      LLC-load-misses           #    6.69% of all LL-cache hits     ( +-  1.18% )
+           553,649      LLC-load-misses           #    6.23% of all LL-cache hits     ( +-  3.07% )
+           563,905      LLC-load-misses           #    6.94% of all LL-cache hits     ( +-  2.90% )

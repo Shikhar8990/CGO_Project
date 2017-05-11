@@ -1,0 +1,471 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010110966                323      r02c0:u                  
+     0.020249942             14,586      r02c0:u                  
+     0.030378479             21,832      r02c0:u                  
+     0.040503920             16,320      r02c0:u                  
+     0.050627235                888      r02c0:u                  
+I0509 13:24:59.352674 113615 caffe.cpp:211] Use CPU.
+I0509 13:24:59.352913 113615 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 10
+max_iter: 20
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 500
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0509 13:24:59.353008 113615 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0509 13:24:59.353235 113615 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0509 13:24:59.353251 113615 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0509 13:24:59.353358 113615 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0509 13:24:59.353423 113615 layer_factory.hpp:77] Creating layer mnist
+I0509 13:24:59.353519 113615 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0509 13:24:59.353548 113615 net.cpp:84] Creating Layer mnist
+I0509 13:24:59.353559 113615 net.cpp:380] mnist -> data
+I0509 13:24:59.353582 113615 net.cpp:380] mnist -> label
+I0509 13:24:59.353613 113615 data_layer.cpp:45] output data size: 64,1,28,28
+I0509 13:24:59.354140 113615 net.cpp:122] Setting up mnist
+I0509 13:24:59.354154 113615 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0509 13:24:59.354161 113615 net.cpp:129] Top shape: 64 (64)
+I0509 13:24:59.354166 113615 net.cpp:137] Memory required for data: 200960
+I0509 13:24:59.354173 113615 layer_factory.hpp:77] Creating layer conv1
+I0509 13:24:59.354192 113615 net.cpp:84] Creating Layer conv1
+I0509 13:24:59.354205 113615 net.cpp:406] conv1 <- data
+I0509 13:24:59.354219 113615 net.cpp:380] conv1 -> conv1
+I0509 13:24:59.354236 113615 base_conv_layer.cpp:121] Group is 1channel is1number of output is 20
+I0509 13:24:59.354274 113615 net.cpp:122] Setting up conv1
+I0509 13:24:59.354281 113615 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0509 13:24:59.354286 113615 net.cpp:137] Memory required for data: 3150080
+I0509 13:24:59.354305 113615 layer_factory.hpp:77] Creating layer pool1
+I0509 13:24:59.354315 113615 net.cpp:84] Creating Layer pool1
+I0509 13:24:59.354332 113615 net.cpp:406] pool1 <- conv1
+I0509 13:24:59.354341 113615 net.cpp:380] pool1 -> pool1
+I0509 13:24:59.354357 113615 net.cpp:122] Setting up pool1
+I0509 13:24:59.354365 113615 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0509 13:24:59.354370 113615 net.cpp:137] Memory required for data: 3887360
+I0509 13:24:59.354374 113615 layer_factory.hpp:77] Creating layer conv2
+I0509 13:24:59.354385 113615 net.cpp:84] Creating Layer conv2
+I0509 13:24:59.354391 113615 net.cpp:406] conv2 <- pool1
+I0509 13:24:59.354398 113615 net.cpp:380] conv2 -> conv2
+I0509 13:24:59.354411 113615 base_conv_layer.cpp:121] Group is 1channel is20number of output is 50
+I0509 13:24:59.354686 113615 net.cpp:122] Setting up conv2
+I0509 13:24:59.354696 113615 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0509 13:24:59.354701 113615 net.cpp:137] Memory required for data: 4706560
+I0509 13:24:59.354712 113615 layer_factory.hpp:77] Creating layer pool2
+I0509 13:24:59.354719 113615 net.cpp:84] Creating Layer pool2
+I0509 13:24:59.354725 113615 net.cpp:406] pool2 <- conv2
+I0509 13:24:59.354732 113615 net.cpp:380] pool2 -> pool2
+I0509 13:24:59.354743 113615 net.cpp:122] Setting up pool2
+I0509 13:24:59.354748 113615 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0509 13:24:59.354754 113615 net.cpp:137] Memory required for data: 4911360
+I0509 13:24:59.354758 113615 layer_factory.hpp:77] Creating layer ip1
+I0509 13:24:59.354768 113615 net.cpp:84] Creating Layer ip1
+I0509 13:24:59.354771 113615 net.cpp:406] ip1 <- pool2
+I0509 13:24:59.354780 113615 net.cpp:380] ip1 -> ip1
+     0.060751196             11,547      r02c0:u                  
+I0509 13:24:59.358716 113615 net.cpp:122] Setting up ip1
+I0509 13:24:59.358726 113615 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:24:59.358731 113615 net.cpp:137] Memory required for data: 5039360
+I0509 13:24:59.358742 113615 layer_factory.hpp:77] Creating layer relu1
+I0509 13:24:59.358749 113615 net.cpp:84] Creating Layer relu1
+I0509 13:24:59.358754 113615 net.cpp:406] relu1 <- ip1
+I0509 13:24:59.358760 113615 net.cpp:367] relu1 -> ip1 (in-place)
+I0509 13:24:59.358770 113615 net.cpp:122] Setting up relu1
+I0509 13:24:59.358777 113615 net.cpp:129] Top shape: 64 500 (32000)
+I0509 13:24:59.358780 113615 net.cpp:137] Memory required for data: 5167360
+I0509 13:24:59.358784 113615 layer_factory.hpp:77] Creating layer ip2
+I0509 13:24:59.358793 113615 net.cpp:84] Creating Layer ip2
+I0509 13:24:59.358798 113615 net.cpp:406] ip2 <- ip1
+I0509 13:24:59.358805 113615 net.cpp:380] ip2 -> ip2
+I0509 13:24:59.358875 113615 net.cpp:122] Setting up ip2
+I0509 13:24:59.358882 113615 net.cpp:129] Top shape: 64 10 (640)
+I0509 13:24:59.358886 113615 net.cpp:137] Memory required for data: 5169920
+I0509 13:24:59.358894 113615 layer_factory.hpp:77] Creating layer loss
+I0509 13:24:59.358902 113615 net.cpp:84] Creating Layer loss
+I0509 13:24:59.358908 113615 net.cpp:406] loss <- ip2
+I0509 13:24:59.358913 113615 net.cpp:406] loss <- label
+I0509 13:24:59.358922 113615 net.cpp:380] loss -> loss
+I0509 13:24:59.358934 113615 layer_factory.hpp:77] Creating layer loss
+I0509 13:24:59.358952 113615 net.cpp:122] Setting up loss
+I0509 13:24:59.358958 113615 net.cpp:129] Top shape: (1)
+I0509 13:24:59.358963 113615 net.cpp:132]     with loss weight 1
+I0509 13:24:59.358976 113615 net.cpp:137] Memory required for data: 5169924
+I0509 13:24:59.358983 113615 net.cpp:198] loss needs backward computation.
+I0509 13:24:59.358990 113615 net.cpp:198] ip2 needs backward computation.
+I0509 13:24:59.358995 113615 net.cpp:198] relu1 needs backward computation.
+I0509 13:24:59.359005 113615 net.cpp:198] ip1 needs backward computation.
+I0509 13:24:59.359011 113615 net.cpp:198] pool2 needs backward computation.
+I0509 13:24:59.359016 113615 net.cpp:198] conv2 needs backward computation.
+I0509 13:24:59.359021 113615 net.cpp:198] pool1 needs backward computation.
+I0509 13:24:59.359026 113615 net.cpp:198] conv1 needs backward computation.
+I0509 13:24:59.359033 113615 net.cpp:200] mnist does not need backward computation.
+I0509 13:24:59.359037 113615 net.cpp:242] This network produces output loss
+I0509 13:24:59.359050 113615 net.cpp:255] Network initialization done.
+I0509 13:24:59.359103 113615 solver.cpp:56] Solver scaffolding done.
+I0509 13:24:59.359136 113615 caffe.cpp:248] Starting Optimization
+I0509 13:24:59.359141 113615 solver.cpp:272] Solving LeNet
+I0509 13:24:59.359146 113615 solver.cpp:273] Learning Rate Policy: inv
+     0.070889218                363      r02c0:u                  
+     0.081013331                199      r02c0:u                  
+     0.091136193                157      r02c0:u                  
+     0.101257755                181      r02c0:u                  
+     0.111381654                 98      r02c0:u                  
+     0.121505192                184      r02c0:u                  
+     0.131631310                140      r02c0:u                  
+     0.141754141                148      r02c0:u                  
+     0.151876799                146      r02c0:u                  
+     0.162010742                154      r02c0:u                  
+I0509 13:24:59.465981 113615 solver.cpp:218] Iteration 0 (-2.1864e-37 iter/s, 0.106s/10 iters), loss = 2.34532
+I0509 13:24:59.466004 113615 solver.cpp:237]     Train net output #0: loss = 2.34532 (* 1 = 2.34532 loss)
+I0509 13:24:59.466012 113615 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     0.172133673                318      r02c0:u                  
+     0.182257259                376      r02c0:u                  
+     0.192380780                154      r02c0:u                  
+     0.202503713                220      r02c0:u                  
+     0.212627836                143      r02c0:u                  
+     0.222752483                 86      r02c0:u                  
+     0.232877113                146      r02c0:u                  
+     0.243010060                150      r02c0:u                  
+     0.253141171                132      r02c0:u                  
+#           time             counts unit events
+     0.263272585                258      r02c0:u                  
+     0.273409667                437      r02c0:u                  
+     0.283544203                164      r02c0:u                  
+     0.293707775                222      r02c0:u                  
+     0.303844125                177      r02c0:u                  
+     0.313978753                 62      r02c0:u                  
+     0.324111646                146      r02c0:u                  
+     0.334244958                150      r02c0:u                  
+     0.344378357                150      r02c0:u                  
+     0.354511303                230      r02c0:u                  
+     0.364646236                411      r02c0:u                  
+     0.374779562                188      r02c0:u                  
+     0.384915080                222      r02c0:u                  
+     0.395047879                171      r02c0:u                  
+     0.405181312                 80      r02c0:u                  
+     0.415314347                150      r02c0:u                  
+     0.425448620                148      r02c0:u                  
+     0.435597199                150      r02c0:u                  
+     0.445734155                212      r02c0:u                  
+     0.455869864                391      r02c0:u                  
+     0.466003556                218      r02c0:u                  
+     0.476138709                222      r02c0:u                  
+     0.486273231                134      r02c0:u                  
+     0.496408954                125      r02c0:u                  
+     0.506556069                150      r02c0:u                  
+#           time             counts unit events
+     0.516692512                148      r02c0:u                  
+     0.526830198                150      r02c0:u                  
+     0.536965500                194      r02c0:u                  
+     0.547100469                377      r02c0:u                  
+     0.557234028                236      r02c0:u                  
+     0.567367251                222      r02c0:u                  
+     0.577501999                170      r02c0:u                  
+     0.587637856                111      r02c0:u                  
+     0.597773168                142      r02c0:u                  
+     0.607907580                150      r02c0:u                  
+     0.618050356                146      r02c0:u                  
+     0.628204572                178      r02c0:u                  
+     0.638360518                339      r02c0:u                  
+     0.648508190                298      r02c0:u                  
+     0.658646419                196      r02c0:u                  
+     0.668783055                208      r02c0:u                  
+     0.678918018                115      r02c0:u                  
+     0.689051943                112      r02c0:u                  
+     0.699186596                150      r02c0:u                  
+     0.709322758                148      r02c0:u                  
+     0.719456453                154      r02c0:u                  
+     0.729596289                326      r02c0:u                  
+     0.739729439                364      r02c0:u                  
+     0.749865201                160      r02c0:u                  
+     0.760001830                222      r02c0:u                  
+#           time             counts unit events
+     0.770138883                137      r02c0:u                  
+     0.780277142                 92      r02c0:u                  
+     0.790410204                146      r02c0:u                  
+     0.800546283                150      r02c0:u                  
+     0.810682315                140      r02c0:u                  
+     0.820818851                242      r02c0:u                  
+     0.830952247                462      r02c0:u                  
+     0.841088343                152      r02c0:u                  
+     0.851224595                220      r02c0:u                  
+     0.861360074                167      r02c0:u                  
+     0.871494940                 70      r02c0:u                  
+     0.881627439                146      r02c0:u                  
+     0.891764041                150      r02c0:u                  
+     0.901899781                146      r02c0:u                  
+     0.912035907                236      r02c0:u                  
+     0.922171138                419      r02c0:u                  
+     0.932306351                182      r02c0:u                  
+     0.942440437                222      r02c0:u                  
+     0.952575290                201      r02c0:u                  
+     0.962710242                 46      r02c0:u                  
+     0.972845724                150      r02c0:u                  
+     0.982978870                148      r02c0:u                  
+     0.993114782                150      r02c0:u                  
+     1.003248232                216      r02c0:u                  
+     1.013383997                403      r02c0:u                  
+#           time             counts unit events
+     1.023520216                204      r02c0:u                  
+     1.033656942                222      r02c0:u                  
+     1.043792115                124      r02c0:u                  
+     1.053925973                133      r02c0:u                  
+     1.064061623                150      r02c0:u                  
+     1.074195532                146      r02c0:u                  
+     1.084329834                150      r02c0:u                  
+     1.094464190                200      r02c0:u                  
+I0509 13:25:00.394821 113615 solver.cpp:218] Iteration 10 (10.7759 iter/s, 0.928s/10 iters), loss = 1.75407
+I0509 13:25:00.394853 113615 solver.cpp:237]     Train net output #0: loss = 1.75407 (* 1 = 1.75407 loss)
+I0509 13:25:00.394860 113615 sgd_solver.cpp:105] Iteration 10, lr = 0.00999251
+     1.104609382                382      r02c0:u                  
+     1.114743288                236      r02c0:u                  
+     1.124876614                222      r02c0:u                  
+     1.135012193                158      r02c0:u                  
+     1.145149712                111      r02c0:u                  
+     1.155284644                148      r02c0:u                  
+     1.165418277                146      r02c0:u                  
+     1.175553496                150      r02c0:u                  
+     1.185711278                184      r02c0:u                  
+     1.195846324                357      r02c0:u                  
+     1.205982660                268      r02c0:u                  
+     1.216115799                214      r02c0:u                  
+     1.226251085                190      r02c0:u                  
+     1.236386044                115      r02c0:u                  
+     1.246520643                124      r02c0:u                  
+     1.256654582                150      r02c0:u                  
+     1.266788738                148      r02c0:u                  
+#           time             counts unit events
+     1.276922347                166      r02c0:u                  
+     1.287059203                337      r02c0:u                  
+     1.297192605                328      r02c0:u                  
+     1.307327204                178      r02c0:u                  
+     1.317461003                226      r02c0:u                  
+     1.327599786                115      r02c0:u                  
+     1.337732694                102      r02c0:u                  
+     1.347866094                150      r02c0:u                  
+     1.358000553                146      r02c0:u                  
+     1.368120669                150      r02c0:u                  
+     1.378253501                245      r02c0:u                  
+     1.388389063                460      r02c0:u                  
+     1.398523926                148      r02c0:u                  
+     1.408659105                220      r02c0:u                  
+     1.418792401                149      r02c0:u                  
+     1.428927136                 80      r02c0:u                  
+     1.439059766                150      r02c0:u                  
+     1.449194708                148      r02c0:u                  
+     1.459329324                136      r02c0:u                  
+     1.469463606                256      r02c0:u                  
+     1.479598545                433      r02c0:u                  
+     1.489732228                164      r02c0:u                  
+     1.499865520                222      r02c0:u                  
+     1.509998569                183      r02c0:u                  
+     1.520135355                 62      r02c0:u                  
+#           time             counts unit events
+     1.530268948                146      r02c0:u                  
+     1.540405929                150      r02c0:u                  
+     1.550538589                146      r02c0:u                  
+     1.560677158                230      r02c0:u                  
+     1.570810206                413      r02c0:u                  
+     1.580943946                190      r02c0:u                  
+     1.591077218                222      r02c0:u                  
+     1.601210718                158      r02c0:u                  
+     1.611347276                 93      r02c0:u                  
+     1.621480572                150      r02c0:u                  
+     1.631614121                148      r02c0:u                  
+     1.641749107                150      r02c0:u                  
+     1.651883233                212      r02c0:u                  
+     1.662027922                391      r02c0:u                  
+     1.672162541                218      r02c0:u                  
+     1.682295370                222      r02c0:u                  
+     1.692428463                134      r02c0:u                  
+     1.702563161                125      r02c0:u                  
+     1.712698967                150      r02c0:u                  
+     1.722832207                146      r02c0:u                  
+     1.732967002                150      r02c0:u                  
+     1.743102638                196      r02c0:u                  
+     1.753237177                371      r02c0:u                  
+     1.763371716                242      r02c0:u                  
+     1.773504932                222      r02c0:u                  
+#           time             counts unit events
+     1.783642174                170      r02c0:u                  
+     1.793780803                111      r02c0:u                  
+     1.803914276                142      r02c0:u                  
+     1.814048315                150      r02c0:u                  
+     1.824183470                146      r02c0:u                  
+     1.834318533                178      r02c0:u                  
+     1.844453009                351      r02c0:u                  
+     1.854587815                286      r02c0:u                  
+     1.864722953                202      r02c0:u                  
+     1.874857963                202      r02c0:u                  
+     1.884992465                115      r02c0:u                  
+     1.895127265                118      r02c0:u                  
+     1.905262523                150      r02c0:u                  
+     1.915395659                146      r02c0:u                  
+     1.925532422                162      r02c0:u                  
+I0509 13:25:01.230829 113615 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_20.caffemodel
+     1.935670257                202      r02c0:u                  
+I0509 13:25:01.237890 113615 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/mnist/lenet_iter_20.solverstate
+     1.945806406                165      r02c0:u                  
+     1.955942742                370      r02c0:u                  
+     1.966080131                158      r02c0:u                  
+     1.976213004                222      r02c0:u                  
+I0509 13:25:01.279533 113615 solver.cpp:310] Iteration 20, loss = 0.942339
+I0509 13:25:01.279551 113615 solver.cpp:315] Optimization Done.
+I0509 13:25:01.279556 113615 caffe.cpp:259] Optimization Done.
+     1.986346359                344      r02c0:u                  
+     1.986455067                  0      r02c0:u                  

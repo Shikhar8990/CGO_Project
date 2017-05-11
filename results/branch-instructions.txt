@@ -1,0 +1,5 @@
+       554,612,894      branch-instructions:u                                         ( +-  0.34% )
+       545,450,171      branch-instructions:u                                         ( +-  0.33% )
+       552,356,532      branch-instructions:u                                         ( +-  0.28% )
+       544,771,050      branch-instructions:u                                         ( +-  0.85% )
+       552,470,159      branch-instructions:u                                         ( +-  0.26% )

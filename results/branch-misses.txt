@@ -1,0 +1,5 @@
+        11,333,138      branch-misses:u           #    2.09% of all branches          ( +-  0.14% )
+        11,303,975      branch-misses:u           #    2.07% of all branches          ( +-  0.06% )
+        11,330,403      branch-misses:u           #    2.07% of all branches          ( +-  0.38% )
+        11,482,348      branch-misses:u           #    2.11% of all branches          ( +-  1.55% )
+        11,303,637      branch-misses:u           #    2.09% of all branches          ( +-  0.10% )

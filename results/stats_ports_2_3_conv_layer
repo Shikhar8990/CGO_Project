@@ -1,0 +1,290 @@
+print interval < 100ms. The overhead percentage could be high in some cases. Please proceed with caution.
+#           time             counts unit events
+     0.010114924                324      r02C0:u                  
+     0.020272616             11,569      r02C0:u                  
+     0.030416852             19,677      r02C0:u                  
+     0.040552227             20,184      r02C0:u                  
+     0.050686269              1,306      r02C0:u                  
+     0.060826539                878      r02C0:u                  
+     0.070978116                  0      r02C0:u                  
+     0.081129485                  0      r02C0:u                  
+     0.091280372                  0      r02C0:u                  
+     0.101444566                  0      r02C0:u                  
+     0.111600792                  0      r02C0:u                  
+     0.121756641                  0      r02C0:u                  
+     0.131909102                  0      r02C0:u                  
+     0.142083871                  0      r02C0:u                  
+     0.152236987                 13      r02C0:u                  
+I0429 19:55:54.083221  4000 caffe.cpp:211] Use CPU.
+I0429 19:55:54.083427  4000 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 20
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 20
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0429 19:55:54.083508  4000 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0429 19:55:54.083736  4000 net.cpp:51] Initializing net from parameters: 
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape {
+      dim: 1
+      dim: 1
+      dim: 28
+      dim: 28
+    }
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "Softmax"
+  bottom: "ip2"
+  top: "loss"
+}
+I0429 19:55:54.083794  4000 layer_factory.hpp:77] Creating layer data
+I0429 19:55:54.083816  4000 net.cpp:84] Creating Layer data
+I0429 19:55:54.083822  4000 net.cpp:380] data -> data
+I0429 19:55:54.083847  4000 net.cpp:122] Setting up data
+I0429 19:55:54.083853  4000 net.cpp:129] Top shape: 1 1 28 28 (784)
+I0429 19:55:54.083856  4000 net.cpp:137] Memory required for data: 3136
+I0429 19:55:54.083861  4000 layer_factory.hpp:77] Creating layer conv1
+I0429 19:55:54.083873  4000 net.cpp:84] Creating Layer conv1
+I0429 19:55:54.083878  4000 net.cpp:406] conv1 <- data
+I0429 19:55:54.083885  4000 net.cpp:380] conv1 -> conv1
+I0429 19:55:54.084275  4000 net.cpp:122] Setting up conv1
+I0429 19:55:54.084283  4000 net.cpp:129] Top shape: 1 20 24 24 (11520)
+I0429 19:55:54.084287  4000 net.cpp:137] Memory required for data: 49216
+I0429 19:55:54.084301  4000 layer_factory.hpp:77] Creating layer pool1
+I0429 19:55:54.084308  4000 net.cpp:84] Creating Layer pool1
+I0429 19:55:54.084311  4000 net.cpp:406] pool1 <- conv1
+I0429 19:55:54.084317  4000 net.cpp:380] pool1 -> pool1
+I0429 19:55:54.084331  4000 net.cpp:122] Setting up pool1
+I0429 19:55:54.084336  4000 net.cpp:129] Top shape: 1 20 12 12 (2880)
+I0429 19:55:54.084338  4000 net.cpp:137] Memory required for data: 60736
+I0429 19:55:54.084349  4000 layer_factory.hpp:77] Creating layer conv2
+I0429 19:55:54.084357  4000 net.cpp:84] Creating Layer conv2
+I0429 19:55:54.084362  4000 net.cpp:406] conv2 <- pool1
+I0429 19:55:54.084367  4000 net.cpp:380] conv2 -> conv2
+I0429 19:55:54.084555  4000 net.cpp:122] Setting up conv2
+I0429 19:55:54.084561  4000 net.cpp:129] Top shape: 1 50 8 8 (3200)
+I0429 19:55:54.084564  4000 net.cpp:137] Memory required for data: 73536
+I0429 19:55:54.084571  4000 layer_factory.hpp:77] Creating layer pool2
+I0429 19:55:54.084578  4000 net.cpp:84] Creating Layer pool2
+I0429 19:55:54.084581  4000 net.cpp:406] pool2 <- conv2
+I0429 19:55:54.084585  4000 net.cpp:380] pool2 -> pool2
+I0429 19:55:54.084594  4000 net.cpp:122] Setting up pool2
+I0429 19:55:54.084599  4000 net.cpp:129] Top shape: 1 50 4 4 (800)
+I0429 19:55:54.084601  4000 net.cpp:137] Memory required for data: 76736
+I0429 19:55:54.084604  4000 layer_factory.hpp:77] Creating layer conv3
+I0429 19:55:54.084611  4000 net.cpp:84] Creating Layer conv3
+I0429 19:55:54.084614  4000 net.cpp:406] conv3 <- pool2
+I0429 19:55:54.084620  4000 net.cpp:380] conv3 -> conv3
+F0429 19:55:54.085059  4000 blob.cpp:133] Check failed: data_ 
+*** Check failure stack trace: ***
+    @     0x7f22dd9755cd  google::LogMessage::Fail()
+    @     0x7f22dd977433  google::LogMessage::SendToLog()
+    @     0x7f22dd97515b  google::LogMessage::Flush()
+    @     0x7f22dd977e1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7f22dde9189b  caffe::Blob<>::mutable_cpu_data()
+     0.162382913             11,181      r02C0:u                  
+    @     0x7f22dde10bd4  caffe::BaseConvolutionLayer<>::Reshape()
+    @     0x7f22dde897f7  caffe::Net<>::Init()
+    @     0x7f22dde8bf2e  caffe::Net<>::Net()
+    @     0x7f22dde635f5  caffe::Solver<>::InitTrainNet()
+    @     0x7f22dde649e5  caffe::Solver<>::Init()
+    @     0x7f22dde64cff  caffe::Solver<>::Solver()
+    @     0x7f22ddd04af1  caffe::Creator_SGDSolver<>()
+    @           0x40a4b8  train()
+    @           0x406fa0  main
+    @     0x7f22dc8e6830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+     0.172517324                 12      r02C0:u                  
+     0.182649497      <not counted>      r02C0:u                  
+     0.192778298      <not counted>      r02C0:u                  
+     0.202906759      <not counted>      r02C0:u                  
+     0.213034212      <not counted>      r02C0:u                  
+     0.223161893      <not counted>      r02C0:u                  
+     0.233293605      <not counted>      r02C0:u                  
+     0.243426276      <not counted>      r02C0:u                  
+     0.253573375      <not counted>      r02C0:u                  
+#           time             counts unit events
+     0.263702486      <not counted>      r02C0:u                  
+     0.273833964      <not counted>      r02C0:u                  
+     0.283972074      <not counted>      r02C0:u                  
+     0.294068771      <not counted>      r02C0:u                  
+     0.304196537      <not counted>      r02C0:u                  
+     0.314326672      <not counted>      r02C0:u                  
+     0.324455878      <not counted>      r02C0:u                  
+Aborted (core dumped)
+     0.330715793                  0      r02C0:u                  

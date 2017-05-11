@@ -1,0 +1,535 @@
+I0510 10:10:11.036379 129425 caffe.cpp:211] Use CPU.
+I0510 10:10:11.036650 129425 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.001
+display: 1
+max_iter: 10
+lr_policy: "fixed"
+momentum: 0.9
+weight_decay: 0.004
+snapshot: 1000
+snapshot_prefix: "examples/cifar10/cifar10_quick"
+solver_mode: CPU
+net: "examples/cifar10/cifar10_quick_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0510 10:10:11.036749 129425 solver.cpp:87] Creating training net from net file: examples/cifar10/cifar10_quick_train_test.prototxt
+I0510 10:10:11.037022 129425 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer cifar
+I0510 10:10:11.037042 129425 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0510 10:10:11.037187 129425 net.cpp:51] Initializing net from parameters: 
+name: "CIFAR10_quick"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "cifar"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mean_file: "examples/cifar10/mean.binaryproto"
+  }
+  data_param {
+    source: "examples/cifar10/cifar10_train_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.0001
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "pool1"
+  top: "pool1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 30
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 60
+    pad: 2
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: AVE
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool3"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 60
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 12
+    weight_filler {
+      type: "gaussian"
+      std: 0.1
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0510 10:10:11.037276 129425 layer_factory.hpp:77] Creating layer cifar
+I0510 10:10:11.037377 129425 db_lmdb.cpp:35] Opened lmdb examples/cifar10/cifar10_train_lmdb
+I0510 10:10:11.037410 129425 net.cpp:84] Creating Layer cifar
+I0510 10:10:11.037421 129425 net.cpp:380] cifar -> data
+I0510 10:10:11.037446 129425 net.cpp:380] cifar -> label
+I0510 10:10:11.037461 129425 data_transformer.cpp:25] Loading mean file from: examples/cifar10/mean.binaryproto
+I0510 10:10:11.037547 129425 data_layer.cpp:45] output data size: 100,3,32,32
+I0510 10:10:11.038118 129425 net.cpp:122] Setting up cifar
+I0510 10:10:11.038143 129425 net.cpp:129] Top shape: 100 3 32 32 (307200)
+I0510 10:10:11.038151 129425 net.cpp:129] Top shape: 100 (100)
+I0510 10:10:11.038156 129425 net.cpp:137] Memory required for data: 1229200
+I0510 10:10:11.038166 129425 layer_factory.hpp:77] Creating layer conv1
+I0510 10:10:11.038183 129425 net.cpp:84] Creating Layer conv1
+I0510 10:10:11.038190 129425 net.cpp:406] conv1 <- data
+I0510 10:10:11.038205 129425 net.cpp:380] conv1 -> conv1
+I0510 10:10:11.038225 129425 base_conv_layer.cpp:121] Group is 1channel is3number of output is 30
+I0510 10:10:11.038296 129425 net.cpp:122] Setting up conv1
+I0510 10:10:11.038305 129425 net.cpp:129] Top shape: 100 30 32 32 (3072000)
+I0510 10:10:11.038311 129425 net.cpp:137] Memory required for data: 13517200
+I0510 10:10:11.038331 129425 layer_factory.hpp:77] Creating layer pool1
+I0510 10:10:11.038342 129425 net.cpp:84] Creating Layer pool1
+I0510 10:10:11.038347 129425 net.cpp:406] pool1 <- conv1
+I0510 10:10:11.038355 129425 net.cpp:380] pool1 -> pool1
+I0510 10:10:11.038373 129425 net.cpp:122] Setting up pool1
+I0510 10:10:11.038381 129425 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:10:11.038386 129425 net.cpp:137] Memory required for data: 16589200
+I0510 10:10:11.038391 129425 layer_factory.hpp:77] Creating layer relu1
+I0510 10:10:11.038399 129425 net.cpp:84] Creating Layer relu1
+I0510 10:10:11.038404 129425 net.cpp:406] relu1 <- pool1
+I0510 10:10:11.038411 129425 net.cpp:367] relu1 -> pool1 (in-place)
+I0510 10:10:11.038419 129425 net.cpp:122] Setting up relu1
+I0510 10:10:11.038427 129425 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:10:11.038434 129425 net.cpp:137] Memory required for data: 19661200
+I0510 10:10:11.038439 129425 layer_factory.hpp:77] Creating layer conv2
+I0510 10:10:11.038450 129425 net.cpp:84] Creating Layer conv2
+I0510 10:10:11.038456 129425 net.cpp:406] conv2 <- pool1
+I0510 10:10:11.038465 129425 net.cpp:380] conv2 -> conv2
+I0510 10:10:11.038478 129425 base_conv_layer.cpp:121] Group is 1channel is30number of output is 30
+I0510 10:10:11.038898 129425 net.cpp:122] Setting up conv2
+I0510 10:10:11.038909 129425 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:10:11.038914 129425 net.cpp:137] Memory required for data: 22733200
+I0510 10:10:11.038926 129425 layer_factory.hpp:77] Creating layer relu2
+I0510 10:10:11.038933 129425 net.cpp:84] Creating Layer relu2
+I0510 10:10:11.038939 129425 net.cpp:406] relu2 <- conv2
+I0510 10:10:11.038946 129425 net.cpp:367] relu2 -> conv2 (in-place)
+I0510 10:10:11.038954 129425 net.cpp:122] Setting up relu2
+I0510 10:10:11.038959 129425 net.cpp:129] Top shape: 100 30 16 16 (768000)
+I0510 10:10:11.038965 129425 net.cpp:137] Memory required for data: 25805200
+I0510 10:10:11.038970 129425 layer_factory.hpp:77] Creating layer pool2
+I0510 10:10:11.038977 129425 net.cpp:84] Creating Layer pool2
+I0510 10:10:11.038981 129425 net.cpp:406] pool2 <- conv2
+I0510 10:10:11.038990 129425 net.cpp:380] pool2 -> pool2
+I0510 10:10:11.039000 129425 net.cpp:122] Setting up pool2
+I0510 10:10:11.039006 129425 net.cpp:129] Top shape: 100 30 8 8 (192000)
+I0510 10:10:11.039011 129425 net.cpp:137] Memory required for data: 26573200
+I0510 10:10:11.039016 129425 layer_factory.hpp:77] Creating layer conv3
+I0510 10:10:11.039027 129425 net.cpp:84] Creating Layer conv3
+I0510 10:10:11.039032 129425 net.cpp:406] conv3 <- pool2
+I0510 10:10:11.039039 129425 net.cpp:380] conv3 -> conv3
+I0510 10:10:11.039052 129425 base_conv_layer.cpp:121] Group is 1channel is30number of output is 60
+I0510 10:10:11.039867 129425 net.cpp:122] Setting up conv3
+I0510 10:10:11.039877 129425 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0510 10:10:11.039882 129425 net.cpp:137] Memory required for data: 28109200
+I0510 10:10:11.039894 129425 layer_factory.hpp:77] Creating layer relu3
+I0510 10:10:11.039903 129425 net.cpp:84] Creating Layer relu3
+I0510 10:10:11.039908 129425 net.cpp:406] relu3 <- conv3
+I0510 10:10:11.039914 129425 net.cpp:367] relu3 -> conv3 (in-place)
+I0510 10:10:11.039923 129425 net.cpp:122] Setting up relu3
+I0510 10:10:11.039935 129425 net.cpp:129] Top shape: 100 60 8 8 (384000)
+I0510 10:10:11.039948 129425 net.cpp:137] Memory required for data: 29645200
+I0510 10:10:11.039953 129425 layer_factory.hpp:77] Creating layer pool3
+I0510 10:10:11.039961 129425 net.cpp:84] Creating Layer pool3
+I0510 10:10:11.039965 129425 net.cpp:406] pool3 <- conv3
+I0510 10:10:11.039973 129425 net.cpp:380] pool3 -> pool3
+I0510 10:10:11.039983 129425 net.cpp:122] Setting up pool3
+I0510 10:10:11.039990 129425 net.cpp:129] Top shape: 100 60 4 4 (96000)
+I0510 10:10:11.039995 129425 net.cpp:137] Memory required for data: 30029200
+I0510 10:10:11.039999 129425 layer_factory.hpp:77] Creating layer ip1
+I0510 10:10:11.040011 129425 net.cpp:84] Creating Layer ip1
+I0510 10:10:11.040017 129425 net.cpp:406] ip1 <- pool3
+I0510 10:10:11.040025 129425 net.cpp:380] ip1 -> ip1
+I0510 10:10:11.041082 129425 net.cpp:122] Setting up ip1
+I0510 10:10:11.041095 129425 net.cpp:129] Top shape: 100 60 (6000)
+I0510 10:10:11.041100 129425 net.cpp:137] Memory required for data: 30053200
+I0510 10:10:11.041110 129425 layer_factory.hpp:77] Creating layer ip2
+I0510 10:10:11.041119 129425 net.cpp:84] Creating Layer ip2
+I0510 10:10:11.041126 129425 net.cpp:406] ip2 <- ip1
+I0510 10:10:11.041134 129425 net.cpp:380] ip2 -> ip2
+I0510 10:10:11.041167 129425 net.cpp:122] Setting up ip2
+I0510 10:10:11.041174 129425 net.cpp:129] Top shape: 100 12 (1200)
+I0510 10:10:11.041179 129425 net.cpp:137] Memory required for data: 30058000
+I0510 10:10:11.041191 129425 layer_factory.hpp:77] Creating layer loss
+I0510 10:10:11.041199 129425 net.cpp:84] Creating Layer loss
+I0510 10:10:11.041206 129425 net.cpp:406] loss <- ip2
+I0510 10:10:11.041213 129425 net.cpp:406] loss <- label
+I0510 10:10:11.041231 129425 net.cpp:380] loss -> loss
+I0510 10:10:11.041275 129425 layer_factory.hpp:77] Creating layer loss
+I0510 10:10:11.041302 129425 net.cpp:122] Setting up loss
+I0510 10:10:11.041309 129425 net.cpp:129] Top shape: (1)
+I0510 10:10:11.041316 129425 net.cpp:132]     with loss weight 1
+I0510 10:10:11.041334 129425 net.cpp:137] Memory required for data: 30058004
+I0510 10:10:11.041340 129425 net.cpp:198] loss needs backward computation.
+I0510 10:10:11.041349 129425 net.cpp:198] ip2 needs backward computation.
+I0510 10:10:11.041355 129425 net.cpp:198] ip1 needs backward computation.
+I0510 10:10:11.041360 129425 net.cpp:198] pool3 needs backward computation.
+I0510 10:10:11.041365 129425 net.cpp:198] relu3 needs backward computation.
+I0510 10:10:11.041370 129425 net.cpp:198] conv3 needs backward computation.
+I0510 10:10:11.041378 129425 net.cpp:198] pool2 needs backward computation.
+I0510 10:10:11.041383 129425 net.cpp:198] relu2 needs backward computation.
+I0510 10:10:11.041386 129425 net.cpp:198] conv2 needs backward computation.
+I0510 10:10:11.041391 129425 net.cpp:198] relu1 needs backward computation.
+I0510 10:10:11.041398 129425 net.cpp:198] pool1 needs backward computation.
+I0510 10:10:11.041402 129425 net.cpp:198] conv1 needs backward computation.
+I0510 10:10:11.041410 129425 net.cpp:200] cifar does not need backward computation.
+I0510 10:10:11.041415 129425 net.cpp:242] This network produces output loss
+I0510 10:10:11.041434 129425 net.cpp:255] Network initialization done.
+I0510 10:10:11.041493 129425 solver.cpp:56] Solver scaffolding done.
+I0510 10:10:11.041532 129425 caffe.cpp:248] Starting Optimization
+I0510 10:10:11.041538 129425 solver.cpp:272] Solving CIFAR10_quick
+I0510 10:10:11.041544 129425 solver.cpp:273] Learning Rate Policy: fixed
+#           time             counts unit events
+     0.100361849          4,500,465      L1-dcache-load-misses    
+     0.100361849         79,198,714      L1-dcache-loads          
+     0.200534426          3,135,758      L1-dcache-load-misses    
+     0.200534426        160,747,509      L1-dcache-loads          
+     0.300679491          7,130,031      L1-dcache-load-misses    
+     0.300679491        249,948,477      L1-dcache-loads          
+     0.400821927          6,797,627      L1-dcache-load-misses    
+     0.400821927        268,314,101      L1-dcache-loads          
+     0.500974695          4,872,562      L1-dcache-load-misses    
+     0.500974695        249,583,279      L1-dcache-loads          
+     0.601116939          3,921,902      L1-dcache-load-misses    
+     0.601116939        239,281,080      L1-dcache-loads          
+     0.701258605          3,899,603      L1-dcache-load-misses    
+     0.701258605        239,273,813      L1-dcache-loads          
+     0.801404869          4,736,256      L1-dcache-load-misses    
+     0.801404869        236,243,786      L1-dcache-loads          
+I0510 10:10:11.811570 129425 solver.cpp:218] Iteration 0 (0 iter/s, 0.77s/1 iters), loss = 2.48448
+I0510 10:10:11.811600 129425 solver.cpp:237]     Train net output #0: loss = 2.48448 (* 1 = 2.48448 loss)
+I0510 10:10:11.811607 129425 sgd_solver.cpp:105] Iteration 0, lr = 0.001
+     0.901555334          4,706,408      L1-dcache-load-misses    
+     0.901555334        233,034,749      L1-dcache-loads          
+     1.001704982          6,062,939      L1-dcache-load-misses    
+     1.001704982        221,585,901      L1-dcache-loads          
+     1.101846671          6,904,678      L1-dcache-load-misses    
+     1.101846671        259,992,048      L1-dcache-loads          
+     1.201985486          6,051,884      L1-dcache-load-misses    
+     1.201985486        264,003,785      L1-dcache-loads          
+     1.302126800          3,939,782      L1-dcache-load-misses    
+     1.302126800        239,628,776      L1-dcache-loads          
+     1.402268092          3,959,139      L1-dcache-load-misses    
+     1.402268092        239,314,252      L1-dcache-loads          
+     1.502414632          3,912,644      L1-dcache-load-misses    
+     1.502414632        239,138,925      L1-dcache-loads          
+I0510 10:10:12.548056 129425 solver.cpp:218] Iteration 1 (1.3587 iter/s, 0.736s/1 iters), loss = 2.48327
+I0510 10:10:12.548089 129425 solver.cpp:237]     Train net output #0: loss = 2.48327 (* 1 = 2.48327 loss)
+I0510 10:10:12.548094 129425 sgd_solver.cpp:105] Iteration 1, lr = 0.001
+     1.602567951          5,606,822      L1-dcache-load-misses    
+     1.602567951        243,769,917      L1-dcache-loads          
+     1.702738003          4,975,411      L1-dcache-load-misses    
+     1.702738003        209,304,793      L1-dcache-loads          
+     1.802902175          7,166,874      L1-dcache-load-misses    
+     1.802902175        257,153,216      L1-dcache-loads          
+     1.903060440          6,831,298      L1-dcache-load-misses    
+     1.903060440        273,106,987      L1-dcache-loads          
+     2.003217232          4,014,908      L1-dcache-load-misses    
+     2.003217232        239,071,538      L1-dcache-loads          
+     2.103373423          3,959,276      L1-dcache-load-misses    
+     2.103373423        239,357,629      L1-dcache-loads          
+     2.203532203          3,932,836      L1-dcache-load-misses    
+     2.203532203        238,940,119      L1-dcache-loads          
+     2.303693749          5,191,832      L1-dcache-load-misses    
+     2.303693749        240,700,339      L1-dcache-loads          
+I0510 10:10:13.282459 129425 solver.cpp:218] Iteration 2 (1.3624 iter/s, 0.734s/1 iters), loss = 2.47913
+I0510 10:10:13.282501 129425 solver.cpp:237]     Train net output #0: loss = 2.47913 (* 1 = 2.47913 loss)
+I0510 10:10:13.282507 129425 sgd_solver.cpp:105] Iteration 2, lr = 0.001
+     2.403860889          4,279,446      L1-dcache-load-misses    
+     2.403860889        209,519,745      L1-dcache-loads          
+     2.504025795          7,254,007      L1-dcache-load-misses    
+     2.504025795        252,240,692      L1-dcache-loads          
+#           time             counts unit events
+     2.604186224          6,857,435      L1-dcache-load-misses    
+     2.604186224        270,486,679      L1-dcache-loads          
+     2.704348153          4,974,240      L1-dcache-load-misses    
+     2.704348153        250,806,437      L1-dcache-loads          
+     2.804506156          3,929,393      L1-dcache-load-misses    
+     2.804506156        239,533,506      L1-dcache-loads          
+     2.904675645          3,960,699      L1-dcache-load-misses    
+     2.904675645        239,364,016      L1-dcache-loads          
+     3.004849252          4,798,951      L1-dcache-load-misses    
+     3.004849252        238,009,636      L1-dcache-loads          
+I0510 10:10:14.016481 129425 solver.cpp:218] Iteration 3 (1.36426 iter/s, 0.733s/1 iters), loss = 2.47978
+I0510 10:10:14.016507 129425 solver.cpp:237]     Train net output #0: loss = 2.47978 (* 1 = 2.47978 loss)
+I0510 10:10:14.016513 129425 sgd_solver.cpp:105] Iteration 3, lr = 0.001
+     3.105027097          4,762,543      L1-dcache-load-misses    
+     3.105027097        236,012,849      L1-dcache-loads          
+     3.205199987          6,193,369      L1-dcache-load-misses    
+     3.205199987        226,554,416      L1-dcache-loads          
+     3.305360801          6,874,415      L1-dcache-load-misses    
+     3.305360801        260,351,069      L1-dcache-loads          
+     3.405522157          5,924,260      L1-dcache-load-misses    
+     3.405522157        264,145,929      L1-dcache-loads          
+     3.505682577          3,949,700      L1-dcache-load-misses    
+     3.505682577        239,322,862      L1-dcache-loads          
+     3.605835427          3,900,800      L1-dcache-load-misses    
+     3.605835427        239,073,567      L1-dcache-loads          
+     3.705993559          3,946,541      L1-dcache-load-misses    
+     3.705993559        238,958,419      L1-dcache-loads          
+I0510 10:10:14.749847 129425 solver.cpp:218] Iteration 4 (1.36426 iter/s, 0.733s/1 iters), loss = 2.4738
+I0510 10:10:14.749876 129425 solver.cpp:237]     Train net output #0: loss = 2.4738 (* 1 = 2.4738 loss)
+I0510 10:10:14.749881 129425 sgd_solver.cpp:105] Iteration 4, lr = 0.001
+     3.806157993          5,571,167      L1-dcache-load-misses    
+     3.806157993        244,097,041      L1-dcache-loads          
+     3.906323373          5,146,940      L1-dcache-load-misses    
+     3.906323373        213,714,475      L1-dcache-loads          
+     4.006508534          6,990,589      L1-dcache-load-misses    
+     4.006508534        250,626,891      L1-dcache-loads          
+     4.106685493          6,704,311      L1-dcache-load-misses    
+     4.106685493        272,914,291      L1-dcache-loads          
+     4.206846514          4,007,750      L1-dcache-load-misses    
+     4.206846514        238,067,164      L1-dcache-loads          
+     4.307006571          3,939,918      L1-dcache-load-misses    
+     4.307006571        239,095,434      L1-dcache-loads          
+     4.407167781          3,943,745      L1-dcache-load-misses    
+     4.407167781        239,204,027      L1-dcache-loads          
+     4.507332575          5,151,146      L1-dcache-load-misses    
+     4.507332575        240,321,981      L1-dcache-loads          
+I0510 10:10:15.485749 129425 solver.cpp:218] Iteration 5 (1.36054 iter/s, 0.735s/1 iters), loss = 2.4414
+I0510 10:10:15.485774 129425 solver.cpp:237]     Train net output #0: loss = 2.4414 (* 1 = 2.4414 loss)
+I0510 10:10:15.485779 129425 sgd_solver.cpp:105] Iteration 5, lr = 0.001
+     4.607498576          4,376,100      L1-dcache-load-misses    
+     4.607498576        211,989,668      L1-dcache-loads          
+     4.707670627          7,242,417      L1-dcache-load-misses    
+     4.707670627        252,541,697      L1-dcache-loads          
+     4.807827664          6,820,060      L1-dcache-load-misses    
+     4.807827664        270,438,258      L1-dcache-loads          
+     4.908013489          4,673,300      L1-dcache-load-misses    
+     4.908013489        233,881,538      L1-dcache-loads          
+     5.008176359          3,651,429      L1-dcache-load-misses    
+     5.008176359        222,396,052      L1-dcache-loads          
+#           time             counts unit events
+     5.108330467          3,670,561      L1-dcache-load-misses    
+     5.108330467        222,696,651      L1-dcache-loads          
+     5.208486566          4,273,836      L1-dcache-load-misses    
+     5.208486566        227,352,484      L1-dcache-loads          
+I0510 10:10:16.243425 129425 solver.cpp:218] Iteration 6 (1.321 iter/s, 0.757s/1 iters), loss = 2.47814
+I0510 10:10:16.243453 129425 solver.cpp:237]     Train net output #0: loss = 2.47814 (* 1 = 2.47814 loss)
+I0510 10:10:16.243458 129425 sgd_solver.cpp:105] Iteration 6, lr = 0.001
+     5.308658014          5,184,957      L1-dcache-load-misses    
+     5.308658014        247,568,508      L1-dcache-loads          
+     5.408815207          5,430,344      L1-dcache-load-misses    
+     5.408815207        215,559,737      L1-dcache-loads          
+     5.508969182          6,971,253      L1-dcache-load-misses    
+     5.508969182        254,597,518      L1-dcache-loads          
+     5.609125047          6,548,722      L1-dcache-load-misses    
+     5.609125047        270,943,587      L1-dcache-loads          
+     5.709282511          3,909,599      L1-dcache-load-misses    
+     5.709282511        237,434,567      L1-dcache-loads          
+     5.809442809          3,926,601      L1-dcache-load-misses    
+     5.809442809        239,575,448      L1-dcache-loads          
+     5.909599179          3,951,952      L1-dcache-load-misses    
+     5.909599179        239,346,464      L1-dcache-loads          
+I0510 10:10:16.977449 129425 solver.cpp:218] Iteration 7 (1.36426 iter/s, 0.733s/1 iters), loss = 2.42738
+I0510 10:10:16.977476 129425 solver.cpp:237]     Train net output #0: loss = 2.42738 (* 1 = 2.42738 loss)
+I0510 10:10:16.977481 129425 sgd_solver.cpp:105] Iteration 7, lr = 0.001
+     6.009760728          5,416,664      L1-dcache-load-misses    
+     6.009760728        241,784,543      L1-dcache-loads          
+     6.109927993          4,541,372      L1-dcache-load-misses    
+     6.109927993        213,693,718      L1-dcache-loads          
+     6.210091902          7,211,485      L1-dcache-load-misses    
+     6.210091902        254,089,355      L1-dcache-loads          
+     6.310249034          6,833,291      L1-dcache-load-misses    
+     6.310249034        272,496,537      L1-dcache-loads          
+     6.410405772          4,579,299      L1-dcache-load-misses    
+     6.410405772        245,907,214      L1-dcache-loads          
+     6.510557816          3,958,593      L1-dcache-load-misses    
+     6.510557816        239,381,195      L1-dcache-loads          
+     6.610715708          3,948,757      L1-dcache-load-misses    
+     6.610715708        239,043,848      L1-dcache-loads          
+     6.710874393          4,946,476      L1-dcache-load-misses    
+     6.710874393        238,949,013      L1-dcache-loads          
+I0510 10:10:17.709692 129425 solver.cpp:218] Iteration 8 (1.36612 iter/s, 0.732s/1 iters), loss = 2.39311
+I0510 10:10:17.709717 129425 solver.cpp:237]     Train net output #0: loss = 2.39311 (* 1 = 2.39311 loss)
+I0510 10:10:17.709722 129425 sgd_solver.cpp:105] Iteration 8, lr = 0.001
+     6.811042635          4,256,934      L1-dcache-load-misses    
+     6.811042635        219,843,222      L1-dcache-loads          
+     6.911207804          7,076,348      L1-dcache-load-misses    
+     6.911207804        246,657,564      L1-dcache-loads          
+     7.011366158          6,805,231      L1-dcache-load-misses    
+     7.011366158        264,039,042      L1-dcache-loads          
+     7.111526239          5,500,121      L1-dcache-load-misses    
+     7.111526239        258,367,593      L1-dcache-loads          
+     7.211684154          3,952,076      L1-dcache-load-misses    
+     7.211684154        239,127,395      L1-dcache-loads          
+     7.311844560          3,913,631      L1-dcache-load-misses    
+     7.311844560        239,025,155      L1-dcache-loads          
+     7.412002229          4,616,717      L1-dcache-load-misses    
+     7.412002229        237,225,496      L1-dcache-loads          
+I0510 10:10:18.441856 129425 solver.cpp:218] Iteration 9 (1.36612 iter/s, 0.732s/1 iters), loss = 2.42415
+I0510 10:10:18.441882 129425 solver.cpp:237]     Train net output #0: loss = 2.42415 (* 1 = 2.42415 loss)
+I0510 10:10:18.441896 129425 sgd_solver.cpp:105] Iteration 9, lr = 0.001
+I0510 10:10:18.442255 129425 solver.cpp:447] Snapshotting to binary proto file examples/cifar10/cifar10_quick_iter_10.caffemodel
+I0510 10:10:18.444160 129425 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/cifar10/cifar10_quick_iter_10.solverstate
+     7.512162548          4,986,174      L1-dcache-load-misses    
+     7.512162548        244,399,117      L1-dcache-loads          
+#           time             counts unit events
+     7.612320093          5,485,718      L1-dcache-load-misses    
+     7.612320093        215,732,604      L1-dcache-loads          
+I0510 10:10:18.685215 129425 solver.cpp:310] Iteration 10, loss = 2.38012
+I0510 10:10:18.685236 129425 solver.cpp:315] Optimization Done.
+I0510 10:10:18.685240 129425 caffe.cpp:259] Optimization Done.
+     7.712486832          6,804,370      L1-dcache-load-misses    
+     7.712486832        247,514,113      L1-dcache-loads          
+     7.712602427                 10      L1-dcache-load-misses    
+     7.712602427                147      L1-dcache-loads          

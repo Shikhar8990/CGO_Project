@@ -1,0 +1,1730 @@
+I0428 21:35:15.300093 168475 caffe.cpp:211] Use CPU.
+I0428 21:35:15.300341 168475 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0428 21:35:15.300453 168475 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:35:15.300678 168475 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0428 21:35:15.300696 168475 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0428 21:35:15.300807 168475 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:35:15.300879 168475 layer_factory.hpp:77] Creating layer mnist
+I0428 21:35:15.300982 168475 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0428 21:35:15.301012 168475 net.cpp:84] Creating Layer mnist
+I0428 21:35:15.301024 168475 net.cpp:380] mnist -> data
+I0428 21:35:15.301048 168475 net.cpp:380] mnist -> label
+I0428 21:35:15.301082 168475 data_layer.cpp:45] output data size: 64,1,28,28
+I0428 21:35:15.301641 168475 net.cpp:122] Setting up mnist
+I0428 21:35:15.301657 168475 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0428 21:35:15.301664 168475 net.cpp:129] Top shape: 64 (64)
+I0428 21:35:15.301669 168475 net.cpp:137] Memory required for data: 200960
+I0428 21:35:15.301678 168475 layer_factory.hpp:77] Creating layer conv1
+I0428 21:35:15.301697 168475 net.cpp:84] Creating Layer conv1
+I0428 21:35:15.301703 168475 net.cpp:406] conv1 <- data
+I0428 21:35:15.301717 168475 net.cpp:380] conv1 -> conv1
+I0428 21:35:15.301769 168475 net.cpp:122] Setting up conv1
+I0428 21:35:15.301779 168475 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0428 21:35:15.301784 168475 net.cpp:137] Memory required for data: 3150080
+I0428 21:35:15.301805 168475 layer_factory.hpp:77] Creating layer pool1
+I0428 21:35:15.301815 168475 net.cpp:84] Creating Layer pool1
+I0428 21:35:15.301828 168475 net.cpp:406] pool1 <- conv1
+I0428 21:35:15.301848 168475 net.cpp:380] pool1 -> pool1
+I0428 21:35:15.301875 168475 net.cpp:122] Setting up pool1
+I0428 21:35:15.301884 168475 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0428 21:35:15.301892 168475 net.cpp:137] Memory required for data: 3887360
+I0428 21:35:15.301897 168475 layer_factory.hpp:77] Creating layer conv2
+I0428 21:35:15.301908 168475 net.cpp:84] Creating Layer conv2
+I0428 21:35:15.301923 168475 net.cpp:406] conv2 <- pool1
+I0428 21:35:15.301934 168475 net.cpp:380] conv2 -> conv2
+I0428 21:35:15.302227 168475 net.cpp:122] Setting up conv2
+I0428 21:35:15.302237 168475 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0428 21:35:15.302243 168475 net.cpp:137] Memory required for data: 4706560
+I0428 21:35:15.302255 168475 layer_factory.hpp:77] Creating layer pool2
+I0428 21:35:15.302264 168475 net.cpp:84] Creating Layer pool2
+I0428 21:35:15.302270 168475 net.cpp:406] pool2 <- conv2
+I0428 21:35:15.302278 168475 net.cpp:380] pool2 -> pool2
+I0428 21:35:15.302290 168475 net.cpp:122] Setting up pool2
+I0428 21:35:15.302299 168475 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0428 21:35:15.302304 168475 net.cpp:137] Memory required for data: 4911360
+I0428 21:35:15.302310 168475 layer_factory.hpp:77] Creating layer ip1
+I0428 21:35:15.302321 168475 net.cpp:84] Creating Layer ip1
+I0428 21:35:15.302327 168475 net.cpp:406] ip1 <- pool2
+I0428 21:35:15.302335 168475 net.cpp:380] ip1 -> ip1
+I0428 21:35:15.306421 168475 net.cpp:122] Setting up ip1
+I0428 21:35:15.306433 168475 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:35:15.306438 168475 net.cpp:137] Memory required for data: 5039360
+I0428 21:35:15.306449 168475 layer_factory.hpp:77] Creating layer relu1
+I0428 21:35:15.306458 168475 net.cpp:84] Creating Layer relu1
+I0428 21:35:15.306465 168475 net.cpp:406] relu1 <- ip1
+I0428 21:35:15.306473 168475 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:35:15.306481 168475 net.cpp:122] Setting up relu1
+I0428 21:35:15.306488 168475 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:35:15.306493 168475 net.cpp:137] Memory required for data: 5167360
+I0428 21:35:15.306499 168475 layer_factory.hpp:77] Creating layer ip2
+I0428 21:35:15.306505 168475 net.cpp:84] Creating Layer ip2
+I0428 21:35:15.306510 168475 net.cpp:406] ip2 <- ip1
+I0428 21:35:15.306519 168475 net.cpp:380] ip2 -> ip2
+I0428 21:35:15.306589 168475 net.cpp:122] Setting up ip2
+I0428 21:35:15.306597 168475 net.cpp:129] Top shape: 64 10 (640)
+I0428 21:35:15.306602 168475 net.cpp:137] Memory required for data: 5169920
+I0428 21:35:15.306612 168475 layer_factory.hpp:77] Creating layer loss
+I0428 21:35:15.306619 168475 net.cpp:84] Creating Layer loss
+I0428 21:35:15.306624 168475 net.cpp:406] loss <- ip2
+I0428 21:35:15.306632 168475 net.cpp:406] loss <- label
+I0428 21:35:15.306640 168475 net.cpp:380] loss -> loss
+I0428 21:35:15.306653 168475 layer_factory.hpp:77] Creating layer loss
+I0428 21:35:15.306671 168475 net.cpp:122] Setting up loss
+I0428 21:35:15.306679 168475 net.cpp:129] Top shape: (1)
+I0428 21:35:15.306684 168475 net.cpp:132]     with loss weight 1
+I0428 21:35:15.306704 168475 net.cpp:137] Memory required for data: 5169924
+I0428 21:35:15.306710 168475 net.cpp:198] loss needs backward computation.
+I0428 21:35:15.306717 168475 net.cpp:198] ip2 needs backward computation.
+I0428 21:35:15.306725 168475 net.cpp:198] relu1 needs backward computation.
+I0428 21:35:15.306730 168475 net.cpp:198] ip1 needs backward computation.
+I0428 21:35:15.306735 168475 net.cpp:198] pool2 needs backward computation.
+I0428 21:35:15.306740 168475 net.cpp:198] conv2 needs backward computation.
+I0428 21:35:15.306747 168475 net.cpp:198] pool1 needs backward computation.
+I0428 21:35:15.306752 168475 net.cpp:198] conv1 needs backward computation.
+I0428 21:35:15.306758 168475 net.cpp:200] mnist does not need backward computation.
+I0428 21:35:15.306763 168475 net.cpp:242] This network produces output loss
+I0428 21:35:15.306777 168475 net.cpp:255] Network initialization done.
+I0428 21:35:15.306962 168475 solver.cpp:172] Creating test net (#0) specified by net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:35:15.307008 168475 net.cpp:294] The NetState phase (1) differed from the phase (0) specified by a rule in layer mnist
+I0428 21:35:15.307122 168475 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:35:15.307210 168475 layer_factory.hpp:77] Creating layer mnist
+I0428 21:35:15.307279 168475 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_test_lmdb
+I0428 21:35:15.307296 168475 net.cpp:84] Creating Layer mnist
+I0428 21:35:15.307304 168475 net.cpp:380] mnist -> data
+I0428 21:35:15.307317 168475 net.cpp:380] mnist -> label
+I0428 21:35:15.307335 168475 data_layer.cpp:45] output data size: 100,1,28,28
+I0428 21:35:15.307627 168475 net.cpp:122] Setting up mnist
+I0428 21:35:15.307638 168475 net.cpp:129] Top shape: 100 1 28 28 (78400)
+I0428 21:35:15.307646 168475 net.cpp:129] Top shape: 100 (100)
+I0428 21:35:15.307651 168475 net.cpp:137] Memory required for data: 314000
+I0428 21:35:15.307657 168475 layer_factory.hpp:77] Creating layer label_mnist_1_split
+I0428 21:35:15.307668 168475 net.cpp:84] Creating Layer label_mnist_1_split
+I0428 21:35:15.307675 168475 net.cpp:406] label_mnist_1_split <- label
+I0428 21:35:15.307683 168475 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_0
+I0428 21:35:15.307696 168475 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_1
+I0428 21:35:15.307708 168475 net.cpp:122] Setting up label_mnist_1_split
+I0428 21:35:15.307715 168475 net.cpp:129] Top shape: 100 (100)
+I0428 21:35:15.307720 168475 net.cpp:129] Top shape: 100 (100)
+I0428 21:35:15.307725 168475 net.cpp:137] Memory required for data: 314800
+I0428 21:35:15.307729 168475 layer_factory.hpp:77] Creating layer conv1
+I0428 21:35:15.307744 168475 net.cpp:84] Creating Layer conv1
+I0428 21:35:15.307750 168475 net.cpp:406] conv1 <- data
+I0428 21:35:15.307759 168475 net.cpp:380] conv1 -> conv1
+I0428 21:35:15.307796 168475 net.cpp:122] Setting up conv1
+I0428 21:35:15.307806 168475 net.cpp:129] Top shape: 100 20 24 24 (1152000)
+I0428 21:35:15.307811 168475 net.cpp:137] Memory required for data: 4922800
+I0428 21:35:15.307838 168475 layer_factory.hpp:77] Creating layer pool1
+I0428 21:35:15.307847 168475 net.cpp:84] Creating Layer pool1
+I0428 21:35:15.307854 168475 net.cpp:406] pool1 <- conv1
+I0428 21:35:15.307862 168475 net.cpp:380] pool1 -> pool1
+I0428 21:35:15.307873 168475 net.cpp:122] Setting up pool1
+I0428 21:35:15.307880 168475 net.cpp:129] Top shape: 100 20 12 12 (288000)
+I0428 21:35:15.307886 168475 net.cpp:137] Memory required for data: 6074800
+I0428 21:35:15.307890 168475 layer_factory.hpp:77] Creating layer conv2
+I0428 21:35:15.307907 168475 net.cpp:84] Creating Layer conv2
+I0428 21:35:15.307912 168475 net.cpp:406] conv2 <- pool1
+I0428 21:35:15.307924 168475 net.cpp:380] conv2 -> conv2
+I0428 21:35:15.308205 168475 net.cpp:122] Setting up conv2
+I0428 21:35:15.308217 168475 net.cpp:129] Top shape: 100 50 8 8 (320000)
+I0428 21:35:15.308221 168475 net.cpp:137] Memory required for data: 7354800
+I0428 21:35:15.308233 168475 layer_factory.hpp:77] Creating layer pool2
+I0428 21:35:15.308244 168475 net.cpp:84] Creating Layer pool2
+I0428 21:35:15.308250 168475 net.cpp:406] pool2 <- conv2
+I0428 21:35:15.308257 168475 net.cpp:380] pool2 -> pool2
+I0428 21:35:15.308269 168475 net.cpp:122] Setting up pool2
+I0428 21:35:15.308276 168475 net.cpp:129] Top shape: 100 50 4 4 (80000)
+I0428 21:35:15.308281 168475 net.cpp:137] Memory required for data: 7674800
+I0428 21:35:15.308285 168475 layer_factory.hpp:77] Creating layer ip1
+I0428 21:35:15.308297 168475 net.cpp:84] Creating Layer ip1
+I0428 21:35:15.308307 168475 net.cpp:406] ip1 <- pool2
+I0428 21:35:15.308315 168475 net.cpp:380] ip1 -> ip1
+I0428 21:35:15.312322 168475 net.cpp:122] Setting up ip1
+I0428 21:35:15.312337 168475 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:35:15.312342 168475 net.cpp:137] Memory required for data: 7874800
+I0428 21:35:15.312355 168475 layer_factory.hpp:77] Creating layer relu1
+I0428 21:35:15.312363 168475 net.cpp:84] Creating Layer relu1
+I0428 21:35:15.312369 168475 net.cpp:406] relu1 <- ip1
+I0428 21:35:15.312377 168475 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:35:15.312386 168475 net.cpp:122] Setting up relu1
+I0428 21:35:15.312392 168475 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:35:15.312397 168475 net.cpp:137] Memory required for data: 8074800
+I0428 21:35:15.312402 168475 layer_factory.hpp:77] Creating layer ip2
+I0428 21:35:15.312413 168475 net.cpp:84] Creating Layer ip2
+I0428 21:35:15.312418 168475 net.cpp:406] ip2 <- ip1
+I0428 21:35:15.312428 168475 net.cpp:380] ip2 -> ip2
+I0428 21:35:15.312491 168475 net.cpp:122] Setting up ip2
+I0428 21:35:15.312499 168475 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:35:15.312503 168475 net.cpp:137] Memory required for data: 8078800
+I0428 21:35:15.312511 168475 layer_factory.hpp:77] Creating layer ip2_ip2_0_split
+I0428 21:35:15.312518 168475 net.cpp:84] Creating Layer ip2_ip2_0_split
+I0428 21:35:15.312523 168475 net.cpp:406] ip2_ip2_0_split <- ip2
+I0428 21:35:15.312532 168475 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_0
+I0428 21:35:15.312542 168475 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_1
+I0428 21:35:15.312552 168475 net.cpp:122] Setting up ip2_ip2_0_split
+I0428 21:35:15.312558 168475 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:35:15.312563 168475 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:35:15.312569 168475 net.cpp:137] Memory required for data: 8086800
+I0428 21:35:15.312573 168475 layer_factory.hpp:77] Creating layer accuracy
+I0428 21:35:15.312582 168475 net.cpp:84] Creating Layer accuracy
+I0428 21:35:15.312587 168475 net.cpp:406] accuracy <- ip2_ip2_0_split_0
+I0428 21:35:15.312593 168475 net.cpp:406] accuracy <- label_mnist_1_split_0
+I0428 21:35:15.312602 168475 net.cpp:380] accuracy -> accuracy
+I0428 21:35:15.312610 168475 net.cpp:122] Setting up accuracy
+I0428 21:35:15.312616 168475 net.cpp:129] Top shape: (1)
+I0428 21:35:15.312621 168475 net.cpp:137] Memory required for data: 8086804
+I0428 21:35:15.312626 168475 layer_factory.hpp:77] Creating layer loss
+I0428 21:35:15.312634 168475 net.cpp:84] Creating Layer loss
+I0428 21:35:15.312644 168475 net.cpp:406] loss <- ip2_ip2_0_split_1
+I0428 21:35:15.312660 168475 net.cpp:406] loss <- label_mnist_1_split_1
+I0428 21:35:15.312667 168475 net.cpp:380] loss -> loss
+I0428 21:35:15.312677 168475 layer_factory.hpp:77] Creating layer loss
+I0428 21:35:15.312698 168475 net.cpp:122] Setting up loss
+I0428 21:35:15.312706 168475 net.cpp:129] Top shape: (1)
+I0428 21:35:15.312711 168475 net.cpp:132]     with loss weight 1
+I0428 21:35:15.312719 168475 net.cpp:137] Memory required for data: 8086808
+I0428 21:35:15.312724 168475 net.cpp:198] loss needs backward computation.
+I0428 21:35:15.312732 168475 net.cpp:200] accuracy does not need backward computation.
+I0428 21:35:15.312738 168475 net.cpp:198] ip2_ip2_0_split needs backward computation.
+I0428 21:35:15.312743 168475 net.cpp:198] ip2 needs backward computation.
+I0428 21:35:15.312748 168475 net.cpp:198] relu1 needs backward computation.
+I0428 21:35:15.312754 168475 net.cpp:198] ip1 needs backward computation.
+I0428 21:35:15.312759 168475 net.cpp:198] pool2 needs backward computation.
+I0428 21:35:15.312764 168475 net.cpp:198] conv2 needs backward computation.
+I0428 21:35:15.312769 168475 net.cpp:198] pool1 needs backward computation.
+I0428 21:35:15.312777 168475 net.cpp:198] conv1 needs backward computation.
+I0428 21:35:15.312782 168475 net.cpp:200] label_mnist_1_split does not need backward computation.
+I0428 21:35:15.312788 168475 net.cpp:200] mnist does not need backward computation.
+I0428 21:35:15.312793 168475 net.cpp:242] This network produces output accuracy
+I0428 21:35:15.312800 168475 net.cpp:242] This network produces output loss
+I0428 21:35:15.312819 168475 net.cpp:255] Network initialization done.
+I0428 21:35:15.312867 168475 solver.cpp:56] Solver scaffolding done.
+I0428 21:35:15.312901 168475 caffe.cpp:248] Starting Optimization
+I0428 21:35:15.312908 168475 solver.cpp:272] Solving LeNet
+I0428 21:35:15.312912 168475 solver.cpp:273] Learning Rate Policy: inv
+I0428 21:35:15.313771 168475 solver.cpp:330] Iteration 0, Testing net (#0)
+#           time             counts unit events
+     1.000130997          7,493,808      branch-misses:u          
+     1.000130997            921,418      L1-icache-load-misses    
+     2.000358819          7,786,180      branch-misses:u          
+     2.000358819            846,633      L1-icache-load-misses    
+     3.000528630          7,713,370      branch-misses:u          
+     3.000528630            813,036      L1-icache-load-misses    
+     4.000701195          7,987,819      branch-misses:u          
+     4.000701195            831,177      L1-icache-load-misses    
+     5.000884167          7,887,279      branch-misses:u          
+     5.000884167            840,884      L1-icache-load-misses    
+I0428 21:35:20.578521 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:35:20.796037 168475 solver.cpp:397]     Test net output #0: accuracy = 0.1178
+I0428 21:35:20.796062 168475 solver.cpp:397]     Test net output #1: loss = 2.31803 (* 1 = 2.31803 loss)
+I0428 21:35:20.883894 168475 solver.cpp:218] Iteration 0 (-1.8701e-39 iter/s, 5.57s/100 iters), loss = 2.28455
+I0428 21:35:20.883934 168475 solver.cpp:237]     Train net output #0: loss = 2.28455 (* 1 = 2.28455 loss)
+I0428 21:35:20.883945 168475 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     6.001056168          6,494,903      branch-misses:u          
+     6.001056168            824,520      L1-icache-load-misses    
+     7.001275171          4,850,564      branch-misses:u          
+     7.001275171            804,786      L1-icache-load-misses    
+     8.001449390          4,773,522      branch-misses:u          
+     8.001449390            800,076      L1-icache-load-misses    
+     9.001624518          4,694,405      branch-misses:u          
+     9.001624518            809,693      L1-icache-load-misses    
+    10.001802380          4,799,960      branch-misses:u          
+    10.001802380            799,581      L1-icache-load-misses    
+    11.001978103          4,619,559      branch-misses:u          
+    11.001978103            788,668      L1-icache-load-misses    
+    12.002184915          4,780,391      branch-misses:u          
+    12.002184915            782,251      L1-icache-load-misses    
+    13.002357671          4,577,250      branch-misses:u          
+    13.002357671            777,766      L1-icache-load-misses    
+    14.002536384          4,730,039      branch-misses:u          
+    14.002536384            774,672      L1-icache-load-misses    
+I0428 21:35:29.566148 168475 solver.cpp:218] Iteration 100 (11.5181 iter/s, 8.682s/100 iters), loss = 0.173214
+I0428 21:35:29.566180 168475 solver.cpp:237]     Train net output #0: loss = 0.173214 (* 1 = 0.173214 loss)
+I0428 21:35:29.566186 168475 sgd_solver.cpp:105] Iteration 100, lr = 0.00992565
+    15.002710290          4,652,337      branch-misses:u          
+    15.002710290            793,981      L1-icache-load-misses    
+    16.002895209          4,737,562      branch-misses:u          
+    16.002895209            783,591      L1-icache-load-misses    
+    17.003095676          4,588,049      branch-misses:u          
+    17.003095676            783,817      L1-icache-load-misses    
+    18.003272798          4,776,491      branch-misses:u          
+    18.003272798            780,969      L1-icache-load-misses    
+    19.003446980          4,600,643      branch-misses:u          
+    19.003446980            789,477      L1-icache-load-misses    
+    20.003614106          4,797,139      branch-misses:u          
+    20.003614106            794,486      L1-icache-load-misses    
+    21.003791009          4,601,782      branch-misses:u          
+    21.003791009            791,232      L1-icache-load-misses    
+    22.004010359          4,736,067      branch-misses:u          
+    22.004010359            797,142      L1-icache-load-misses    
+I0428 21:35:38.221607 168475 solver.cpp:218] Iteration 200 (11.554 iter/s, 8.655s/100 iters), loss = 0.153127
+I0428 21:35:38.221640 168475 solver.cpp:237]     Train net output #0: loss = 0.153127 (* 1 = 0.153127 loss)
+I0428 21:35:38.221645 168475 sgd_solver.cpp:105] Iteration 200, lr = 0.00985258
+    23.004186703          4,748,323      branch-misses:u          
+    23.004186703            790,101      L1-icache-load-misses    
+    24.004357850          4,692,380      branch-misses:u          
+    24.004357850            791,737      L1-icache-load-misses    
+    25.004530181          4,742,563      branch-misses:u          
+    25.004530181            795,011      L1-icache-load-misses    
+#           time             counts unit events
+    26.004701488          4,592,211      branch-misses:u          
+    26.004701488            793,437      L1-icache-load-misses    
+    27.004907086          4,743,706      branch-misses:u          
+    27.004907086            780,666      L1-icache-load-misses    
+    28.005079145          4,563,607      branch-misses:u          
+    28.005079145            778,065      L1-icache-load-misses    
+    29.005250051          4,775,095      branch-misses:u          
+    29.005250051            787,458      L1-icache-load-misses    
+    30.005428405          4,687,436      branch-misses:u          
+    30.005428405            793,933      L1-icache-load-misses    
+    31.005619920          4,631,115      branch-misses:u          
+    31.005619920            797,678      L1-icache-load-misses    
+I0428 21:35:46.872825 168475 solver.cpp:218] Iteration 300 (11.5594 iter/s, 8.651s/100 iters), loss = 0.164152
+I0428 21:35:46.873035 168475 solver.cpp:237]     Train net output #0: loss = 0.164152 (* 1 = 0.164152 loss)
+I0428 21:35:46.873044 168475 sgd_solver.cpp:105] Iteration 300, lr = 0.00978075
+    32.005836912          4,719,222      branch-misses:u          
+    32.005836912            784,877      L1-icache-load-misses    
+    33.006004403          4,648,011      branch-misses:u          
+    33.006004403            781,382      L1-icache-load-misses    
+    34.006185081          4,759,713      branch-misses:u          
+    34.006185081            782,709      L1-icache-load-misses    
+    35.006365556          4,583,489      branch-misses:u          
+    35.006365556            798,401      L1-icache-load-misses    
+    36.006551031          4,767,642      branch-misses:u          
+    36.006551031            783,137      L1-icache-load-misses    
+    37.006769694          4,571,837      branch-misses:u          
+    37.006769694            786,839      L1-icache-load-misses    
+    38.006945009          4,753,399      branch-misses:u          
+    38.006945009            787,664      L1-icache-load-misses    
+    39.007118178          4,689,596      branch-misses:u          
+    39.007118178            781,144      L1-icache-load-misses    
+    40.007295327          4,630,476      branch-misses:u          
+    40.007295327            782,735      L1-icache-load-misses    
+I0428 21:35:55.523212 168475 solver.cpp:218] Iteration 400 (11.5607 iter/s, 8.65s/100 iters), loss = 0.0613524
+I0428 21:35:55.523246 168475 solver.cpp:237]     Train net output #0: loss = 0.0613525 (* 1 = 0.0613525 loss)
+I0428 21:35:55.523252 168475 sgd_solver.cpp:105] Iteration 400, lr = 0.00971013
+    41.007468436          4,672,842      branch-misses:u          
+    41.007468436            788,598      L1-icache-load-misses    
+    42.007672182          4,612,787      branch-misses:u          
+    42.007672182            787,763      L1-icache-load-misses    
+    43.007846847          4,753,884      branch-misses:u          
+    43.007846847            787,754      L1-icache-load-misses    
+    44.008057720          4,605,387      branch-misses:u          
+    44.008057720            800,235      L1-icache-load-misses    
+    45.008247240          4,761,244      branch-misses:u          
+    45.008247240            793,451      L1-icache-load-misses    
+    46.008425319          4,686,299      branch-misses:u          
+    46.008425319            791,088      L1-icache-load-misses    
+    47.008637239          4,610,279      branch-misses:u          
+    47.008637239            808,964      L1-icache-load-misses    
+    48.008812162          4,671,293      branch-misses:u          
+    48.008812162            786,527      L1-icache-load-misses    
+I0428 21:36:04.084772 168475 solver.cpp:330] Iteration 500, Testing net (#0)
+    49.008990397          5,045,810      branch-misses:u          
+    49.008990397            797,453      L1-icache-load-misses    
+    50.009157226          7,641,659      branch-misses:u          
+    50.009157226            832,913      L1-icache-load-misses    
+#           time             counts unit events
+    51.009324462          7,471,591      branch-misses:u          
+    51.009324462            852,385      L1-icache-load-misses    
+    52.009521549          7,547,424      branch-misses:u          
+    52.009521549            822,683      L1-icache-load-misses    
+    53.009696112          7,718,794      branch-misses:u          
+    53.009696112            841,187      L1-icache-load-misses    
+    54.009874816          7,727,157      branch-misses:u          
+    54.009874816            838,207      L1-icache-load-misses    
+I0428 21:36:09.309963 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:36:09.526901 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9734
+I0428 21:36:09.526926 168475 solver.cpp:397]     Test net output #1: loss = 0.0803012 (* 1 = 0.0803012 loss)
+I0428 21:36:09.612648 168475 solver.cpp:218] Iteration 500 (7.09774 iter/s, 14.089s/100 iters), loss = 0.0816206
+I0428 21:36:09.612668 168475 solver.cpp:237]     Train net output #0: loss = 0.0816207 (* 1 = 0.0816207 loss)
+I0428 21:36:09.612675 168475 sgd_solver.cpp:105] Iteration 500, lr = 0.00964069
+    55.010064337          5,549,064      branch-misses:u          
+    55.010064337            810,939      L1-icache-load-misses    
+    56.010253231          4,591,316      branch-misses:u          
+    56.010253231            786,344      L1-icache-load-misses    
+    57.010457945          4,711,332      branch-misses:u          
+    57.010457945            783,216      L1-icache-load-misses    
+    58.010651856          4,580,602      branch-misses:u          
+    58.010651856            794,787      L1-icache-load-misses    
+    59.010843440          4,738,241      branch-misses:u          
+    59.010843440            792,130      L1-icache-load-misses    
+    60.011035535          4,701,294      branch-misses:u          
+    60.011035535            791,952      L1-icache-load-misses    
+    61.011210946          4,640,009      branch-misses:u          
+    61.011210946            816,220      L1-icache-load-misses    
+    62.011428711          4,688,660      branch-misses:u          
+    62.011428711            799,098      L1-icache-load-misses    
+    63.011617919          4,600,258      branch-misses:u          
+    63.011617919            800,830      L1-icache-load-misses    
+I0428 21:36:18.263975 168475 solver.cpp:218] Iteration 600 (11.5594 iter/s, 8.651s/100 iters), loss = 0.0732787
+I0428 21:36:18.264181 168475 solver.cpp:237]     Train net output #0: loss = 0.0732787 (* 1 = 0.0732787 loss)
+I0428 21:36:18.264190 168475 sgd_solver.cpp:105] Iteration 600, lr = 0.0095724
+    64.011809577          4,743,126      branch-misses:u          
+    64.011809577            800,529      L1-icache-load-misses    
+    65.012014756          4,536,833      branch-misses:u          
+    65.012014756            805,809      L1-icache-load-misses    
+    66.012207524          4,724,386      branch-misses:u          
+    66.012207524            791,536      L1-icache-load-misses    
+    67.012432986          4,552,092      branch-misses:u          
+    67.012432986            800,185      L1-icache-load-misses    
+    68.012629031          4,714,184      branch-misses:u          
+    68.012629031            815,081      L1-icache-load-misses    
+    69.012815670          4,702,805      branch-misses:u          
+    69.012815670            806,883      L1-icache-load-misses    
+    70.013012009          4,614,077      branch-misses:u          
+    70.013012009            814,844      L1-icache-load-misses    
+    71.013212925          4,751,544      branch-misses:u          
+    71.013212925            793,817      L1-icache-load-misses    
+I0428 21:36:26.910286 168475 solver.cpp:218] Iteration 700 (11.566 iter/s, 8.646s/100 iters), loss = 0.121029
+I0428 21:36:26.910321 168475 solver.cpp:237]     Train net output #0: loss = 0.121029 (* 1 = 0.121029 loss)
+I0428 21:36:26.910327 168475 sgd_solver.cpp:105] Iteration 700, lr = 0.00950522
+    72.013442854          4,581,128      branch-misses:u          
+    72.013442854            800,527      L1-icache-load-misses    
+    73.013625550          4,765,290      branch-misses:u          
+    73.013625550            786,474      L1-icache-load-misses    
+    74.013811825          4,558,913      branch-misses:u          
+    74.013811825            800,045      L1-icache-load-misses    
+    75.014008305          4,724,211      branch-misses:u          
+    75.014008305            815,282      L1-icache-load-misses    
+#           time             counts unit events
+    76.014204588          4,693,372      branch-misses:u          
+    76.014204588            800,646      L1-icache-load-misses    
+    77.014419131          4,632,255      branch-misses:u          
+    77.014419131            808,973      L1-icache-load-misses    
+    78.014615604          4,673,858      branch-misses:u          
+    78.014615604            794,356      L1-icache-load-misses    
+    79.014800490          4,588,189      branch-misses:u          
+    79.014800490            800,940      L1-icache-load-misses    
+    80.015001990          4,732,569      branch-misses:u          
+    80.015001990            772,709      L1-icache-load-misses    
+I0428 21:36:35.560165 168475 solver.cpp:218] Iteration 800 (11.562 iter/s, 8.649s/100 iters), loss = 0.244989
+I0428 21:36:35.560197 168475 solver.cpp:237]     Train net output #0: loss = 0.244989 (* 1 = 0.244989 loss)
+I0428 21:36:35.560204 168475 sgd_solver.cpp:105] Iteration 800, lr = 0.00943913
+    81.015191450          4,569,667      branch-misses:u          
+    81.015191450            811,900      L1-icache-load-misses    
+    82.015406517          4,709,184      branch-misses:u          
+    82.015406517            802,585      L1-icache-load-misses    
+    83.015598428          4,667,044      branch-misses:u          
+    83.015598428            797,310      L1-icache-load-misses    
+    84.015778484          4,631,625      branch-misses:u          
+    84.015778484            807,224      L1-icache-load-misses    
+    85.015956318          4,686,284      branch-misses:u          
+    85.015956318            787,204      L1-icache-load-misses    
+    86.016148529          4,608,582      branch-misses:u          
+    86.016148529            806,111      L1-icache-load-misses    
+    87.016364816          4,748,519      branch-misses:u          
+    87.016364816            785,192      L1-icache-load-misses    
+    88.016555073          4,541,109      branch-misses:u          
+    88.016555073            799,404      L1-icache-load-misses    
+I0428 21:36:44.207764 168475 solver.cpp:218] Iteration 900 (11.5647 iter/s, 8.647s/100 iters), loss = 0.165465
+I0428 21:36:44.207795 168475 solver.cpp:237]     Train net output #0: loss = 0.165465 (* 1 = 0.165465 loss)
+I0428 21:36:44.207801 168475 sgd_solver.cpp:105] Iteration 900, lr = 0.00937411
+    89.016731957          4,721,925      branch-misses:u          
+    89.016731957            802,308      L1-icache-load-misses    
+    90.016924778          4,604,319      branch-misses:u          
+    90.016924778            789,584      L1-icache-load-misses    
+    91.017135456          4,700,168      branch-misses:u          
+    91.017135456            802,568      L1-icache-load-misses    
+I0428 21:36:47.064175 168477 data_layer.cpp:73] Restarting data prefetching from start.
+    92.017339640          4,734,585      branch-misses:u          
+    92.017339640            789,078      L1-icache-load-misses    
+    93.017517241          4,589,740      branch-misses:u          
+    93.017517241            800,252      L1-icache-load-misses    
+    94.017700269          4,747,684      branch-misses:u          
+    94.017700269            795,701      L1-icache-load-misses    
+    95.017888349          4,556,335      branch-misses:u          
+    95.017888349            798,692      L1-icache-load-misses    
+    96.018077701          4,727,158      branch-misses:u          
+    96.018077701            797,577      L1-icache-load-misses    
+    97.018279386          4,529,214      branch-misses:u          
+    97.018279386            799,892      L1-icache-load-misses    
+I0428 21:36:52.771543 168475 solver.cpp:330] Iteration 1000, Testing net (#0)
+    98.018467452          6,095,676      branch-misses:u          
+    98.018467452            827,736      L1-icache-load-misses    
+    99.018651020          7,586,401      branch-misses:u          
+    99.018651020            816,153      L1-icache-load-misses    
+   100.018855391          7,464,518      branch-misses:u          
+   100.018855391            841,525      L1-icache-load-misses    
+#           time             counts unit events
+   101.019035463          7,582,468      branch-misses:u          
+   101.019035463            826,018      L1-icache-load-misses    
+   102.019262229          7,735,484      branch-misses:u          
+   102.019262229            808,796      L1-icache-load-misses    
+I0428 21:36:57.997150 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:36:58.213747 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9808
+I0428 21:36:58.213770 168475 solver.cpp:397]     Test net output #1: loss = 0.0530725 (* 1 = 0.0530725 loss)
+   103.019459608          7,517,719      branch-misses:u          
+   103.019459608            846,150      L1-icache-load-misses    
+I0428 21:36:58.299018 168475 solver.cpp:218] Iteration 1000 (7.09673 iter/s, 14.091s/100 iters), loss = 0.0778421
+I0428 21:36:58.299037 168475 solver.cpp:237]     Train net output #0: loss = 0.0778422 (* 1 = 0.0778422 loss)
+I0428 21:36:58.299046 168475 sgd_solver.cpp:105] Iteration 1000, lr = 0.00931012
+   104.019642073          4,576,582      branch-misses:u          
+   104.019642073            811,341      L1-icache-load-misses    
+   105.019821872          4,756,474      branch-misses:u          
+   105.019821872            804,166      L1-icache-load-misses    
+   106.020034711          4,678,820      branch-misses:u          
+   106.020034711            807,837      L1-icache-load-misses    
+   107.020267291          4,589,062      branch-misses:u          
+   107.020267291            819,158      L1-icache-load-misses    
+   108.020460336          4,650,926      branch-misses:u          
+   108.020460336            812,821      L1-icache-load-misses    
+   109.020638856          4,621,883      branch-misses:u          
+   109.020638856            809,792      L1-icache-load-misses    
+   110.020834959          4,713,380      branch-misses:u          
+   110.020834959            813,836      L1-icache-load-misses    
+   111.021035352          4,558,489      branch-misses:u          
+   111.021035352            809,516      L1-icache-load-misses    
+I0428 21:37:06.952805 168475 solver.cpp:218] Iteration 1100 (11.5567 iter/s, 8.653s/100 iters), loss = 0.00900636
+I0428 21:37:06.952855 168475 solver.cpp:237]     Train net output #0: loss = 0.00900648 (* 1 = 0.00900648 loss)
+I0428 21:37:06.952862 168475 sgd_solver.cpp:105] Iteration 1100, lr = 0.00924715
+   112.021254388          4,740,675      branch-misses:u          
+   112.021254388            805,186      L1-icache-load-misses    
+   113.021430438          4,572,763      branch-misses:u          
+   113.021430438            797,695      L1-icache-load-misses    
+   114.021610711          4,694,430      branch-misses:u          
+   114.021610711            815,257      L1-icache-load-misses    
+   115.021787620          4,704,114      branch-misses:u          
+   115.021787620            800,311      L1-icache-load-misses    
+   116.021968387          4,634,324      branch-misses:u          
+   116.021968387            815,312      L1-icache-load-misses    
+   117.022173447          4,725,134      branch-misses:u          
+   117.022173447            815,738      L1-icache-load-misses    
+   118.022363368          4,539,688      branch-misses:u          
+   118.022363368            818,352      L1-icache-load-misses    
+   119.022504287          4,684,676      branch-misses:u          
+   119.022504287            803,481      L1-icache-load-misses    
+   120.022701798          4,554,335      branch-misses:u          
+   120.022701798            805,904      L1-icache-load-misses    
+I0428 21:37:15.607465 168475 solver.cpp:218] Iteration 1200 (11.5553 iter/s, 8.654s/100 iters), loss = 0.0162428
+I0428 21:37:15.607496 168475 solver.cpp:237]     Train net output #0: loss = 0.0162429 (* 1 = 0.0162429 loss)
+I0428 21:37:15.607502 168475 sgd_solver.cpp:105] Iteration 1200, lr = 0.00918515
+   121.022879431          4,706,796      branch-misses:u          
+   121.022879431            819,800      L1-icache-load-misses    
+   122.023109135          4,534,223      branch-misses:u          
+   122.023109135            800,807      L1-icache-load-misses    
+   123.023300916          4,634,450      branch-misses:u          
+   123.023300916            788,150      L1-icache-load-misses    
+   124.023478077          4,474,872      branch-misses:u          
+   124.023478077            774,917      L1-icache-load-misses    
+   125.023653948          4,439,580      branch-misses:u          
+   125.023653948            770,278      L1-icache-load-misses    
+#           time             counts unit events
+   126.023841865          4,418,482      branch-misses:u          
+   126.023841865            765,660      L1-icache-load-misses    
+   127.024068930          4,362,727      branch-misses:u          
+   127.024068930            749,616      L1-icache-load-misses    
+   128.024254112          4,441,030      branch-misses:u          
+   128.024254112            744,868      L1-icache-load-misses    
+   129.024435186          4,306,348      branch-misses:u          
+   129.024435186            737,646      L1-icache-load-misses    
+I0428 21:37:24.619694 168475 solver.cpp:218] Iteration 1300 (11.0963 iter/s, 9.012s/100 iters), loss = 0.0229552
+I0428 21:37:24.619837 168475 solver.cpp:237]     Train net output #0: loss = 0.0229553 (* 1 = 0.0229553 loss)
+I0428 21:37:24.619845 168475 sgd_solver.cpp:105] Iteration 1300, lr = 0.00912412
+   130.024635714          4,383,013      branch-misses:u          
+   130.024635714            748,201      L1-icache-load-misses    
+   131.024822380          4,397,307      branch-misses:u          
+   131.024822380            753,158      L1-icache-load-misses    
+   132.025022138          4,374,807      branch-misses:u          
+   132.025022138            751,123      L1-icache-load-misses    
+   133.025202753          4,464,925      branch-misses:u          
+   133.025202753            775,971      L1-icache-load-misses    
+   134.025384213          4,685,961      branch-misses:u          
+   134.025384213            804,758      L1-icache-load-misses    
+   135.025571333          4,650,828      branch-misses:u          
+   135.025571333            804,930      L1-icache-load-misses    
+   136.025759766          4,642,101      branch-misses:u          
+   136.025759766            825,614      L1-icache-load-misses    
+   137.025975620          4,667,586      branch-misses:u          
+   137.025975620            805,956      L1-icache-load-misses    
+   138.026165841          4,647,522      branch-misses:u          
+   138.026165841            814,079      L1-icache-load-misses    
+I0428 21:37:33.454792 168475 solver.cpp:218] Iteration 1400 (11.3199 iter/s, 8.834s/100 iters), loss = 0.00970001
+I0428 21:37:33.454823 168475 solver.cpp:237]     Train net output #0: loss = 0.0097001 (* 1 = 0.0097001 loss)
+I0428 21:37:33.454829 168475 sgd_solver.cpp:105] Iteration 1400, lr = 0.00906403
+   139.026344537          4,685,289      branch-misses:u          
+   139.026344537            799,422      L1-icache-load-misses    
+   140.026542758          4,536,865      branch-misses:u          
+   140.026542758            797,743      L1-icache-load-misses    
+   141.026720633          4,692,543      branch-misses:u          
+   141.026720633            792,683      L1-icache-load-misses    
+   142.026928400          4,537,640      branch-misses:u          
+   142.026928400            795,871      L1-icache-load-misses    
+   143.027120141          4,739,148      branch-misses:u          
+   143.027120141            798,805      L1-icache-load-misses    
+   144.027302254          4,654,181      branch-misses:u          
+   144.027302254            789,573      L1-icache-load-misses    
+   145.027478828          4,599,414      branch-misses:u          
+   145.027478828            804,264      L1-icache-load-misses    
+   146.027609991          4,672,108      branch-misses:u          
+   146.027609991            802,281      L1-icache-load-misses    
+I0428 21:37:42.026654 168475 solver.cpp:330] Iteration 1500, Testing net (#0)
+   147.027831481          5,295,257      branch-misses:u          
+   147.027831481            797,428      L1-icache-load-misses    
+   148.028059946          7,404,868      branch-misses:u          
+   148.028059946            850,751      L1-icache-load-misses    
+   149.028232514          7,502,882      branch-misses:u          
+   149.028232514            825,402      L1-icache-load-misses    
+   150.028424764          7,644,848      branch-misses:u          
+   150.028424764            840,232      L1-icache-load-misses    
+#           time             counts unit events
+   151.028619736          7,582,147      branch-misses:u          
+   151.028619736            835,517      L1-icache-load-misses    
+I0428 21:37:47.253208 168478 data_layer.cpp:73] Restarting data prefetching from start.
+   152.028839279          7,613,495      branch-misses:u          
+   152.028839279            809,485      L1-icache-load-misses    
+I0428 21:37:47.470361 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9846
+I0428 21:37:47.470384 168475 solver.cpp:397]     Test net output #1: loss = 0.0449478 (* 1 = 0.0449478 loss)
+I0428 21:37:47.555256 168475 solver.cpp:218] Iteration 1500 (7.0922 iter/s, 14.1s/100 iters), loss = 0.0561955
+I0428 21:37:47.555277 168475 solver.cpp:237]     Train net output #0: loss = 0.0561955 (* 1 = 0.0561955 loss)
+I0428 21:37:47.555284 168475 sgd_solver.cpp:105] Iteration 1500, lr = 0.00900485
+   153.029014913          5,365,715      branch-misses:u          
+   153.029014913            811,620      L1-icache-load-misses    
+   154.029190465          4,634,762      branch-misses:u          
+   154.029190465            799,993      L1-icache-load-misses    
+   155.029382556          4,717,762      branch-misses:u          
+   155.029382556            787,540      L1-icache-load-misses    
+   156.029572177          4,578,631      branch-misses:u          
+   156.029572177            798,540      L1-icache-load-misses    
+   157.029788207          4,701,188      branch-misses:u          
+   157.029788207            789,001      L1-icache-load-misses    
+   158.029982304          4,544,910      branch-misses:u          
+   158.029982304            788,506      L1-icache-load-misses    
+   159.030160326          4,710,522      branch-misses:u          
+   159.030160326            795,401      L1-icache-load-misses    
+   160.030357983          4,646,547      branch-misses:u          
+   160.030357983            796,881      L1-icache-load-misses    
+I0428 21:37:56.202186 168475 solver.cpp:218] Iteration 1600 (11.566 iter/s, 8.646s/100 iters), loss = 0.131641
+I0428 21:37:56.202359 168475 solver.cpp:237]     Train net output #0: loss = 0.131641 (* 1 = 0.131641 loss)
+I0428 21:37:56.202368 168475 sgd_solver.cpp:105] Iteration 1600, lr = 0.00894657
+   161.030538128          4,595,431      branch-misses:u          
+   161.030538128            799,593      L1-icache-load-misses    
+   162.030754861          4,707,603      branch-misses:u          
+   162.030754861            790,264      L1-icache-load-misses    
+   163.030944655          4,593,890      branch-misses:u          
+   163.030944655            791,696      L1-icache-load-misses    
+   164.031125781          4,742,631      branch-misses:u          
+   164.031125781            783,806      L1-icache-load-misses    
+   165.031303105          4,565,757      branch-misses:u          
+   165.031303105            790,432      L1-icache-load-misses    
+   166.031481369          4,745,051      branch-misses:u          
+   166.031481369            791,895      L1-icache-load-misses    
+   167.031689732          4,717,189      branch-misses:u          
+   167.031689732            793,095      L1-icache-load-misses    
+   168.031889704          4,611,457      branch-misses:u          
+   168.031889704            797,059      L1-icache-load-misses    
+   169.032069709          4,688,761      branch-misses:u          
+   169.032069709            791,815      L1-icache-load-misses    
+I0428 21:38:04.848856 168475 solver.cpp:218] Iteration 1700 (11.566 iter/s, 8.646s/100 iters), loss = 0.0197507
+I0428 21:38:04.848888 168475 solver.cpp:237]     Train net output #0: loss = 0.0197509 (* 1 = 0.0197509 loss)
+I0428 21:38:04.848896 168475 sgd_solver.cpp:105] Iteration 1700, lr = 0.00888916
+   170.032249990          4,617,534      branch-misses:u          
+   170.032249990            805,903      L1-icache-load-misses    
+   171.032430388          4,725,653      branch-misses:u          
+   171.032430388            800,691      L1-icache-load-misses    
+   172.032620488          4,553,978      branch-misses:u          
+   172.032620488            798,013      L1-icache-load-misses    
+   173.032798886          4,737,908      branch-misses:u          
+   173.032798886            795,896      L1-icache-load-misses    
+   174.032975758          4,682,000      branch-misses:u          
+   174.032975758            792,940      L1-icache-load-misses    
+   175.033152463          4,611,584      branch-misses:u          
+   175.033152463            808,285      L1-icache-load-misses    
+#           time             counts unit events
+   176.033329741          4,693,109      branch-misses:u          
+   176.033329741            793,963      L1-icache-load-misses    
+   177.033543938          4,623,659      branch-misses:u          
+   177.033543938            791,552      L1-icache-load-misses    
+   178.033718676          4,734,587      branch-misses:u          
+   178.033718676            788,177      L1-icache-load-misses    
+I0428 21:38:13.494355 168475 solver.cpp:218] Iteration 1800 (11.5674 iter/s, 8.645s/100 iters), loss = 0.0176693
+I0428 21:38:13.494385 168475 solver.cpp:237]     Train net output #0: loss = 0.0176695 (* 1 = 0.0176695 loss)
+I0428 21:38:13.494390 168475 sgd_solver.cpp:105] Iteration 1800, lr = 0.0088326
+   179.033894196          4,566,487      branch-misses:u          
+   179.033894196            802,177      L1-icache-load-misses    
+   180.034069647          4,719,835      branch-misses:u          
+   180.034069647            789,621      L1-icache-load-misses    
+   181.034243853          4,579,595      branch-misses:u          
+   181.034243853            784,499      L1-icache-load-misses    
+   182.034447967          4,655,553      branch-misses:u          
+   182.034447967            802,590      L1-icache-load-misses    
+   183.034625369          4,671,787      branch-misses:u          
+   183.034625369            791,619      L1-icache-load-misses    
+   184.034801859          4,657,686      branch-misses:u          
+   184.034801859            791,946      L1-icache-load-misses    
+I0428 21:38:19.547865 168477 data_layer.cpp:73] Restarting data prefetching from start.
+   185.034977443          4,716,345      branch-misses:u          
+   185.034977443            795,618      L1-icache-load-misses    
+   186.035148170          4,539,879      branch-misses:u          
+   186.035148170            796,208      L1-icache-load-misses    
+I0428 21:38:22.142582 168475 solver.cpp:218] Iteration 1900 (11.5634 iter/s, 8.648s/100 iters), loss = 0.129324
+I0428 21:38:22.142614 168475 solver.cpp:237]     Train net output #0: loss = 0.129324 (* 1 = 0.129324 loss)
+I0428 21:38:22.142621 168475 sgd_solver.cpp:105] Iteration 1900, lr = 0.00877687
+   187.035348408          4,716,885      branch-misses:u          
+   187.035348408            781,970      L1-icache-load-misses    
+   188.035522140          4,561,813      branch-misses:u          
+   188.035522140            782,502      L1-icache-load-misses    
+   189.035695144          4,733,895      branch-misses:u          
+   189.035695144            783,742      L1-icache-load-misses    
+   190.035895853          4,671,283      branch-misses:u          
+   190.035895853            775,736      L1-icache-load-misses    
+   191.036074720          4,612,130      branch-misses:u          
+   191.036074720            793,520      L1-icache-load-misses    
+   192.036271342          4,721,887      branch-misses:u          
+   192.036271342            795,831      L1-icache-load-misses    
+   193.036443962          4,594,647      branch-misses:u          
+   193.036443962            792,560      L1-icache-load-misses    
+   194.036613923          4,701,987      branch-misses:u          
+   194.036613923            800,662      L1-icache-load-misses    
+   195.036795173          4,535,785      branch-misses:u          
+   195.036795173            792,627      L1-icache-load-misses    
+I0428 21:38:30.704694 168475 solver.cpp:330] Iteration 2000, Testing net (#0)
+   196.036973867          6,334,493      branch-misses:u          
+   196.036973867            806,912      L1-icache-load-misses    
+   197.037174086          7,482,389      branch-misses:u          
+   197.037174086            822,157      L1-icache-load-misses    
+   198.037347750          7,468,647      branch-misses:u          
+   198.037347750            789,249      L1-icache-load-misses    
+   199.037523639          7,613,952      branch-misses:u          
+   199.037523639            809,990      L1-icache-load-misses    
+   200.037698329          7,577,791      branch-misses:u          
+   200.037698329            819,372      L1-icache-load-misses    
+I0428 21:38:35.930413 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:38:36.147606 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9857
+I0428 21:38:36.147636 168475 solver.cpp:397]     Test net output #1: loss = 0.0418251 (* 1 = 0.0418251 loss)
+I0428 21:38:36.233072 168475 solver.cpp:218] Iteration 2000 (7.09723 iter/s, 14.09s/100 iters), loss = 0.0230561
+I0428 21:38:36.233093 168475 solver.cpp:237]     Train net output #0: loss = 0.0230562 (* 1 = 0.0230562 loss)
+I0428 21:38:36.233100 168475 sgd_solver.cpp:105] Iteration 2000, lr = 0.00872196
+#           time             counts unit events
+   201.037889294          7,290,734      branch-misses:u          
+   201.037889294            804,456      L1-icache-load-misses    
+   202.038087581          4,554,385      branch-misses:u          
+   202.038087581            789,233      L1-icache-load-misses    
+   203.038259752          4,714,928      branch-misses:u          
+   203.038259752            782,926      L1-icache-load-misses    
+   204.038433075          4,690,593      branch-misses:u          
+   204.038433075            779,206      L1-icache-load-misses    
+   205.038607240          4,601,767      branch-misses:u          
+   205.038607240            790,736      L1-icache-load-misses    
+   206.038783708          4,636,245      branch-misses:u          
+   206.038783708            786,421      L1-icache-load-misses    
+   207.039004670          4,580,913      branch-misses:u          
+   207.039004670            773,371      L1-icache-load-misses    
+   208.039182699          4,735,075      branch-misses:u          
+   208.039182699            770,926      L1-icache-load-misses    
+   209.039356019          4,570,393      branch-misses:u          
+   209.039356019            785,976      L1-icache-load-misses    
+I0428 21:38:44.877785 168475 solver.cpp:218] Iteration 2100 (11.5687 iter/s, 8.644s/100 iters), loss = 0.0240779
+I0428 21:38:44.877818 168475 solver.cpp:237]     Train net output #0: loss = 0.024078 (* 1 = 0.024078 loss)
+I0428 21:38:44.877825 168475 sgd_solver.cpp:105] Iteration 2100, lr = 0.00866784
+   210.039533371          4,736,054      branch-misses:u          
+   210.039533371            797,983      L1-icache-load-misses    
+   211.039709102          4,632,884      branch-misses:u          
+   211.039709102            793,366      L1-icache-load-misses    
+   212.039908860          4,580,609      branch-misses:u          
+   212.039908860            800,252      L1-icache-load-misses    
+   213.040083833          4,647,592      branch-misses:u          
+   213.040083833            794,868      L1-icache-load-misses    
+   214.040257458          4,599,107      branch-misses:u          
+   214.040257458            793,246      L1-icache-load-misses    
+   215.040430986          4,642,052      branch-misses:u          
+   215.040430986            784,608      L1-icache-load-misses    
+   216.040601919          4,539,751      branch-misses:u          
+   216.040601919            798,661      L1-icache-load-misses    
+   217.040813756          4,744,816      branch-misses:u          
+   217.040813756            796,344      L1-icache-load-misses    
+   218.040986113          4,647,748      branch-misses:u          
+   218.040986113            791,210      L1-icache-load-misses    
+I0428 21:38:53.526219 168475 solver.cpp:218] Iteration 2200 (11.5634 iter/s, 8.648s/100 iters), loss = 0.0269205
+I0428 21:38:53.526250 168475 solver.cpp:237]     Train net output #0: loss = 0.0269206 (* 1 = 0.0269206 loss)
+I0428 21:38:53.526257 168475 sgd_solver.cpp:105] Iteration 2200, lr = 0.0086145
+   219.041163092          4,614,708      branch-misses:u          
+   219.041163092            803,326      L1-icache-load-misses    
+   220.041338526          4,692,766      branch-misses:u          
+   220.041338526            794,799      L1-icache-load-misses    
+   221.041522691          4,587,804      branch-misses:u          
+   221.041522691            798,776      L1-icache-load-misses    
+   222.041709536          4,717,116      branch-misses:u          
+   222.041709536            799,062      L1-icache-load-misses    
+   223.041892308          4,551,945      branch-misses:u          
+   223.041892308            792,135      L1-icache-load-misses    
+   224.042067208          4,685,246      branch-misses:u          
+   224.042067208            795,962      L1-icache-load-misses    
+   225.042240327          4,634,046      branch-misses:u          
+   225.042240327            780,222      L1-icache-load-misses    
+#           time             counts unit events
+   226.042410210          4,547,433      branch-misses:u          
+   226.042410210            790,852      L1-icache-load-misses    
+I0428 21:39:02.182060 168475 solver.cpp:218] Iteration 2300 (11.554 iter/s, 8.655s/100 iters), loss = 0.124769
+I0428 21:39:02.182216 168475 solver.cpp:237]     Train net output #0: loss = 0.124769 (* 1 = 0.124769 loss)
+I0428 21:39:02.182224 168475 sgd_solver.cpp:105] Iteration 2300, lr = 0.00856192
+   227.042607042          4,665,321      branch-misses:u          
+   227.042607042            792,841      L1-icache-load-misses    
+   228.042777486          4,614,617      branch-misses:u          
+   228.042777486            809,174      L1-icache-load-misses    
+   229.042949454          4,656,067      branch-misses:u          
+   229.042949454            793,870      L1-icache-load-misses    
+   230.043134568          4,625,624      branch-misses:u          
+   230.043134568            798,410      L1-icache-load-misses    
+   231.043314146          4,672,495      branch-misses:u          
+   231.043314146            793,171      L1-icache-load-misses    
+   232.043531082          4,530,447      branch-misses:u          
+   232.043531082            800,139      L1-icache-load-misses    
+   233.043706451          4,677,409      branch-misses:u          
+   233.043706451            785,508      L1-icache-load-misses    
+   234.043914893          4,537,408      branch-misses:u          
+   234.043914893            797,699      L1-icache-load-misses    
+   235.044088123          4,730,827      branch-misses:u          
+   235.044088123            801,133      L1-icache-load-misses    
+I0428 21:39:10.830421 168475 solver.cpp:218] Iteration 2400 (11.5634 iter/s, 8.648s/100 iters), loss = 0.0083134
+I0428 21:39:10.830453 168475 solver.cpp:237]     Train net output #0: loss = 0.00831351 (* 1 = 0.00831351 loss)
+I0428 21:39:10.830461 168475 sgd_solver.cpp:105] Iteration 2400, lr = 0.00851008
+   236.044265739          4,640,732      branch-misses:u          
+   236.044265739            796,040      L1-icache-load-misses    
+   237.044479544          4,616,142      branch-misses:u          
+   237.044479544            807,393      L1-icache-load-misses    
+   238.044652646          4,654,640      branch-misses:u          
+   238.044652646            799,556      L1-icache-load-misses    
+   239.044833357          4,591,803      branch-misses:u          
+   239.044833357            794,897      L1-icache-load-misses    
+   240.045013664          4,735,876      branch-misses:u          
+   240.045013664            788,133      L1-icache-load-misses    
+   241.045193468          4,509,734      branch-misses:u          
+   241.045193468            791,385      L1-icache-load-misses    
+   242.045413648          4,704,108      branch-misses:u          
+   242.045413648            794,091      L1-icache-load-misses    
+   243.045590253          4,655,506      branch-misses:u          
+   243.045590253            784,950      L1-icache-load-misses    
+   244.045766155          4,562,617      branch-misses:u          
+   244.045766155            803,599      L1-icache-load-misses    
+I0428 21:39:19.391885 168475 solver.cpp:330] Iteration 2500, Testing net (#0)
+   245.045944303          7,216,445      branch-misses:u          
+   245.045944303            837,119      L1-icache-load-misses    
+   246.046120935          7,385,062      branch-misses:u          
+   246.046120935            847,191      L1-icache-load-misses    
+   247.046323587          7,449,856      branch-misses:u          
+   247.046323587            824,942      L1-icache-load-misses    
+   248.046504659          7,665,780      branch-misses:u          
+   248.046504659            835,741      L1-icache-load-misses    
+   249.046673190          7,589,918      branch-misses:u          
+   249.046673190            831,930      L1-icache-load-misses    
+I0428 21:39:24.615134 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:39:24.831475 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9847
+I0428 21:39:24.831497 168475 solver.cpp:397]     Test net output #1: loss = 0.0489615 (* 1 = 0.0489615 loss)
+I0428 21:39:24.916736 168475 solver.cpp:218] Iteration 2500 (7.09925 iter/s, 14.086s/100 iters), loss = 0.0407569
+I0428 21:39:24.916759 168475 solver.cpp:237]     Train net output #0: loss = 0.040757 (* 1 = 0.040757 loss)
+I0428 21:39:24.916765 168475 sgd_solver.cpp:105] Iteration 2500, lr = 0.00845897
+   250.046844373          6,278,127      branch-misses:u          
+   250.046844373            819,590      L1-icache-load-misses    
+#           time             counts unit events
+   251.047012221          4,585,586      branch-misses:u          
+   251.047012221            802,210      L1-icache-load-misses    
+   252.047221560          4,688,270      branch-misses:u          
+   252.047221560            783,949      L1-icache-load-misses    
+   253.047388021          4,531,849      branch-misses:u          
+   253.047388021            794,085      L1-icache-load-misses    
+   254.047554815          4,694,506      branch-misses:u          
+   254.047554815            793,430      L1-icache-load-misses    
+   255.047725017          4,533,971      branch-misses:u          
+   255.047725017            796,798      L1-icache-load-misses    
+   256.047898834          4,701,351      branch-misses:u          
+   256.047898834            807,796      L1-icache-load-misses    
+   257.048097875          4,669,720      branch-misses:u          
+   257.048097875            789,902      L1-icache-load-misses    
+   258.048272144          4,596,713      branch-misses:u          
+   258.048272144            813,477      L1-icache-load-misses    
+I0428 21:39:33.562846 168475 solver.cpp:218] Iteration 2600 (11.566 iter/s, 8.646s/100 iters), loss = 0.0644362
+I0428 21:39:33.563035 168475 solver.cpp:237]     Train net output #0: loss = 0.0644363 (* 1 = 0.0644363 loss)
+I0428 21:39:33.563043 168475 sgd_solver.cpp:105] Iteration 2600, lr = 0.00840857
+   259.048443389          4,737,038      branch-misses:u          
+   259.048443389            797,809      L1-icache-load-misses    
+   260.048621422          4,555,042      branch-misses:u          
+   260.048621422            791,972      L1-icache-load-misses    
+   261.048801225          4,713,832      branch-misses:u          
+   261.048801225            778,856      L1-icache-load-misses    
+   262.049012706          4,567,998      branch-misses:u          
+   262.049012706            789,679      L1-icache-load-misses    
+   263.049191964          4,723,042      branch-misses:u          
+   263.049191964            804,445      L1-icache-load-misses    
+   264.049370037          4,682,907      branch-misses:u          
+   264.049370037            790,194      L1-icache-load-misses    
+   265.049554458          4,599,155      branch-misses:u          
+   265.049554458            796,092      L1-icache-load-misses    
+   266.049744042          4,662,469      branch-misses:u          
+   266.049744042            801,825      L1-icache-load-misses    
+I0428 21:39:42.213973 168475 solver.cpp:218] Iteration 2700 (11.5607 iter/s, 8.65s/100 iters), loss = 0.0807865
+I0428 21:39:42.214005 168475 solver.cpp:237]     Train net output #0: loss = 0.0807866 (* 1 = 0.0807866 loss)
+I0428 21:39:42.214011 168475 sgd_solver.cpp:105] Iteration 2700, lr = 0.00835886
+   267.049936356          4,579,493      branch-misses:u          
+   267.049936356            796,290      L1-icache-load-misses    
+   268.050114163          4,721,655      branch-misses:u          
+   268.050114163            775,757      L1-icache-load-misses    
+   269.050301258          4,538,665      branch-misses:u          
+   269.050301258            782,472      L1-icache-load-misses    
+   270.050479628          4,706,691      branch-misses:u          
+   270.050479628            783,242      L1-icache-load-misses    
+   271.050655123          4,552,140      branch-misses:u          
+   271.050655123            787,549      L1-icache-load-misses    
+   272.050889517          4,713,635      branch-misses:u          
+   272.050889517            806,671      L1-icache-load-misses    
+   273.051063249          4,649,591      branch-misses:u          
+   273.051063249            784,767      L1-icache-load-misses    
+   274.051238352          4,590,653      branch-misses:u          
+   274.051238352            798,488      L1-icache-load-misses    
+   275.051411547          4,727,808      branch-misses:u          
+   275.051411547            792,583      L1-icache-load-misses    
+I0428 21:39:50.862223 168475 solver.cpp:218] Iteration 2800 (11.5634 iter/s, 8.648s/100 iters), loss = 0.00825524
+I0428 21:39:50.862258 168475 solver.cpp:237]     Train net output #0: loss = 0.00825534 (* 1 = 0.00825534 loss)
+I0428 21:39:50.862264 168475 sgd_solver.cpp:105] Iteration 2800, lr = 0.00830984
+#           time             counts unit events
+   276.051587384          4,579,286      branch-misses:u          
+   276.051587384            799,739      L1-icache-load-misses    
+I0428 21:39:51.557040 168477 data_layer.cpp:73] Restarting data prefetching from start.
+   277.051790127          4,689,943      branch-misses:u          
+   277.051790127            790,250      L1-icache-load-misses    
+   278.051963991          4,532,925      branch-misses:u          
+   278.051963991            791,774      L1-icache-load-misses    
+   279.052139223          4,718,510      branch-misses:u          
+   279.052139223            791,608      L1-icache-load-misses    
+   280.052313134          4,676,626      branch-misses:u          
+   280.052313134            785,768      L1-icache-load-misses    
+   281.052486063          4,568,402      branch-misses:u          
+   281.052486063            800,280      L1-icache-load-misses    
+   282.052682504          4,649,723      branch-misses:u          
+   282.052682504            791,112      L1-icache-load-misses    
+   283.052851772          4,597,292      branch-misses:u          
+   283.052851772            792,449      L1-icache-load-misses    
+   284.053018763          4,729,075      branch-misses:u          
+   284.053018763            789,269      L1-icache-load-misses    
+I0428 21:39:59.510443 168475 solver.cpp:218] Iteration 2900 (11.5634 iter/s, 8.648s/100 iters), loss = 0.0173018
+I0428 21:39:59.510473 168475 solver.cpp:237]     Train net output #0: loss = 0.0173019 (* 1 = 0.0173019 loss)
+I0428 21:39:59.510480 168475 sgd_solver.cpp:105] Iteration 2900, lr = 0.00826148
+   285.053194230          4,540,898      branch-misses:u          
+   285.053194230            793,304      L1-icache-load-misses    
+   286.053362162          4,673,461      branch-misses:u          
+   286.053362162            801,224      L1-icache-load-misses    
+   287.053548738          4,594,859      branch-misses:u          
+   287.053548738            794,549      L1-icache-load-misses    
+   288.053722269          4,620,130      branch-misses:u          
+   288.053722269            799,583      L1-icache-load-misses    
+   289.053892899          4,659,741      branch-misses:u          
+   289.053892899            803,739      L1-icache-load-misses    
+   290.054061624          4,590,995      branch-misses:u          
+   290.054061624            805,495      L1-icache-load-misses    
+   291.054235212          4,710,092      branch-misses:u          
+   291.054235212            785,635      L1-icache-load-misses    
+   292.054429960          4,512,370      branch-misses:u          
+   292.054429960            784,762      L1-icache-load-misses    
+I0428 21:40:08.072530 168475 solver.cpp:330] Iteration 3000, Testing net (#0)
+   293.054600155          5,202,873      branch-misses:u          
+   293.054600155            806,996      L1-icache-load-misses    
+   294.054794420          7,542,610      branch-misses:u          
+   294.054794420            824,844      L1-icache-load-misses    
+   295.054963885          7,428,501      branch-misses:u          
+   295.054963885            848,327      L1-icache-load-misses    
+   296.055145324          7,419,094      branch-misses:u          
+   296.055145324            829,833      L1-icache-load-misses    
+   297.055348632          7,626,221      branch-misses:u          
+   297.055348632            829,646      L1-icache-load-misses    
+I0428 21:40:13.294514 168478 data_layer.cpp:73] Restarting data prefetching from start.
+   298.055524811          7,588,770      branch-misses:u          
+   298.055524811            820,984      L1-icache-load-misses    
+I0428 21:40:13.511667 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9872
+I0428 21:40:13.511690 168475 solver.cpp:397]     Test net output #1: loss = 0.0390731 (* 1 = 0.0390731 loss)
+I0428 21:40:13.597174 168475 solver.cpp:218] Iteration 3000 (7.09925 iter/s, 14.086s/100 iters), loss = 0.022158
+I0428 21:40:13.597196 168475 solver.cpp:237]     Train net output #0: loss = 0.022158 (* 1 = 0.022158 loss)
+I0428 21:40:13.597204 168475 sgd_solver.cpp:105] Iteration 3000, lr = 0.00821377
+   299.055701982          5,245,730      branch-misses:u          
+   299.055701982            811,600      L1-icache-load-misses    
+   300.055895742          4,728,403      branch-misses:u          
+   300.055895742            805,529      L1-icache-load-misses    
+#           time             counts unit events
+   301.056077717          4,666,832      branch-misses:u          
+   301.056077717            792,360      L1-icache-load-misses    
+   302.056281558          4,587,877      branch-misses:u          
+   302.056281558            811,708      L1-icache-load-misses    
+   303.056457770          4,613,129      branch-misses:u          
+   303.056457770            795,414      L1-icache-load-misses    
+   304.056634517          4,567,300      branch-misses:u          
+   304.056634517            799,173      L1-icache-load-misses    
+   305.056811083          4,676,162      branch-misses:u          
+   305.056811083            795,426      L1-icache-load-misses    
+   306.056987285          4,547,490      branch-misses:u          
+   306.056987285            792,251      L1-icache-load-misses    
+I0428 21:40:22.242924 168475 solver.cpp:218] Iteration 3100 (11.5674 iter/s, 8.645s/100 iters), loss = 0.015293
+I0428 21:40:22.242959 168475 solver.cpp:237]     Train net output #0: loss = 0.0152931 (* 1 = 0.0152931 loss)
+I0428 21:40:22.242964 168475 sgd_solver.cpp:105] Iteration 3100, lr = 0.0081667
+   307.057186643          4,654,394      branch-misses:u          
+   307.057186643            798,139      L1-icache-load-misses    
+   308.057362078          4,643,685      branch-misses:u          
+   308.057362078            803,265      L1-icache-load-misses    
+   309.057538931          4,591,327      branch-misses:u          
+   309.057538931            809,290      L1-icache-load-misses    
+   310.057719369          4,695,466      branch-misses:u          
+   310.057719369            794,181      L1-icache-load-misses    
+   311.057899466          4,547,511      branch-misses:u          
+   311.057899466            800,814      L1-icache-load-misses    
+   312.058092694          4,704,968      branch-misses:u          
+   312.058092694            793,272      L1-icache-load-misses    
+   313.058262799          4,514,493      branch-misses:u          
+   313.058262799            800,444      L1-icache-load-misses    
+   314.058434761          4,690,982      branch-misses:u          
+   314.058434761            793,510      L1-icache-load-misses    
+   315.058609819          4,641,858      branch-misses:u          
+   315.058609819            791,884      L1-icache-load-misses    
+I0428 21:40:30.884785 168475 solver.cpp:218] Iteration 3200 (11.5727 iter/s, 8.641s/100 iters), loss = 0.00798398
+I0428 21:40:30.884824 168475 solver.cpp:237]     Train net output #0: loss = 0.00798405 (* 1 = 0.00798405 loss)
+I0428 21:40:30.884831 168475 sgd_solver.cpp:105] Iteration 3200, lr = 0.00812025
+   316.058781735          4,545,676      branch-misses:u          
+   316.058781735            811,212      L1-icache-load-misses    
+   317.058970899          4,646,605      branch-misses:u          
+   317.058970899            805,051      L1-icache-load-misses    
+   318.059151156          4,578,929      branch-misses:u          
+   318.059151156            802,062      L1-icache-load-misses    
+   319.059322029          4,740,556      branch-misses:u          
+   319.059322029            803,309      L1-icache-load-misses    
+   320.059488489          4,532,905      branch-misses:u          
+   320.059488489            801,462      L1-icache-load-misses    
+   321.059668769          4,713,411      branch-misses:u          
+   321.059668769            804,165      L1-icache-load-misses    
+   322.059864557          4,653,945      branch-misses:u          
+   322.059864557            793,052      L1-icache-load-misses    
+   323.060056507          4,580,632      branch-misses:u          
+   323.060056507            816,784      L1-icache-load-misses    
+   324.060198710          4,632,122      branch-misses:u          
+   324.060198710            807,252      L1-icache-load-misses    
+I0428 21:40:39.533763 168475 solver.cpp:218] Iteration 3300 (11.5634 iter/s, 8.648s/100 iters), loss = 0.057692
+I0428 21:40:39.533917 168475 solver.cpp:237]     Train net output #0: loss = 0.0576921 (* 1 = 0.0576921 loss)
+I0428 21:40:39.533924 168475 sgd_solver.cpp:105] Iteration 3300, lr = 0.00807442
+   325.060373254          4,580,027      branch-misses:u          
+   325.060373254            806,516      L1-icache-load-misses    
+#           time             counts unit events
+   326.060546888          4,677,173      branch-misses:u          
+   326.060546888            790,634      L1-icache-load-misses    
+   327.060757429          4,536,899      branch-misses:u          
+   327.060757429            790,846      L1-icache-load-misses    
+   328.060933741          4,673,960      branch-misses:u          
+   328.060933741            793,440      L1-icache-load-misses    
+   329.061108958          4,535,339      branch-misses:u          
+   329.061108958            788,405      L1-icache-load-misses    
+   330.061287444          4,705,499      branch-misses:u          
+   330.061287444            801,251      L1-icache-load-misses    
+   331.061464832          4,654,443      branch-misses:u          
+   331.061464832            801,203      L1-icache-load-misses    
+   332.061668348          4,608,724      branch-misses:u          
+   332.061668348            806,121      L1-icache-load-misses    
+I0428 21:40:48.182960 168475 solver.cpp:218] Iteration 3400 (11.562 iter/s, 8.649s/100 iters), loss = 0.0137245
+I0428 21:40:48.182994 168475 solver.cpp:237]     Train net output #0: loss = 0.0137246 (* 1 = 0.0137246 loss)
+I0428 21:40:48.183001 168475 sgd_solver.cpp:105] Iteration 3400, lr = 0.00802918
+   333.061844003          4,685,281      branch-misses:u          
+   333.061844003            807,084      L1-icache-load-misses    
+   334.062015200          4,534,792      branch-misses:u          
+   334.062015200            796,033      L1-icache-load-misses    
+   335.062187799          4,693,824      branch-misses:u          
+   335.062187799            784,317      L1-icache-load-misses    
+   336.062334432          4,515,040      branch-misses:u          
+   336.062334432            793,840      L1-icache-load-misses    
+   337.062535469          4,674,950      branch-misses:u          
+   337.062535469            805,895      L1-icache-load-misses    
+   338.062712970          4,622,190      branch-misses:u          
+   338.062712970            801,528      L1-icache-load-misses    
+   339.062891106          4,537,407      branch-misses:u          
+   339.062891106            824,976      L1-icache-load-misses    
+   340.063082724          4,659,697      branch-misses:u          
+   340.063082724            804,569      L1-icache-load-misses    
+   341.063259898          4,566,407      branch-misses:u          
+   341.063259898            816,494      L1-icache-load-misses    
+I0428 21:40:56.745101 168475 solver.cpp:330] Iteration 3500, Testing net (#0)
+   342.063457885          6,118,581      branch-misses:u          
+   342.063457885            806,164      L1-icache-load-misses    
+   343.063625331          7,522,333      branch-misses:u          
+   343.063625331            831,667      L1-icache-load-misses    
+   344.063789432          7,426,238      branch-misses:u          
+   344.063789432            813,797      L1-icache-load-misses    
+   345.063951556          7,620,063      branch-misses:u          
+   345.063951556            808,484      L1-icache-load-misses    
+   346.064120683          7,448,176      branch-misses:u          
+   346.064120683            823,406      L1-icache-load-misses    
+I0428 21:41:01.967841 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:41:02.184278 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9867
+I0428 21:41:02.184303 168475 solver.cpp:397]     Test net output #1: loss = 0.03971 (* 1 = 0.03971 loss)
+I0428 21:41:02.269464 168475 solver.cpp:218] Iteration 3500 (7.09925 iter/s, 14.086s/100 iters), loss = 0.00420657
+I0428 21:41:02.269485 168475 solver.cpp:237]     Train net output #0: loss = 0.00420663 (* 1 = 0.00420663 loss)
+I0428 21:41:02.269493 168475 sgd_solver.cpp:105] Iteration 3500, lr = 0.00798454
+   347.064320232          7,311,462      branch-misses:u          
+   347.064320232            834,961      L1-icache-load-misses    
+   348.064494172          4,536,157      branch-misses:u          
+   348.064494172            792,154      L1-icache-load-misses    
+   349.064674998          4,697,085      branch-misses:u          
+   349.064674998            792,285      L1-icache-load-misses    
+   350.064847639          4,536,392      branch-misses:u          
+   350.064847639            788,579      L1-icache-load-misses    
+#           time             counts unit events
+   351.065022392          4,709,610      branch-misses:u          
+   351.065022392            786,360      L1-icache-load-misses    
+   352.065231285          4,646,767      branch-misses:u          
+   352.065231285            782,701      L1-icache-load-misses    
+   353.065396821          4,561,457      branch-misses:u          
+   353.065396821            790,159      L1-icache-load-misses    
+   354.065577727          4,667,229      branch-misses:u          
+   354.065577727            781,559      L1-icache-load-misses    
+   355.065756381          4,570,077      branch-misses:u          
+   355.065756381            792,950      L1-icache-load-misses    
+I0428 21:41:10.921916 168475 solver.cpp:218] Iteration 3600 (11.558 iter/s, 8.652s/100 iters), loss = 0.0227566
+I0428 21:41:10.922061 168475 solver.cpp:237]     Train net output #0: loss = 0.0227567 (* 1 = 0.0227567 loss)
+I0428 21:41:10.922073 168475 sgd_solver.cpp:105] Iteration 3600, lr = 0.00794046
+   356.065922060          4,690,527      branch-misses:u          
+   356.065922060            789,131      L1-icache-load-misses    
+   357.066095163          4,546,783      branch-misses:u          
+   357.066095163            790,062      L1-icache-load-misses    
+   358.066269390          4,687,254      branch-misses:u          
+   358.066269390            790,172      L1-icache-load-misses    
+   359.066442312          4,522,563      branch-misses:u          
+   359.066442312            788,375      L1-icache-load-misses    
+   360.066614493          4,670,829      branch-misses:u          
+   360.066614493            804,491      L1-icache-load-misses    
+   361.066787639          4,623,585      branch-misses:u          
+   361.066787639            789,234      L1-icache-load-misses    
+   362.066969088          4,566,172      branch-misses:u          
+   362.066969088            809,036      L1-icache-load-misses    
+   363.067178965          4,673,900      branch-misses:u          
+   363.067178965            803,169      L1-icache-load-misses    
+   364.067351311          4,529,047      branch-misses:u          
+   364.067351311            790,628      L1-icache-load-misses    
+I0428 21:41:19.572422 168475 solver.cpp:218] Iteration 3700 (11.5607 iter/s, 8.65s/100 iters), loss = 0.0140679
+I0428 21:41:19.572453 168475 solver.cpp:237]     Train net output #0: loss = 0.014068 (* 1 = 0.014068 loss)
+I0428 21:41:19.572459 168475 sgd_solver.cpp:105] Iteration 3700, lr = 0.00789695
+   365.067523108          4,671,543      branch-misses:u          
+   365.067523108            794,197      L1-icache-load-misses    
+   366.067698284          4,501,449      branch-misses:u          
+   366.067698284            796,448      L1-icache-load-misses    
+   367.067890859          4,703,902      branch-misses:u          
+   367.067890859            802,363      L1-icache-load-misses    
+   368.068082157          4,689,931      branch-misses:u          
+   368.068082157            795,288      L1-icache-load-misses    
+I0428 21:41:23.468278 168477 data_layer.cpp:73] Restarting data prefetching from start.
+   369.068255836          4,557,007      branch-misses:u          
+   369.068255836            811,677      L1-icache-load-misses    
+   370.068428467          4,637,286      branch-misses:u          
+   370.068428467            799,146      L1-icache-load-misses    
+   371.068601956          4,569,155      branch-misses:u          
+   371.068601956            790,633      L1-icache-load-misses    
+   372.068775111          4,679,914      branch-misses:u          
+   372.068775111            776,617      L1-icache-load-misses    
+I0428 21:41:28.223284 168475 solver.cpp:218] Iteration 3800 (11.5607 iter/s, 8.65s/100 iters), loss = 0.00899142
+I0428 21:41:28.223317 168475 solver.cpp:237]     Train net output #0: loss = 0.00899148 (* 1 = 0.00899148 loss)
+I0428 21:41:28.223323 168475 sgd_solver.cpp:105] Iteration 3800, lr = 0.007854
+   373.068962017          4,516,736      branch-misses:u          
+   373.068962017            794,060      L1-icache-load-misses    
+   374.069126614          4,687,136      branch-misses:u          
+   374.069126614            799,794      L1-icache-load-misses    
+   375.069299488          4,477,076      branch-misses:u          
+   375.069299488            790,821      L1-icache-load-misses    
+#           time             counts unit events
+   376.069463688          4,694,154      branch-misses:u          
+   376.069463688            789,401      L1-icache-load-misses    
+   377.069637146          4,531,200      branch-misses:u          
+   377.069637146            800,164      L1-icache-load-misses    
+   378.069827319          4,677,568      branch-misses:u          
+   378.069827319            799,423      L1-icache-load-misses    
+   379.069991119          4,630,866      branch-misses:u          
+   379.069991119            802,135      L1-icache-load-misses    
+   380.070157271          4,575,170      branch-misses:u          
+   380.070157271            812,332      L1-icache-load-misses    
+   381.070326154          4,638,250      branch-misses:u          
+   381.070326154            801,888      L1-icache-load-misses    
+I0428 21:41:36.885635 168475 solver.cpp:218] Iteration 3900 (11.5447 iter/s, 8.662s/100 iters), loss = 0.0432711
+I0428 21:41:36.885669 168475 solver.cpp:237]     Train net output #0: loss = 0.0432712 (* 1 = 0.0432712 loss)
+I0428 21:41:36.885675 168475 sgd_solver.cpp:105] Iteration 3900, lr = 0.00781158
+   382.070499289          4,597,500      branch-misses:u          
+   382.070499289            798,350      L1-icache-load-misses    
+   383.070707850          4,708,389      branch-misses:u          
+   383.070707850            789,746      L1-icache-load-misses    
+   384.070879583          4,505,286      branch-misses:u          
+   384.070879583            797,740      L1-icache-load-misses    
+   385.071054027          4,671,295      branch-misses:u          
+   385.071054027            785,362      L1-icache-load-misses    
+   386.071237064          4,654,888      branch-misses:u          
+   386.071237064            782,206      L1-icache-load-misses    
+   387.071409950          4,605,111      branch-misses:u          
+   387.071409950            807,643      L1-icache-load-misses    
+   388.071610384          4,646,950      branch-misses:u          
+   388.071610384            793,531      L1-icache-load-misses    
+   389.071783345          4,527,638      branch-misses:u          
+   389.071783345            798,622      L1-icache-load-misses    
+   390.071959823          4,673,652      branch-misses:u          
+   390.071959823            789,340      L1-icache-load-misses    
+I0428 21:41:45.444288 168475 solver.cpp:330] Iteration 4000, Testing net (#0)
+   391.072148127          6,988,200      branch-misses:u          
+   391.072148127            829,785      L1-icache-load-misses    
+   392.072323349          7,483,099      branch-misses:u          
+   392.072323349            819,055      L1-icache-load-misses    
+   393.072536574          7,409,662      branch-misses:u          
+   393.072536574            836,414      L1-icache-load-misses    
+   394.072706891          7,496,123      branch-misses:u          
+   394.072706891            811,816      L1-icache-load-misses    
+   395.072876596          7,651,909      branch-misses:u          
+   395.072876596            808,656      L1-icache-load-misses    
+I0428 21:41:50.668449 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:41:50.884845 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9915
+I0428 21:41:50.884867 168475 solver.cpp:397]     Test net output #1: loss = 0.0292993 (* 1 = 0.0292993 loss)
+I0428 21:41:50.971341 168475 solver.cpp:218] Iteration 4000 (7.09975 iter/s, 14.085s/100 iters), loss = 0.0173309
+I0428 21:41:50.971371 168475 solver.cpp:237]     Train net output #0: loss = 0.017331 (* 1 = 0.017331 loss)
+I0428 21:41:50.971380 168475 sgd_solver.cpp:105] Iteration 4000, lr = 0.0077697
+   396.073053107          6,215,248      branch-misses:u          
+   396.073053107            825,780      L1-icache-load-misses    
+   397.073232980          4,648,822      branch-misses:u          
+   397.073232980            790,816      L1-icache-load-misses    
+   398.073450315          4,503,174      branch-misses:u          
+   398.073450315            803,934      L1-icache-load-misses    
+   399.073628306          4,644,788      branch-misses:u          
+   399.073628306            796,840      L1-icache-load-misses    
+   400.073804692          4,648,162      branch-misses:u          
+   400.073804692            788,917      L1-icache-load-misses    
+#           time             counts unit events
+   401.073983257          4,613,794      branch-misses:u          
+   401.073983257            799,529      L1-icache-load-misses    
+   402.074163826          4,643,007      branch-misses:u          
+   402.074163826            804,279      L1-icache-load-misses    
+   403.074374871          4,572,129      branch-misses:u          
+   403.074374871            802,095      L1-icache-load-misses    
+   404.074544496          4,711,528      branch-misses:u          
+   404.074544496            786,152      L1-icache-load-misses    
+I0428 21:41:59.618690 168475 solver.cpp:218] Iteration 4100 (11.5647 iter/s, 8.647s/100 iters), loss = 0.0299164
+I0428 21:41:59.618719 168475 solver.cpp:237]     Train net output #0: loss = 0.0299165 (* 1 = 0.0299165 loss)
+I0428 21:41:59.618726 168475 sgd_solver.cpp:105] Iteration 4100, lr = 0.00772833
+   405.074717863          4,531,888      branch-misses:u          
+   405.074717863            801,501      L1-icache-load-misses    
+   406.074892528          4,676,457      branch-misses:u          
+   406.074892528            804,642      L1-icache-load-misses    
+   407.075072889          4,629,867      branch-misses:u          
+   407.075072889            797,154      L1-icache-load-misses    
+   408.075290635          4,554,212      branch-misses:u          
+   408.075290635            803,531      L1-icache-load-misses    
+   409.075480684          4,622,628      branch-misses:u          
+   409.075480684            800,269      L1-icache-load-misses    
+   410.075652787          4,559,382      branch-misses:u          
+   410.075652787            800,180      L1-icache-load-misses    
+   411.075825809          4,709,015      branch-misses:u          
+   411.075825809            799,086      L1-icache-load-misses    
+   412.076017306          4,513,679      branch-misses:u          
+   412.076017306            805,583      L1-icache-load-misses    
+I0428 21:42:08.263073 168475 solver.cpp:218] Iteration 4200 (11.5687 iter/s, 8.644s/100 iters), loss = 0.0127126
+I0428 21:42:08.263104 168475 solver.cpp:237]     Train net output #0: loss = 0.0127126 (* 1 = 0.0127126 loss)
+I0428 21:42:08.263110 168475 sgd_solver.cpp:105] Iteration 4200, lr = 0.00768748
+   413.076212869          4,709,995      branch-misses:u          
+   413.076212869            800,496      L1-icache-load-misses    
+   414.076378661          4,663,291      branch-misses:u          
+   414.076378661            789,429      L1-icache-load-misses    
+   415.076544029          4,535,870      branch-misses:u          
+   415.076544029            806,885      L1-icache-load-misses    
+   416.076742578          4,599,381      branch-misses:u          
+   416.076742578            803,789      L1-icache-load-misses    
+   417.076907531          4,541,902      branch-misses:u          
+   417.076907531            800,876      L1-icache-load-misses    
+   418.077097692          4,690,379      branch-misses:u          
+   418.077097692            796,171      L1-icache-load-misses    
+   419.077264278          4,560,332      branch-misses:u          
+   419.077264278            788,259      L1-icache-load-misses    
+   420.077436070          4,648,070      branch-misses:u          
+   420.077436070            793,973      L1-icache-load-misses    
+   421.077607048          4,632,025      branch-misses:u          
+   421.077607048            790,335      L1-icache-load-misses    
+I0428 21:42:16.907600 168475 solver.cpp:218] Iteration 4300 (11.5687 iter/s, 8.644s/100 iters), loss = 0.0355662
+I0428 21:42:16.907743 168475 solver.cpp:237]     Train net output #0: loss = 0.0355663 (* 1 = 0.0355663 loss)
+I0428 21:42:16.907750 168475 sgd_solver.cpp:105] Iteration 4300, lr = 0.00764712
+   422.077778049          4,566,279      branch-misses:u          
+   422.077778049            802,037      L1-icache-load-misses    
+   423.077977981          4,673,589      branch-misses:u          
+   423.077977981            801,072      L1-icache-load-misses    
+   424.078152108          4,599,908      branch-misses:u          
+   424.078152108            802,956      L1-icache-load-misses    
+   425.078322718          4,696,018      branch-misses:u          
+   425.078322718            789,921      L1-icache-load-misses    
+#           time             counts unit events
+   426.078495822          4,500,828      branch-misses:u          
+   426.078495822            787,318      L1-icache-load-misses    
+   427.078677287          4,685,987      branch-misses:u          
+   427.078677287            791,959      L1-icache-load-misses    
+   428.078895950          4,623,569      branch-misses:u          
+   428.078895950            785,936      L1-icache-load-misses    
+   429.079072571          4,560,772      branch-misses:u          
+   429.079072571            804,106      L1-icache-load-misses    
+   430.079250147          4,632,654      branch-misses:u          
+   430.079250147            793,229      L1-icache-load-misses    
+I0428 21:42:25.550417 168475 solver.cpp:218] Iteration 4400 (11.5714 iter/s, 8.642s/100 iters), loss = 0.0174219
+I0428 21:42:25.550448 168475 solver.cpp:237]     Train net output #0: loss = 0.017422 (* 1 = 0.017422 loss)
+I0428 21:42:25.550456 168475 sgd_solver.cpp:105] Iteration 4400, lr = 0.00760726
+   431.079429186          4,551,585      branch-misses:u          
+   431.079429186            810,243      L1-icache-load-misses    
+   432.079605040          4,694,346      branch-misses:u          
+   432.079605040            803,807      L1-icache-load-misses    
+   433.079809843          4,533,416      branch-misses:u          
+   433.079809843            810,384      L1-icache-load-misses    
+   434.080013705          4,668,597      branch-misses:u          
+   434.080013705            802,032      L1-icache-load-misses    
+   435.080187628          4,638,160      branch-misses:u          
+   435.080187628            796,440      L1-icache-load-misses    
+   436.080361068          4,578,551      branch-misses:u          
+   436.080361068            810,275      L1-icache-load-misses    
+   437.080534179          4,628,257      branch-misses:u          
+   437.080534179            810,210      L1-icache-load-misses    
+   438.080733730          4,572,688      branch-misses:u          
+   438.080733730            823,183      L1-icache-load-misses    
+I0428 21:42:34.111935 168475 solver.cpp:330] Iteration 4500, Testing net (#0)
+   439.080908326          5,142,730      branch-misses:u          
+   439.080908326            817,324      L1-icache-load-misses    
+   440.081081241          7,390,613      branch-misses:u          
+   440.081081241            833,723      L1-icache-load-misses    
+   441.081252577          7,527,264      branch-misses:u          
+   441.081252577            852,917      L1-icache-load-misses    
+   442.081422635          7,414,690      branch-misses:u          
+   442.081422635            824,369      L1-icache-load-misses    
+   443.081575021          7,576,977      branch-misses:u          
+   443.081575021            802,382      L1-icache-load-misses    
+   444.081748631          7,468,141      branch-misses:u          
+   444.081748631            824,470      L1-icache-load-misses    
+I0428 21:42:39.331187 168478 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:42:39.548379 168475 solver.cpp:397]     Test net output #0: accuracy = 0.9884
+I0428 21:42:39.548404 168475 solver.cpp:397]     Test net output #1: loss = 0.0343966 (* 1 = 0.0343966 loss)
+I0428 21:42:39.633620 168475 solver.cpp:218] Iteration 4500 (7.10076 iter/s, 14.083s/100 iters), loss = 0.0063314
+I0428 21:42:39.633641 168475 solver.cpp:237]     Train net output #0: loss = 0.00633148 (* 1 = 0.00633148 loss)
+I0428 21:42:39.633647 168475 sgd_solver.cpp:105] Iteration 4500, lr = 0.00756788
+   445.081919303          5,315,832      branch-misses:u          
+   445.081919303            800,891      L1-icache-load-misses    
+   446.082086144          4,685,071      branch-misses:u          
+   446.082086144            780,098      L1-icache-load-misses    
+   447.082255862          4,438,333      branch-misses:u          
+   447.082255862            767,339      L1-icache-load-misses    
+   448.082454847          4,649,974      branch-misses:u          
+   448.082454847            783,335      L1-icache-load-misses    
+   449.082623616          4,597,982      branch-misses:u          
+   449.082623616            787,745      L1-icache-load-misses    
+   450.082804288          4,675,420      branch-misses:u          
+   450.082804288            781,824      L1-icache-load-misses    
+#           time             counts unit events
+   451.082970814          4,505,773      branch-misses:u          
+   451.082970814            797,077      L1-icache-load-misses    
+   452.083144063          4,680,598      branch-misses:u          
+   452.083144063            787,495      L1-icache-load-misses    
+I0428 21:42:48.306675 168475 solver.cpp:218] Iteration 4600 (11.53 iter/s, 8.673s/100 iters), loss = 0.0148382
+I0428 21:42:48.306824 168475 solver.cpp:237]     Train net output #0: loss = 0.0148383 (* 1 = 0.0148383 loss)
+I0428 21:42:48.306831 168475 sgd_solver.cpp:105] Iteration 4600, lr = 0.00752897
+   453.083335539          4,631,238      branch-misses:u          
+   453.083335539            788,446      L1-icache-load-misses    
+   454.083502114          4,549,534      branch-misses:u          
+   454.083502114            800,369      L1-icache-load-misses    
+   455.083676191          4,636,047      branch-misses:u          
+   455.083676191            781,952      L1-icache-load-misses    
+   456.083861008          4,537,305      branch-misses:u          
+   456.083861008            788,430      L1-icache-load-misses    
+   457.084048667          4,659,628      branch-misses:u          
+   457.084048667            787,612      L1-icache-load-misses    
+   458.084246405          4,499,646      branch-misses:u          
+   458.084246405            792,118      L1-icache-load-misses    
+   459.084417702          4,692,758      branch-misses:u          
+   459.084417702            785,805      L1-icache-load-misses    
+   460.084602811          4,671,742      branch-misses:u          
+   460.084602811            782,461      L1-icache-load-misses    
+I0428 21:42:55.483201 168477 data_layer.cpp:73] Restarting data prefetching from start.
+   461.084774248          4,549,994      branch-misses:u          
+   461.084774248            797,101      L1-icache-load-misses    
+I0428 21:42:56.953186 168475 solver.cpp:218] Iteration 4700 (11.566 iter/s, 8.646s/100 iters), loss = 0.00530864
+I0428 21:42:56.953217 168475 solver.cpp:237]     Train net output #0: loss = 0.00530871 (* 1 = 0.00530871 loss)
+I0428 21:42:56.953223 168475 sgd_solver.cpp:105] Iteration 4700, lr = 0.00749052
+   462.084954999          4,620,214      branch-misses:u          
+   462.084954999            800,257      L1-icache-load-misses    
+   463.085148184          4,582,388      branch-misses:u          
+   463.085148184            814,339      L1-icache-load-misses    
+   464.085333868          4,687,993      branch-misses:u          
+   464.085333868            800,633      L1-icache-load-misses    
+   465.085510051          4,503,441      branch-misses:u          
+   465.085510051            793,811      L1-icache-load-misses    
+   466.085682654          4,674,785      branch-misses:u          
+   466.085682654            792,496      L1-icache-load-misses    
+   467.085860215          4,525,501      branch-misses:u          
+   467.085860215            794,462      L1-icache-load-misses    
+   468.086062569          4,682,372      branch-misses:u          
+   468.086062569            805,661      L1-icache-load-misses    
+   469.086239361          4,630,746      branch-misses:u          
+   469.086239361            790,625      L1-icache-load-misses    
+   470.086420136          4,524,450      branch-misses:u          
+   470.086420136            796,873      L1-icache-load-misses    
+I0428 21:43:05.603796 168475 solver.cpp:218] Iteration 4800 (11.5607 iter/s, 8.65s/100 iters), loss = 0.0146328
+I0428 21:43:05.603827 168475 solver.cpp:237]     Train net output #0: loss = 0.0146329 (* 1 = 0.0146329 loss)
+I0428 21:43:05.603833 168475 sgd_solver.cpp:105] Iteration 4800, lr = 0.00745253
+   471.086598256          4,607,754      branch-misses:u          
+   471.086598256            790,896      L1-icache-load-misses    
+   472.086773061          4,552,275      branch-misses:u          
+   472.086773061            792,218      L1-icache-load-misses    
+   473.086984116          4,656,652      branch-misses:u          
+   473.086984116            793,773      L1-icache-load-misses    
+   474.087153514          4,521,826      branch-misses:u          
+   474.087153514            797,715      L1-icache-load-misses    
+   475.087324073          4,691,591      branch-misses:u          
+   475.087324073            808,237      L1-icache-load-misses    
+#           time             counts unit events
+   476.087497922          4,614,464      branch-misses:u          
+   476.087497922            795,936      L1-icache-load-misses    
+   477.087671700          4,540,716      branch-misses:u          
+   477.087671700            815,087      L1-icache-load-misses    
+   478.087896271          4,660,382      branch-misses:u          
+   478.087896271            812,250      L1-icache-load-misses    
+I0428 21:43:14.248224 168475 solver.cpp:218] Iteration 4900 (11.5687 iter/s, 8.644s/100 iters), loss = 0.00757855
+I0428 21:43:14.248260 168475 solver.cpp:237]     Train net output #0: loss = 0.00757862 (* 1 = 0.00757862 loss)
+I0428 21:43:14.248272 168475 sgd_solver.cpp:105] Iteration 4900, lr = 0.00741498
+   479.088073799          4,592,296      branch-misses:u          
+   479.088073799            802,975      L1-icache-load-misses    
+   480.088245134          4,687,922      branch-misses:u          
+   480.088245134            784,726      L1-icache-load-misses    
+   481.088416936          4,485,831      branch-misses:u          
+   481.088416936            790,576      L1-icache-load-misses    
+   482.088591797          4,667,858      branch-misses:u          
+   482.088591797            790,600      L1-icache-load-misses    
+   483.088787003          4,617,989      branch-misses:u          
+   483.088787003            780,973      L1-icache-load-misses    
+   484.088971053          4,560,631      branch-misses:u          
+   484.088971053            803,368      L1-icache-load-misses    
+   485.089140030          4,604,103      branch-misses:u          
+   485.089140030            801,695      L1-icache-load-misses    
+   486.089312257          4,548,443      branch-misses:u          
+   486.089312257            811,847      L1-icache-load-misses    
+   487.089484847          4,682,054      branch-misses:u          
+   487.089484847            794,780      L1-icache-load-misses    
+I0428 21:43:22.807787 168475 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5000.caffemodel
+F0428 21:43:22.816646 168475 io.cpp:69] Check failed: proto.SerializeToOstream(&output) 
+*** Check failure stack trace: ***
+    @     0x7fadccbf65cd  google::LogMessage::Fail()
+    @     0x7fadccbf8433  google::LogMessage::SendToLog()
+    @     0x7fadccbf615b  google::LogMessage::Flush()
+    @     0x7fadccbf8e1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fadccfa0e55  caffe::WriteProtoToBinaryFile()
+    @     0x7fadcd0e6076  caffe::Solver<>::SnapshotToBinaryProto()
+    @     0x7fadcd0e617a  caffe::Solver<>::Snapshot()
+    @     0x7fadcd0e9ce6  caffe::Solver<>::Step()
+    @     0x7fadcd0ea72a  caffe::Solver<>::Solve()
+    @           0x40a5c4  train()
+    @           0x406fa0  main
+    @     0x7fadcbb67830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+Aborted (core dumped)
+   487.747691460          2,207,189      branch-misses:u          
+   487.747691460            401,526      L1-icache-load-misses    

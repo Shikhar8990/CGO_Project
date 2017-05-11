@@ -1,0 +1,2 @@
+source run_perf.sh cache-misses cache-references
+source run_perf2.sh branch-misses branches

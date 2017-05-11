@@ -1,0 +1,6 @@
+print interval must be >= 10ms
+
+ Usage: perf stat [<options>] [<command>]
+
+    -I, --interval-print <n>
+                          print counts at regular interval in ms (>= 10)

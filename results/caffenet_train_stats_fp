@@ -1,0 +1,1416 @@
+I0510 09:48:50.107591 128886 caffe.cpp:211] Use CPU.
+I0510 09:48:50.107861 128886 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 1
+max_iter: 10
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+stepsize: 100000
+snapshot: 10000
+snapshot_prefix: "models/bvlc_reference_caffenet/caffenet_train"
+solver_mode: CPU
+net: "models/bvlc_reference_caffenet/train_val.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0510 09:48:50.107959 128886 solver.cpp:87] Creating training net from net file: models/bvlc_reference_caffenet/train_val.prototxt
+I0510 09:48:50.108366 128886 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0510 09:48:50.108394 128886 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0510 09:48:50.108633 128886 net.cpp:51] Initializing net from parameters: 
+name: "CaffeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "data/ilsvrc12/imagenet_mean.binaryproto"
+  }
+  data_param {
+    source: "examples/imagenet/ilsvrc12_train_lmdb"
+    batch_size: 256
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 96
+    kernel_size: 11
+    stride: 4
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm1"
+  type: "LRN"
+  bottom: "pool1"
+  top: "norm1"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "norm1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 2
+    kernel_size: 5
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "norm2"
+  type: "LRN"
+  bottom: "pool2"
+  top: "norm2"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0001
+    beta: 0.75
+  }
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "norm2"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "conv3"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 384
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu4"
+  type: "ReLU"
+  bottom: "conv4"
+  top: "conv4"
+}
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "conv4"
+  top: "conv5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    group: 2
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "conv5"
+  top: "conv5"
+}
+layer {
+  name: "pool5"
+  type: "Pooling"
+  bottom: "conv5"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
+layer {
+  name: "fc6"
+  type: "InnerProduct"
+  bottom: "pool5"
+  top: "fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "drop6"
+  type: "Dropout"
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 4096
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "drop7"
+  type: "Dropout"
+  bottom: "fc7"
+  top: "fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1000
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8"
+  bottom: "label"
+  top: "loss"
+}
+I0510 09:48:50.108775 128886 layer_factory.hpp:77] Creating layer data
+I0510 09:48:50.108886 128886 db_lmdb.cpp:35] Opened lmdb examples/imagenet/ilsvrc12_train_lmdb
+I0510 09:48:50.108922 128886 net.cpp:84] Creating Layer data
+I0510 09:48:50.108934 128886 net.cpp:380] data -> data
+I0510 09:48:50.108959 128886 net.cpp:380] data -> label
+I0510 09:48:50.108974 128886 data_transformer.cpp:25] Loading mean file from: data/ilsvrc12/imagenet_mean.binaryproto
+I0510 09:48:50.112233 128886 data_layer.cpp:45] output data size: 256,3,227,227
+I0510 09:48:50.112334 128886 net.cpp:122] Setting up data
+I0510 09:48:50.112346 128886 net.cpp:129] Top shape: 256 3 227 227 (39574272)
+I0510 09:48:50.112354 128886 net.cpp:129] Top shape: 256 (256)
+I0510 09:48:50.112357 128886 net.cpp:137] Memory required for data: 158298112
+I0510 09:48:50.112367 128886 layer_factory.hpp:77] Creating layer conv1
+I0510 09:48:50.112385 128886 net.cpp:84] Creating Layer conv1
+I0510 09:48:50.112393 128886 net.cpp:406] conv1 <- data
+I0510 09:48:50.112407 128886 net.cpp:380] conv1 -> conv1
+I0510 09:48:50.112426 128886 base_conv_layer.cpp:121] Group is 1channel is3number of output is 96
+I0510 09:48:50.112993 128886 net.cpp:122] Setting up conv1
+I0510 09:48:50.113003 128886 net.cpp:129] Top shape: 256 96 55 55 (74342400)
+I0510 09:48:50.113008 128886 net.cpp:137] Memory required for data: 455667712
+I0510 09:48:50.113028 128886 layer_factory.hpp:77] Creating layer relu1
+I0510 09:48:50.113035 128886 net.cpp:84] Creating Layer relu1
+I0510 09:48:50.113040 128886 net.cpp:406] relu1 <- conv1
+I0510 09:48:50.113049 128886 net.cpp:367] relu1 -> conv1 (in-place)
+I0510 09:48:50.113057 128886 net.cpp:122] Setting up relu1
+I0510 09:48:50.113065 128886 net.cpp:129] Top shape: 256 96 55 55 (74342400)
+I0510 09:48:50.113068 128886 net.cpp:137] Memory required for data: 753037312
+I0510 09:48:50.113073 128886 layer_factory.hpp:77] Creating layer pool1
+I0510 09:48:50.113081 128886 net.cpp:84] Creating Layer pool1
+I0510 09:48:50.113086 128886 net.cpp:406] pool1 <- conv1
+I0510 09:48:50.113092 128886 net.cpp:380] pool1 -> pool1
+I0510 09:48:50.113108 128886 net.cpp:122] Setting up pool1
+I0510 09:48:50.113116 128886 net.cpp:129] Top shape: 256 96 27 27 (17915904)
+I0510 09:48:50.113121 128886 net.cpp:137] Memory required for data: 824700928
+I0510 09:48:50.113126 128886 layer_factory.hpp:77] Creating layer norm1
+I0510 09:48:50.113140 128886 net.cpp:84] Creating Layer norm1
+I0510 09:48:50.113155 128886 net.cpp:406] norm1 <- pool1
+I0510 09:48:50.113162 128886 net.cpp:380] norm1 -> norm1
+I0510 09:48:50.113174 128886 net.cpp:122] Setting up norm1
+I0510 09:48:50.113181 128886 net.cpp:129] Top shape: 256 96 27 27 (17915904)
+I0510 09:48:50.113188 128886 net.cpp:137] Memory required for data: 896364544
+I0510 09:48:50.113191 128886 layer_factory.hpp:77] Creating layer conv2
+I0510 09:48:50.113203 128886 net.cpp:84] Creating Layer conv2
+I0510 09:48:50.113206 128886 net.cpp:406] conv2 <- norm1
+I0510 09:48:50.113215 128886 net.cpp:380] conv2 -> conv2
+I0510 09:48:50.113226 128886 base_conv_layer.cpp:121] Group is 2channel is96number of output is 256
+I0510 09:48:50.118314 128886 net.cpp:122] Setting up conv2
+I0510 09:48:50.118325 128886 net.cpp:129] Top shape: 256 256 27 27 (47775744)
+I0510 09:48:50.118331 128886 net.cpp:137] Memory required for data: 1087467520
+I0510 09:48:50.118342 128886 layer_factory.hpp:77] Creating layer relu2
+I0510 09:48:50.118350 128886 net.cpp:84] Creating Layer relu2
+I0510 09:48:50.118355 128886 net.cpp:406] relu2 <- conv2
+I0510 09:48:50.118362 128886 net.cpp:367] relu2 -> conv2 (in-place)
+I0510 09:48:50.118371 128886 net.cpp:122] Setting up relu2
+I0510 09:48:50.118376 128886 net.cpp:129] Top shape: 256 256 27 27 (47775744)
+I0510 09:48:50.118381 128886 net.cpp:137] Memory required for data: 1278570496
+I0510 09:48:50.118386 128886 layer_factory.hpp:77] Creating layer pool2
+I0510 09:48:50.118393 128886 net.cpp:84] Creating Layer pool2
+I0510 09:48:50.118397 128886 net.cpp:406] pool2 <- conv2
+I0510 09:48:50.118403 128886 net.cpp:380] pool2 -> pool2
+I0510 09:48:50.118414 128886 net.cpp:122] Setting up pool2
+I0510 09:48:50.118422 128886 net.cpp:129] Top shape: 256 256 13 13 (11075584)
+I0510 09:48:50.118425 128886 net.cpp:137] Memory required for data: 1322872832
+I0510 09:48:50.118429 128886 layer_factory.hpp:77] Creating layer norm2
+I0510 09:48:50.118438 128886 net.cpp:84] Creating Layer norm2
+I0510 09:48:50.118443 128886 net.cpp:406] norm2 <- pool2
+I0510 09:48:50.118449 128886 net.cpp:380] norm2 -> norm2
+I0510 09:48:50.118458 128886 net.cpp:122] Setting up norm2
+I0510 09:48:50.118465 128886 net.cpp:129] Top shape: 256 256 13 13 (11075584)
+I0510 09:48:50.118470 128886 net.cpp:137] Memory required for data: 1367175168
+I0510 09:48:50.118474 128886 layer_factory.hpp:77] Creating layer conv3
+I0510 09:48:50.118484 128886 net.cpp:84] Creating Layer conv3
+I0510 09:48:50.118489 128886 net.cpp:406] conv3 <- norm2
+I0510 09:48:50.118496 128886 net.cpp:380] conv3 -> conv3
+I0510 09:48:50.118508 128886 base_conv_layer.cpp:121] Group is 1channel is256number of output is 384
+I0510 09:48:50.132678 128886 net.cpp:122] Setting up conv3
+I0510 09:48:50.132692 128886 net.cpp:129] Top shape: 256 384 13 13 (16613376)
+I0510 09:48:50.132696 128886 net.cpp:137] Memory required for data: 1433628672
+I0510 09:48:50.132707 128886 layer_factory.hpp:77] Creating layer relu3
+I0510 09:48:50.132714 128886 net.cpp:84] Creating Layer relu3
+I0510 09:48:50.132720 128886 net.cpp:406] relu3 <- conv3
+I0510 09:48:50.132726 128886 net.cpp:367] relu3 -> conv3 (in-place)
+I0510 09:48:50.132733 128886 net.cpp:122] Setting up relu3
+I0510 09:48:50.132740 128886 net.cpp:129] Top shape: 256 384 13 13 (16613376)
+I0510 09:48:50.132745 128886 net.cpp:137] Memory required for data: 1500082176
+I0510 09:48:50.132748 128886 layer_factory.hpp:77] Creating layer conv4
+I0510 09:48:50.132758 128886 net.cpp:84] Creating Layer conv4
+I0510 09:48:50.132762 128886 net.cpp:406] conv4 <- conv3
+I0510 09:48:50.132769 128886 net.cpp:380] conv4 -> conv4
+I0510 09:48:50.132781 128886 base_conv_layer.cpp:121] Group is 2channel is384number of output is 384
+I0510 09:48:50.142271 128886 net.cpp:122] Setting up conv4
+I0510 09:48:50.142282 128886 net.cpp:129] Top shape: 256 384 13 13 (16613376)
+I0510 09:48:50.142288 128886 net.cpp:137] Memory required for data: 1566535680
+I0510 09:48:50.142295 128886 layer_factory.hpp:77] Creating layer relu4
+I0510 09:48:50.142302 128886 net.cpp:84] Creating Layer relu4
+I0510 09:48:50.142313 128886 net.cpp:406] relu4 <- conv4
+I0510 09:48:50.142328 128886 net.cpp:367] relu4 -> conv4 (in-place)
+I0510 09:48:50.142335 128886 net.cpp:122] Setting up relu4
+I0510 09:48:50.142341 128886 net.cpp:129] Top shape: 256 384 13 13 (16613376)
+I0510 09:48:50.142345 128886 net.cpp:137] Memory required for data: 1632989184
+I0510 09:48:50.142350 128886 layer_factory.hpp:77] Creating layer conv5
+I0510 09:48:50.142359 128886 net.cpp:84] Creating Layer conv5
+I0510 09:48:50.142364 128886 net.cpp:406] conv5 <- conv4
+I0510 09:48:50.142370 128886 net.cpp:380] conv5 -> conv5
+I0510 09:48:50.142381 128886 base_conv_layer.cpp:121] Group is 2channel is384number of output is 256
+#           time             counts unit events
+     0.100136172             65,932      r02c0:u                  
+I0510 09:48:50.148916 128886 net.cpp:122] Setting up conv5
+I0510 09:48:50.148926 128886 net.cpp:129] Top shape: 256 256 13 13 (11075584)
+I0510 09:48:50.148929 128886 net.cpp:137] Memory required for data: 1677291520
+I0510 09:48:50.148941 128886 layer_factory.hpp:77] Creating layer relu5
+I0510 09:48:50.148947 128886 net.cpp:84] Creating Layer relu5
+I0510 09:48:50.148950 128886 net.cpp:406] relu5 <- conv5
+I0510 09:48:50.148957 128886 net.cpp:367] relu5 -> conv5 (in-place)
+I0510 09:48:50.148963 128886 net.cpp:122] Setting up relu5
+I0510 09:48:50.148968 128886 net.cpp:129] Top shape: 256 256 13 13 (11075584)
+I0510 09:48:50.148972 128886 net.cpp:137] Memory required for data: 1721593856
+I0510 09:48:50.148977 128886 layer_factory.hpp:77] Creating layer pool5
+I0510 09:48:50.148983 128886 net.cpp:84] Creating Layer pool5
+I0510 09:48:50.148988 128886 net.cpp:406] pool5 <- conv5
+I0510 09:48:50.148993 128886 net.cpp:380] pool5 -> pool5
+I0510 09:48:50.149001 128886 net.cpp:122] Setting up pool5
+I0510 09:48:50.149008 128886 net.cpp:129] Top shape: 256 256 6 6 (2359296)
+I0510 09:48:50.149011 128886 net.cpp:137] Memory required for data: 1731031040
+I0510 09:48:50.149015 128886 layer_factory.hpp:77] Creating layer fc6
+I0510 09:48:50.149025 128886 net.cpp:84] Creating Layer fc6
+I0510 09:48:50.149030 128886 net.cpp:406] fc6 <- pool5
+I0510 09:48:50.149036 128886 net.cpp:380] fc6 -> fc6
+     0.200328470                745      r02c0:u                  
+     0.300496884                934      r02c0:u                  
+     0.400660276                933      r02c0:u                  
+     0.500827204                935      r02c0:u                  
+I0510 09:48:50.550312 128886 net.cpp:122] Setting up fc6
+I0510 09:48:50.550328 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.550333 128886 net.cpp:137] Memory required for data: 1735225344
+I0510 09:48:50.550341 128886 layer_factory.hpp:77] Creating layer relu6
+I0510 09:48:50.550349 128886 net.cpp:84] Creating Layer relu6
+I0510 09:48:50.550354 128886 net.cpp:406] relu6 <- fc6
+I0510 09:48:50.550360 128886 net.cpp:367] relu6 -> fc6 (in-place)
+I0510 09:48:50.550366 128886 net.cpp:122] Setting up relu6
+I0510 09:48:50.550371 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.550374 128886 net.cpp:137] Memory required for data: 1739419648
+I0510 09:48:50.550379 128886 layer_factory.hpp:77] Creating layer drop6
+I0510 09:48:50.550384 128886 net.cpp:84] Creating Layer drop6
+I0510 09:48:50.550387 128886 net.cpp:406] drop6 <- fc6
+I0510 09:48:50.550391 128886 net.cpp:367] drop6 -> fc6 (in-place)
+I0510 09:48:50.550402 128886 net.cpp:122] Setting up drop6
+I0510 09:48:50.550407 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.550410 128886 net.cpp:137] Memory required for data: 1743613952
+I0510 09:48:50.550413 128886 layer_factory.hpp:77] Creating layer fc7
+I0510 09:48:50.550420 128886 net.cpp:84] Creating Layer fc7
+I0510 09:48:50.550423 128886 net.cpp:406] fc7 <- fc6
+I0510 09:48:50.550429 128886 net.cpp:380] fc7 -> fc7
+     0.600987162                460      r02c0:u                  
+I0510 09:48:50.726539 128886 net.cpp:122] Setting up fc7
+I0510 09:48:50.726564 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.726567 128886 net.cpp:137] Memory required for data: 1747808256
+I0510 09:48:50.726584 128886 layer_factory.hpp:77] Creating layer relu7
+I0510 09:48:50.726593 128886 net.cpp:84] Creating Layer relu7
+I0510 09:48:50.726598 128886 net.cpp:406] relu7 <- fc7
+I0510 09:48:50.726605 128886 net.cpp:367] relu7 -> fc7 (in-place)
+I0510 09:48:50.726613 128886 net.cpp:122] Setting up relu7
+I0510 09:48:50.726616 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.726620 128886 net.cpp:137] Memory required for data: 1752002560
+I0510 09:48:50.726634 128886 layer_factory.hpp:77] Creating layer drop7
+I0510 09:48:50.726639 128886 net.cpp:84] Creating Layer drop7
+I0510 09:48:50.726642 128886 net.cpp:406] drop7 <- fc7
+I0510 09:48:50.726647 128886 net.cpp:367] drop7 -> fc7 (in-place)
+I0510 09:48:50.726653 128886 net.cpp:122] Setting up drop7
+I0510 09:48:50.726657 128886 net.cpp:129] Top shape: 256 4096 (1048576)
+I0510 09:48:50.726660 128886 net.cpp:137] Memory required for data: 1756196864
+I0510 09:48:50.726665 128886 layer_factory.hpp:77] Creating layer fc8
+I0510 09:48:50.726671 128886 net.cpp:84] Creating Layer fc8
+I0510 09:48:50.726675 128886 net.cpp:406] fc8 <- fc7
+I0510 09:48:50.726680 128886 net.cpp:380] fc8 -> fc8
+     0.701139623                 13      r02c0:u                  
+I0510 09:48:50.770279 128886 net.cpp:122] Setting up fc8
+I0510 09:48:50.770287 128886 net.cpp:129] Top shape: 256 1000 (256000)
+I0510 09:48:50.770292 128886 net.cpp:137] Memory required for data: 1757220864
+I0510 09:48:50.770297 128886 layer_factory.hpp:77] Creating layer loss
+I0510 09:48:50.770303 128886 net.cpp:84] Creating Layer loss
+I0510 09:48:50.770306 128886 net.cpp:406] loss <- fc8
+I0510 09:48:50.770311 128886 net.cpp:406] loss <- label
+I0510 09:48:50.770318 128886 net.cpp:380] loss -> loss
+I0510 09:48:50.770330 128886 layer_factory.hpp:77] Creating layer loss
+I0510 09:48:50.770722 128886 net.cpp:122] Setting up loss
+I0510 09:48:50.770730 128886 net.cpp:129] Top shape: (1)
+I0510 09:48:50.770732 128886 net.cpp:132]     with loss weight 1
+I0510 09:48:50.770754 128886 net.cpp:137] Memory required for data: 1757220868
+I0510 09:48:50.770758 128886 net.cpp:198] loss needs backward computation.
+I0510 09:48:50.770766 128886 net.cpp:198] fc8 needs backward computation.
+I0510 09:48:50.770768 128886 net.cpp:198] drop7 needs backward computation.
+I0510 09:48:50.770772 128886 net.cpp:198] relu7 needs backward computation.
+I0510 09:48:50.770776 128886 net.cpp:198] fc7 needs backward computation.
+I0510 09:48:50.770778 128886 net.cpp:198] drop6 needs backward computation.
+I0510 09:48:50.770782 128886 net.cpp:198] relu6 needs backward computation.
+I0510 09:48:50.770786 128886 net.cpp:198] fc6 needs backward computation.
+I0510 09:48:50.770789 128886 net.cpp:198] pool5 needs backward computation.
+I0510 09:48:50.770792 128886 net.cpp:198] relu5 needs backward computation.
+I0510 09:48:50.770797 128886 net.cpp:198] conv5 needs backward computation.
+I0510 09:48:50.770800 128886 net.cpp:198] relu4 needs backward computation.
+I0510 09:48:50.770803 128886 net.cpp:198] conv4 needs backward computation.
+I0510 09:48:50.770807 128886 net.cpp:198] relu3 needs backward computation.
+I0510 09:48:50.770809 128886 net.cpp:198] conv3 needs backward computation.
+I0510 09:48:50.770814 128886 net.cpp:198] norm2 needs backward computation.
+I0510 09:48:50.770817 128886 net.cpp:198] pool2 needs backward computation.
+I0510 09:48:50.770822 128886 net.cpp:198] relu2 needs backward computation.
+I0510 09:48:50.770824 128886 net.cpp:198] conv2 needs backward computation.
+I0510 09:48:50.770828 128886 net.cpp:198] norm1 needs backward computation.
+I0510 09:48:50.770833 128886 net.cpp:198] pool1 needs backward computation.
+I0510 09:48:50.770835 128886 net.cpp:198] relu1 needs backward computation.
+I0510 09:48:50.770838 128886 net.cpp:198] conv1 needs backward computation.
+I0510 09:48:50.770843 128886 net.cpp:200] data does not need backward computation.
+I0510 09:48:50.770846 128886 net.cpp:242] This network produces output loss
+I0510 09:48:50.770864 128886 net.cpp:255] Network initialization done.
+I0510 09:48:50.770948 128886 solver.cpp:56] Solver scaffolding done.
+I0510 09:48:50.770992 128886 caffe.cpp:248] Starting Optimization
+I0510 09:48:50.770997 128886 solver.cpp:272] Solving CaffeNet
+I0510 09:48:50.770999 128886 solver.cpp:273] Learning Rate Policy: step
+     0.801299724                276      r02c0:u                  
+     0.901444713                198      r02c0:u                  
+     1.001577154                198      r02c0:u                  
+     1.101710804                198      r02c0:u                  
+     1.201843829                198      r02c0:u                  
+     1.301975546                198      r02c0:u                  
+     1.402112778                198      r02c0:u                  
+     1.502248913                229      r02c0:u                  
+     1.602388749                208      r02c0:u                  
+     1.702529575                206      r02c0:u                  
+     1.802668945                203      r02c0:u                  
+     1.902807165                235      r02c0:u                  
+     2.002948239                207      r02c0:u                  
+     2.103090710                264      r02c0:u                  
+     2.203229362                246      r02c0:u                  
+     2.303370644                235      r02c0:u                  
+     2.403510049                264      r02c0:u                  
+     2.503650160                238      r02c0:u                  
+#           time             counts unit events
+     2.603788875                240      r02c0:u                  
+     2.703925417                231      r02c0:u                  
+     2.804061340                231      r02c0:u                  
+     2.904194162                231      r02c0:u                  
+     3.004328066                237      r02c0:u                  
+     3.104463693                233      r02c0:u                  
+     3.204600187                231      r02c0:u                  
+     3.304739654                231      r02c0:u                  
+     3.404898104                231      r02c0:u                  
+     3.505039661                231      r02c0:u                  
+     3.605175235                235      r02c0:u                  
+     3.705311115                231      r02c0:u                  
+     3.805446792                233      r02c0:u                  
+     3.905593699                241      r02c0:u                  
+     4.005743547                233      r02c0:u                  
+     4.105880253                246      r02c0:u                  
+     4.206020948                231      r02c0:u                  
+     4.306158624                231      r02c0:u                  
+     4.406298386                262      r02c0:u                  
+     4.506433931                233      r02c0:u                  
+     4.606590924                105      r02c0:u                  
+     4.706762656                 10      r02c0:u                  
+     4.806932708                  0      r02c0:u                  
+     4.907098517                  4      r02c0:u                  
+     5.007258710                 14      r02c0:u                  
+#           time             counts unit events
+     5.107425784                 14      r02c0:u                  
+     5.207602988                  2      r02c0:u                  
+     5.307778162                 30      r02c0:u                  
+     5.407939450                 13      r02c0:u                  
+     5.508080544                  4      r02c0:u                  
+     5.608220121                 15      r02c0:u                  
+     5.708363466                  8      r02c0:u                  
+     5.808503110                  2      r02c0:u                  
+     5.908645908                  6      r02c0:u                  
+     6.008806649                  7      r02c0:u                  
+     6.108946752                  4      r02c0:u                  
+     6.209088818                  1      r02c0:u                  
+     6.309225047                  0      r02c0:u                  
+     6.409355714                  0      r02c0:u                  
+     6.509490726                  0      r02c0:u                  
+     6.609624062                  4      r02c0:u                  
+     6.709770274                305      r02c0:u                  
+     6.809917825                428      r02c0:u                  
+     6.910051934                404      r02c0:u                  
+     7.010182894                410      r02c0:u                  
+     7.110316803                430      r02c0:u                  
+     7.210452917                428      r02c0:u                  
+     7.290528833                323      r02c0:u                  
+     7.390665835                429      r02c0:u                  
+     7.490801793                377      r02c0:u                  
+#           time             counts unit events
+     7.521968392                165      r02c0:u                  
+     7.622106837                382      r02c0:u                  
+     7.722243201                428      r02c0:u                  
+     7.738045110                 57      r02c0:u                  
+     7.838182585                431      r02c0:u                  
+     7.919392882                324      r02c0:u                  
+     8.019528782                437      r02c0:u                  
+     8.113773946                378      r02c0:u                  
+     8.213908542                430      r02c0:u                  
+     8.314044266                428      r02c0:u                  
+     8.318139039                  3      r02c0:u                  
+     8.418273748                431      r02c0:u                  
+     8.518408552                404      r02c0:u                  
+     8.618543359                406      r02c0:u                  
+     8.623048728                 52      r02c0:u                  
+     8.723181585                389      r02c0:u                  
+     8.823312824                428      r02c0:u                  
+     8.922075326                435      r02c0:u                  
+     9.022220321                378      r02c0:u                  
+     9.122350259                437      r02c0:u                  
+     9.222482072                428      r02c0:u                  
+     9.322613468                376      r02c0:u                  
+     9.422744885                428      r02c0:u                  
+     9.522878339                428      r02c0:u                  
+     9.623012522                434      r02c0:u                  
+#           time             counts unit events
+     9.723143118                373      r02c0:u                  
+     9.823276722                428      r02c0:u                  
+     9.923423181                432      r02c0:u                  
+    10.023568998                393      r02c0:u                  
+    10.123703342                433      r02c0:u                  
+    10.223836093                428      r02c0:u                  
+    10.323972276                426      r02c0:u                  
+    10.424104977                375      r02c0:u                  
+    10.524237917                428      r02c0:u                  
+    10.624374064                434      r02c0:u                  
+    10.724508384                376      r02c0:u                  
+    10.824643707                428      r02c0:u                  
+    10.924797114                428      r02c0:u                  
+    11.024946736                428      r02c0:u                  
+    11.125086045                375      r02c0:u                  
+    11.225223804                428      r02c0:u                  
+    11.325363007                428      r02c0:u                  
+    11.425501202                428      r02c0:u                  
+    11.525638971                376      r02c0:u                  
+    11.625779060                430      r02c0:u                  
+    11.725918539                428      r02c0:u                  
+    11.826057638                423      r02c0:u                  
+    11.926196361                380      r02c0:u                  
+    12.019204686                395      r02c0:u                  
+    12.119341137                431      r02c0:u                  
+#           time             counts unit events
+    12.217875994                431      r02c0:u                  
+    12.318016588                376      r02c0:u                  
+    12.378214302                272      r02c0:u                  
+    12.478350290                431      r02c0:u                  
+    12.573376485                381      r02c0:u                  
+    12.673511116                432      r02c0:u                  
+    12.749803110                323      r02c0:u                  
+    12.849933568                380      r02c0:u                  
+    12.950063767                428      r02c0:u                  
+    13.050194689                436      r02c0:u                  
+    13.150326667                426      r02c0:u                  
+    13.250460900                375      r02c0:u                  
+    13.350613930                170      r02c0:u                  
+    13.450774879                  0      r02c0:u                  
+    13.550935602                  7      r02c0:u                  
+    13.651099145                  0      r02c0:u                  
+    13.751268078                  0      r02c0:u                  
+    13.851427187                 12      r02c0:u                  
+    13.951592717                  4      r02c0:u                  
+    14.051745141                 21      r02c0:u                  
+    14.151886719                 42      r02c0:u                  
+    14.252027254                  2      r02c0:u                  
+    14.352166569                  4      r02c0:u                  
+    14.452303360                  5      r02c0:u                  
+    14.552450091              2,058      r02c0:u                  
+#           time             counts unit events
+    14.652602693              3,518      r02c0:u                  
+    14.752742601              3,537      r02c0:u                  
+    14.852899309              3,540      r02c0:u                  
+    14.953044287              3,517      r02c0:u                  
+    15.053198847              3,501      r02c0:u                  
+    15.153345584              3,583      r02c0:u                  
+    15.253489900              3,478      r02c0:u                  
+    15.353633988              3,564      r02c0:u                  
+    15.453775987              3,511      r02c0:u                  
+    15.553914590              3,549      r02c0:u                  
+    15.654054960              3,513      r02c0:u                  
+    15.754195090              3,546      r02c0:u                  
+    15.854333410              3,507      r02c0:u                  
+    15.954471623              3,548      r02c0:u                  
+    16.054609959              3,513      r02c0:u                  
+    16.154751881              3,561      r02c0:u                  
+    16.254890309              3,492      r02c0:u                  
+    16.355028991              3,574      r02c0:u                  
+    16.455168356              3,481      r02c0:u                  
+    16.555307711              3,574      r02c0:u                  
+    16.655449593              3,481      r02c0:u                  
+    16.755588025              3,577      r02c0:u                  
+    16.855733637              3,493      r02c0:u                  
+    16.955874078              3,562      r02c0:u                  
+    17.056015862              3,491      r02c0:u                  
+#           time             counts unit events
+    17.156160229              3,554      r02c0:u                  
+    17.256307650              3,507      r02c0:u                  
+    17.356450390              3,556      r02c0:u                  
+    17.456589494              3,529      r02c0:u                  
+    17.556727818              3,513      r02c0:u                  
+    17.656865944              3,554      r02c0:u                  
+    17.757004202              3,517      r02c0:u                  
+    17.857155499              3,536      r02c0:u                  
+    17.957290546              3,525      r02c0:u                  
+    18.057425834              3,537      r02c0:u                  
+    18.157560560              3,531      r02c0:u                  
+    18.257697906              3,522      r02c0:u                  
+    18.357835435              3,549      r02c0:u                  
+    18.457973064              3,506      r02c0:u                  
+    18.558110989              3,499      r02c0:u                  
+    18.658245915              3,574      r02c0:u                  
+    18.758376685              3,498      r02c0:u                  
+    18.858511663              3,556      r02c0:u                  
+    18.958657849              3,491      r02c0:u                  
+    19.058808382              3,583      r02c0:u                  
+    19.873336622              2,947      r02c0:u                  
+    19.973487783              1,876      r02c0:u                  
+    20.073635876              3,029      r02c0:u                  
+    20.173778655              3,563      r02c0:u                  
+    20.273917588              3,490      r02c0:u                  
+#           time             counts unit events
+    20.374059277              3,572      r02c0:u                  
+    20.474201660              3,481      r02c0:u                  
+    20.574340496              3,581      r02c0:u                  
+    20.674478719              3,483      r02c0:u                  
+    20.774618598              3,576      r02c0:u                  
+    20.874757318              3,477      r02c0:u                  
+    20.974916710              2,848      r02c0:u                  
+    21.075073839              3,497      r02c0:u                  
+    21.175214226              3,420      r02c0:u                  
+    21.275363377              3,492      r02c0:u                  
+    21.375503945              3,420      r02c0:u                  
+    21.475642113              3,492      r02c0:u                  
+    21.575781398              3,430      r02c0:u                  
+    21.675921142              3,490      r02c0:u                  
+    21.776060200              3,421      r02c0:u                  
+    21.876201652              3,492      r02c0:u                  
+    21.976341134              3,420      r02c0:u                  
+    22.076480404              3,439      r02c0:u                  
+    22.176619830              3,500      r02c0:u                  
+    22.276759936              3,420      r02c0:u                  
+    22.376918999              3,493      r02c0:u                  
+    22.477057399              3,450      r02c0:u                  
+    22.577195469              3,463      r02c0:u                  
+    22.677333719              3,436      r02c0:u                  
+    22.777472302              3,488      r02c0:u                  
+#           time             counts unit events
+    22.877611928              3,424      r02c0:u                  
+    22.977755708              3,491      r02c0:u                  
+    23.077895497              3,435      r02c0:u                  
+    23.178037258              3,464      r02c0:u                  
+    23.278177147              3,459      r02c0:u                  
+    23.378315538              3,438      r02c0:u                  
+    23.478455677              3,484      r02c0:u                  
+    23.578595772              3,428      r02c0:u                  
+    23.678735393              3,479      r02c0:u                  
+    23.778874975              3,443      r02c0:u                  
+    23.879027287              3,481      r02c0:u                  
+    23.979197422              3,448      r02c0:u                  
+    24.079353765              3,438      r02c0:u                  
+    24.179496179              3,455      r02c0:u                  
+    24.279637763              3,481      r02c0:u                  
+    24.379783326              3,434      r02c0:u                  
+    24.479925833              3,464      r02c0:u                  
+    24.580079283              3,461      r02c0:u                  
+    24.680226186              3,472      r02c0:u                  
+    24.780360845              3,432      r02c0:u                  
+    24.880510170              3,441      r02c0:u                  
+    24.980680831              3,395      r02c0:u                  
+    25.080832082              3,475      r02c0:u                  
+    25.180979324              3,428      r02c0:u                  
+    25.281142030              2,726      r02c0:u                  
+#           time             counts unit events
+    25.381301025              2,528      r02c0:u                  
+    25.481446637              2,630      r02c0:u                  
+    25.581589569              2,584      r02c0:u                  
+    25.681728741              2,545      r02c0:u                  
+    25.781870390              2,518      r02c0:u                  
+    25.882008762              2,522      r02c0:u                  
+    25.982147791              2,662      r02c0:u                  
+    26.082286312              2,539      r02c0:u                  
+    26.182425512              2,524      r02c0:u                  
+    26.282566570              2,518      r02c0:u                  
+    26.382706943              2,623      r02c0:u                  
+    26.482845464              2,563      r02c0:u                  
+    26.582985534              2,520      r02c0:u                  
+    26.683125765              2,518      r02c0:u                  
+    26.783265763              2,653      r02c0:u                  
+    26.883403393              2,533      r02c0:u                  
+    26.983543237              2,518      r02c0:u                  
+    27.083685073              2,535      r02c0:u                  
+    27.183826742              2,607      r02c0:u                  
+    27.283969988              2,581      r02c0:u                  
+    27.384112464              2,518      r02c0:u                  
+    27.484255252              2,524      r02c0:u                  
+    27.584396981              2,611      r02c0:u                  
+    27.684541784              2,599      r02c0:u                  
+    27.784684309              2,524      r02c0:u                  
+#           time             counts unit events
+    27.884828782              2,520      r02c0:u                  
+    27.984978415              2,541      r02c0:u                  
+    28.085120569              2,651      r02c0:u                  
+    28.185258557              2,520      r02c0:u                  
+    28.285408244              1,642      r02c0:u                  
+    28.385571382                  7      r02c0:u                  
+    28.485722259                  2      r02c0:u                  
+    28.585861117                 19      r02c0:u                  
+    28.686003644                  8      r02c0:u                  
+    28.786141699                  0      r02c0:u                  
+    28.886301270                 13      r02c0:u                  
+    28.986471835                  4      r02c0:u                  
+    29.086624414                 19      r02c0:u                  
+    29.186762597                  0      r02c0:u                  
+    29.286899706                  0      r02c0:u                  
+    29.387036943                 12      r02c0:u                  
+    29.487178599                  0      r02c0:u                  
+    29.587317472                  4      r02c0:u                  
+    29.687453861                  4      r02c0:u                  
+    29.787592680                  1      r02c0:u                  
+    29.887749060                 23      r02c0:u                  
+    29.987910883                331      r02c0:u                  
+    30.088057974                 20      r02c0:u                  
+    30.188208269                  2      r02c0:u                  
+    30.288372273                  4      r02c0:u                  
+#           time             counts unit events
+    30.388513101                  0      r02c0:u                  
+    30.488667966                  4      r02c0:u                  
+    30.588802387                  9      r02c0:u                  
+    30.688945429                  0      r02c0:u                  
+    30.789092180                  0      r02c0:u                  
+    30.889234655                  6      r02c0:u                  
+    30.989376119                 12      r02c0:u                  
+    31.089520536                  6      r02c0:u                  
+    31.189665339                  5      r02c0:u                  
+    31.289808922                  4      r02c0:u                  
+    31.389956445                  4      r02c0:u                  
+    31.490102935                  4      r02c0:u                  
+    31.590247345                 22      r02c0:u                  
+    31.690390115                 10      r02c0:u                  
+    31.790540081                  4      r02c0:u                  
+    31.890684047                  6      r02c0:u                  
+    31.990797428                  8      r02c0:u                  
+    32.090950846                 12      r02c0:u                  
+    32.191096728                  6      r02c0:u                  
+    32.291239652                  4      r02c0:u                  
+    32.391383628                 12      r02c0:u                  
+    32.491528292                  8      r02c0:u                  
+    32.591670697                 21      r02c0:u                  
+    32.691812462                  0      r02c0:u                  
+    32.791952564                  6      r02c0:u                  
+#           time             counts unit events
+    32.892090752                  0      r02c0:u                  
+    32.992253261                 10      r02c0:u                  
+    33.092413279              1,215      r02c0:u                  
+    33.192558586              1,223      r02c0:u                  
+    33.292690984              1,483      r02c0:u                  
+    33.392822847              1,216      r02c0:u                  
+    33.492962391              1,481      r02c0:u                  
+    33.593097491              1,237      r02c0:u                  
+    33.693233128              1,450      r02c0:u                  
+    33.793365996              1,262      r02c0:u                  
+    33.893509706              1,404      r02c0:u                  
+    33.993659848              1,308      r02c0:u                  
+    34.093792842              1,363      r02c0:u                  
+    34.193927436              1,356      r02c0:u                  
+    34.294060273              1,324      r02c0:u                  
+    34.394192537              1,376      r02c0:u                  
+    34.494330304              1,310      r02c0:u                  
+    34.594461600              1,420      r02c0:u                  
+    34.694594260              1,264      r02c0:u                  
+    34.794726993              1,447      r02c0:u                  
+    34.894873363              1,224      r02c0:u                  
+    34.995028066              1,505      r02c0:u                  
+    35.095166363              1,253      r02c0:u                  
+    35.195313460              1,430      r02c0:u                  
+    35.295458247              1,278      r02c0:u                  
+#           time             counts unit events
+    35.395603870              1,406      r02c0:u                  
+    35.495753664              1,308      r02c0:u                  
+    35.595896988              1,378      r02c0:u                  
+    35.696040019              1,339      r02c0:u                  
+    35.796182876              1,342      r02c0:u                  
+    35.896328309              1,370      r02c0:u                  
+    35.996471408              1,313      r02c0:u                  
+    36.096610230              1,401      r02c0:u                  
+    36.196750506              1,276      r02c0:u                  
+    36.296910774              1,430      r02c0:u                  
+    36.397062683              1,252      r02c0:u                  
+    36.497198272              1,448      r02c0:u                  
+    36.597334161              1,231      r02c0:u                  
+    36.697471910              1,471      r02c0:u                  
+    36.797607029              1,210      r02c0:u                  
+    36.897742991              1,490      r02c0:u                  
+    36.997880481              1,232      r02c0:u                  
+    37.098016041              1,452      r02c0:u                  
+    37.198151415              1,268      r02c0:u                  
+    37.298288330              1,414      r02c0:u                  
+    37.398426590              1,298      r02c0:u                  
+    37.498560844              1,385      r02c0:u                  
+    37.598692601              1,335      r02c0:u                  
+    37.698823846              1,344      r02c0:u                  
+    37.798960111              1,369      r02c0:u                  
+#           time             counts unit events
+    37.899090421              1,311      r02c0:u                  
+    37.999224856              1,414      r02c0:u                  
+    38.099358053              1,272      r02c0:u                  
+    38.199490732              1,457      r02c0:u                  
+    38.299626400              1,226      r02c0:u                  
+    38.399761194              1,484      r02c0:u                  
+    38.499895685              1,212      r02c0:u                  
+    38.600032034              1,486      r02c0:u                  
+    38.700169363              1,232      r02c0:u                  
+    38.800321432              1,190      r02c0:u                  
+    38.900480217              1,783      r02c0:u                  
+    39.000627313              1,756      r02c0:u                  
+    39.100759299              1,767      r02c0:u                  
+    39.200913903              1,753      r02c0:u                  
+    39.301049368              1,752      r02c0:u                  
+    39.401191029              1,756      r02c0:u                  
+    39.501326939              1,754      r02c0:u                  
+    39.601459374              1,850      r02c0:u                  
+    39.701590543              1,841      r02c0:u                  
+    39.801723188              1,843      r02c0:u                  
+    39.901869931              1,821      r02c0:u                  
+    40.002020288              1,839      r02c0:u                  
+    40.102152012              1,840      r02c0:u                  
+    40.202294161              1,847      r02c0:u                  
+    40.302435784              1,765      r02c0:u                  
+#           time             counts unit events
+    40.402577083              1,756      r02c0:u                  
+    40.502724439              1,760      r02c0:u                  
+    40.602868729              1,760      r02c0:u                  
+    40.703010889              1,752      r02c0:u                  
+    40.803149975              1,752      r02c0:u                  
+    40.903289494              1,753      r02c0:u                  
+    41.003428751              1,848      r02c0:u                  
+    41.103567572              1,837      r02c0:u                  
+    41.203706127              1,849      r02c0:u                  
+    41.303846375              1,845      r02c0:u                  
+    41.403989099              1,840      r02c0:u                  
+    41.504126544              1,844      r02c0:u                  
+    41.604266592              1,801      r02c0:u                  
+    41.704406486              1,754      r02c0:u                  
+    41.804545381              1,756      r02c0:u                  
+    41.904684152              1,752      r02c0:u                  
+    42.004820251              1,761      r02c0:u                  
+    42.104966004              1,761      r02c0:u                  
+    42.205106270              1,755      r02c0:u                  
+    42.305246707              1,801      r02c0:u                  
+    42.405401470              1,842      r02c0:u                  
+    42.505538803              1,848      r02c0:u                  
+    42.605674233              1,847      r02c0:u                  
+    42.705810576              1,837      r02c0:u                  
+    42.805947259              1,843      r02c0:u                  
+#           time             counts unit events
+    42.906087286              1,842      r02c0:u                  
+    43.006228904              1,755      r02c0:u                  
+    43.106366155              1,758      r02c0:u                  
+    43.206505783              1,752      r02c0:u                  
+    43.306643501              1,753      r02c0:u                  
+    43.406780123              1,752      r02c0:u                  
+    43.506917217              1,752      r02c0:u                  
+    43.607051769              1,780      r02c0:u                  
+    43.707186287              1,841      r02c0:u                  
+    43.807328285              1,814      r02c0:u                  
+    43.907472804              1,739      r02c0:u                  
+    44.007612599              1,827      r02c0:u                  
+    44.107749200              1,837      r02c0:u                  
+    44.207887584              1,845      r02c0:u                  
+    44.308029560              1,832      r02c0:u                  
+    44.408171285              1,847      r02c0:u                  
+    44.508313482              1,832      r02c0:u                  
+    44.608450349              1,849      r02c0:u                  
+    44.708586368              1,781      r02c0:u                  
+    44.808730653              1,756      r02c0:u                  
+    44.908876019              1,764      r02c0:u                  
+    45.009020780              1,765      r02c0:u                  
+    45.109119314              1,710      r02c0:u                  
+    45.209263224              1,599      r02c0:u                  
+    45.309406209              1,595      r02c0:u                  
+#           time             counts unit events
+    45.409545960              1,598      r02c0:u                  
+    45.509693072              1,719      r02c0:u                  
+    45.609849393              1,773      r02c0:u                  
+    45.709995082              1,762      r02c0:u                  
+    45.810136487              1,756      r02c0:u                  
+    45.910288360              1,795      r02c0:u                  
+    46.010428899              1,850      r02c0:u                  
+    46.110573112              1,843      r02c0:u                  
+    46.210721762              1,835      r02c0:u                  
+    46.310868319              1,845      r02c0:u                  
+    46.411008916              1,840      r02c0:u                  
+    46.511152506              1,847      r02c0:u                  
+    46.611300730              1,846      r02c0:u                  
+    46.711447600              1,776      r02c0:u                  
+    46.811594044              1,756      r02c0:u                  
+    46.911740364              1,762      r02c0:u                  
+    47.011884002              1,766      r02c0:u                  
+    47.112037084              1,763      r02c0:u                  
+    47.212189662              1,173      r02c0:u                  
+    47.312335578              1,811      r02c0:u                  
+    47.412481089              2,073      r02c0:u                  
+    47.512624585              1,584      r02c0:u                  
+    47.612767894              1,895      r02c0:u                  
+    47.712945962              1,997      r02c0:u                  
+    47.813105061              1,561      r02c0:u                  
+#           time             counts unit events
+    47.913247070              2,007      r02c0:u                  
+    48.013396676              1,877      r02c0:u                  
+    48.113540473              1,571      r02c0:u                  
+    48.213685047              2,099      r02c0:u                  
+    48.313840727              1,781      r02c0:u                  
+    48.413983734              1,676      r02c0:u                  
+    48.514128938              2,103      r02c0:u                  
+    48.614274205              1,697      r02c0:u                  
+    48.714416336              1,751      r02c0:u                  
+    48.814558596              2,109      r02c0:u                  
+    48.914707453              1,592      r02c0:u                  
+    49.014856535              1,742      r02c0:u                  
+    49.115001574              1,922      r02c0:u                  
+    49.215145496              1,781      r02c0:u                  
+    49.315287234              1,552      r02c0:u                  
+    49.415424230              1,578      r02c0:u                  
+    49.515569159              1,753      r02c0:u                  
+    49.615712708              1,865      r02c0:u                  
+    49.715864157              1,840      r02c0:u                  
+    49.816003852              1,555      r02c0:u                  
+    49.916153978              1,560      r02c0:u                  
+    50.016295445              1,724      r02c0:u                  
+    50.116435509              2,112      r02c0:u                  
+    50.216579853              1,684      r02c0:u                  
+    50.316728013              1,761      r02c0:u                  
+#           time             counts unit events
+    50.416872097              2,111      r02c0:u                  
+    50.517019181              1,566      r02c0:u                  
+    50.617164329              1,889      r02c0:u                  
+    50.717311176              2,012      r02c0:u                  
+    50.817453003              1,556      r02c0:u                  
+    50.917604074              1,977      r02c0:u                  
+    51.017753612              1,933      r02c0:u                  
+    51.117904495              1,560      r02c0:u                  
+    51.218046881              2,069      r02c0:u                  
+    51.318191310              1,813      r02c0:u                  
+    51.418336429              1,623      r02c0:u                  
+    51.518485048              2,120      r02c0:u                  
+    51.618627414              1,751      r02c0:u                  
+    51.718766584              1,693      r02c0:u                  
+    51.818900055              2,107      r02c0:u                  
+    51.919034115              1,618      r02c0:u                  
+    52.019171734              1,824      r02c0:u                  
+    52.119306429              2,070      r02c0:u                  
+    52.219457439              1,548      r02c0:u                  
+    52.319599370              1,933      r02c0:u                  
+    52.419739345              1,937      r02c0:u                  
+    52.519881535              1,548      r02c0:u                  
+    52.620020823              2,085      r02c0:u                  
+    52.720160824              1,793      r02c0:u                  
+    52.820301325              1,660      r02c0:u                  
+#           time             counts unit events
+    52.920440629              2,100      r02c0:u                  
+    53.020586024              1,660      r02c0:u                  
+    53.120727920              1,797      r02c0:u                  
+    53.220867123              2,081      r02c0:u                  
+    53.321008535              1,548      r02c0:u                  
+    53.421147534              1,918      r02c0:u                  
+    53.521286944              1,952      r02c0:u                  
+    53.621428233              1,550      r02c0:u                  
+    53.721567656              2,061      r02c0:u                  
+    53.821707571              1,809      r02c0:u                  
+    53.921860221              1,619      r02c0:u                  
+    54.022015741              2,108      r02c0:u                  
+    54.122157629              1,741      r02c0:u                  
+    54.222295943              1,702      r02c0:u                  
+    54.322446298              2,115      r02c0:u                  
+    54.422581765              1,610      r02c0:u                  
+    54.522718433              1,837      r02c0:u                  
+    54.622854867              2,042      r02c0:u                  
+    54.722996308              1,548      r02c0:u                  
+    54.823132056              1,968      r02c0:u                  
+    54.923283994              1,908      r02c0:u                  
+    55.023440719              1,561      r02c0:u                  
+    55.123580482              2,060      r02c0:u                  
+    55.223722682              1,824      r02c0:u                  
+    55.323862641              1,631      r02c0:u                  
+#           time             counts unit events
+    55.424001947              2,102      r02c0:u                  
+    55.524145836              1,703      r02c0:u                  
+    55.624284983              1,752      r02c0:u                  
+    55.724425322              2,109      r02c0:u                  
+    55.824563519              1,597      r02c0:u                  
+    55.924694973              1,847      r02c0:u                  
+    56.024829580              2,042      r02c0:u                  
+    56.124967590              1,553      r02c0:u                  
+    56.225103417              1,965      r02c0:u                  
+    56.325237715              1,905      r02c0:u                  
+    56.425376487              1,550      r02c0:u                  
+    56.525512024              2,106      r02c0:u                  
+    56.625651232              1,772      r02c0:u                  
+    56.725788550              1,681      r02c0:u                  
+    56.825925051              2,110      r02c0:u                  
+    56.926064709              1,633      r02c0:u                  
+    57.026200348              1,809      r02c0:u                  
+    57.126336071              2,074      r02c0:u                  
+    57.226474664              1,550      r02c0:u                  
+    57.326611797              1,933      r02c0:u                  
+    57.426750420              1,937      r02c0:u                  
+    57.526887460              1,550      r02c0:u                  
+    57.627023926              2,072      r02c0:u                  
+    57.727157511              1,805      r02c0:u                  
+    57.827303058              1,645      r02c0:u                  
+#           time             counts unit events
+    57.927449888              2,115      r02c0:u                  
+    58.027590602              1,658      r02c0:u                  
+    58.127723407              1,785      r02c0:u                  
+    58.227859872                554      r02c0:u                  
+    58.327994436                  0      r02c0:u                  
+    58.428129095                  8      r02c0:u                  
+    58.528263990                  0      r02c0:u                  
+    58.628399015                  8      r02c0:u                  
+    58.728535665                  0      r02c0:u                  
+    58.828688300                  2      r02c0:u                  
+    58.928858345                  6      r02c0:u                  
+    59.029030631                  4      r02c0:u                  
+    59.129181951                235      r02c0:u                  
+    59.229322333                238      r02c0:u                  
+    59.329461557                232      r02c0:u                  
+    59.429600343                230      r02c0:u                  
+    59.529737736                235      r02c0:u                  
+    59.629875996                227      r02c0:u                  
+    59.730012029                224      r02c0:u                  
+    59.830148592                224      r02c0:u                  
+    59.930297405                230      r02c0:u                  
+    60.030450986                232      r02c0:u                  
+    60.130588191                229      r02c0:u                  
+    60.230737093                224      r02c0:u                  
+    60.330872474                224      r02c0:u                  
+#           time             counts unit events
+    60.431009079                224      r02c0:u                  
+    60.531149650                233      r02c0:u                  
+    60.631287122                231      r02c0:u                  
+    60.731422323                228      r02c0:u                  
+    60.831573495                234      r02c0:u                  
+    60.931711903                232      r02c0:u                  
+    61.031849473                228      r02c0:u                  
+    61.131985109                232      r02c0:u                  
+    61.232121622                230      r02c0:u                  
+    61.332258086                232      r02c0:u                  
+    61.432392439                228      r02c0:u                  
+    61.532527399                237      r02c0:u                  
+    61.632663248                230      r02c0:u                  
+    61.732797942                230      r02c0:u                  
+    61.832933915                228      r02c0:u                  
+    61.933070088                230      r02c0:u                  
+    62.033208239                235      r02c0:u                  
+    62.133344697                245      r02c0:u                  
+    62.233479766                230      r02c0:u                  
+    62.333616597                230      r02c0:u                  
+    62.433751889                230      r02c0:u                  
+    62.533888584                232      r02c0:u                  
+    62.634025536                234      r02c0:u                  
+    62.734159947                228      r02c0:u                  
+    62.834292041                232      r02c0:u                  
+#           time             counts unit events
+    62.934426139                230      r02c0:u                  
+    63.034561221                224      r02c0:u                  
+    63.134693496                232      r02c0:u                  
+    63.234823723                226      r02c0:u                  
+    63.334958773                224      r02c0:u                  
+    63.435089116                224      r02c0:u                  
+    63.535221165                226      r02c0:u                  
+    63.635353030                226      r02c0:u                  
+    63.735488857                224      r02c0:u                  
+    63.835626397                226      r02c0:u                  
+    63.935777751                232      r02c0:u                  
+    64.035929008                224      r02c0:u                  
+    64.136069540                244      r02c0:u                  
+    64.236209128                232      r02c0:u                  
+    64.336347320                232      r02c0:u                  
+    64.436487109                234      r02c0:u                  
+    64.536622094                233      r02c0:u                  
+    64.636758802                226      r02c0:u                  
+    64.736916627                224      r02c0:u                  
+    64.837053412                224      r02c0:u                  
+    64.937204567                230      r02c0:u                  
+    65.037354691                232      r02c0:u                  
+    65.137490734                226      r02c0:u                  
+    65.237627494                224      r02c0:u                  
+    65.337761824                224      r02c0:u                  
+#           time             counts unit events
+    65.437897081                224      r02c0:u                  
+    65.538039551                230      r02c0:u                  
+    65.638176468                230      r02c0:u                  
+    65.738314434                230      r02c0:u                  
+    65.838449181                228      r02c0:u                  
+    65.938589762                234      r02c0:u                  
+    66.038729060                230      r02c0:u                  
+    66.138877932                236      r02c0:u                  
+    66.239014723                228      r02c0:u                  
+    66.339152302                230      r02c0:u                  
+    66.439287481                230      r02c0:u                  
+    66.539424986                234      r02c0:u                  
+    66.639560785                231      r02c0:u                  
+    66.739696783                231      r02c0:u                  
+    66.839832278                230      r02c0:u                  
+    66.939968067                228      r02c0:u                  
+    67.040106093                240      r02c0:u                  
+    67.140247267                238      r02c0:u                  
+    67.240386644                236      r02c0:u                  
+    67.340527244                230      r02c0:u                  
+    67.440664034                238      r02c0:u                  
+    67.540805594                248      r02c0:u                  
+    67.640948239                233      r02c0:u                  
+    67.741078472                224      r02c0:u                  
+    67.841211388                226      r02c0:u                  
+#           time             counts unit events
+    67.941342089                226      r02c0:u                  
+    68.041476765                226      r02c0:u                  
+    68.141606833                230      r02c0:u                  
+    68.241739021                224      r02c0:u                  
+    68.341872440                224      r02c0:u                  
+    68.442002757                224      r02c0:u                  
+    68.542139433                228      r02c0:u                  
+    68.642271729                255      r02c0:u                  
+    68.742404392                242      r02c0:u                  
+    68.842534705                224      r02c0:u                  
+    68.942676270                230      r02c0:u                  
+    69.042823347                226      r02c0:u                  
+    69.142951024                242      r02c0:u                  
+    69.243079331                224      r02c0:u                  
+    69.343207236                224      r02c0:u                  
+    69.443337863                224      r02c0:u                  
+    69.543466449                231      r02c0:u                  
+    69.643595080                224      r02c0:u                  
+    69.743727670                224      r02c0:u                  
+    69.843863720                224      r02c0:u                  
+    69.944008183                242      r02c0:u                  
+    70.044157848                240      r02c0:u                  
+    70.144289794                250      r02c0:u                  
+    70.244422559                226      r02c0:u                  
+    70.344558252                224      r02c0:u                  
+#           time             counts unit events
+    70.444694546                224      r02c0:u                  
+    70.544809929                267      r02c0:u                  
+    70.644956702                347      r02c0:u                  
+    70.745082193                418      r02c0:u                  
+    70.845206228                225      r02c0:u                  
+    70.945318467                224      r02c0:u                  
+    71.045431194                230      r02c0:u                  
+    71.145544771                224      r02c0:u                  
+    71.245656015                224      r02c0:u                  
+    71.345765517                224      r02c0:u                  
+    71.445875720                224      r02c0:u                  
+    71.546011929                233      r02c0:u                  
+    71.646137739                229      r02c0:u                  
+    71.746276073                218      r02c0:u                  
+    71.846413573                  0      r02c0:u                  
+    71.946550293                  0      r02c0:u                  
+    72.046687169                 15      r02c0:u                  
+    72.146839304                  3      r02c0:u                  
+    72.246974529                  0      r02c0:u                  
+    72.347109415                  0      r02c0:u                  
+    72.447242670                  4      r02c0:u                  
+    72.547376516                  4      r02c0:u                  
+    72.647513331                  0      r02c0:u                  
+    72.747648320                  0      r02c0:u                  
+    72.847783231                  0      r02c0:u                  
+#           time             counts unit events
+    72.947919967                  0      r02c0:u                  
+    73.048077934                  2      r02c0:u                  
+    73.148253941                  0      r02c0:u                  
+    73.248425885                  0      r02c0:u                  
+    73.348594815                654      r02c0:u                  
+    73.448746429                910      r02c0:u                  
+    73.548898203                916      r02c0:u                  
+    73.649033793                897      r02c0:u                  
+    73.749169833                905      r02c0:u                  
+    73.849304544                848      r02c0:u                  
+    73.949451485                866      r02c0:u                  
+    74.049601373                914      r02c0:u                  
+    74.149735412                952      r02c0:u                  
+    74.249872214                910      r02c0:u                  
+    74.350009500                910      r02c0:u                  
+    74.450147978                910      r02c0:u                  
+    74.550285997                914      r02c0:u                  
+    74.650421029                894      r02c0:u                  
+    74.750558545                868      r02c0:u                  
+    74.850696524                852      r02c0:u                  
+    74.950841776                902      r02c0:u                  
+    75.050995003                925      r02c0:u                  
+    75.151132180                910      r02c0:u                  
+    75.251268220                910      r02c0:u                  
+    75.351403174                912      r02c0:u                  
+#           time             counts unit events
+    75.451544125                910      r02c0:u                  
+    75.551684102                914      r02c0:u                  
+    75.651823802                900      r02c0:u                  
+    75.751963922                861      r02c0:u                  
+    75.852102643                850      r02c0:u                  
+    75.952240113                907      r02c0:u                  
+    76.052378485                912      r02c0:u                  
+    76.152532998                916      r02c0:u                  
+    76.252673670                910      r02c0:u                  
+    76.352811962                910      r02c0:u                  
+    76.452948524                910      r02c0:u                  
+    76.553057903                912      r02c0:u                  
+    76.653195378                894      r02c0:u                  
+    76.753334067                886      r02c0:u                  
+    76.853474626                850      r02c0:u                  
+    76.953612991                882      r02c0:u                  
+I0510 09:50:07.034586 128886 solver.cpp:218] Iteration 0 (0 iter/s, 76.263s/1 iters), loss = 8.37137
+I0510 09:50:07.034648 128886 solver.cpp:237]     Train net output #0: loss = 8.37137 (* 1 = 8.37137 loss)
+I0510 09:50:07.034657 128886 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+    77.053770762                413      r02c0:u                  
+    77.153950215                  3      r02c0:u                  
+    77.254127013                  6      r02c0:u                  
+I0510 09:50:07.361014 128886 solver.cpp:447] Snapshotting to binary proto file models/bvlc_reference_caffenet/caffenet_train_iter_1.caffemodel
+    77.354303900                 11      r02c0:u                  
+    77.454473717                 18      r02c0:u                  
+    77.554644241                 55      r02c0:u                  
+    77.654808528                  0      r02c0:u                  
+    77.754973332                  0      r02c0:u                  
+    77.855135389                  1      r02c0:u                  
+#           time             counts unit events
+    77.955291959                  3      r02c0:u                  
+    78.055449188                  3      r02c0:u                  
+    78.155616853                 18      r02c0:u                  
+I0510 09:50:08.226052 128886 sgd_solver.cpp:273] Snapshotting solver state to binary proto file models/bvlc_reference_caffenet/caffenet_train_iter_1.solverstate
+    78.255785442                  2      r02c0:u                  
+    78.355946221                  0      r02c0:u                  
+    78.456102037                  2      r02c0:u                  
+    78.556256759                  3      r02c0:u                  
+I0510 09:50:08.686399 128886 solver.cpp:294] Optimization stopped early.
+I0510 09:50:08.686430 128886 caffe.cpp:259] Optimization Done.
+    78.656413641                 94      r02c0:u                  
+    78.667532692                128      r02c0:u                  
+./examples/imagenet/train_caffenet.sh: Interrupt

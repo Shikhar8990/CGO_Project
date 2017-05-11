@@ -1,0 +1,1730 @@
+I0428 21:27:07.976027 168401 caffe.cpp:211] Use CPU.
+I0428 21:27:07.976264 168401 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0428 21:27:07.976352 168401 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:27:07.976548 168401 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0428 21:27:07.976567 168401 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0428 21:27:07.976661 168401 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:27:07.976723 168401 layer_factory.hpp:77] Creating layer mnist
+I0428 21:27:07.976814 168401 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0428 21:27:07.976841 168401 net.cpp:84] Creating Layer mnist
+I0428 21:27:07.976852 168401 net.cpp:380] mnist -> data
+I0428 21:27:07.976873 168401 net.cpp:380] mnist -> label
+I0428 21:27:07.976902 168401 data_layer.cpp:45] output data size: 64,1,28,28
+I0428 21:27:07.977388 168401 net.cpp:122] Setting up mnist
+I0428 21:27:07.977411 168401 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0428 21:27:07.977416 168401 net.cpp:129] Top shape: 64 (64)
+I0428 21:27:07.977421 168401 net.cpp:137] Memory required for data: 200960
+I0428 21:27:07.977428 168401 layer_factory.hpp:77] Creating layer conv1
+I0428 21:27:07.977444 168401 net.cpp:84] Creating Layer conv1
+I0428 21:27:07.977452 168401 net.cpp:406] conv1 <- data
+I0428 21:27:07.977463 168401 net.cpp:380] conv1 -> conv1
+I0428 21:27:07.977507 168401 net.cpp:122] Setting up conv1
+I0428 21:27:07.977516 168401 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0428 21:27:07.977521 168401 net.cpp:137] Memory required for data: 3150080
+I0428 21:27:07.977540 168401 layer_factory.hpp:77] Creating layer pool1
+I0428 21:27:07.977547 168401 net.cpp:84] Creating Layer pool1
+I0428 21:27:07.977560 168401 net.cpp:406] pool1 <- conv1
+I0428 21:27:07.977576 168401 net.cpp:380] pool1 -> pool1
+I0428 21:27:07.977591 168401 net.cpp:122] Setting up pool1
+I0428 21:27:07.977598 168401 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0428 21:27:07.977603 168401 net.cpp:137] Memory required for data: 3887360
+I0428 21:27:07.977608 168401 layer_factory.hpp:77] Creating layer conv2
+I0428 21:27:07.977617 168401 net.cpp:84] Creating Layer conv2
+I0428 21:27:07.977622 168401 net.cpp:406] conv2 <- pool1
+I0428 21:27:07.977629 168401 net.cpp:380] conv2 -> conv2
+I0428 21:27:07.977876 168401 net.cpp:122] Setting up conv2
+I0428 21:27:07.977885 168401 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0428 21:27:07.977890 168401 net.cpp:137] Memory required for data: 4706560
+I0428 21:27:07.977901 168401 layer_factory.hpp:77] Creating layer pool2
+I0428 21:27:07.977908 168401 net.cpp:84] Creating Layer pool2
+I0428 21:27:07.977913 168401 net.cpp:406] pool2 <- conv2
+I0428 21:27:07.977919 168401 net.cpp:380] pool2 -> pool2
+I0428 21:27:07.977929 168401 net.cpp:122] Setting up pool2
+I0428 21:27:07.977936 168401 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0428 21:27:07.977941 168401 net.cpp:137] Memory required for data: 4911360
+I0428 21:27:07.977946 168401 layer_factory.hpp:77] Creating layer ip1
+I0428 21:27:07.977954 168401 net.cpp:84] Creating Layer ip1
+I0428 21:27:07.977959 168401 net.cpp:406] ip1 <- pool2
+I0428 21:27:07.977967 168401 net.cpp:380] ip1 -> ip1
+I0428 21:27:07.981487 168401 net.cpp:122] Setting up ip1
+I0428 21:27:07.981499 168401 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:27:07.981503 168401 net.cpp:137] Memory required for data: 5039360
+I0428 21:27:07.981513 168401 layer_factory.hpp:77] Creating layer relu1
+I0428 21:27:07.981520 168401 net.cpp:84] Creating Layer relu1
+I0428 21:27:07.981525 168401 net.cpp:406] relu1 <- ip1
+I0428 21:27:07.981531 168401 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:27:07.981539 168401 net.cpp:122] Setting up relu1
+I0428 21:27:07.981545 168401 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:27:07.981550 168401 net.cpp:137] Memory required for data: 5167360
+I0428 21:27:07.981554 168401 layer_factory.hpp:77] Creating layer ip2
+I0428 21:27:07.981560 168401 net.cpp:84] Creating Layer ip2
+I0428 21:27:07.981564 168401 net.cpp:406] ip2 <- ip1
+I0428 21:27:07.981572 168401 net.cpp:380] ip2 -> ip2
+I0428 21:27:07.981632 168401 net.cpp:122] Setting up ip2
+I0428 21:27:07.981639 168401 net.cpp:129] Top shape: 64 10 (640)
+I0428 21:27:07.981643 168401 net.cpp:137] Memory required for data: 5169920
+I0428 21:27:07.981652 168401 layer_factory.hpp:77] Creating layer loss
+I0428 21:27:07.981658 168401 net.cpp:84] Creating Layer loss
+I0428 21:27:07.981662 168401 net.cpp:406] loss <- ip2
+I0428 21:27:07.981667 168401 net.cpp:406] loss <- label
+I0428 21:27:07.981675 168401 net.cpp:380] loss -> loss
+I0428 21:27:07.981688 168401 layer_factory.hpp:77] Creating layer loss
+I0428 21:27:07.981703 168401 net.cpp:122] Setting up loss
+I0428 21:27:07.981710 168401 net.cpp:129] Top shape: (1)
+I0428 21:27:07.981714 168401 net.cpp:132]     with loss weight 1
+I0428 21:27:07.981727 168401 net.cpp:137] Memory required for data: 5169924
+I0428 21:27:07.981731 168401 net.cpp:198] loss needs backward computation.
+I0428 21:27:07.981739 168401 net.cpp:198] ip2 needs backward computation.
+I0428 21:27:07.981745 168401 net.cpp:198] relu1 needs backward computation.
+I0428 21:27:07.981750 168401 net.cpp:198] ip1 needs backward computation.
+I0428 21:27:07.981753 168401 net.cpp:198] pool2 needs backward computation.
+I0428 21:27:07.981758 168401 net.cpp:198] conv2 needs backward computation.
+I0428 21:27:07.981763 168401 net.cpp:198] pool1 needs backward computation.
+I0428 21:27:07.981768 168401 net.cpp:198] conv1 needs backward computation.
+I0428 21:27:07.981773 168401 net.cpp:200] mnist does not need backward computation.
+I0428 21:27:07.981777 168401 net.cpp:242] This network produces output loss
+I0428 21:27:07.981789 168401 net.cpp:255] Network initialization done.
+I0428 21:27:07.981950 168401 solver.cpp:172] Creating test net (#0) specified by net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:27:07.981989 168401 net.cpp:294] The NetState phase (1) differed from the phase (0) specified by a rule in layer mnist
+I0428 21:27:07.982087 168401 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:27:07.982163 168401 layer_factory.hpp:77] Creating layer mnist
+I0428 21:27:07.982213 168401 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_test_lmdb
+I0428 21:27:07.982228 168401 net.cpp:84] Creating Layer mnist
+I0428 21:27:07.982235 168401 net.cpp:380] mnist -> data
+I0428 21:27:07.982246 168401 net.cpp:380] mnist -> label
+I0428 21:27:07.982261 168401 data_layer.cpp:45] output data size: 100,1,28,28
+I0428 21:27:07.982313 168401 net.cpp:122] Setting up mnist
+I0428 21:27:07.982324 168401 net.cpp:129] Top shape: 100 1 28 28 (78400)
+I0428 21:27:07.982331 168401 net.cpp:129] Top shape: 100 (100)
+I0428 21:27:07.982334 168401 net.cpp:137] Memory required for data: 314000
+I0428 21:27:07.982339 168401 layer_factory.hpp:77] Creating layer label_mnist_1_split
+I0428 21:27:07.982349 168401 net.cpp:84] Creating Layer label_mnist_1_split
+I0428 21:27:07.982354 168401 net.cpp:406] label_mnist_1_split <- label
+I0428 21:27:07.982362 168401 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_0
+I0428 21:27:07.982394 168401 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_1
+I0428 21:27:07.982406 168401 net.cpp:122] Setting up label_mnist_1_split
+I0428 21:27:07.982414 168401 net.cpp:129] Top shape: 100 (100)
+I0428 21:27:07.982419 168401 net.cpp:129] Top shape: 100 (100)
+I0428 21:27:07.982421 168401 net.cpp:137] Memory required for data: 314800
+I0428 21:27:07.982425 168401 layer_factory.hpp:77] Creating layer conv1
+I0428 21:27:07.982439 168401 net.cpp:84] Creating Layer conv1
+I0428 21:27:07.982444 168401 net.cpp:406] conv1 <- data
+I0428 21:27:07.982451 168401 net.cpp:380] conv1 -> conv1
+I0428 21:27:07.982483 168401 net.cpp:122] Setting up conv1
+I0428 21:27:07.982491 168401 net.cpp:129] Top shape: 100 20 24 24 (1152000)
+I0428 21:27:07.982496 168401 net.cpp:137] Memory required for data: 4922800
+I0428 21:27:07.982519 168401 layer_factory.hpp:77] Creating layer pool1
+I0428 21:27:07.982527 168401 net.cpp:84] Creating Layer pool1
+I0428 21:27:07.982532 168401 net.cpp:406] pool1 <- conv1
+I0428 21:27:07.982538 168401 net.cpp:380] pool1 -> pool1
+I0428 21:27:07.982548 168401 net.cpp:122] Setting up pool1
+I0428 21:27:07.982554 168401 net.cpp:129] Top shape: 100 20 12 12 (288000)
+I0428 21:27:07.982558 168401 net.cpp:137] Memory required for data: 6074800
+I0428 21:27:07.982563 168401 layer_factory.hpp:77] Creating layer conv2
+I0428 21:27:07.982574 168401 net.cpp:84] Creating Layer conv2
+I0428 21:27:07.982578 168401 net.cpp:406] conv2 <- pool1
+I0428 21:27:07.982586 168401 net.cpp:380] conv2 -> conv2
+I0428 21:27:07.982822 168401 net.cpp:122] Setting up conv2
+I0428 21:27:07.982831 168401 net.cpp:129] Top shape: 100 50 8 8 (320000)
+I0428 21:27:07.982834 168401 net.cpp:137] Memory required for data: 7354800
+I0428 21:27:07.982844 168401 layer_factory.hpp:77] Creating layer pool2
+I0428 21:27:07.982853 168401 net.cpp:84] Creating Layer pool2
+I0428 21:27:07.982858 168401 net.cpp:406] pool2 <- conv2
+I0428 21:27:07.982864 168401 net.cpp:380] pool2 -> pool2
+I0428 21:27:07.982874 168401 net.cpp:122] Setting up pool2
+I0428 21:27:07.982880 168401 net.cpp:129] Top shape: 100 50 4 4 (80000)
+I0428 21:27:07.982884 168401 net.cpp:137] Memory required for data: 7674800
+I0428 21:27:07.982888 168401 layer_factory.hpp:77] Creating layer ip1
+I0428 21:27:07.982897 168401 net.cpp:84] Creating Layer ip1
+I0428 21:27:07.982903 168401 net.cpp:406] ip1 <- pool2
+I0428 21:27:07.982908 168401 net.cpp:380] ip1 -> ip1
+I0428 21:27:07.986327 168401 net.cpp:122] Setting up ip1
+I0428 21:27:07.986338 168401 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:27:07.986342 168401 net.cpp:137] Memory required for data: 7874800
+I0428 21:27:07.986353 168401 layer_factory.hpp:77] Creating layer relu1
+I0428 21:27:07.986359 168401 net.cpp:84] Creating Layer relu1
+I0428 21:27:07.986366 168401 net.cpp:406] relu1 <- ip1
+I0428 21:27:07.986371 168401 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:27:07.986377 168401 net.cpp:122] Setting up relu1
+I0428 21:27:07.986383 168401 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:27:07.986387 168401 net.cpp:137] Memory required for data: 8074800
+I0428 21:27:07.986392 168401 layer_factory.hpp:77] Creating layer ip2
+I0428 21:27:07.986402 168401 net.cpp:84] Creating Layer ip2
+I0428 21:27:07.986405 168401 net.cpp:406] ip2 <- ip1
+I0428 21:27:07.986413 168401 net.cpp:380] ip2 -> ip2
+I0428 21:27:07.986469 168401 net.cpp:122] Setting up ip2
+I0428 21:27:07.986474 168401 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:27:07.986479 168401 net.cpp:137] Memory required for data: 8078800
+I0428 21:27:07.986485 168401 layer_factory.hpp:77] Creating layer ip2_ip2_0_split
+I0428 21:27:07.986491 168401 net.cpp:84] Creating Layer ip2_ip2_0_split
+I0428 21:27:07.986495 168401 net.cpp:406] ip2_ip2_0_split <- ip2
+I0428 21:27:07.986502 168401 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_0
+I0428 21:27:07.986511 168401 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_1
+I0428 21:27:07.986518 168401 net.cpp:122] Setting up ip2_ip2_0_split
+I0428 21:27:07.986524 168401 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:27:07.986528 168401 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:27:07.986533 168401 net.cpp:137] Memory required for data: 8086800
+I0428 21:27:07.986537 168401 layer_factory.hpp:77] Creating layer accuracy
+I0428 21:27:07.986543 168401 net.cpp:84] Creating Layer accuracy
+I0428 21:27:07.986547 168401 net.cpp:406] accuracy <- ip2_ip2_0_split_0
+I0428 21:27:07.986554 168401 net.cpp:406] accuracy <- label_mnist_1_split_0
+I0428 21:27:07.986560 168401 net.cpp:380] accuracy -> accuracy
+I0428 21:27:07.986567 168401 net.cpp:122] Setting up accuracy
+I0428 21:27:07.986572 168401 net.cpp:129] Top shape: (1)
+I0428 21:27:07.986577 168401 net.cpp:137] Memory required for data: 8086804
+I0428 21:27:07.986582 168401 layer_factory.hpp:77] Creating layer loss
+I0428 21:27:07.986588 168401 net.cpp:84] Creating Layer loss
+I0428 21:27:07.986596 168401 net.cpp:406] loss <- ip2_ip2_0_split_1
+I0428 21:27:07.986609 168401 net.cpp:406] loss <- label_mnist_1_split_1
+I0428 21:27:07.986616 168401 net.cpp:380] loss -> loss
+I0428 21:27:07.986624 168401 layer_factory.hpp:77] Creating layer loss
+I0428 21:27:07.986641 168401 net.cpp:122] Setting up loss
+I0428 21:27:07.986649 168401 net.cpp:129] Top shape: (1)
+I0428 21:27:07.986651 168401 net.cpp:132]     with loss weight 1
+I0428 21:27:07.986660 168401 net.cpp:137] Memory required for data: 8086808
+I0428 21:27:07.986663 168401 net.cpp:198] loss needs backward computation.
+I0428 21:27:07.986670 168401 net.cpp:200] accuracy does not need backward computation.
+I0428 21:27:07.986675 168401 net.cpp:198] ip2_ip2_0_split needs backward computation.
+I0428 21:27:07.986680 168401 net.cpp:198] ip2 needs backward computation.
+I0428 21:27:07.986683 168401 net.cpp:198] relu1 needs backward computation.
+I0428 21:27:07.986688 168401 net.cpp:198] ip1 needs backward computation.
+I0428 21:27:07.986692 168401 net.cpp:198] pool2 needs backward computation.
+I0428 21:27:07.986696 168401 net.cpp:198] conv2 needs backward computation.
+I0428 21:27:07.986701 168401 net.cpp:198] pool1 needs backward computation.
+I0428 21:27:07.986706 168401 net.cpp:198] conv1 needs backward computation.
+I0428 21:27:07.986711 168401 net.cpp:200] label_mnist_1_split does not need backward computation.
+I0428 21:27:07.986716 168401 net.cpp:200] mnist does not need backward computation.
+I0428 21:27:07.986721 168401 net.cpp:242] This network produces output accuracy
+I0428 21:27:07.986727 168401 net.cpp:242] This network produces output loss
+I0428 21:27:07.986742 168401 net.cpp:255] Network initialization done.
+I0428 21:27:07.986783 168401 solver.cpp:56] Solver scaffolding done.
+I0428 21:27:07.986812 168401 caffe.cpp:248] Starting Optimization
+I0428 21:27:07.986819 168401 solver.cpp:272] Solving LeNet
+I0428 21:27:07.986822 168401 solver.cpp:273] Learning Rate Policy: inv
+I0428 21:27:07.987567 168401 solver.cpp:330] Iteration 0, Testing net (#0)
+#           time             counts unit events
+     1.000121538        388,233,323      L1-dcache-stores         
+     1.000121538         52,976,749      L1-dcache-load-misses    
+     2.000295865        403,888,598      L1-dcache-stores         
+     2.000295865         52,812,156      L1-dcache-load-misses    
+     3.000497579        403,647,727      L1-dcache-stores         
+     3.000497579         52,704,380      L1-dcache-load-misses    
+     4.000700449        403,987,802      L1-dcache-stores         
+     4.000700449         53,345,747      L1-dcache-load-misses    
+     5.000883436        404,241,386      L1-dcache-stores         
+     5.000883436         53,350,992      L1-dcache-load-misses    
+I0428 21:27:13.269731 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:27:13.488905 168401 solver.cpp:397]     Test net output #0: accuracy = 0.0715
+I0428 21:27:13.488932 168401 solver.cpp:397]     Test net output #1: loss = 2.33 (* 1 = 2.33 loss)
+I0428 21:27:13.577548 168401 solver.cpp:218] Iteration 0 (-1.55159e-38 iter/s, 5.59s/100 iters), loss = 2.30606
+I0428 21:27:13.577569 168401 solver.cpp:237]     Train net output #0: loss = 2.30606 (* 1 = 2.30606 loss)
+I0428 21:27:13.577580 168401 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     6.001076917        398,296,881      L1-dcache-stores         
+     6.001076917         57,449,288      L1-dcache-load-misses    
+     7.001275135        393,800,002      L1-dcache-stores         
+     7.001275135         63,680,388      L1-dcache-load-misses    
+     8.001480297        392,356,099      L1-dcache-stores         
+     8.001480297         63,902,142      L1-dcache-load-misses    
+     9.001685765        392,707,987      L1-dcache-stores         
+     9.001685765         63,952,720      L1-dcache-load-misses    
+    10.001864528        394,050,436      L1-dcache-stores         
+    10.001864528         64,059,260      L1-dcache-load-misses    
+    11.002064564        394,702,545      L1-dcache-stores         
+    11.002064564         64,125,019      L1-dcache-load-misses    
+    12.002271833        393,575,040      L1-dcache-stores         
+    12.002271833         64,303,102      L1-dcache-load-misses    
+    13.002455929        392,274,655      L1-dcache-stores         
+    13.002455929         63,622,518      L1-dcache-load-misses    
+    14.002655726        393,112,420      L1-dcache-stores         
+    14.002655726         63,915,339      L1-dcache-load-misses    
+I0428 21:27:22.277539 168401 solver.cpp:218] Iteration 100 (11.4956 iter/s, 8.699s/100 iters), loss = 0.196723
+I0428 21:27:22.277570 168401 solver.cpp:237]     Train net output #0: loss = 0.196723 (* 1 = 0.196723 loss)
+I0428 21:27:22.277576 168401 sgd_solver.cpp:105] Iteration 100, lr = 0.00992565
+    15.002840817        393,070,599      L1-dcache-stores         
+    15.002840817         64,077,026      L1-dcache-load-misses    
+    16.003011304        393,764,666      L1-dcache-stores         
+    16.003011304         63,970,589      L1-dcache-load-misses    
+    17.003186869        392,935,728      L1-dcache-stores         
+    17.003186869         63,972,521      L1-dcache-load-misses    
+    18.003382089        393,561,885      L1-dcache-stores         
+    18.003382089         64,020,083      L1-dcache-load-misses    
+    19.003580414        393,040,030      L1-dcache-stores         
+    19.003580414         63,979,741      L1-dcache-load-misses    
+    20.003764062        393,539,566      L1-dcache-stores         
+    20.003764062         64,029,835      L1-dcache-load-misses    
+    21.003959418        393,171,410      L1-dcache-stores         
+    21.003959418         63,995,672      L1-dcache-load-misses    
+    22.004134968        393,188,255      L1-dcache-stores         
+    22.004134968         64,022,978      L1-dcache-load-misses    
+    23.004309574        393,251,075      L1-dcache-stores         
+    23.004309574         63,816,857      L1-dcache-load-misses    
+I0428 21:27:30.980830 168401 solver.cpp:218] Iteration 200 (11.4903 iter/s, 8.703s/100 iters), loss = 0.145483
+I0428 21:27:30.980861 168401 solver.cpp:237]     Train net output #0: loss = 0.145483 (* 1 = 0.145483 loss)
+I0428 21:27:30.980868 168401 sgd_solver.cpp:105] Iteration 200, lr = 0.00985258
+    24.004517996        392,522,754      L1-dcache-stores         
+    24.004517996         64,074,258      L1-dcache-load-misses    
+    25.004700969        393,728,290      L1-dcache-stores         
+    25.004700969         63,798,666      L1-dcache-load-misses    
+#           time             counts unit events
+    26.004883196        392,613,122      L1-dcache-stores         
+    26.004883196         64,219,004      L1-dcache-load-misses    
+    27.005069393        394,368,073      L1-dcache-stores         
+    27.005069393         63,927,674      L1-dcache-load-misses    
+    28.005292617        392,782,697      L1-dcache-stores         
+    28.005292617         64,161,481      L1-dcache-load-misses    
+    29.005492187        393,852,059      L1-dcache-stores         
+    29.005492187         63,741,175      L1-dcache-load-misses    
+    30.005671710        392,839,682      L1-dcache-stores         
+    30.005671710         64,099,370      L1-dcache-load-misses    
+    31.005854664        394,101,176      L1-dcache-stores         
+    31.005854664         63,976,224      L1-dcache-load-misses    
+I0428 21:27:39.679538 168401 solver.cpp:218] Iteration 300 (11.4969 iter/s, 8.698s/100 iters), loss = 0.145269
+I0428 21:27:39.679596 168401 solver.cpp:237]     Train net output #0: loss = 0.145269 (* 1 = 0.145269 loss)
+I0428 21:27:39.679603 168401 sgd_solver.cpp:105] Iteration 300, lr = 0.00978075
+    32.006053383        392,798,591      L1-dcache-stores         
+    32.006053383         64,274,046      L1-dcache-load-misses    
+    33.006231203        393,287,950      L1-dcache-stores         
+    33.006231203         63,931,082      L1-dcache-load-misses    
+    34.006425787        391,291,523      L1-dcache-stores         
+    34.006425787         64,093,208      L1-dcache-load-misses    
+    35.006626584        396,514,353      L1-dcache-stores         
+    35.006626584         64,498,437      L1-dcache-load-misses    
+    36.006818780        394,860,645      L1-dcache-stores         
+    36.006818780         64,517,433      L1-dcache-load-misses    
+    37.007001454        395,906,290      L1-dcache-stores         
+    37.007001454         64,422,479      L1-dcache-load-misses    
+    38.007194684        394,757,013      L1-dcache-stores         
+    38.007194684         64,478,047      L1-dcache-load-misses    
+    39.007415305        395,728,915      L1-dcache-stores         
+    39.007415305         64,499,580      L1-dcache-load-misses    
+    40.007598582        395,711,469      L1-dcache-stores         
+    40.007598582         64,440,125      L1-dcache-load-misses    
+I0428 21:27:48.347781 168401 solver.cpp:218] Iteration 400 (11.5367 iter/s, 8.668s/100 iters), loss = 0.0990741
+I0428 21:27:48.347812 168401 solver.cpp:237]     Train net output #0: loss = 0.0990742 (* 1 = 0.0990742 loss)
+I0428 21:27:48.347820 168401 sgd_solver.cpp:105] Iteration 400, lr = 0.00971013
+    41.007782290        395,392,471      L1-dcache-stores         
+    41.007782290         64,707,805      L1-dcache-load-misses    
+    42.007990071        396,560,126      L1-dcache-stores         
+    42.007990071         64,521,619      L1-dcache-load-misses    
+    43.008193320        395,183,566      L1-dcache-stores         
+    43.008193320         64,446,203      L1-dcache-load-misses    
+    44.008405555        395,074,025      L1-dcache-stores         
+    44.008405555         64,259,254      L1-dcache-load-misses    
+    45.008589888        396,638,483      L1-dcache-stores         
+    45.008589888         64,536,465      L1-dcache-load-misses    
+    46.008789550        395,954,434      L1-dcache-stores         
+    46.008789550         64,384,464      L1-dcache-load-misses    
+    47.008969477        395,912,919      L1-dcache-stores         
+    47.008969477         64,249,950      L1-dcache-load-misses    
+    48.009163892        395,568,410      L1-dcache-stores         
+    48.009163892         64,581,211      L1-dcache-load-misses    
+I0428 21:27:56.907198 168401 solver.cpp:330] Iteration 500, Testing net (#0)
+    49.009362926        395,788,293      L1-dcache-stores         
+    49.009362926         64,017,104      L1-dcache-load-misses    
+    50.009544479        415,432,405      L1-dcache-stores         
+    50.009544479         55,853,064      L1-dcache-load-misses    
+#           time             counts unit events
+    51.009746650        413,555,321      L1-dcache-stores         
+    51.009746650         54,981,205      L1-dcache-load-misses    
+    52.009931508        414,063,483      L1-dcache-stores         
+    52.009931508         55,555,974      L1-dcache-load-misses    
+    53.010116236        414,685,316      L1-dcache-stores         
+    53.010116236         55,524,028      L1-dcache-load-misses    
+    54.010325430        413,268,406      L1-dcache-stores         
+    54.010325430         54,874,013      L1-dcache-load-misses    
+I0428 21:28:02.140863 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:28:02.358013 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9744
+I0428 21:28:02.358037 168401 solver.cpp:397]     Test net output #1: loss = 0.0849327 (* 1 = 0.0849327 loss)
+I0428 21:28:02.443250 168401 solver.cpp:218] Iteration 500 (7.09471 iter/s, 14.095s/100 iters), loss = 0.0715599
+I0428 21:28:02.443271 168401 solver.cpp:237]     Train net output #0: loss = 0.07156 (* 1 = 0.07156 loss)
+I0428 21:28:02.443279 168401 sgd_solver.cpp:105] Iteration 500, lr = 0.00964069
+    55.010508275        403,883,342      L1-dcache-stores         
+    55.010508275         60,769,635      L1-dcache-load-misses    
+    56.010707927        395,217,062      L1-dcache-stores         
+    56.010707927         64,198,995      L1-dcache-load-misses    
+    57.010901253        395,113,028      L1-dcache-stores         
+    57.010901253         64,420,460      L1-dcache-load-misses    
+    58.011104422        396,092,771      L1-dcache-stores         
+    58.011104422         64,285,197      L1-dcache-load-misses    
+    59.011321345        394,808,810      L1-dcache-stores         
+    59.011321345         64,364,249      L1-dcache-load-misses    
+    60.011504489        394,831,014      L1-dcache-stores         
+    60.011504489         64,205,873      L1-dcache-load-misses    
+    61.011698479        395,659,899      L1-dcache-stores         
+    61.011698479         64,358,607      L1-dcache-load-misses    
+    62.011898022        396,154,534      L1-dcache-stores         
+    62.011898022         64,202,913      L1-dcache-load-misses    
+    63.012100143        394,992,859      L1-dcache-stores         
+    63.012100143         64,128,190      L1-dcache-load-misses    
+I0428 21:28:11.098302 168401 solver.cpp:218] Iteration 600 (11.554 iter/s, 8.655s/100 iters), loss = 0.104375
+I0428 21:28:11.098474 168401 solver.cpp:237]     Train net output #0: loss = 0.104375 (* 1 = 0.104375 loss)
+I0428 21:28:11.098482 168401 sgd_solver.cpp:105] Iteration 600, lr = 0.0095724
+    64.012325781        395,522,317      L1-dcache-stores         
+    64.012325781         64,614,929      L1-dcache-load-misses    
+    65.012514922        395,441,296      L1-dcache-stores         
+    65.012514922         64,238,849      L1-dcache-load-misses    
+    66.012728026        395,679,341      L1-dcache-stores         
+    66.012728026         64,515,805      L1-dcache-load-misses    
+    67.012931941        396,888,290      L1-dcache-stores         
+    67.012931941         64,360,853      L1-dcache-load-misses    
+    68.013137490        394,225,575      L1-dcache-stores         
+    68.013137490         64,415,262      L1-dcache-load-misses    
+    69.013333482        395,821,126      L1-dcache-stores         
+    69.013333482         64,277,358      L1-dcache-load-misses    
+    70.013523698        395,311,177      L1-dcache-stores         
+    70.013523698         64,410,813      L1-dcache-load-misses    
+    71.013729454        395,977,325      L1-dcache-stores         
+    71.013729454         64,425,728      L1-dcache-load-misses    
+I0428 21:28:19.746448 168401 solver.cpp:218] Iteration 700 (11.5647 iter/s, 8.647s/100 iters), loss = 0.11154
+I0428 21:28:19.746480 168401 solver.cpp:237]     Train net output #0: loss = 0.11154 (* 1 = 0.11154 loss)
+I0428 21:28:19.746486 168401 sgd_solver.cpp:105] Iteration 700, lr = 0.00950522
+    72.013932674        396,109,092      L1-dcache-stores         
+    72.013932674         64,373,871      L1-dcache-load-misses    
+    73.014121810        394,568,872      L1-dcache-stores         
+    73.014121810         64,384,591      L1-dcache-load-misses    
+    74.014363831        395,956,396      L1-dcache-stores         
+    74.014363831         64,434,404      L1-dcache-load-misses    
+    75.014556744        395,859,047      L1-dcache-stores         
+    75.014556744         64,555,213      L1-dcache-load-misses    
+#           time             counts unit events
+    76.014746572        396,592,782      L1-dcache-stores         
+    76.014746572         64,397,679      L1-dcache-load-misses    
+    77.014932843        394,732,687      L1-dcache-stores         
+    77.014932843         64,440,097      L1-dcache-load-misses    
+    78.015120417        395,735,374      L1-dcache-stores         
+    78.015120417         64,224,431      L1-dcache-load-misses    
+    79.015332596        395,927,151      L1-dcache-stores         
+    79.015332596         64,266,989      L1-dcache-load-misses    
+    80.015527481        395,630,674      L1-dcache-stores         
+    80.015527481         64,624,476      L1-dcache-load-misses    
+I0428 21:28:28.394670 168401 solver.cpp:218] Iteration 800 (11.5634 iter/s, 8.648s/100 iters), loss = 0.208813
+I0428 21:28:28.394716 168401 solver.cpp:237]     Train net output #0: loss = 0.208813 (* 1 = 0.208813 loss)
+I0428 21:28:28.394723 168401 sgd_solver.cpp:105] Iteration 800, lr = 0.00943913
+    81.015716372        396,083,120      L1-dcache-stores         
+    81.015716372         64,361,407      L1-dcache-load-misses    
+    82.015915201        395,749,826      L1-dcache-stores         
+    82.015915201         64,579,694      L1-dcache-load-misses    
+    83.016111907        394,948,021      L1-dcache-stores         
+    83.016111907         64,103,374      L1-dcache-load-misses    
+    84.016338219        395,483,776      L1-dcache-stores         
+    84.016338219         64,652,644      L1-dcache-load-misses    
+    85.016519853        396,098,023      L1-dcache-stores         
+    85.016519853         64,188,376      L1-dcache-load-misses    
+    86.016720592        395,692,795      L1-dcache-stores         
+    86.016720592         64,300,219      L1-dcache-load-misses    
+    87.016918096        395,755,180      L1-dcache-stores         
+    87.016918096         64,578,989      L1-dcache-load-misses    
+    88.017120090        395,322,430      L1-dcache-stores         
+    88.017120090         64,238,314      L1-dcache-load-misses    
+    89.017341277        394,924,439      L1-dcache-stores         
+    89.017341277         64,371,665      L1-dcache-load-misses    
+I0428 21:28:37.044690 168401 solver.cpp:218] Iteration 900 (11.562 iter/s, 8.649s/100 iters), loss = 0.167714
+I0428 21:28:37.044718 168401 solver.cpp:237]     Train net output #0: loss = 0.167714 (* 1 = 0.167714 loss)
+I0428 21:28:37.044724 168401 sgd_solver.cpp:105] Iteration 900, lr = 0.00937411
+    90.017494295        397,000,723      L1-dcache-stores         
+    90.017494295         64,396,168      L1-dcache-load-misses    
+    91.017706346        394,776,242      L1-dcache-stores         
+    91.017706346         64,534,866      L1-dcache-load-misses    
+I0428 21:28:39.899621 168403 data_layer.cpp:73] Restarting data prefetching from start.
+    92.017900384        396,175,238      L1-dcache-stores         
+    92.017900384         64,209,784      L1-dcache-load-misses    
+    93.018086903        394,727,456      L1-dcache-stores         
+    93.018086903         64,323,055      L1-dcache-load-misses    
+    94.018290070        396,201,989      L1-dcache-stores         
+    94.018290070         64,447,030      L1-dcache-load-misses    
+    95.018476427        395,955,780      L1-dcache-stores         
+    95.018476427         64,345,178      L1-dcache-load-misses    
+    96.018666639        395,998,373      L1-dcache-stores         
+    96.018666639         64,598,419      L1-dcache-load-misses    
+    97.018867521        397,032,398      L1-dcache-stores         
+    97.018867521         64,370,977      L1-dcache-load-misses    
+I0428 21:28:45.604166 168401 solver.cpp:330] Iteration 1000, Testing net (#0)
+    98.019058425        400,590,296      L1-dcache-stores         
+    98.019058425         61,205,184      L1-dcache-load-misses    
+    99.019280080        414,515,352      L1-dcache-stores         
+    99.019280080         55,645,647      L1-dcache-load-misses    
+   100.019463311        415,303,384      L1-dcache-stores         
+   100.019463311         55,662,554      L1-dcache-load-misses    
+#           time             counts unit events
+   101.019651085        414,139,923      L1-dcache-stores         
+   101.019651085         54,830,490      L1-dcache-load-misses    
+   102.019852359        414,880,031      L1-dcache-stores         
+   102.019852359         56,046,261      L1-dcache-load-misses    
+I0428 21:28:50.832170 168404 data_layer.cpp:73] Restarting data prefetching from start.
+   103.020056887        414,567,242      L1-dcache-stores         
+   103.020056887         55,174,785      L1-dcache-load-misses    
+I0428 21:28:51.049957 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9826
+I0428 21:28:51.049984 168401 solver.cpp:397]     Test net output #1: loss = 0.0579965 (* 1 = 0.0579965 loss)
+I0428 21:28:51.135221 168401 solver.cpp:218] Iteration 1000 (7.09723 iter/s, 14.09s/100 iters), loss = 0.064189
+I0428 21:28:51.135242 168401 solver.cpp:237]     Train net output #0: loss = 0.0641891 (* 1 = 0.0641891 loss)
+I0428 21:28:51.135249 168401 sgd_solver.cpp:105] Iteration 1000, lr = 0.00931012
+   104.020287705        399,045,343      L1-dcache-stores         
+   104.020287705         63,387,265      L1-dcache-load-misses    
+   105.020482586        394,308,604      L1-dcache-stores         
+   105.020482586         64,409,869      L1-dcache-load-misses    
+   106.020666691        396,191,981      L1-dcache-stores         
+   106.020666691         64,372,417      L1-dcache-load-misses    
+   107.020850759        395,497,196      L1-dcache-stores         
+   107.020850759         64,474,319      L1-dcache-load-misses    
+   108.021046048        395,547,501      L1-dcache-stores         
+   108.021046048         64,310,149      L1-dcache-load-misses    
+   109.021249396        395,482,767      L1-dcache-stores         
+   109.021249396         64,203,097      L1-dcache-load-misses    
+   110.021428073        396,346,692      L1-dcache-stores         
+   110.021428073         64,792,208      L1-dcache-load-misses    
+   111.021647502        397,690,929      L1-dcache-stores         
+   111.021647502         64,503,119      L1-dcache-load-misses    
+I0428 21:28:59.778179 168401 solver.cpp:218] Iteration 1100 (11.5714 iter/s, 8.642s/100 iters), loss = 0.0105125
+I0428 21:28:59.778209 168401 solver.cpp:237]     Train net output #0: loss = 0.0105126 (* 1 = 0.0105126 loss)
+I0428 21:28:59.778215 168401 sgd_solver.cpp:105] Iteration 1100, lr = 0.00924715
+   112.021846249        394,875,283      L1-dcache-stores         
+   112.021846249         64,528,891      L1-dcache-load-misses    
+   113.022030469        395,386,501      L1-dcache-stores         
+   113.022030469         64,160,567      L1-dcache-load-misses    
+   114.022239886        395,447,917      L1-dcache-stores         
+   114.022239886         64,451,198      L1-dcache-load-misses    
+   115.022425939        396,236,141      L1-dcache-stores         
+   115.022425939         64,448,758      L1-dcache-load-misses    
+   116.022611204        395,836,459      L1-dcache-stores         
+   116.022611204         64,267,243      L1-dcache-load-misses    
+   117.022814875        395,551,473      L1-dcache-stores         
+   117.022814875         64,587,489      L1-dcache-load-misses    
+   118.023002979        395,592,843      L1-dcache-stores         
+   118.023002979         64,435,383      L1-dcache-load-misses    
+   119.023213511        395,661,308      L1-dcache-stores         
+   119.023213511         64,466,116      L1-dcache-load-misses    
+   120.023397609        395,993,653      L1-dcache-stores         
+   120.023397609         64,318,837      L1-dcache-load-misses    
+I0428 21:29:08.425434 168401 solver.cpp:218] Iteration 1200 (11.5647 iter/s, 8.647s/100 iters), loss = 0.0140108
+I0428 21:29:08.425464 168401 solver.cpp:237]     Train net output #0: loss = 0.0140109 (* 1 = 0.0140109 loss)
+I0428 21:29:08.425470 168401 sgd_solver.cpp:105] Iteration 1200, lr = 0.00918515
+   121.023592258        395,928,922      L1-dcache-stores         
+   121.023592258         64,566,974      L1-dcache-load-misses    
+   122.023790090        396,111,717      L1-dcache-stores         
+   122.023790090         64,320,336      L1-dcache-load-misses    
+   123.023993815        395,180,318      L1-dcache-stores         
+   123.023993815         64,168,894      L1-dcache-load-misses    
+   124.024200294        395,780,881      L1-dcache-stores         
+   124.024200294         64,610,889      L1-dcache-load-misses    
+   125.024384994        395,829,799      L1-dcache-stores         
+   125.024384994         64,322,016      L1-dcache-load-misses    
+#           time             counts unit events
+   126.024581380        395,761,730      L1-dcache-stores         
+   126.024581380         64,462,669      L1-dcache-load-misses    
+   127.024781787        395,331,004      L1-dcache-stores         
+   127.024781787         64,320,485      L1-dcache-load-misses    
+   128.024992461        396,021,025      L1-dcache-stores         
+   128.024992461         64,430,262      L1-dcache-load-misses    
+   129.025202682        395,687,887      L1-dcache-stores         
+   129.025202682         64,109,013      L1-dcache-load-misses    
+I0428 21:29:17.072228 168401 solver.cpp:218] Iteration 1300 (11.566 iter/s, 8.646s/100 iters), loss = 0.0204326
+I0428 21:29:17.072360 168401 solver.cpp:237]     Train net output #0: loss = 0.0204327 (* 1 = 0.0204327 loss)
+I0428 21:29:17.072368 168401 sgd_solver.cpp:105] Iteration 1300, lr = 0.00912412
+   130.025402736        395,666,974      L1-dcache-stores         
+   130.025402736         64,191,869      L1-dcache-load-misses    
+   131.025585343        396,211,807      L1-dcache-stores         
+   131.025585343         64,750,852      L1-dcache-load-misses    
+   132.025782781        396,425,887      L1-dcache-stores         
+   132.025782781         64,574,213      L1-dcache-load-misses    
+   133.025976966        394,859,841      L1-dcache-stores         
+   133.025976966         64,377,583      L1-dcache-load-misses    
+   134.026188798        395,476,783      L1-dcache-stores         
+   134.026188798         64,259,304      L1-dcache-load-misses    
+   135.026343676        395,867,772      L1-dcache-stores         
+   135.026343676         64,707,347      L1-dcache-load-misses    
+   136.026543678        396,170,998      L1-dcache-stores         
+   136.026543678         64,074,060      L1-dcache-load-misses    
+   137.026726359        395,265,231      L1-dcache-stores         
+   137.026726359         64,103,199      L1-dcache-load-misses    
+I0428 21:29:25.718672 168401 solver.cpp:218] Iteration 1400 (11.566 iter/s, 8.646s/100 iters), loss = 0.00842807
+I0428 21:29:25.718703 168401 solver.cpp:237]     Train net output #0: loss = 0.00842819 (* 1 = 0.00842819 loss)
+I0428 21:29:25.718708 168401 sgd_solver.cpp:105] Iteration 1400, lr = 0.00906403
+   138.026920843        395,186,428      L1-dcache-stores         
+   138.026920843         64,571,311      L1-dcache-load-misses    
+   139.027128025        395,483,320      L1-dcache-stores         
+   139.027128025         64,348,673      L1-dcache-load-misses    
+   140.027315315        395,547,246      L1-dcache-stores         
+   140.027315315         64,524,435      L1-dcache-load-misses    
+   141.027498049        396,825,590      L1-dcache-stores         
+   141.027498049         64,268,539      L1-dcache-load-misses    
+   142.027679752        395,197,322      L1-dcache-stores         
+   142.027679752         64,478,782      L1-dcache-load-misses    
+   143.027865095        395,645,608      L1-dcache-stores         
+   143.027865095         64,262,636      L1-dcache-load-misses    
+   144.028086866        395,590,146      L1-dcache-stores         
+   144.028086866         64,417,573      L1-dcache-load-misses    
+   145.028275234        395,882,386      L1-dcache-stores         
+   145.028275234         64,474,701      L1-dcache-load-misses    
+   146.028456625        396,159,412      L1-dcache-stores         
+   146.028456625         64,343,876      L1-dcache-load-misses    
+I0428 21:29:34.279047 168401 solver.cpp:330] Iteration 1500, Testing net (#0)
+   147.028655283        408,530,404      L1-dcache-stores         
+   147.028655283         58,261,065      L1-dcache-load-misses    
+   148.028857645        414,343,338      L1-dcache-stores         
+   148.028857645         56,020,614      L1-dcache-load-misses    
+   149.029065910        414,787,042      L1-dcache-stores         
+   149.029065910         55,072,065      L1-dcache-load-misses    
+   150.029247972        414,569,686      L1-dcache-stores         
+   150.029247972         55,343,854      L1-dcache-load-misses    
+#           time             counts unit events
+   151.029442631        416,075,318      L1-dcache-stores         
+   151.029442631         55,771,151      L1-dcache-load-misses    
+I0428 21:29:39.506803 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:29:39.724068 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9844
+I0428 21:29:39.724092 168401 solver.cpp:397]     Test net output #1: loss = 0.0512076 (* 1 = 0.0512076 loss)
+I0428 21:29:39.809104 168401 solver.cpp:218] Iteration 1500 (7.09723 iter/s, 14.09s/100 iters), loss = 0.0835872
+I0428 21:29:39.809131 168401 solver.cpp:237]     Train net output #0: loss = 0.0835873 (* 1 = 0.0835873 loss)
+I0428 21:29:39.809139 168401 sgd_solver.cpp:105] Iteration 1500, lr = 0.00900485
+   152.029654586        409,214,784      L1-dcache-stores         
+   152.029654586         57,194,628      L1-dcache-load-misses    
+   153.029830909        394,738,871      L1-dcache-stores         
+   153.029830909         64,042,654      L1-dcache-load-misses    
+   154.030057382        394,041,500      L1-dcache-stores         
+   154.030057382         64,336,918      L1-dcache-load-misses    
+   155.030241602        396,371,344      L1-dcache-stores         
+   155.030241602         64,402,151      L1-dcache-load-misses    
+   156.030442522        395,992,396      L1-dcache-stores         
+   156.030442522         64,495,085      L1-dcache-load-misses    
+   157.030634855        395,184,094      L1-dcache-stores         
+   157.030634855         64,272,146      L1-dcache-load-misses    
+   158.030836499        396,277,637      L1-dcache-stores         
+   158.030836499         64,570,781      L1-dcache-load-misses    
+   159.031048947        396,188,191      L1-dcache-stores         
+   159.031048947         64,303,421      L1-dcache-load-misses    
+   160.031233327        395,682,258      L1-dcache-stores         
+   160.031233327         64,152,357      L1-dcache-load-misses    
+I0428 21:29:48.459496 168401 solver.cpp:218] Iteration 1600 (11.5607 iter/s, 8.65s/100 iters), loss = 0.12347
+I0428 21:29:48.459689 168401 solver.cpp:237]     Train net output #0: loss = 0.123471 (* 1 = 0.123471 loss)
+I0428 21:29:48.459698 168401 sgd_solver.cpp:105] Iteration 1600, lr = 0.00894657
+   161.031424979        395,366,234      L1-dcache-stores         
+   161.031424979         64,637,690      L1-dcache-load-misses    
+   162.031613020        396,015,675      L1-dcache-stores         
+   162.031613020         64,437,473      L1-dcache-load-misses    
+   163.031818051        394,657,762      L1-dcache-stores         
+   163.031818051         64,424,925      L1-dcache-load-misses    
+   164.032037290        396,019,682      L1-dcache-stores         
+   164.032037290         64,233,062      L1-dcache-load-misses    
+   165.032185265        394,730,609      L1-dcache-stores         
+   165.032185265         64,304,052      L1-dcache-load-misses    
+   166.032366667        396,327,105      L1-dcache-stores         
+   166.032366667         64,372,077      L1-dcache-load-misses    
+   167.032554776        395,812,177      L1-dcache-stores         
+   167.032554776         64,247,960      L1-dcache-load-misses    
+   168.032740899        395,377,528      L1-dcache-stores         
+   168.032740899         64,495,942      L1-dcache-load-misses    
+   169.032971672        395,695,923      L1-dcache-stores         
+   169.032971672         64,218,458      L1-dcache-load-misses    
+I0428 21:29:57.109894 168401 solver.cpp:218] Iteration 1700 (11.5607 iter/s, 8.65s/100 iters), loss = 0.031993
+I0428 21:29:57.109922 168401 solver.cpp:237]     Train net output #0: loss = 0.0319932 (* 1 = 0.0319932 loss)
+I0428 21:29:57.109930 168401 sgd_solver.cpp:105] Iteration 1700, lr = 0.00888916
+   170.033161041        395,718,791      L1-dcache-stores         
+   170.033161041         64,628,814      L1-dcache-load-misses    
+   171.033356575        396,927,744      L1-dcache-stores         
+   171.033356575         64,278,028      L1-dcache-load-misses    
+   172.033529811        384,845,931      L1-dcache-stores         
+   172.033529811         62,690,786      L1-dcache-load-misses    
+   173.033710542        393,710,336      L1-dcache-stores         
+   173.033710542         63,861,002      L1-dcache-load-misses    
+   174.033924253        395,291,838      L1-dcache-stores         
+   174.033924253         64,494,468      L1-dcache-load-misses    
+   175.034120634        396,103,157      L1-dcache-stores         
+   175.034120634         64,461,301      L1-dcache-load-misses    
+#           time             counts unit events
+   176.034323835        395,372,439      L1-dcache-stores         
+   176.034323835         64,428,286      L1-dcache-load-misses    
+   177.034524286        395,782,582      L1-dcache-stores         
+   177.034524286         64,212,546      L1-dcache-load-misses    
+I0428 21:30:05.787403 168401 solver.cpp:218] Iteration 1800 (11.5247 iter/s, 8.677s/100 iters), loss = 0.0215284
+I0428 21:30:05.787434 168401 solver.cpp:237]     Train net output #0: loss = 0.0215285 (* 1 = 0.0215285 loss)
+I0428 21:30:05.787441 168401 sgd_solver.cpp:105] Iteration 1800, lr = 0.0088326
+   178.034709737        394,680,673      L1-dcache-stores         
+   178.034709737         64,376,425      L1-dcache-load-misses    
+   179.034915896        395,959,244      L1-dcache-stores         
+   179.034915896         64,265,070      L1-dcache-load-misses    
+   180.035093627        396,160,218      L1-dcache-stores         
+   180.035093627         64,336,859      L1-dcache-load-misses    
+   181.035254193        395,533,205      L1-dcache-stores         
+   181.035254193         64,506,600      L1-dcache-load-misses    
+   182.035429699        395,778,331      L1-dcache-stores         
+   182.035429699         64,176,773      L1-dcache-load-misses    
+   183.035631568        395,096,504      L1-dcache-stores         
+   183.035631568         64,404,207      L1-dcache-load-misses    
+I0428 21:30:11.843947 168403 data_layer.cpp:73] Restarting data prefetching from start.
+   184.035838261        397,058,793      L1-dcache-stores         
+   184.035838261         64,391,420      L1-dcache-load-misses    
+   185.036021190        394,687,499      L1-dcache-stores         
+   185.036021190         64,580,952      L1-dcache-load-misses    
+   186.036214423        396,622,625      L1-dcache-stores         
+   186.036214423         64,427,941      L1-dcache-load-misses    
+I0428 21:30:14.433672 168401 solver.cpp:218] Iteration 1900 (11.566 iter/s, 8.646s/100 iters), loss = 0.155913
+I0428 21:30:14.433702 168401 solver.cpp:237]     Train net output #0: loss = 0.155913 (* 1 = 0.155913 loss)
+I0428 21:30:14.433709 168401 sgd_solver.cpp:105] Iteration 1900, lr = 0.00877687
+   187.036412323        395,701,899      L1-dcache-stores         
+   187.036412323         64,281,302      L1-dcache-load-misses    
+   188.036617797        395,450,757      L1-dcache-stores         
+   188.036617797         64,350,094      L1-dcache-load-misses    
+   189.036831524        394,999,529      L1-dcache-stores         
+   189.036831524         64,100,088      L1-dcache-load-misses    
+   190.037005905        395,756,442      L1-dcache-stores         
+   190.037005905         64,649,910      L1-dcache-load-misses    
+   191.037201695        396,874,881      L1-dcache-stores         
+   191.037201695         64,431,185      L1-dcache-load-misses    
+   192.037384950        395,229,885      L1-dcache-stores         
+   192.037384950         64,465,843      L1-dcache-load-misses    
+   193.037571515        394,366,197      L1-dcache-stores         
+   193.037571515         64,206,666      L1-dcache-load-misses    
+   194.037867451        396,911,256      L1-dcache-stores         
+   194.037867451         64,626,071      L1-dcache-load-misses    
+   195.038054039        396,290,072      L1-dcache-stores         
+   195.038054039         64,383,289      L1-dcache-load-misses    
+I0428 21:30:22.995429 168401 solver.cpp:330] Iteration 2000, Testing net (#0)
+   196.038246507        413,662,602      L1-dcache-stores         
+   196.038246507         56,112,972      L1-dcache-load-misses    
+   197.038433763        414,869,720      L1-dcache-stores         
+   197.038433763         55,055,334      L1-dcache-load-misses    
+   198.038614632        414,276,570      L1-dcache-stores         
+   198.038614632         55,401,165      L1-dcache-load-misses    
+   199.038813961        415,819,118      L1-dcache-stores         
+   199.038813961         55,768,875      L1-dcache-load-misses    
+   200.039003844        414,234,693      L1-dcache-stores         
+   200.039003844         54,948,411      L1-dcache-load-misses    
+I0428 21:30:28.223352 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:30:28.440217 168401 solver.cpp:397]     Test net output #0: accuracy = 0.986
+I0428 21:30:28.440240 168401 solver.cpp:397]     Test net output #1: loss = 0.042137 (* 1 = 0.042137 loss)
+I0428 21:30:28.525746 168401 solver.cpp:218] Iteration 2000 (7.09622 iter/s, 14.092s/100 iters), loss = 0.00587634
+I0428 21:30:28.525768 168401 solver.cpp:237]     Train net output #0: loss = 0.00587646 (* 1 = 0.00587646 loss)
+I0428 21:30:28.525774 168401 sgd_solver.cpp:105] Iteration 2000, lr = 0.00872196
+#           time             counts unit events
+   201.039202680        404,390,842      L1-dcache-stores         
+   201.039202680         60,307,846      L1-dcache-load-misses    
+   202.039388850        396,289,391      L1-dcache-stores         
+   202.039388850         64,445,842      L1-dcache-load-misses    
+   203.039591997        395,307,293      L1-dcache-stores         
+   203.039591997         64,290,350      L1-dcache-load-misses    
+   204.039802084        395,784,651      L1-dcache-stores         
+   204.039802084         64,631,250      L1-dcache-load-misses    
+   205.039988021        395,953,726      L1-dcache-stores         
+   205.039988021         64,461,211      L1-dcache-load-misses    
+   206.040187085        395,513,165      L1-dcache-stores         
+   206.040187085         64,498,005      L1-dcache-load-misses    
+   207.040374352        396,409,502      L1-dcache-stores         
+   207.040374352         64,302,008      L1-dcache-load-misses    
+   208.040565110        394,836,712      L1-dcache-stores         
+   208.040565110         64,443,166      L1-dcache-load-misses    
+   209.040774095        395,521,357      L1-dcache-stores         
+   209.040774095         64,212,467      L1-dcache-load-misses    
+I0428 21:30:37.173177 168401 solver.cpp:218] Iteration 2100 (11.5647 iter/s, 8.647s/100 iters), loss = 0.0118219
+I0428 21:30:37.173207 168401 solver.cpp:237]     Train net output #0: loss = 0.011822 (* 1 = 0.011822 loss)
+I0428 21:30:37.173213 168401 sgd_solver.cpp:105] Iteration 2100, lr = 0.00866784
+   210.040965709        395,768,775      L1-dcache-stores         
+   210.040965709         64,216,501      L1-dcache-load-misses    
+   211.041166608        395,780,956      L1-dcache-stores         
+   211.041166608         64,672,652      L1-dcache-load-misses    
+   212.041365447        395,784,032      L1-dcache-stores         
+   212.041365447         64,433,210      L1-dcache-load-misses    
+   213.041563005        394,212,600      L1-dcache-stores         
+   213.041563005         64,293,219      L1-dcache-load-misses    
+   214.041807735        395,429,025      L1-dcache-stores         
+   214.041807735         63,974,928      L1-dcache-load-misses    
+   215.041960647        394,446,678      L1-dcache-stores         
+   215.041960647         64,532,512      L1-dcache-load-misses    
+   216.042160913        396,304,738      L1-dcache-stores         
+   216.042160913         64,349,985      L1-dcache-load-misses    
+   217.042354682        395,435,825      L1-dcache-stores         
+   217.042354682         64,479,460      L1-dcache-load-misses    
+I0428 21:30:45.826076 168401 solver.cpp:218] Iteration 2200 (11.558 iter/s, 8.652s/100 iters), loss = 0.017741
+I0428 21:30:45.826107 168401 solver.cpp:237]     Train net output #0: loss = 0.0177411 (* 1 = 0.0177411 loss)
+I0428 21:30:45.826114 168401 sgd_solver.cpp:105] Iteration 2200, lr = 0.0086145
+   218.042544605        395,172,809      L1-dcache-stores         
+   218.042544605         64,340,608      L1-dcache-load-misses    
+   219.042753299        395,796,814      L1-dcache-stores         
+   219.042753299         64,265,748      L1-dcache-load-misses    
+   220.042953156        395,854,583      L1-dcache-stores         
+   220.042953156         64,605,282      L1-dcache-load-misses    
+   221.043136206        396,130,620      L1-dcache-stores         
+   221.043136206         64,494,301      L1-dcache-load-misses    
+   222.043332303        395,898,913      L1-dcache-stores         
+   222.043332303         64,577,517      L1-dcache-load-misses    
+   223.043540917        394,830,569      L1-dcache-stores         
+   223.043540917         64,213,219      L1-dcache-load-misses    
+   224.043735598        396,387,439      L1-dcache-stores         
+   224.043735598         64,579,051      L1-dcache-load-misses    
+   225.043919426        395,865,646      L1-dcache-stores         
+   225.043919426         64,331,618      L1-dcache-load-misses    
+#           time             counts unit events
+   226.044105214        396,238,179      L1-dcache-stores         
+   226.044105214         64,236,185      L1-dcache-load-misses    
+I0428 21:30:54.470412 168401 solver.cpp:218] Iteration 2300 (11.5687 iter/s, 8.644s/100 iters), loss = 0.10388
+I0428 21:30:54.470553 168401 solver.cpp:237]     Train net output #0: loss = 0.10388 (* 1 = 0.10388 loss)
+I0428 21:30:54.470562 168401 sgd_solver.cpp:105] Iteration 2300, lr = 0.00856192
+   227.044299715        395,927,077      L1-dcache-stores         
+   227.044299715         64,708,597      L1-dcache-load-misses    
+   228.044492100        395,628,591      L1-dcache-stores         
+   228.044492100         64,367,778      L1-dcache-load-misses    
+   229.044707092        395,856,140      L1-dcache-stores         
+   229.044707092         64,548,452      L1-dcache-load-misses    
+   230.044894994        395,161,561      L1-dcache-stores         
+   230.044894994         64,342,054      L1-dcache-load-misses    
+   231.045087566        397,030,747      L1-dcache-stores         
+   231.045087566         64,618,685      L1-dcache-load-misses    
+   232.045284972        396,008,008      L1-dcache-stores         
+   232.045284972         64,390,207      L1-dcache-load-misses    
+   233.045474762        394,690,258      L1-dcache-stores         
+   233.045474762         64,041,896      L1-dcache-load-misses    
+   234.045692421        395,862,741      L1-dcache-stores         
+   234.045692421         64,583,427      L1-dcache-load-misses    
+   235.045879881        396,486,237      L1-dcache-stores         
+   235.045879881         64,485,862      L1-dcache-load-misses    
+I0428 21:31:03.114856 168401 solver.cpp:218] Iteration 2400 (11.5687 iter/s, 8.644s/100 iters), loss = 0.0122261
+I0428 21:31:03.114886 168401 solver.cpp:237]     Train net output #0: loss = 0.0122263 (* 1 = 0.0122263 loss)
+I0428 21:31:03.114892 168401 sgd_solver.cpp:105] Iteration 2400, lr = 0.00851008
+   236.046084531        395,776,346      L1-dcache-stores         
+   236.046084531         64,516,689      L1-dcache-load-misses    
+   237.046274267        394,966,300      L1-dcache-stores         
+   237.046274267         64,227,727      L1-dcache-load-misses    
+   238.046475525        395,843,358      L1-dcache-stores         
+   238.046475525         64,553,298      L1-dcache-load-misses    
+   239.046687595        395,667,869      L1-dcache-stores         
+   239.046687595         64,150,865      L1-dcache-load-misses    
+   240.046873216        395,703,004      L1-dcache-stores         
+   240.046873216         64,256,228      L1-dcache-load-misses    
+   241.047075027        395,894,388      L1-dcache-stores         
+   241.047075027         64,693,627      L1-dcache-load-misses    
+   242.047278841        396,144,030      L1-dcache-stores         
+   242.047278841         64,370,372      L1-dcache-load-misses    
+   243.047478806        394,779,157      L1-dcache-stores         
+   243.047478806         64,368,408      L1-dcache-load-misses    
+I0428 21:31:11.679006 168401 solver.cpp:330] Iteration 2500, Testing net (#0)
+   244.047707401        401,074,946      L1-dcache-stores         
+   244.047707401         61,392,991      L1-dcache-load-misses    
+   245.047895796        414,370,080      L1-dcache-stores         
+   245.047895796         56,031,948      L1-dcache-load-misses    
+   246.048094704        415,266,295      L1-dcache-stores         
+   246.048094704         55,154,010      L1-dcache-load-misses    
+   247.048295590        414,641,044      L1-dcache-stores         
+   247.048295590         55,423,524      L1-dcache-load-misses    
+   248.048497125        414,987,277      L1-dcache-stores         
+   248.048497125         55,644,084      L1-dcache-load-misses    
+I0428 21:31:16.908540 168404 data_layer.cpp:73] Restarting data prefetching from start.
+   249.048717294        413,521,090      L1-dcache-stores         
+   249.048717294         54,947,605      L1-dcache-load-misses    
+I0428 21:31:17.125233 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9841
+I0428 21:31:17.125255 168401 solver.cpp:397]     Test net output #1: loss = 0.0487454 (* 1 = 0.0487454 loss)
+I0428 21:31:17.210551 168401 solver.cpp:218] Iteration 2500 (7.09471 iter/s, 14.095s/100 iters), loss = 0.0313217
+I0428 21:31:17.210573 168401 solver.cpp:237]     Train net output #0: loss = 0.0313218 (* 1 = 0.0313218 loss)
+I0428 21:31:17.210579 168401 sgd_solver.cpp:105] Iteration 2500, lr = 0.00845897
+   250.048912091        398,594,020      L1-dcache-stores         
+   250.048912091         63,169,140      L1-dcache-load-misses    
+#           time             counts unit events
+   251.049109623        396,887,677      L1-dcache-stores         
+   251.049109623         64,287,836      L1-dcache-load-misses    
+   252.049314656        395,725,387      L1-dcache-stores         
+   252.049314656         64,695,169      L1-dcache-load-misses    
+   253.049512476        395,067,310      L1-dcache-stores         
+   253.049512476         64,049,410      L1-dcache-load-misses    
+   254.049723313        395,432,178      L1-dcache-stores         
+   254.049723313         64,257,149      L1-dcache-load-misses    
+   255.049908456        396,323,512      L1-dcache-stores         
+   255.049908456         64,521,019      L1-dcache-load-misses    
+   256.050106176        396,173,966      L1-dcache-stores         
+   256.050106176         64,463,881      L1-dcache-load-misses    
+   257.050288185        395,484,562      L1-dcache-stores         
+   257.050288185         64,497,921      L1-dcache-load-misses    
+I0428 21:31:25.853415 168401 solver.cpp:218] Iteration 2600 (11.5714 iter/s, 8.642s/100 iters), loss = 0.0635632
+I0428 21:31:25.853612 168401 solver.cpp:237]     Train net output #0: loss = 0.0635633 (* 1 = 0.0635633 loss)
+I0428 21:31:25.853621 168401 sgd_solver.cpp:105] Iteration 2600, lr = 0.00840857
+   258.050463001        396,592,714      L1-dcache-stores         
+   258.050463001         64,310,045      L1-dcache-load-misses    
+   259.050671658        394,985,196      L1-dcache-stores         
+   259.050671658         64,483,762      L1-dcache-load-misses    
+   260.050865766        396,900,673      L1-dcache-stores         
+   260.050865766         64,476,205      L1-dcache-load-misses    
+   261.051052167        395,864,076      L1-dcache-stores         
+   261.051052167         64,388,420      L1-dcache-load-misses    
+   262.051245852        396,302,998      L1-dcache-stores         
+   262.051245852         64,542,027      L1-dcache-load-misses    
+   263.051434977        395,667,355      L1-dcache-stores         
+   263.051434977         64,290,139      L1-dcache-load-misses    
+   264.051647769        395,870,752      L1-dcache-stores         
+   264.051647769         64,507,649      L1-dcache-load-misses    
+   265.051835994        396,421,618      L1-dcache-stores         
+   265.051835994         64,312,921      L1-dcache-load-misses    
+   266.052026373        396,318,418      L1-dcache-stores         
+   266.052026373         64,640,392      L1-dcache-load-misses    
+I0428 21:31:34.492740 168401 solver.cpp:218] Iteration 2700 (11.5754 iter/s, 8.639s/100 iters), loss = 0.0749836
+I0428 21:31:34.492789 168401 solver.cpp:237]     Train net output #0: loss = 0.0749838 (* 1 = 0.0749838 loss)
+I0428 21:31:34.492794 168401 sgd_solver.cpp:105] Iteration 2700, lr = 0.00835886
+   267.052228145        396,755,801      L1-dcache-stores         
+   267.052228145         64,342,429      L1-dcache-load-misses    
+   268.052434924        395,538,802      L1-dcache-stores         
+   268.052434924         64,145,108      L1-dcache-load-misses    
+   269.052655263        395,449,547      L1-dcache-stores         
+   269.052655263         64,663,416      L1-dcache-load-misses    
+   270.052834527        396,603,092      L1-dcache-stores         
+   270.052834527         64,478,435      L1-dcache-load-misses    
+   271.053033230        396,020,697      L1-dcache-stores         
+   271.053033230         64,427,274      L1-dcache-load-misses    
+   272.053233053        396,487,153      L1-dcache-stores         
+   272.053233053         64,397,643      L1-dcache-load-misses    
+   273.053420503        394,681,062      L1-dcache-stores         
+   273.053420503         64,407,971      L1-dcache-load-misses    
+   274.053653254        396,130,473      L1-dcache-stores         
+   274.053653254         64,267,996      L1-dcache-load-misses    
+   275.053839470        395,913,328      L1-dcache-stores         
+   275.053839470         64,246,856      L1-dcache-load-misses    
+I0428 21:31:43.135151 168401 solver.cpp:218] Iteration 2800 (11.5714 iter/s, 8.642s/100 iters), loss = 0.00274464
+I0428 21:31:43.135179 168401 solver.cpp:237]     Train net output #0: loss = 0.00274481 (* 1 = 0.00274481 loss)
+I0428 21:31:43.135185 168401 sgd_solver.cpp:105] Iteration 2800, lr = 0.00830984
+I0428 21:31:43.828312 168403 data_layer.cpp:73] Restarting data prefetching from start.
+#           time             counts unit events
+   276.054040015        396,295,026      L1-dcache-stores         
+   276.054040015         64,682,107      L1-dcache-load-misses    
+   277.054237159        396,160,439      L1-dcache-stores         
+   277.054237159         64,558,058      L1-dcache-load-misses    
+   278.054425387        395,286,125      L1-dcache-stores         
+   278.054425387         64,360,318      L1-dcache-load-misses    
+   279.054622571        395,171,703      L1-dcache-stores         
+   279.054622571         64,279,005      L1-dcache-load-misses    
+   280.054795498        396,536,122      L1-dcache-stores         
+   280.054795498         64,478,131      L1-dcache-load-misses    
+   281.054980410        395,749,910      L1-dcache-stores         
+   281.054980410         64,247,392      L1-dcache-load-misses    
+   282.055154375        395,782,859      L1-dcache-stores         
+   282.055154375         64,160,565      L1-dcache-load-misses    
+   283.055341123        395,294,887      L1-dcache-stores         
+   283.055341123         64,636,839      L1-dcache-load-misses    
+I0428 21:31:51.782425 168401 solver.cpp:218] Iteration 2900 (11.5647 iter/s, 8.647s/100 iters), loss = 0.0248594
+I0428 21:31:51.782456 168401 solver.cpp:237]     Train net output #0: loss = 0.0248595 (* 1 = 0.0248595 loss)
+I0428 21:31:51.782462 168401 sgd_solver.cpp:105] Iteration 2900, lr = 0.00826148
+   284.055553972        395,863,812      L1-dcache-stores         
+   284.055553972         64,313,513      L1-dcache-load-misses    
+   285.055737114        395,394,162      L1-dcache-stores         
+   285.055737114         64,459,314      L1-dcache-load-misses    
+   286.055936243        396,270,910      L1-dcache-stores         
+   286.055936243         64,383,438      L1-dcache-load-misses    
+   287.056116517        395,935,994      L1-dcache-stores         
+   287.056116517         64,674,295      L1-dcache-load-misses    
+   288.056311245        395,618,934      L1-dcache-stores         
+   288.056311245         64,089,852      L1-dcache-load-misses    
+   289.056528445        395,608,123      L1-dcache-stores         
+   289.056528445         64,157,672      L1-dcache-load-misses    
+   290.056707291        396,042,827      L1-dcache-stores         
+   290.056707291         64,664,859      L1-dcache-load-misses    
+   291.056905047        395,979,669      L1-dcache-stores         
+   291.056905047         64,339,581      L1-dcache-load-misses    
+   292.057092051        395,840,189      L1-dcache-stores         
+   292.057092051         64,598,002      L1-dcache-load-misses    
+I0428 21:32:00.340773 168401 solver.cpp:330] Iteration 3000, Testing net (#0)
+   293.057284648        406,859,375      L1-dcache-stores         
+   293.057284648         58,697,123      L1-dcache-load-misses    
+   294.057505635        415,111,395      L1-dcache-stores         
+   294.057505635         55,172,171      L1-dcache-load-misses    
+   295.057689226        414,751,737      L1-dcache-stores         
+   295.057689226         55,459,065      L1-dcache-load-misses    
+   296.057884873        415,857,384      L1-dcache-stores         
+   296.057884873         55,762,763      L1-dcache-load-misses    
+   297.058067910        414,541,978      L1-dcache-stores         
+   297.058067910         54,940,706      L1-dcache-load-misses    
+I0428 21:32:05.566603 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:32:05.783139 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9868
+I0428 21:32:05.783164 168401 solver.cpp:397]     Test net output #1: loss = 0.0412465 (* 1 = 0.0412465 loss)
+I0428 21:32:05.868193 168401 solver.cpp:218] Iteration 3000 (7.09975 iter/s, 14.085s/100 iters), loss = 0.0117436
+I0428 21:32:05.868216 168401 solver.cpp:237]     Train net output #0: loss = 0.0117438 (* 1 = 0.0117438 loss)
+I0428 21:32:05.868222 168401 sgd_solver.cpp:105] Iteration 3000, lr = 0.00821377
+   298.058253608        410,846,972      L1-dcache-stores         
+   298.058253608         57,429,566      L1-dcache-load-misses    
+   299.058477133        396,413,636      L1-dcache-stores         
+   299.058477133         64,566,474      L1-dcache-load-misses    
+   300.058658701        396,925,014      L1-dcache-stores         
+   300.058658701         64,358,561      L1-dcache-load-misses    
+#           time             counts unit events
+   301.058855352        396,138,064      L1-dcache-stores         
+   301.058855352         64,521,636      L1-dcache-load-misses    
+   302.059056084        396,791,267      L1-dcache-stores         
+   302.059056084         64,494,470      L1-dcache-load-misses    
+   303.059256913        395,445,564      L1-dcache-stores         
+   303.059256913         64,187,683      L1-dcache-load-misses    
+   304.059472388        396,175,062      L1-dcache-stores         
+   304.059472388         64,690,908      L1-dcache-load-misses    
+   305.059657997        396,758,040      L1-dcache-stores         
+   305.059657997         64,423,460      L1-dcache-load-misses    
+   306.059866280        395,132,817      L1-dcache-stores         
+   306.059866280         64,489,498      L1-dcache-load-misses    
+I0428 21:32:14.504673 168401 solver.cpp:218] Iteration 3100 (11.5794 iter/s, 8.636s/100 iters), loss = 0.015953
+I0428 21:32:14.504703 168401 solver.cpp:237]     Train net output #0: loss = 0.0159531 (* 1 = 0.0159531 loss)
+I0428 21:32:14.504709 168401 sgd_solver.cpp:105] Iteration 3100, lr = 0.0081667
+   307.060065442        396,787,467      L1-dcache-stores         
+   307.060065442         64,454,061      L1-dcache-load-misses    
+   308.060266702        395,318,751      L1-dcache-stores         
+   308.060266702         64,245,566      L1-dcache-load-misses    
+   309.060462788        395,529,998      L1-dcache-stores         
+   309.060462788         64,546,002      L1-dcache-load-misses    
+   310.060638134        396,045,409      L1-dcache-stores         
+   310.060638134         64,344,671      L1-dcache-load-misses    
+   311.060825804        395,787,534      L1-dcache-stores         
+   311.060825804         64,615,123      L1-dcache-load-misses    
+   312.061012404        396,647,407      L1-dcache-stores         
+   312.061012404         64,322,315      L1-dcache-load-misses    
+   313.061199974        394,191,563      L1-dcache-stores         
+   313.061199974         64,256,360      L1-dcache-load-misses    
+   314.061409888        396,028,902      L1-dcache-stores         
+   314.061409888         64,434,088      L1-dcache-load-misses    
+   315.061595089        395,797,537      L1-dcache-stores         
+   315.061595089         64,446,220      L1-dcache-load-misses    
+I0428 21:32:23.152263 168401 solver.cpp:218] Iteration 3200 (11.5647 iter/s, 8.647s/100 iters), loss = 0.00777912
+I0428 21:32:23.152299 168401 solver.cpp:237]     Train net output #0: loss = 0.00777926 (* 1 = 0.00777926 loss)
+I0428 21:32:23.152307 168401 sgd_solver.cpp:105] Iteration 3200, lr = 0.00812025
+   316.061812156        395,937,688      L1-dcache-stores         
+   316.061812156         64,417,198      L1-dcache-load-misses    
+   317.062008569        395,495,565      L1-dcache-stores         
+   317.062008569         64,278,846      L1-dcache-load-misses    
+   318.062168761        395,138,990      L1-dcache-stores         
+   318.062168761         64,564,822      L1-dcache-load-misses    
+   319.062389371        396,790,143      L1-dcache-stores         
+   319.062389371         64,402,646      L1-dcache-load-misses    
+   320.062570024        395,186,039      L1-dcache-stores         
+   320.062570024         64,513,976      L1-dcache-load-misses    
+   321.062764109        396,143,056      L1-dcache-stores         
+   321.062764109         64,351,814      L1-dcache-load-misses    
+   322.062958837        395,752,492      L1-dcache-stores         
+   322.062958837         64,523,754      L1-dcache-load-misses    
+   323.063144102        395,552,406      L1-dcache-stores         
+   323.063144102         64,336,662      L1-dcache-load-misses    
+I0428 21:32:31.798411 168401 solver.cpp:218] Iteration 3300 (11.566 iter/s, 8.646s/100 iters), loss = 0.0207559
+I0428 21:32:31.798542 168401 solver.cpp:237]     Train net output #0: loss = 0.0207561 (* 1 = 0.0207561 loss)
+I0428 21:32:31.798552 168401 sgd_solver.cpp:105] Iteration 3300, lr = 0.00807442
+   324.063363795        395,836,280      L1-dcache-stores         
+   324.063363795         64,288,670      L1-dcache-load-misses    
+   325.063546500        384,131,226      L1-dcache-stores         
+   325.063546500         62,635,428      L1-dcache-load-misses    
+#           time             counts unit events
+   326.063746489        389,417,041      L1-dcache-stores         
+   326.063746489         63,412,448      L1-dcache-load-misses    
+   327.063939742        396,905,490      L1-dcache-stores         
+   327.063939742         64,292,617      L1-dcache-load-misses    
+   328.064134547        394,628,590      L1-dcache-stores         
+   328.064134547         64,356,041      L1-dcache-load-misses    
+   329.064352820        395,908,367      L1-dcache-stores         
+   329.064352820         64,287,417      L1-dcache-load-misses    
+   330.064538847        395,803,760      L1-dcache-stores         
+   330.064538847         64,498,123      L1-dcache-load-misses    
+   331.064741873        395,869,555      L1-dcache-stores         
+   331.064741873         64,433,092      L1-dcache-load-misses    
+   332.064945674        395,848,302      L1-dcache-stores         
+   332.064945674         64,205,817      L1-dcache-load-misses    
+I0428 21:32:40.488937 168401 solver.cpp:218] Iteration 3400 (11.5075 iter/s, 8.69s/100 iters), loss = 0.00832182
+I0428 21:32:40.488970 168401 solver.cpp:237]     Train net output #0: loss = 0.00832195 (* 1 = 0.00832195 loss)
+I0428 21:32:40.488976 168401 sgd_solver.cpp:105] Iteration 3400, lr = 0.00802918
+   333.065150304        394,932,908      L1-dcache-stores         
+   333.065150304         64,441,785      L1-dcache-load-misses    
+   334.065368681        395,087,036      L1-dcache-stores         
+   334.065368681         64,247,643      L1-dcache-load-misses    
+   335.065557388        396,233,555      L1-dcache-stores         
+   335.065557388         64,586,409      L1-dcache-load-misses    
+   336.065781036        396,670,650      L1-dcache-stores         
+   336.065781036         64,408,629      L1-dcache-load-misses    
+   337.065979767        395,458,942      L1-dcache-stores         
+   337.065979767         64,424,345      L1-dcache-load-misses    
+   338.066183724        395,417,565      L1-dcache-stores         
+   338.066183724         64,331,313      L1-dcache-load-misses    
+   339.066399959        396,025,162      L1-dcache-stores         
+   339.066399959         64,294,561      L1-dcache-load-misses    
+   340.066586806        395,811,970      L1-dcache-stores         
+   340.066586806         64,683,639      L1-dcache-load-misses    
+   341.066782788        396,266,665      L1-dcache-stores         
+   341.066782788         64,452,535      L1-dcache-load-misses    
+I0428 21:32:49.049856 168401 solver.cpp:330] Iteration 3500, Testing net (#0)
+   342.066967163        413,591,301      L1-dcache-stores         
+   342.066967163         55,646,509      L1-dcache-load-misses    
+   343.067167598        414,090,016      L1-dcache-stores         
+   343.067167598         55,875,384      L1-dcache-load-misses    
+   344.067365819        415,817,141      L1-dcache-stores         
+   344.067365819         55,416,728      L1-dcache-load-misses    
+   345.067550322        414,603,597      L1-dcache-stores         
+   345.067550322         55,198,552      L1-dcache-load-misses    
+   346.067745034        416,031,630      L1-dcache-stores         
+   346.067745034         55,948,596      L1-dcache-load-misses    
+I0428 21:32:54.273149 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:32:54.489941 168401 solver.cpp:397]     Test net output #0: accuracy = 0.985
+I0428 21:32:54.489966 168401 solver.cpp:397]     Test net output #1: loss = 0.046796 (* 1 = 0.046796 loss)
+I0428 21:32:54.575139 168401 solver.cpp:218] Iteration 3500 (7.09925 iter/s, 14.086s/100 iters), loss = 0.00557089
+I0428 21:32:54.575160 168401 solver.cpp:237]     Train net output #0: loss = 0.00557102 (* 1 = 0.00557102 loss)
+I0428 21:32:54.575168 168401 sgd_solver.cpp:105] Iteration 3500, lr = 0.00798454
+   347.067916695        404,983,071      L1-dcache-stores         
+   347.067916695         59,702,201      L1-dcache-load-misses    
+   348.068111665        396,674,911      L1-dcache-stores         
+   348.068111665         64,323,484      L1-dcache-load-misses    
+   349.068323831        394,943,587      L1-dcache-stores         
+   349.068323831         64,384,197      L1-dcache-load-misses    
+   350.068522894        397,128,587      L1-dcache-stores         
+   350.068522894         64,584,216      L1-dcache-load-misses    
+#           time             counts unit events
+   351.068707903        395,721,340      L1-dcache-stores         
+   351.068707903         64,257,111      L1-dcache-load-misses    
+   352.068909190        396,289,237      L1-dcache-stores         
+   352.068909190         64,617,132      L1-dcache-load-misses    
+   353.069108063        395,293,728      L1-dcache-stores         
+   353.069108063         64,146,783      L1-dcache-load-misses    
+   354.069321493        395,349,311      L1-dcache-stores         
+   354.069321493         64,479,852      L1-dcache-load-misses    
+   355.069506417        396,828,325      L1-dcache-stores         
+   355.069506417         64,250,245      L1-dcache-load-misses    
+I0428 21:33:03.217962 168401 solver.cpp:218] Iteration 3600 (11.5714 iter/s, 8.642s/100 iters), loss = 0.0331142
+I0428 21:33:03.218104 168401 solver.cpp:237]     Train net output #0: loss = 0.0331143 (* 1 = 0.0331143 loss)
+I0428 21:33:03.218112 168401 sgd_solver.cpp:105] Iteration 3600, lr = 0.00794046
+   356.069690594        394,923,304      L1-dcache-stores         
+   356.069690594         64,404,739      L1-dcache-load-misses    
+   357.069876461        396,234,128      L1-dcache-stores         
+   357.069876461         64,436,327      L1-dcache-load-misses    
+   358.070061888        395,729,482      L1-dcache-stores         
+   358.070061888         64,382,785      L1-dcache-load-misses    
+   359.070265482        395,557,742      L1-dcache-stores         
+   359.070265482         64,587,803      L1-dcache-load-misses    
+   360.070453566        396,136,675      L1-dcache-stores         
+   360.070453566         64,310,895      L1-dcache-load-misses    
+   361.070639207        395,369,783      L1-dcache-stores         
+   361.070639207         64,478,888      L1-dcache-load-misses    
+   362.070829982        396,928,712      L1-dcache-stores         
+   362.070829982         64,449,079      L1-dcache-load-misses    
+   363.071024350        393,998,745      L1-dcache-stores         
+   363.071024350         64,295,250      L1-dcache-load-misses    
+I0428 21:33:11.864636 168401 solver.cpp:218] Iteration 3700 (11.566 iter/s, 8.646s/100 iters), loss = 0.0198306
+I0428 21:33:11.864666 168401 solver.cpp:237]     Train net output #0: loss = 0.0198307 (* 1 = 0.0198307 loss)
+I0428 21:33:11.864672 168401 sgd_solver.cpp:105] Iteration 3700, lr = 0.00789695
+   364.071243592        396,658,687      L1-dcache-stores         
+   364.071243592         64,380,777      L1-dcache-load-misses    
+   365.071441130        395,617,124      L1-dcache-stores         
+   365.071441130         64,377,521      L1-dcache-load-misses    
+   366.071637639        396,335,750      L1-dcache-stores         
+   366.071637639         64,540,922      L1-dcache-load-misses    
+   367.071822251        396,628,147      L1-dcache-stores         
+   367.071822251         64,458,853      L1-dcache-load-misses    
+I0428 21:33:15.753578 168403 data_layer.cpp:73] Restarting data prefetching from start.
+   368.072010385        394,954,568      L1-dcache-stores         
+   368.072010385         64,439,684      L1-dcache-load-misses    
+   369.072208451        396,851,027      L1-dcache-stores         
+   369.072208451         64,258,049      L1-dcache-load-misses    
+   370.072395098        395,135,489      L1-dcache-stores         
+   370.072395098         64,526,232      L1-dcache-load-misses    
+   371.072578820        397,298,977      L1-dcache-stores         
+   371.072578820         64,548,777      L1-dcache-load-misses    
+   372.072765683        396,444,722      L1-dcache-stores         
+   372.072765683         64,322,689      L1-dcache-load-misses    
+I0428 21:33:20.502729 168401 solver.cpp:218] Iteration 3800 (11.5768 iter/s, 8.638s/100 iters), loss = 0.00893752
+I0428 21:33:20.502758 168401 solver.cpp:237]     Train net output #0: loss = 0.00893766 (* 1 = 0.00893766 loss)
+I0428 21:33:20.502765 168401 sgd_solver.cpp:105] Iteration 3800, lr = 0.007854
+   373.072951832        395,100,633      L1-dcache-stores         
+   373.072951832         64,548,456      L1-dcache-load-misses    
+   374.073159945        396,541,965      L1-dcache-stores         
+   374.073159945         64,413,346      L1-dcache-load-misses    
+   375.073355032        396,347,830      L1-dcache-stores         
+   375.073355032         64,558,649      L1-dcache-load-misses    
+#           time             counts unit events
+   376.073554002        395,745,051      L1-dcache-stores         
+   376.073554002         64,357,740      L1-dcache-load-misses    
+   377.073683057        396,648,632      L1-dcache-stores         
+   377.073683057         64,553,697      L1-dcache-load-misses    
+   378.073872036        395,946,398      L1-dcache-stores         
+   378.073872036         64,360,341      L1-dcache-load-misses    
+   379.074074537        396,255,129      L1-dcache-stores         
+   379.074074537         64,323,523      L1-dcache-load-misses    
+   380.074247019        396,149,354      L1-dcache-stores         
+   380.074247019         64,689,246      L1-dcache-load-misses    
+   381.074442200        397,447,327      L1-dcache-stores         
+   381.074442200         64,416,774      L1-dcache-load-misses    
+I0428 21:33:29.139313 168401 solver.cpp:218] Iteration 3900 (11.5794 iter/s, 8.636s/100 iters), loss = 0.0329724
+I0428 21:33:29.139343 168401 solver.cpp:237]     Train net output #0: loss = 0.0329726 (* 1 = 0.0329726 loss)
+I0428 21:33:29.139348 168401 sgd_solver.cpp:105] Iteration 3900, lr = 0.00781158
+   382.074640831        395,120,635      L1-dcache-stores         
+   382.074640831         64,539,556      L1-dcache-load-misses    
+   383.074839508        396,112,511      L1-dcache-stores         
+   383.074839508         64,314,882      L1-dcache-load-misses    
+   384.075063903        396,163,311      L1-dcache-stores         
+   384.075063903         64,430,212      L1-dcache-load-misses    
+   385.075250810        395,939,367      L1-dcache-stores         
+   385.075250810         64,522,004      L1-dcache-load-misses    
+   386.075469940        396,179,610      L1-dcache-stores         
+   386.075469940         64,443,427      L1-dcache-load-misses    
+   387.075655358        396,031,347      L1-dcache-stores         
+   387.075655358         64,600,059      L1-dcache-load-misses    
+   388.075831336        396,585,529      L1-dcache-stores         
+   388.075831336         64,240,206      L1-dcache-load-misses    
+   389.076050228        394,904,567      L1-dcache-stores         
+   389.076050228         64,410,387      L1-dcache-load-misses    
+I0428 21:33:37.694767 168401 solver.cpp:330] Iteration 4000, Testing net (#0)
+   390.076222720        402,000,576      L1-dcache-stores         
+   390.076222720         61,814,711      L1-dcache-load-misses    
+   391.076409008        416,043,535      L1-dcache-stores         
+   391.076409008         55,608,611      L1-dcache-load-misses    
+   392.076591821        414,656,375      L1-dcache-stores         
+   392.076591821         55,176,996      L1-dcache-load-misses    
+   393.076774173        413,934,808      L1-dcache-stores         
+   393.076774173         55,879,999      L1-dcache-load-misses    
+   394.077003029        415,966,139      L1-dcache-stores         
+   394.077003029         55,077,210      L1-dcache-load-misses    
+I0428 21:33:42.916811 168404 data_layer.cpp:73] Restarting data prefetching from start.
+   395.077191131        415,148,720      L1-dcache-stores         
+   395.077191131         55,578,410      L1-dcache-load-misses    
+I0428 21:33:43.133011 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9894
+I0428 21:33:43.133034 168401 solver.cpp:397]     Test net output #1: loss = 0.0338096 (* 1 = 0.0338096 loss)
+I0428 21:33:43.218211 168401 solver.cpp:218] Iteration 4000 (7.10328 iter/s, 14.078s/100 iters), loss = 0.0128216
+I0428 21:33:43.218233 168401 solver.cpp:237]     Train net output #0: loss = 0.0128218 (* 1 = 0.0128218 loss)
+I0428 21:33:43.218241 168401 sgd_solver.cpp:105] Iteration 4000, lr = 0.0077697
+   396.077393978        399,263,482      L1-dcache-stores         
+   396.077393978         63,256,832      L1-dcache-load-misses    
+   397.077594268        396,215,814      L1-dcache-stores         
+   397.077594268         64,556,423      L1-dcache-load-misses    
+   398.077758890        395,592,892      L1-dcache-stores         
+   398.077758890         64,291,674      L1-dcache-load-misses    
+   399.077987667        396,394,629      L1-dcache-stores         
+   399.077987667         64,702,723      L1-dcache-load-misses    
+   400.078179701        397,246,047      L1-dcache-stores         
+   400.078179701         64,446,931      L1-dcache-load-misses    
+#           time             counts unit events
+   401.078369974        395,609,141      L1-dcache-stores         
+   401.078369974         64,775,182      L1-dcache-load-misses    
+   402.078577494        396,491,956      L1-dcache-stores         
+   402.078577494         64,255,490      L1-dcache-load-misses    
+   403.078781632        395,438,115      L1-dcache-stores         
+   403.078781632         64,199,912      L1-dcache-load-misses    
+I0428 21:33:51.855749 168401 solver.cpp:218] Iteration 4100 (11.5781 iter/s, 8.637s/100 iters), loss = 0.0239351
+I0428 21:33:51.855780 168401 solver.cpp:237]     Train net output #0: loss = 0.0239352 (* 1 = 0.0239352 loss)
+I0428 21:33:51.855787 168401 sgd_solver.cpp:105] Iteration 4100, lr = 0.00772833
+   404.078995150        396,172,969      L1-dcache-stores         
+   404.078995150         64,614,387      L1-dcache-load-misses    
+   405.079177167        396,203,116      L1-dcache-stores         
+   405.079177167         64,425,793      L1-dcache-load-misses    
+   406.079354372        396,291,178      L1-dcache-stores         
+   406.079354372         64,595,820      L1-dcache-load-misses    
+   407.079521672        395,529,699      L1-dcache-stores         
+   407.079521672         64,275,130      L1-dcache-load-misses    
+   408.079692326        395,796,646      L1-dcache-stores         
+   408.079692326         64,606,840      L1-dcache-load-misses    
+   409.079929664        395,931,087      L1-dcache-stores         
+   409.079929664         64,216,800      L1-dcache-load-misses    
+   410.080113252        396,088,472      L1-dcache-stores         
+   410.080113252         64,330,442      L1-dcache-load-misses    
+   411.080296514        396,103,745      L1-dcache-stores         
+   411.080296514         64,703,287      L1-dcache-load-misses    
+   412.080494143        396,293,072      L1-dcache-stores         
+   412.080494143         64,503,255      L1-dcache-load-misses    
+I0428 21:34:00.496347 168401 solver.cpp:218] Iteration 4200 (11.5741 iter/s, 8.64s/100 iters), loss = 0.0169956
+I0428 21:34:00.496376 168401 solver.cpp:237]     Train net output #0: loss = 0.0169957 (* 1 = 0.0169957 loss)
+I0428 21:34:00.496383 168401 sgd_solver.cpp:105] Iteration 4200, lr = 0.00768748
+   413.080676720        395,002,111      L1-dcache-stores         
+   413.080676720         64,335,478      L1-dcache-load-misses    
+   414.080888549        395,666,613      L1-dcache-stores         
+   414.080888549         64,264,522      L1-dcache-load-misses    
+   415.081072501        396,583,383      L1-dcache-stores         
+   415.081072501         64,609,049      L1-dcache-load-misses    
+   416.081271040        396,323,382      L1-dcache-stores         
+   416.081271040         64,318,386      L1-dcache-load-misses    
+   417.081455286        395,873,095      L1-dcache-stores         
+   417.081455286         64,178,714      L1-dcache-load-misses    
+   418.081658309        395,563,333      L1-dcache-stores         
+   418.081658309         64,575,271      L1-dcache-load-misses    
+   419.081879644        396,466,962      L1-dcache-stores         
+   419.081879644         64,432,209      L1-dcache-load-misses    
+   420.082062927        395,852,109      L1-dcache-stores         
+   420.082062927         64,407,580      L1-dcache-load-misses    
+   421.082251934        395,510,802      L1-dcache-stores         
+   421.082251934         64,302,828      L1-dcache-load-misses    
+I0428 21:34:09.138386 168401 solver.cpp:218] Iteration 4300 (11.5714 iter/s, 8.642s/100 iters), loss = 0.064229
+I0428 21:34:09.138538 168401 solver.cpp:237]     Train net output #0: loss = 0.0642291 (* 1 = 0.0642291 loss)
+I0428 21:34:09.138546 168401 sgd_solver.cpp:105] Iteration 4300, lr = 0.00764712
+   422.082435046        396,428,753      L1-dcache-stores         
+   422.082435046         64,440,462      L1-dcache-load-misses    
+   423.082622410        395,890,449      L1-dcache-stores         
+   423.082622410         64,277,585      L1-dcache-load-misses    
+   424.082824053        396,170,511      L1-dcache-stores         
+   424.082824053         64,355,256      L1-dcache-load-misses    
+   425.083016410        395,714,588      L1-dcache-stores         
+   425.083016410         64,541,321      L1-dcache-load-misses    
+#           time             counts unit events
+   426.083207040        397,464,921      L1-dcache-stores         
+   426.083207040         64,476,126      L1-dcache-load-misses    
+   427.083427477        395,046,574      L1-dcache-stores         
+   427.083427477         64,546,496      L1-dcache-load-misses    
+   428.083631911        395,941,941      L1-dcache-stores         
+   428.083631911         64,259,424      L1-dcache-load-misses    
+   429.083847009        395,691,042      L1-dcache-stores         
+   429.083847009         64,474,305      L1-dcache-load-misses    
+I0428 21:34:17.779681 168401 solver.cpp:218] Iteration 4400 (11.5727 iter/s, 8.641s/100 iters), loss = 0.025314
+I0428 21:34:17.779712 168401 solver.cpp:237]     Train net output #0: loss = 0.0253142 (* 1 = 0.0253142 loss)
+I0428 21:34:17.779719 168401 sgd_solver.cpp:105] Iteration 4400, lr = 0.00760726
+   430.084037923        396,362,781      L1-dcache-stores         
+   430.084037923         64,437,471      L1-dcache-load-misses    
+   431.084242427        396,650,303      L1-dcache-stores         
+   431.084242427         64,381,962      L1-dcache-load-misses    
+   432.084445325        395,967,997      L1-dcache-stores         
+   432.084445325         64,596,141      L1-dcache-load-misses    
+   433.084644913        396,262,220      L1-dcache-stores         
+   433.084644913         64,200,216      L1-dcache-load-misses    
+   434.084843938        395,295,705      L1-dcache-stores         
+   434.084843938         64,483,098      L1-dcache-load-misses    
+   435.085030396        397,022,291      L1-dcache-stores         
+   435.085030396         64,516,189      L1-dcache-load-misses    
+   436.085221247        396,040,353      L1-dcache-stores         
+   436.085221247         64,259,119      L1-dcache-load-misses    
+   437.085401998        395,702,074      L1-dcache-stores         
+   437.085401998         64,715,874      L1-dcache-load-misses    
+   438.085589802        395,363,784      L1-dcache-stores         
+   438.085589802         64,092,744      L1-dcache-load-misses    
+I0428 21:34:26.334498 168401 solver.cpp:330] Iteration 4500, Testing net (#0)
+   439.085800389        408,339,945      L1-dcache-stores         
+   439.085800389         58,232,820      L1-dcache-load-misses    
+   440.085967876        414,741,264      L1-dcache-stores         
+   440.085967876         56,105,309      L1-dcache-load-misses    
+   441.086143563        415,134,320      L1-dcache-stores         
+   441.086143563         54,969,813      L1-dcache-load-misses    
+   442.086318985        415,250,996      L1-dcache-stores         
+   442.086318985         55,660,067      L1-dcache-load-misses    
+   443.086503841        415,136,076      L1-dcache-stores         
+   443.086503841         55,628,845      L1-dcache-load-misses    
+I0428 21:34:31.557646 168404 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:34:31.774433 168401 solver.cpp:397]     Test net output #0: accuracy = 0.9875
+I0428 21:34:31.774457 168401 solver.cpp:397]     Test net output #1: loss = 0.0397526 (* 1 = 0.0397526 loss)
+I0428 21:34:31.859632 168401 solver.cpp:218] Iteration 4500 (7.10278 iter/s, 14.079s/100 iters), loss = 0.00794364
+I0428 21:34:31.859652 168401 solver.cpp:237]     Train net output #0: loss = 0.00794378 (* 1 = 0.00794378 loss)
+I0428 21:34:31.859659 168401 sgd_solver.cpp:105] Iteration 4500, lr = 0.00756788
+   444.086718357        410,868,068      L1-dcache-stores         
+   444.086718357         57,429,770      L1-dcache-load-misses    
+   445.086902706        395,939,366      L1-dcache-stores         
+   445.086902706         64,340,788      L1-dcache-load-misses    
+   446.087101543        396,012,040      L1-dcache-stores         
+   446.087101543         64,493,439      L1-dcache-load-misses    
+   447.087302299        396,720,046      L1-dcache-stores         
+   447.087302299         64,362,513      L1-dcache-load-misses    
+   448.087503169        395,254,125      L1-dcache-stores         
+   448.087503169         64,498,479      L1-dcache-load-misses    
+   449.087713923        396,047,602      L1-dcache-stores         
+   449.087713923         64,252,496      L1-dcache-load-misses    
+   450.087895215        396,080,635      L1-dcache-stores         
+   450.087895215         64,281,504      L1-dcache-load-misses    
+#           time             counts unit events
+   451.088079935        395,863,745      L1-dcache-stores         
+   451.088079935         64,706,170      L1-dcache-load-misses    
+   452.088272525        396,598,168      L1-dcache-stores         
+   452.088272525         64,426,790      L1-dcache-load-misses    
+I0428 21:34:40.502288 168401 solver.cpp:218] Iteration 4600 (11.5714 iter/s, 8.642s/100 iters), loss = 0.00645576
+I0428 21:34:40.502434 168401 solver.cpp:237]     Train net output #0: loss = 0.0064559 (* 1 = 0.0064559 loss)
+I0428 21:34:40.502441 168401 sgd_solver.cpp:105] Iteration 4600, lr = 0.00752897
+   453.088457273        394,264,833      L1-dcache-stores         
+   453.088457273         64,345,707      L1-dcache-load-misses    
+   454.088670090        394,603,537      L1-dcache-stores         
+   454.088670090         64,037,239      L1-dcache-load-misses    
+   455.088857660        396,179,119      L1-dcache-stores         
+   455.088857660         64,798,161      L1-dcache-load-misses    
+   456.089051584        396,527,627      L1-dcache-stores         
+   456.089051584         64,328,890      L1-dcache-load-misses    
+   457.089238392        395,532,258      L1-dcache-stores         
+   457.089238392         64,155,254      L1-dcache-load-misses    
+   458.089426443        395,376,443      L1-dcache-stores         
+   458.089426443         64,629,004      L1-dcache-load-misses    
+   459.089653748        396,356,303      L1-dcache-stores         
+   459.089653748         64,494,541      L1-dcache-load-misses    
+I0428 21:34:47.681746 168403 data_layer.cpp:73] Restarting data prefetching from start.
+   460.089838339        396,369,545      L1-dcache-stores         
+   460.089838339         64,514,580      L1-dcache-load-misses    
+   461.090022070        395,332,830      L1-dcache-stores         
+   461.090022070         64,199,164      L1-dcache-load-misses    
+I0428 21:34:49.148738 168401 solver.cpp:218] Iteration 4700 (11.566 iter/s, 8.646s/100 iters), loss = 0.00633
+I0428 21:34:49.148768 168401 solver.cpp:237]     Train net output #0: loss = 0.00633016 (* 1 = 0.00633016 loss)
+I0428 21:34:49.148774 168401 sgd_solver.cpp:105] Iteration 4700, lr = 0.00749052
+   462.090205818        396,391,176      L1-dcache-stores         
+   462.090205818         64,630,301      L1-dcache-load-misses    
+   463.090404656        395,660,750      L1-dcache-stores         
+   463.090404656         64,148,706      L1-dcache-load-misses    
+   464.090629735        395,995,179      L1-dcache-stores         
+   464.090629735         64,225,367      L1-dcache-load-misses    
+   465.090815061        395,985,142      L1-dcache-stores         
+   465.090815061         64,726,106      L1-dcache-load-misses    
+   466.091016282        396,847,248      L1-dcache-stores         
+   466.091016282         64,496,885      L1-dcache-load-misses    
+   467.091214715        396,010,510      L1-dcache-stores         
+   467.091214715         64,447,464      L1-dcache-load-misses    
+   468.091401603        394,597,236      L1-dcache-stores         
+   468.091401603         64,199,675      L1-dcache-load-misses    
+   469.091585938        396,928,510      L1-dcache-stores         
+   469.091585938         64,677,755      L1-dcache-load-misses    
+I0428 21:34:57.789850 168401 solver.cpp:218] Iteration 4800 (11.5727 iter/s, 8.641s/100 iters), loss = 0.0138847
+I0428 21:34:57.789881 168401 solver.cpp:237]     Train net output #0: loss = 0.0138849 (* 1 = 0.0138849 loss)
+I0428 21:34:57.789887 168401 sgd_solver.cpp:105] Iteration 4800, lr = 0.00745253
+   470.091770088        396,220,699      L1-dcache-stores         
+   470.091770088         64,341,141      L1-dcache-load-misses    
+   471.091971017        396,194,343      L1-dcache-stores         
+   471.091971017         64,370,001      L1-dcache-load-misses    
+   472.092171257        396,035,094      L1-dcache-stores         
+   472.092171257         64,606,261      L1-dcache-load-misses    
+   473.092355933        395,857,952      L1-dcache-stores         
+   473.092355933         64,395,392      L1-dcache-load-misses    
+   474.092567749        395,058,808      L1-dcache-stores         
+   474.092567749         64,301,324      L1-dcache-load-misses    
+   475.092755219        396,607,934      L1-dcache-stores         
+   475.092755219         64,299,794      L1-dcache-load-misses    
+#           time             counts unit events
+   476.092953992        396,266,122      L1-dcache-stores         
+   476.092953992         64,582,205      L1-dcache-load-misses    
+   477.093157306        396,223,405      L1-dcache-stores         
+   477.093157306         64,402,490      L1-dcache-load-misses    
+   478.093358526        395,752,362      L1-dcache-stores         
+   478.093358526         64,198,037      L1-dcache-load-misses    
+I0428 21:35:06.430426 168401 solver.cpp:218] Iteration 4900 (11.5741 iter/s, 8.64s/100 iters), loss = 0.00460075
+I0428 21:35:06.430457 168401 solver.cpp:237]     Train net output #0: loss = 0.0046009 (* 1 = 0.0046009 loss)
+I0428 21:35:06.430470 168401 sgd_solver.cpp:105] Iteration 4900, lr = 0.00741498
+   479.093564228        395,962,681      L1-dcache-stores         
+   479.093564228         64,672,085      L1-dcache-load-misses    
+   480.093766040        397,353,811      L1-dcache-stores         
+   480.093766040         64,604,308      L1-dcache-load-misses    
+   481.093962537        395,836,327      L1-dcache-stores         
+   481.093962537         64,643,269      L1-dcache-load-misses    
+   482.094141198        396,644,400      L1-dcache-stores         
+   482.094141198         64,346,991      L1-dcache-load-misses    
+   483.094340005        395,483,088      L1-dcache-stores         
+   483.094340005         64,158,768      L1-dcache-load-misses    
+   484.094551783        396,001,595      L1-dcache-stores         
+   484.094551783         64,709,564      L1-dcache-load-misses    
+   485.094740410        396,463,827      L1-dcache-stores         
+   485.094740410         64,495,476      L1-dcache-load-misses    
+   486.094939104        396,325,945      L1-dcache-stores         
+   486.094939104         64,572,286      L1-dcache-load-misses    
+I0428 21:35:14.979818 168401 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5000.caffemodel
+   487.095149566        380,409,429      L1-dcache-stores         
+   487.095149566         61,903,578      L1-dcache-load-misses    
+F0428 21:35:15.062127 168401 io.cpp:69] Check failed: proto.SerializeToOstream(&output) 
+*** Check failure stack trace: ***
+    @     0x7fe2b6d535cd  google::LogMessage::Fail()
+    @     0x7fe2b6d55433  google::LogMessage::SendToLog()
+    @     0x7fe2b6d5315b  google::LogMessage::Flush()
+    @     0x7fe2b6d55e1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fe2b70fde55  caffe::WriteProtoToBinaryFile()
+    @     0x7fe2b7243076  caffe::Solver<>::SnapshotToBinaryProto()
+    @     0x7fe2b724317a  caffe::Solver<>::Snapshot()
+    @     0x7fe2b7246ce6  caffe::Solver<>::Step()
+    @     0x7fe2b724772a  caffe::Solver<>::Solve()
+    @           0x40a5c4  train()
+    @           0x406fa0  main
+    @     0x7fe2b5cc4830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+Aborted (core dumped)
+   487.306023272          9,241,834      L1-dcache-stores         
+   487.306023272             91,118      L1-dcache-load-misses    

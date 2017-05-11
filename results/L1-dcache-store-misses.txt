@@ -1,0 +1,5 @@
+   <not supported>      L1-dcache-store-misses   
+   <not supported>      L1-dcache-store-misses   
+   <not supported>      L1-dcache-store-misses   
+   <not supported>      L1-dcache-store-misses   
+   <not supported>      L1-dcache-store-misses   

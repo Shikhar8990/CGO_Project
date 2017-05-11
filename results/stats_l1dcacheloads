@@ -1,0 +1,274 @@
+I0504 17:02:55.274770 94920 caffe.cpp:211] Use CPU.
+I0504 17:02:55.275014 94920 solver.cpp:44] Initializing solver from parameters: 
+base_lr: 0.01
+display: 1
+max_iter: 5
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 20
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0504 17:02:55.275107 94920 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0504 17:02:55.275328 94920 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0504 17:02:55.275346 94920 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0504 17:02:55.275450 94920 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0504 17:02:55.275518 94920 layer_factory.hpp:77] Creating layer mnist
+I0504 17:02:55.275615 94920 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0504 17:02:55.275641 94920 net.cpp:84] Creating Layer mnist
+I0504 17:02:55.275652 94920 net.cpp:380] mnist -> data
+I0504 17:02:55.275676 94920 net.cpp:380] mnist -> label
+I0504 17:02:55.275709 94920 data_layer.cpp:45] output data size: 64,1,28,28
+I0504 17:02:55.276247 94920 net.cpp:122] Setting up mnist
+I0504 17:02:55.276263 94920 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0504 17:02:55.276269 94920 net.cpp:129] Top shape: 64 (64)
+I0504 17:02:55.276274 94920 net.cpp:137] Memory required for data: 200960
+I0504 17:02:55.276281 94920 layer_factory.hpp:77] Creating layer conv1
+I0504 17:02:55.276299 94920 net.cpp:84] Creating Layer conv1
+I0504 17:02:55.276306 94920 net.cpp:406] conv1 <- data
+I0504 17:02:55.276319 94920 net.cpp:380] conv1 -> conv1
+I0504 17:02:55.276365 94920 net.cpp:122] Setting up conv1
+I0504 17:02:55.276376 94920 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0504 17:02:55.276379 94920 net.cpp:137] Memory required for data: 3150080
+I0504 17:02:55.276399 94920 layer_factory.hpp:77] Creating layer pool1
+I0504 17:02:55.276409 94920 net.cpp:84] Creating Layer pool1
+I0504 17:02:55.276415 94920 net.cpp:406] pool1 <- conv1
+I0504 17:02:55.276429 94920 net.cpp:380] pool1 -> pool1
+I0504 17:02:55.276454 94920 net.cpp:122] Setting up pool1
+I0504 17:02:55.276463 94920 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0504 17:02:55.276468 94920 net.cpp:137] Memory required for data: 3887360
+I0504 17:02:55.276473 94920 layer_factory.hpp:77] Creating layer conv2
+I0504 17:02:55.276484 94920 net.cpp:84] Creating Layer conv2
+I0504 17:02:55.276489 94920 net.cpp:406] conv2 <- pool1
+I0504 17:02:55.276496 94920 net.cpp:380] conv2 -> conv2
+I0504 17:02:55.276769 94920 net.cpp:122] Setting up conv2
+I0504 17:02:55.276779 94920 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0504 17:02:55.276783 94920 net.cpp:137] Memory required for data: 4706560
+I0504 17:02:55.276794 94920 layer_factory.hpp:77] Creating layer pool2
+I0504 17:02:55.276803 94920 net.cpp:84] Creating Layer pool2
+I0504 17:02:55.276808 94920 net.cpp:406] pool2 <- conv2
+I0504 17:02:55.276814 94920 net.cpp:380] pool2 -> pool2
+I0504 17:02:55.276825 94920 net.cpp:122] Setting up pool2
+I0504 17:02:55.276832 94920 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0504 17:02:55.276837 94920 net.cpp:137] Memory required for data: 4911360
+I0504 17:02:55.276842 94920 layer_factory.hpp:77] Creating layer ip1
+I0504 17:02:55.276852 94920 net.cpp:84] Creating Layer ip1
+I0504 17:02:55.276857 94920 net.cpp:406] ip1 <- pool2
+I0504 17:02:55.276866 94920 net.cpp:380] ip1 -> ip1
+I0504 17:02:55.280769 94920 net.cpp:122] Setting up ip1
+I0504 17:02:55.280781 94920 net.cpp:129] Top shape: 64 500 (32000)
+I0504 17:02:55.280784 94920 net.cpp:137] Memory required for data: 5039360
+I0504 17:02:55.280796 94920 layer_factory.hpp:77] Creating layer relu1
+I0504 17:02:55.280802 94920 net.cpp:84] Creating Layer relu1
+I0504 17:02:55.280807 94920 net.cpp:406] relu1 <- ip1
+I0504 17:02:55.280813 94920 net.cpp:367] relu1 -> ip1 (in-place)
+I0504 17:02:55.280822 94920 net.cpp:122] Setting up relu1
+I0504 17:02:55.280827 94920 net.cpp:129] Top shape: 64 500 (32000)
+I0504 17:02:55.280833 94920 net.cpp:137] Memory required for data: 5167360
+I0504 17:02:55.280836 94920 layer_factory.hpp:77] Creating layer ip2
+I0504 17:02:55.280843 94920 net.cpp:84] Creating Layer ip2
+I0504 17:02:55.280848 94920 net.cpp:406] ip2 <- ip1
+I0504 17:02:55.280855 94920 net.cpp:380] ip2 -> ip2
+I0504 17:02:55.280920 94920 net.cpp:122] Setting up ip2
+I0504 17:02:55.280927 94920 net.cpp:129] Top shape: 64 10 (640)
+I0504 17:02:55.280931 94920 net.cpp:137] Memory required for data: 5169920
+I0504 17:02:55.280939 94920 layer_factory.hpp:77] Creating layer loss
+I0504 17:02:55.280946 94920 net.cpp:84] Creating Layer loss
+I0504 17:02:55.280951 94920 net.cpp:406] loss <- ip2
+I0504 17:02:55.280956 94920 net.cpp:406] loss <- label
+I0504 17:02:55.280964 94920 net.cpp:380] loss -> loss
+I0504 17:02:55.280977 94920 layer_factory.hpp:77] Creating layer loss
+I0504 17:02:55.280993 94920 net.cpp:122] Setting up loss
+I0504 17:02:55.280999 94920 net.cpp:129] Top shape: (1)
+I0504 17:02:55.281004 94920 net.cpp:132]     with loss weight 1
+I0504 17:02:55.281023 94920 net.cpp:137] Memory required for data: 5169924
+I0504 17:02:55.281028 94920 net.cpp:198] loss needs backward computation.
+I0504 17:02:55.281034 94920 net.cpp:198] ip2 needs backward computation.
+I0504 17:02:55.281040 94920 net.cpp:198] relu1 needs backward computation.
+I0504 17:02:55.281044 94920 net.cpp:198] ip1 needs backward computation.
+I0504 17:02:55.281049 94920 net.cpp:198] pool2 needs backward computation.
+I0504 17:02:55.281054 94920 net.cpp:198] conv2 needs backward computation.
+I0504 17:02:55.281059 94920 net.cpp:198] pool1 needs backward computation.
+I0504 17:02:55.281064 94920 net.cpp:198] conv1 needs backward computation.
+I0504 17:02:55.281069 94920 net.cpp:200] mnist does not need backward computation.
+I0504 17:02:55.281074 94920 net.cpp:242] This network produces output loss
+I0504 17:02:55.281086 94920 net.cpp:255] Network initialization done.
+I0504 17:02:55.281128 94920 solver.cpp:56] Solver scaffolding done.
+I0504 17:02:55.281159 94920 caffe.cpp:248] Starting Optimization
+I0504 17:02:55.281164 94920 solver.cpp:272] Solving LeNet
+I0504 17:02:55.281174 94920 solver.cpp:273] Learning Rate Policy: inv
+I0504 17:02:55.390341 94920 solver.cpp:218] Iteration 0 (-1.28159e-37 iter/s, 0.109s/1 iters), loss = 2.35957
+I0504 17:02:55.390365 94920 solver.cpp:237]     Train net output #0: loss = 2.35957 (* 1 = 2.35957 loss)
+I0504 17:02:55.390378 94920 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+I0504 17:02:55.481123 94920 solver.cpp:218] Iteration 1 (11.1111 iter/s, 0.09s/1 iters), loss = 2.27218
+I0504 17:02:55.481143 94920 solver.cpp:237]     Train net output #0: loss = 2.27218 (* 1 = 2.27218 loss)
+I0504 17:02:55.481149 94920 sgd_solver.cpp:105] Iteration 1, lr = 0.00999925
+I0504 17:02:55.570454 94920 solver.cpp:218] Iteration 2 (11.236 iter/s, 0.089s/1 iters), loss = 2.25102
+I0504 17:02:55.570472 94920 solver.cpp:237]     Train net output #0: loss = 2.25102 (* 1 = 2.25102 loss)
+I0504 17:02:55.570477 94920 sgd_solver.cpp:105] Iteration 2, lr = 0.0099985
+I0504 17:02:55.657626 94920 solver.cpp:218] Iteration 3 (11.4943 iter/s, 0.087s/1 iters), loss = 2.15098
+I0504 17:02:55.657642 94920 solver.cpp:237]     Train net output #0: loss = 2.15098 (* 1 = 2.15098 loss)
+I0504 17:02:55.657647 94920 sgd_solver.cpp:105] Iteration 3, lr = 0.00999775
+I0504 17:02:55.743747 94920 solver.cpp:218] Iteration 4 (11.6279 iter/s, 0.086s/1 iters), loss = 2.12266
+I0504 17:02:55.743762 94920 solver.cpp:237]     Train net output #0: loss = 2.12266 (* 1 = 2.12266 loss)
+I0504 17:02:55.743767 94920 sgd_solver.cpp:105] Iteration 4, lr = 0.009997
+I0504 17:02:55.745028 94920 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5.caffemodel
+I0504 17:02:55.751606 94920 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/mnist/lenet_iter_5.solverstate
+I0504 17:02:55.790045 94920 solver.cpp:310] Iteration 5, loss = 2.02167
+I0504 17:02:55.790060 94920 solver.cpp:315] Optimization Done.
+I0504 17:02:55.790063 94920 caffe.cpp:259] Optimization Done.
+#           time             counts unit events
+     0.598964186      1,134,977,183      L1-dcache-loads          

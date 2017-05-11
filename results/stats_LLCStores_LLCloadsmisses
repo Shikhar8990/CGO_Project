@@ -1,0 +1,1732 @@
+I0428 21:10:53.239821 168369 caffe.cpp:211] Use CPU.
+I0428 21:10:53.240088 168369 solver.cpp:44] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+train_state {
+  level: 0
+  stage: ""
+}
+I0428 21:10:53.240186 168369 solver.cpp:87] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:10:53.240439 168369 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I0428 21:10:53.240455 168369 net.cpp:294] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0428 21:10:53.240555 168369 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TRAIN
+  level: 0
+  stage: ""
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_train_lmdb"
+    batch_size: 64
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:10:53.240619 168369 layer_factory.hpp:77] Creating layer mnist
+I0428 21:10:53.240718 168369 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_train_lmdb
+I0428 21:10:53.240744 168369 net.cpp:84] Creating Layer mnist
+I0428 21:10:53.240756 168369 net.cpp:380] mnist -> data
+I0428 21:10:53.240777 168369 net.cpp:380] mnist -> label
+I0428 21:10:53.240806 168369 data_layer.cpp:45] output data size: 64,1,28,28
+I0428 21:10:53.241307 168369 net.cpp:122] Setting up mnist
+I0428 21:10:53.241330 168369 net.cpp:129] Top shape: 64 1 28 28 (50176)
+I0428 21:10:53.241336 168369 net.cpp:129] Top shape: 64 (64)
+I0428 21:10:53.241340 168369 net.cpp:137] Memory required for data: 200960
+I0428 21:10:53.241348 168369 layer_factory.hpp:77] Creating layer conv1
+I0428 21:10:53.241364 168369 net.cpp:84] Creating Layer conv1
+I0428 21:10:53.241370 168369 net.cpp:406] conv1 <- data
+I0428 21:10:53.241382 168369 net.cpp:380] conv1 -> conv1
+I0428 21:10:53.241428 168369 net.cpp:122] Setting up conv1
+I0428 21:10:53.241437 168369 net.cpp:129] Top shape: 64 20 24 24 (737280)
+I0428 21:10:53.241442 168369 net.cpp:137] Memory required for data: 3150080
+I0428 21:10:53.241461 168369 layer_factory.hpp:77] Creating layer pool1
+I0428 21:10:53.241469 168369 net.cpp:84] Creating Layer pool1
+I0428 21:10:53.241482 168369 net.cpp:406] pool1 <- conv1
+I0428 21:10:53.241499 168369 net.cpp:380] pool1 -> pool1
+I0428 21:10:53.241515 168369 net.cpp:122] Setting up pool1
+I0428 21:10:53.241523 168369 net.cpp:129] Top shape: 64 20 12 12 (184320)
+I0428 21:10:53.241528 168369 net.cpp:137] Memory required for data: 3887360
+I0428 21:10:53.241533 168369 layer_factory.hpp:77] Creating layer conv2
+I0428 21:10:53.241542 168369 net.cpp:84] Creating Layer conv2
+I0428 21:10:53.241547 168369 net.cpp:406] conv2 <- pool1
+I0428 21:10:53.241555 168369 net.cpp:380] conv2 -> conv2
+I0428 21:10:53.241817 168369 net.cpp:122] Setting up conv2
+I0428 21:10:53.241827 168369 net.cpp:129] Top shape: 64 50 8 8 (204800)
+I0428 21:10:53.241832 168369 net.cpp:137] Memory required for data: 4706560
+I0428 21:10:53.241843 168369 layer_factory.hpp:77] Creating layer pool2
+I0428 21:10:53.241852 168369 net.cpp:84] Creating Layer pool2
+I0428 21:10:53.241856 168369 net.cpp:406] pool2 <- conv2
+I0428 21:10:53.241863 168369 net.cpp:380] pool2 -> pool2
+I0428 21:10:53.241873 168369 net.cpp:122] Setting up pool2
+I0428 21:10:53.241879 168369 net.cpp:129] Top shape: 64 50 4 4 (51200)
+I0428 21:10:53.241883 168369 net.cpp:137] Memory required for data: 4911360
+I0428 21:10:53.241888 168369 layer_factory.hpp:77] Creating layer ip1
+I0428 21:10:53.241896 168369 net.cpp:84] Creating Layer ip1
+I0428 21:10:53.241901 168369 net.cpp:406] ip1 <- pool2
+I0428 21:10:53.241910 168369 net.cpp:380] ip1 -> ip1
+I0428 21:10:53.245671 168369 net.cpp:122] Setting up ip1
+I0428 21:10:53.245682 168369 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:10:53.245687 168369 net.cpp:137] Memory required for data: 5039360
+I0428 21:10:53.245697 168369 layer_factory.hpp:77] Creating layer relu1
+I0428 21:10:53.245704 168369 net.cpp:84] Creating Layer relu1
+I0428 21:10:53.245710 168369 net.cpp:406] relu1 <- ip1
+I0428 21:10:53.245717 168369 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:10:53.245725 168369 net.cpp:122] Setting up relu1
+I0428 21:10:53.245730 168369 net.cpp:129] Top shape: 64 500 (32000)
+I0428 21:10:53.245735 168369 net.cpp:137] Memory required for data: 5167360
+I0428 21:10:53.245739 168369 layer_factory.hpp:77] Creating layer ip2
+I0428 21:10:53.245746 168369 net.cpp:84] Creating Layer ip2
+I0428 21:10:53.245750 168369 net.cpp:406] ip2 <- ip1
+I0428 21:10:53.245759 168369 net.cpp:380] ip2 -> ip2
+I0428 21:10:53.245824 168369 net.cpp:122] Setting up ip2
+I0428 21:10:53.245831 168369 net.cpp:129] Top shape: 64 10 (640)
+I0428 21:10:53.245834 168369 net.cpp:137] Memory required for data: 5169920
+I0428 21:10:53.245842 168369 layer_factory.hpp:77] Creating layer loss
+I0428 21:10:53.245851 168369 net.cpp:84] Creating Layer loss
+I0428 21:10:53.245854 168369 net.cpp:406] loss <- ip2
+I0428 21:10:53.245860 168369 net.cpp:406] loss <- label
+I0428 21:10:53.245868 168369 net.cpp:380] loss -> loss
+I0428 21:10:53.245882 168369 layer_factory.hpp:77] Creating layer loss
+I0428 21:10:53.245898 168369 net.cpp:122] Setting up loss
+I0428 21:10:53.245904 168369 net.cpp:129] Top shape: (1)
+I0428 21:10:53.245909 168369 net.cpp:132]     with loss weight 1
+I0428 21:10:53.245923 168369 net.cpp:137] Memory required for data: 5169924
+I0428 21:10:53.245926 168369 net.cpp:198] loss needs backward computation.
+I0428 21:10:53.245934 168369 net.cpp:198] ip2 needs backward computation.
+I0428 21:10:53.245940 168369 net.cpp:198] relu1 needs backward computation.
+I0428 21:10:53.245944 168369 net.cpp:198] ip1 needs backward computation.
+I0428 21:10:53.245949 168369 net.cpp:198] pool2 needs backward computation.
+I0428 21:10:53.245954 168369 net.cpp:198] conv2 needs backward computation.
+I0428 21:10:53.245960 168369 net.cpp:198] pool1 needs backward computation.
+I0428 21:10:53.245965 168369 net.cpp:198] conv1 needs backward computation.
+I0428 21:10:53.245970 168369 net.cpp:200] mnist does not need backward computation.
+I0428 21:10:53.245975 168369 net.cpp:242] This network produces output loss
+I0428 21:10:53.245987 168369 net.cpp:255] Network initialization done.
+I0428 21:10:53.246165 168369 solver.cpp:172] Creating test net (#0) specified by net file: examples/mnist/lenet_train_test.prototxt
+I0428 21:10:53.246208 168369 net.cpp:294] The NetState phase (1) differed from the phase (0) specified by a rule in layer mnist
+I0428 21:10:53.246315 168369 net.cpp:51] Initializing net from parameters: 
+name: "LeNet"
+state {
+  phase: TEST
+}
+layer {
+  name: "mnist"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.00390625
+  }
+  data_param {
+    source: "examples/mnist/mnist_test_lmdb"
+    batch_size: 100
+    backend: LMDB
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 20
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 50
+    kernel_size: 5
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "pool2"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+}
+layer {
+  name: "ip2"
+  type: "InnerProduct"
+  bottom: "ip1"
+  top: "ip2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip2"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip2"
+  bottom: "label"
+  top: "loss"
+}
+I0428 21:10:53.246399 168369 layer_factory.hpp:77] Creating layer mnist
+I0428 21:10:53.246451 168369 db_lmdb.cpp:35] Opened lmdb examples/mnist/mnist_test_lmdb
+I0428 21:10:53.246466 168369 net.cpp:84] Creating Layer mnist
+I0428 21:10:53.246474 168369 net.cpp:380] mnist -> data
+I0428 21:10:53.246485 168369 net.cpp:380] mnist -> label
+I0428 21:10:53.246502 168369 data_layer.cpp:45] output data size: 100,1,28,28
+I0428 21:10:53.246772 168369 net.cpp:122] Setting up mnist
+I0428 21:10:53.246783 168369 net.cpp:129] Top shape: 100 1 28 28 (78400)
+I0428 21:10:53.246788 168369 net.cpp:129] Top shape: 100 (100)
+I0428 21:10:53.246793 168369 net.cpp:137] Memory required for data: 314000
+I0428 21:10:53.246798 168369 layer_factory.hpp:77] Creating layer label_mnist_1_split
+I0428 21:10:53.246809 168369 net.cpp:84] Creating Layer label_mnist_1_split
+I0428 21:10:53.246814 168369 net.cpp:406] label_mnist_1_split <- label
+I0428 21:10:53.246821 168369 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_0
+I0428 21:10:53.246855 168369 net.cpp:380] label_mnist_1_split -> label_mnist_1_split_1
+I0428 21:10:53.246866 168369 net.cpp:122] Setting up label_mnist_1_split
+I0428 21:10:53.246873 168369 net.cpp:129] Top shape: 100 (100)
+I0428 21:10:53.246878 168369 net.cpp:129] Top shape: 100 (100)
+I0428 21:10:53.246882 168369 net.cpp:137] Memory required for data: 314800
+I0428 21:10:53.246886 168369 layer_factory.hpp:77] Creating layer conv1
+I0428 21:10:53.246901 168369 net.cpp:84] Creating Layer conv1
+I0428 21:10:53.246906 168369 net.cpp:406] conv1 <- data
+I0428 21:10:53.246914 168369 net.cpp:380] conv1 -> conv1
+I0428 21:10:53.246949 168369 net.cpp:122] Setting up conv1
+I0428 21:10:53.246958 168369 net.cpp:129] Top shape: 100 20 24 24 (1152000)
+I0428 21:10:53.246963 168369 net.cpp:137] Memory required for data: 4922800
+I0428 21:10:53.246991 168369 layer_factory.hpp:77] Creating layer pool1
+I0428 21:10:53.246999 168369 net.cpp:84] Creating Layer pool1
+I0428 21:10:53.247004 168369 net.cpp:406] pool1 <- conv1
+I0428 21:10:53.247011 168369 net.cpp:380] pool1 -> pool1
+I0428 21:10:53.247021 168369 net.cpp:122] Setting up pool1
+I0428 21:10:53.247027 168369 net.cpp:129] Top shape: 100 20 12 12 (288000)
+I0428 21:10:53.247033 168369 net.cpp:137] Memory required for data: 6074800
+I0428 21:10:53.247038 168369 layer_factory.hpp:77] Creating layer conv2
+I0428 21:10:53.247051 168369 net.cpp:84] Creating Layer conv2
+I0428 21:10:53.247056 168369 net.cpp:406] conv2 <- pool1
+I0428 21:10:53.247066 168369 net.cpp:380] conv2 -> conv2
+I0428 21:10:53.247316 168369 net.cpp:122] Setting up conv2
+I0428 21:10:53.247324 168369 net.cpp:129] Top shape: 100 50 8 8 (320000)
+I0428 21:10:53.247329 168369 net.cpp:137] Memory required for data: 7354800
+I0428 21:10:53.247339 168369 layer_factory.hpp:77] Creating layer pool2
+I0428 21:10:53.247349 168369 net.cpp:84] Creating Layer pool2
+I0428 21:10:53.247354 168369 net.cpp:406] pool2 <- conv2
+I0428 21:10:53.247359 168369 net.cpp:380] pool2 -> pool2
+I0428 21:10:53.247370 168369 net.cpp:122] Setting up pool2
+I0428 21:10:53.247375 168369 net.cpp:129] Top shape: 100 50 4 4 (80000)
+I0428 21:10:53.247380 168369 net.cpp:137] Memory required for data: 7674800
+I0428 21:10:53.247383 168369 layer_factory.hpp:77] Creating layer ip1
+I0428 21:10:53.247393 168369 net.cpp:84] Creating Layer ip1
+I0428 21:10:53.247397 168369 net.cpp:406] ip1 <- pool2
+I0428 21:10:53.247406 168369 net.cpp:380] ip1 -> ip1
+I0428 21:10:53.251181 168369 net.cpp:122] Setting up ip1
+I0428 21:10:53.251194 168369 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:10:53.251197 168369 net.cpp:137] Memory required for data: 7874800
+I0428 21:10:53.251209 168369 layer_factory.hpp:77] Creating layer relu1
+I0428 21:10:53.251215 168369 net.cpp:84] Creating Layer relu1
+I0428 21:10:53.251220 168369 net.cpp:406] relu1 <- ip1
+I0428 21:10:53.251227 168369 net.cpp:367] relu1 -> ip1 (in-place)
+I0428 21:10:53.251235 168369 net.cpp:122] Setting up relu1
+I0428 21:10:53.251240 168369 net.cpp:129] Top shape: 100 500 (50000)
+I0428 21:10:53.251245 168369 net.cpp:137] Memory required for data: 8074800
+I0428 21:10:53.251248 168369 layer_factory.hpp:77] Creating layer ip2
+I0428 21:10:53.251260 168369 net.cpp:84] Creating Layer ip2
+I0428 21:10:53.251263 168369 net.cpp:406] ip2 <- ip1
+I0428 21:10:53.251271 168369 net.cpp:380] ip2 -> ip2
+I0428 21:10:53.251330 168369 net.cpp:122] Setting up ip2
+I0428 21:10:53.251337 168369 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:10:53.251340 168369 net.cpp:137] Memory required for data: 8078800
+I0428 21:10:53.251348 168369 layer_factory.hpp:77] Creating layer ip2_ip2_0_split
+I0428 21:10:53.251354 168369 net.cpp:84] Creating Layer ip2_ip2_0_split
+I0428 21:10:53.251358 168369 net.cpp:406] ip2_ip2_0_split <- ip2
+I0428 21:10:53.251366 168369 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_0
+I0428 21:10:53.251375 168369 net.cpp:380] ip2_ip2_0_split -> ip2_ip2_0_split_1
+I0428 21:10:53.251382 168369 net.cpp:122] Setting up ip2_ip2_0_split
+I0428 21:10:53.251389 168369 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:10:53.251394 168369 net.cpp:129] Top shape: 100 10 (1000)
+I0428 21:10:53.251397 168369 net.cpp:137] Memory required for data: 8086800
+I0428 21:10:53.251401 168369 layer_factory.hpp:77] Creating layer accuracy
+I0428 21:10:53.251410 168369 net.cpp:84] Creating Layer accuracy
+I0428 21:10:53.251413 168369 net.cpp:406] accuracy <- ip2_ip2_0_split_0
+I0428 21:10:53.251420 168369 net.cpp:406] accuracy <- label_mnist_1_split_0
+I0428 21:10:53.251426 168369 net.cpp:380] accuracy -> accuracy
+I0428 21:10:53.251435 168369 net.cpp:122] Setting up accuracy
+I0428 21:10:53.251440 168369 net.cpp:129] Top shape: (1)
+I0428 21:10:53.251444 168369 net.cpp:137] Memory required for data: 8086804
+I0428 21:10:53.251448 168369 layer_factory.hpp:77] Creating layer loss
+I0428 21:10:53.251456 168369 net.cpp:84] Creating Layer loss
+I0428 21:10:53.251464 168369 net.cpp:406] loss <- ip2_ip2_0_split_1
+I0428 21:10:53.251478 168369 net.cpp:406] loss <- label_mnist_1_split_1
+I0428 21:10:53.251485 168369 net.cpp:380] loss -> loss
+I0428 21:10:53.251494 168369 layer_factory.hpp:77] Creating layer loss
+I0428 21:10:53.251513 168369 net.cpp:122] Setting up loss
+I0428 21:10:53.251519 168369 net.cpp:129] Top shape: (1)
+I0428 21:10:53.251523 168369 net.cpp:132]     with loss weight 1
+I0428 21:10:53.251531 168369 net.cpp:137] Memory required for data: 8086808
+I0428 21:10:53.251536 168369 net.cpp:198] loss needs backward computation.
+I0428 21:10:53.251543 168369 net.cpp:200] accuracy does not need backward computation.
+I0428 21:10:53.251549 168369 net.cpp:198] ip2_ip2_0_split needs backward computation.
+I0428 21:10:53.251552 168369 net.cpp:198] ip2 needs backward computation.
+I0428 21:10:53.251557 168369 net.cpp:198] relu1 needs backward computation.
+I0428 21:10:53.251562 168369 net.cpp:198] ip1 needs backward computation.
+I0428 21:10:53.251566 168369 net.cpp:198] pool2 needs backward computation.
+I0428 21:10:53.251571 168369 net.cpp:198] conv2 needs backward computation.
+I0428 21:10:53.251575 168369 net.cpp:198] pool1 needs backward computation.
+I0428 21:10:53.251581 168369 net.cpp:198] conv1 needs backward computation.
+I0428 21:10:53.251586 168369 net.cpp:200] label_mnist_1_split does not need backward computation.
+I0428 21:10:53.251591 168369 net.cpp:200] mnist does not need backward computation.
+I0428 21:10:53.251595 168369 net.cpp:242] This network produces output accuracy
+I0428 21:10:53.251603 168369 net.cpp:242] This network produces output loss
+I0428 21:10:53.251619 168369 net.cpp:255] Network initialization done.
+I0428 21:10:53.251664 168369 solver.cpp:56] Solver scaffolding done.
+I0428 21:10:53.251698 168369 caffe.cpp:248] Starting Optimization
+I0428 21:10:53.251703 168369 solver.cpp:272] Solving LeNet
+I0428 21:10:53.251708 168369 solver.cpp:273] Learning Rate Policy: inv
+I0428 21:10:53.252578 168369 solver.cpp:330] Iteration 0, Testing net (#0)
+#           time             counts unit events
+     1.000146556          2,378,305      LLC-stores               
+     1.000146556             61,511      LLC-load-misses          
+     2.000348272          2,546,914      LLC-stores               
+     2.000348272             21,711      LLC-load-misses          
+     3.000520656          2,559,277      LLC-stores               
+     3.000520656             23,137      LLC-load-misses          
+     4.000696528          2,575,839      LLC-stores               
+     4.000696528             20,553      LLC-load-misses          
+     5.000871376          2,556,526      LLC-stores               
+     5.000871376             20,550      LLC-load-misses          
+I0428 21:10:58.521121 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:10:58.739245 168369 solver.cpp:397]     Test net output #0: accuracy = 0.119
+I0428 21:10:58.739271 168369 solver.cpp:397]     Test net output #1: loss = 2.3328 (* 1 = 2.3328 loss)
+I0428 21:10:58.827275 168369 solver.cpp:218] Iteration 0 (-9.94049e-39 iter/s, 5.575s/100 iters), loss = 2.34749
+I0428 21:10:58.827301 168369 solver.cpp:237]     Train net output #0: loss = 2.34749 (* 1 = 2.34749 loss)
+I0428 21:10:58.827313 168369 sgd_solver.cpp:105] Iteration 0, lr = 0.01
+     6.001047662          2,633,717      LLC-stores               
+     6.001047662             25,863      LLC-load-misses          
+     7.001247267          2,792,705      LLC-stores               
+     7.001247267             24,898      LLC-load-misses          
+     8.001425791          2,851,943      LLC-stores               
+     8.001425791             69,337      LLC-load-misses          
+     9.001603970          2,809,680      LLC-stores               
+     9.001603970             25,108      LLC-load-misses          
+    10.001781828          2,885,600      LLC-stores               
+    10.001781828             26,373      LLC-load-misses          
+    11.001955650          2,806,899      LLC-stores               
+    11.001955650             24,275      LLC-load-misses          
+    12.002142528          2,845,779      LLC-stores               
+    12.002142528             27,039      LLC-load-misses          
+    13.002319006          2,808,289      LLC-stores               
+    13.002319006             71,233      LLC-load-misses          
+    14.002500096          2,860,848      LLC-stores               
+    14.002500096             25,716      LLC-load-misses          
+I0428 21:11:07.492148 168369 solver.cpp:218] Iteration 100 (11.542 iter/s, 8.664s/100 iters), loss = 0.167509
+I0428 21:11:07.492182 168369 solver.cpp:237]     Train net output #0: loss = 0.167509 (* 1 = 0.167509 loss)
+I0428 21:11:07.492187 168369 sgd_solver.cpp:105] Iteration 100, lr = 0.00992565
+    15.002675833          2,791,753      LLC-stores               
+    15.002675833             23,620      LLC-load-misses          
+    16.002852947          2,865,140      LLC-stores               
+    16.002852947             24,633      LLC-load-misses          
+    17.003040021          2,827,952      LLC-stores               
+    17.003040021             25,090      LLC-load-misses          
+    18.003215799          2,811,826      LLC-stores               
+    18.003215799             51,166      LLC-load-misses          
+    19.003390921          2,835,863      LLC-stores               
+    19.003390921             26,030      LLC-load-misses          
+    20.003570258          2,805,021      LLC-stores               
+    20.003570258             23,867      LLC-load-misses          
+    21.003768552          2,845,217      LLC-stores               
+    21.003768552             24,795      LLC-load-misses          
+    22.003958898          2,802,692      LLC-stores               
+    22.003958898             23,052      LLC-load-misses          
+I0428 21:11:16.172883 168369 solver.cpp:218] Iteration 200 (11.5207 iter/s, 8.68s/100 iters), loss = 0.126509
+I0428 21:11:16.172915 168369 solver.cpp:237]     Train net output #0: loss = 0.126509 (* 1 = 0.126509 loss)
+I0428 21:11:16.172920 168369 sgd_solver.cpp:105] Iteration 200, lr = 0.00985258
+    23.004144030          2,845,657      LLC-stores               
+    23.004144030             67,796      LLC-load-misses          
+    24.004322342          2,802,367      LLC-stores               
+    24.004322342             23,701      LLC-load-misses          
+    25.004497199          2,854,226      LLC-stores               
+    25.004497199             24,778      LLC-load-misses          
+#           time             counts unit events
+    26.004676579          2,781,105      LLC-stores               
+    26.004676579             24,091      LLC-load-misses          
+    27.004863919          2,869,256      LLC-stores               
+    27.004863919             25,968      LLC-load-misses          
+    28.005043293          2,775,907      LLC-stores               
+    28.005043293             53,733      LLC-load-misses          
+    29.005224038          2,874,048      LLC-stores               
+    29.005224038             28,168      LLC-load-misses          
+    30.005403405          2,764,060      LLC-stores               
+    30.005403405             23,014      LLC-load-misses          
+    31.005576368          2,889,221      LLC-stores               
+    31.005576368             25,174      LLC-load-misses          
+I0428 21:11:24.851982 168369 solver.cpp:218] Iteration 300 (11.5221 iter/s, 8.679s/100 iters), loss = 0.145092
+I0428 21:11:24.852181 168369 solver.cpp:237]     Train net output #0: loss = 0.145092 (* 1 = 0.145092 loss)
+I0428 21:11:24.852188 168369 sgd_solver.cpp:105] Iteration 300, lr = 0.00978075
+    32.005755460          2,788,171      LLC-stores               
+    32.005755460             23,541      LLC-load-misses          
+    33.005929324          2,846,532      LLC-stores               
+    33.005929324             40,946      LLC-load-misses          
+    34.006136829          2,800,109      LLC-stores               
+    34.006136829             24,870      LLC-load-misses          
+    35.006316135          2,848,524      LLC-stores               
+    35.006316135             26,282      LLC-load-misses          
+    36.006506877          2,789,701      LLC-stores               
+    36.006506877             23,218      LLC-load-misses          
+    37.006696534          2,858,925      LLC-stores               
+    37.006696534             25,866      LLC-load-misses          
+    38.006878080          2,799,409      LLC-stores               
+    38.006878080             69,745      LLC-load-misses          
+    39.007053741          2,863,696      LLC-stores               
+    39.007053741             24,542      LLC-load-misses          
+    40.007230074          2,824,035      LLC-stores               
+    40.007230074             25,224      LLC-load-misses          
+I0428 21:11:33.532949 168369 solver.cpp:218] Iteration 400 (11.5207 iter/s, 8.68s/100 iters), loss = 0.108957
+I0428 21:11:33.532980 168369 solver.cpp:237]     Train net output #0: loss = 0.108957 (* 1 = 0.108957 loss)
+I0428 21:11:33.532987 168369 sgd_solver.cpp:105] Iteration 400, lr = 0.00971013
+    41.007405062          2,808,173      LLC-stores               
+    41.007405062             23,998      LLC-load-misses          
+    42.007586568          2,836,549      LLC-stores               
+    42.007586568             25,453      LLC-load-misses          
+    43.007758219          2,803,300      LLC-stores               
+    43.007758219             52,130      LLC-load-misses          
+    44.007927608          2,838,757      LLC-stores               
+    44.007927608             26,377      LLC-load-misses          
+    45.008111969          2,798,219      LLC-stores               
+    45.008111969             23,122      LLC-load-misses          
+    46.008285413          2,854,196      LLC-stores               
+    46.008285413             24,335      LLC-load-misses          
+    47.008475942          2,784,501      LLC-stores               
+    47.008475942             24,221      LLC-load-misses          
+    48.008647487          2,863,756      LLC-stores               
+    48.008647487             59,932      LLC-load-misses          
+I0428 21:11:42.125893 168369 solver.cpp:330] Iteration 500, Testing net (#0)
+    49.008825933          2,826,823      LLC-stores               
+    49.008825933             28,445      LLC-load-misses          
+    50.008997315          2,631,991      LLC-stores               
+    50.008997315             20,289      LLC-load-misses          
+#           time             counts unit events
+    51.009162526          2,634,359      LLC-stores               
+    51.009162526             19,971      LLC-load-misses          
+    52.009343228          2,608,132      LLC-stores               
+    52.009343228             21,107      LLC-load-misses          
+    53.009501275          2,648,859      LLC-stores               
+    53.009501275             25,487      LLC-load-misses          
+    54.009666052          2,626,110      LLC-stores               
+    54.009666052             20,568      LLC-load-misses          
+I0428 21:11:47.367362 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:11:47.584852 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9736
+I0428 21:11:47.584878 168369 solver.cpp:397]     Test net output #1: loss = 0.0842893 (* 1 = 0.0842893 loss)
+I0428 21:11:47.670444 168369 solver.cpp:218] Iteration 500 (7.07364 iter/s, 14.137s/100 iters), loss = 0.0989228
+I0428 21:11:47.670465 168369 solver.cpp:237]     Train net output #0: loss = 0.0989226 (* 1 = 0.0989226 loss)
+I0428 21:11:47.670471 168369 sgd_solver.cpp:105] Iteration 500, lr = 0.00964069
+    55.009836958          2,725,404      LLC-stores               
+    55.009836958             34,232      LLC-load-misses          
+    56.010027534          2,815,761      LLC-stores               
+    56.010027534             23,698      LLC-load-misses          
+    57.010217055          2,834,450      LLC-stores               
+    57.010217055             26,531      LLC-load-misses          
+    58.010398105          2,807,463      LLC-stores               
+    58.010398105             52,465      LLC-load-misses          
+    59.010586859          2,835,142      LLC-stores               
+    59.010586859             26,276      LLC-load-misses          
+    60.010765309          2,800,232      LLC-stores               
+    60.010765309             22,951      LLC-load-misses          
+    61.010952414          2,838,452      LLC-stores               
+    61.010952414             25,264      LLC-load-misses          
+    62.011137474          2,797,040      LLC-stores               
+    62.011137474             22,968      LLC-load-misses          
+    63.011306304          2,872,166      LLC-stores               
+    63.011306304             75,072      LLC-load-misses          
+I0428 21:11:56.349476 168369 solver.cpp:218] Iteration 600 (11.5221 iter/s, 8.679s/100 iters), loss = 0.0883517
+I0428 21:11:56.349649 168369 solver.cpp:237]     Train net output #0: loss = 0.0883515 (* 1 = 0.0883515 loss)
+I0428 21:11:56.349658 168369 sgd_solver.cpp:105] Iteration 600, lr = 0.0095724
+    64.011498280          2,781,867      LLC-stores               
+    64.011498280             24,237      LLC-load-misses          
+    65.011689689          2,869,806      LLC-stores               
+    65.011689689             24,799      LLC-load-misses          
+    66.011902967          2,765,565      LLC-stores               
+    66.011902967             23,468      LLC-load-misses          
+    67.012143587          2,885,080      LLC-stores               
+    67.012143587             24,238      LLC-load-misses          
+    68.012336323          2,756,796      LLC-stores               
+    68.012336323             52,968      LLC-load-misses          
+    69.012530190          2,887,582      LLC-stores               
+    69.012530190             26,115      LLC-load-misses          
+    70.012708711          2,788,076      LLC-stores               
+    70.012708711             21,734      LLC-load-misses          
+    71.012882731          2,843,432      LLC-stores               
+    71.012882731             25,186      LLC-load-misses          
+I0428 21:12:05.025459 168369 solver.cpp:218] Iteration 700 (11.5274 iter/s, 8.675s/100 iters), loss = 0.125167
+I0428 21:12:05.025490 168369 solver.cpp:237]     Train net output #0: loss = 0.125167 (* 1 = 0.125167 loss)
+I0428 21:12:05.025496 168369 sgd_solver.cpp:105] Iteration 700, lr = 0.00950522
+    72.013066721          2,790,612      LLC-stores               
+    72.013066721             23,570      LLC-load-misses          
+    73.013239577          2,855,468      LLC-stores               
+    73.013239577             41,748      LLC-load-misses          
+    74.013419987          2,842,026      LLC-stores               
+    74.013419987             26,305      LLC-load-misses          
+    75.013609472          2,801,949      LLC-stores               
+    75.013609472             23,259      LLC-load-misses          
+#           time             counts unit events
+    76.013798054          2,829,048      LLC-stores               
+    76.013798054             24,555      LLC-load-misses          
+    77.014006575          2,806,173      LLC-stores               
+    77.014006575             22,975      LLC-load-misses          
+    78.014191880          2,846,886      LLC-stores               
+    78.014191880             73,060      LLC-load-misses          
+    79.014367668          2,797,236      LLC-stores               
+    79.014367668             24,569      LLC-load-misses          
+    80.014543288          2,849,517      LLC-stores               
+    80.014543288             24,900      LLC-load-misses          
+I0428 21:12:13.702934 168369 solver.cpp:218] Iteration 800 (11.5247 iter/s, 8.677s/100 iters), loss = 0.214773
+I0428 21:12:13.702965 168369 solver.cpp:237]     Train net output #0: loss = 0.214773 (* 1 = 0.214773 loss)
+I0428 21:12:13.702971 168369 sgd_solver.cpp:105] Iteration 800, lr = 0.00943913
+    81.014717756          2,802,661      LLC-stores               
+    81.014717756             22,514      LLC-load-misses          
+    82.014909062          2,858,278      LLC-stores               
+    82.014909062             24,391      LLC-load-misses          
+    83.015069923          2,781,752      LLC-stores               
+    83.015069923             50,987      LLC-load-misses          
+    84.015231407          2,870,283      LLC-stores               
+    84.015231407             25,777      LLC-load-misses          
+    85.015399505          2,767,739      LLC-stores               
+    85.015399505             22,637      LLC-load-misses          
+    86.015574286          2,880,737      LLC-stores               
+    86.015574286             24,768      LLC-load-misses          
+    87.015752591          2,794,647      LLC-stores               
+    87.015752591             23,533      LLC-load-misses          
+    88.015925793          2,854,764      LLC-stores               
+    88.015925793             38,658      LLC-load-misses          
+    89.016104908          2,798,677      LLC-stores               
+    89.016104908             25,856      LLC-load-misses          
+I0428 21:12:22.379839 168369 solver.cpp:218] Iteration 900 (11.526 iter/s, 8.676s/100 iters), loss = 0.15871
+I0428 21:12:22.379868 168369 solver.cpp:237]     Train net output #0: loss = 0.15871 (* 1 = 0.15871 loss)
+I0428 21:12:22.379874 168369 sgd_solver.cpp:105] Iteration 900, lr = 0.00937411
+    90.016281646          2,850,139      LLC-stores               
+    90.016281646             25,731      LLC-load-misses          
+    91.016468067          2,793,770      LLC-stores               
+    91.016468067             23,557      LLC-load-misses          
+    92.016695033          2,868,265      LLC-stores               
+    92.016695033             25,278      LLC-load-misses          
+I0428 21:12:25.246659 168371 data_layer.cpp:73] Restarting data prefetching from start.
+    93.016869373          2,805,649      LLC-stores               
+    93.016869373             63,291      LLC-load-misses          
+    94.017042528          2,838,826      LLC-stores               
+    94.017042528             24,482      LLC-load-misses          
+    95.017209620          2,834,050      LLC-stores               
+    95.017209620             24,520      LLC-load-misses          
+    96.017382167          2,802,290      LLC-stores               
+    96.017382167             22,395      LLC-load-misses          
+    97.017583713          2,836,435      LLC-stores               
+    97.017583713             25,360      LLC-load-misses          
+I0428 21:12:30.973067 168369 solver.cpp:330] Iteration 1000, Testing net (#0)
+    98.017771079          2,813,344      LLC-stores               
+    98.017771079             53,889      LLC-load-misses          
+    99.017944197          2,615,532      LLC-stores               
+    99.017944197             20,556      LLC-load-misses          
+   100.018126440          2,643,954      LLC-stores               
+   100.018126440             20,383      LLC-load-misses          
+#           time             counts unit events
+   101.018300657          2,597,471      LLC-stores               
+   101.018300657             21,443      LLC-load-misses          
+   102.018496937          2,606,620      LLC-stores               
+   102.018496937             20,497      LLC-load-misses          
+   103.018674646          2,641,977      LLC-stores               
+   103.018674646             24,866      LLC-load-misses          
+I0428 21:12:36.215652 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:12:36.432919 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9813
+I0428 21:12:36.432943 168369 solver.cpp:397]     Test net output #1: loss = 0.0572338 (* 1 = 0.0572338 loss)
+I0428 21:12:36.518169 168369 solver.cpp:218] Iteration 1000 (7.07314 iter/s, 14.138s/100 iters), loss = 0.0987839
+I0428 21:12:36.518190 168369 solver.cpp:237]     Train net output #0: loss = 0.0987837 (* 1 = 0.0987837 loss)
+I0428 21:12:36.518198 168369 sgd_solver.cpp:105] Iteration 1000, lr = 0.00931012
+   104.018854924          2,747,422      LLC-stores               
+   104.018854924             32,576      LLC-load-misses          
+   105.019040999          2,840,614      LLC-stores               
+   105.019040999             25,742      LLC-load-misses          
+   106.019214129          2,784,608      LLC-stores               
+   106.019214129             23,421      LLC-load-misses          
+   107.019455190          2,839,828      LLC-stores               
+   107.019455190             25,850      LLC-load-misses          
+   108.019633787          2,820,615      LLC-stores               
+   108.019633787             56,493      LLC-load-misses          
+   109.019810973          2,840,231      LLC-stores               
+   109.019810973             24,991      LLC-load-misses          
+   110.019980270          2,834,831      LLC-stores               
+   110.019980270             24,206      LLC-load-misses          
+   111.020150499          2,803,662      LLC-stores               
+   111.020150499             23,143      LLC-load-misses          
+I0428 21:12:45.191953 168369 solver.cpp:218] Iteration 1100 (11.53 iter/s, 8.673s/100 iters), loss = 0.00706871
+I0428 21:12:45.191985 168369 solver.cpp:237]     Train net output #0: loss = 0.00706854 (* 1 = 0.00706854 loss)
+I0428 21:12:45.191990 168369 sgd_solver.cpp:105] Iteration 1100, lr = 0.00924715
+   112.020345032          2,840,952      LLC-stores               
+   112.020345032             25,504      LLC-load-misses          
+   113.020512833          2,811,482      LLC-stores               
+   113.020512833             49,854      LLC-load-misses          
+   114.020684298          2,844,913      LLC-stores               
+   114.020684298             25,976      LLC-load-misses          
+   115.020857608          2,786,273      LLC-stores               
+   115.020857608             22,792      LLC-load-misses          
+   116.021027758          2,869,073      LLC-stores               
+   116.021027758             24,861      LLC-load-misses          
+   117.021211809          2,770,230      LLC-stores               
+   117.021211809             23,386      LLC-load-misses          
+   118.021387588          2,894,066      LLC-stores               
+   118.021387588             75,965      LLC-load-misses          
+   119.021566912          2,757,073      LLC-stores               
+   119.021566912             25,039      LLC-load-misses          
+   120.021741705          2,886,890      LLC-stores               
+   120.021741705             24,710      LLC-load-misses          
+I0428 21:12:53.864876 168369 solver.cpp:218] Iteration 1200 (11.5314 iter/s, 8.672s/100 iters), loss = 0.0263443
+I0428 21:12:53.864923 168369 solver.cpp:237]     Train net output #0: loss = 0.0263441 (* 1 = 0.0263441 loss)
+I0428 21:12:53.864928 168369 sgd_solver.cpp:105] Iteration 1200, lr = 0.00918515
+   121.021931026          2,800,370      LLC-stores               
+   121.021931026             23,029      LLC-load-misses          
+   122.022107173          2,846,986      LLC-stores               
+   122.022107173             24,949      LLC-load-misses          
+   123.022280444          2,800,057      LLC-stores               
+   123.022280444             54,339      LLC-load-misses          
+   124.022448134          2,863,950      LLC-stores               
+   124.022448134             26,015      LLC-load-misses          
+   125.022620585          2,836,029      LLC-stores               
+   125.022620585             24,897      LLC-load-misses          
+#           time             counts unit events
+   126.022789390          2,817,247      LLC-stores               
+   126.022789390             22,944      LLC-load-misses          
+   127.022985333          2,839,765      LLC-stores               
+   127.022985333             25,424      LLC-load-misses          
+   128.023166002          2,801,579      LLC-stores               
+   128.023166002             43,682      LLC-load-misses          
+   129.023337856          2,837,548      LLC-stores               
+   129.023337856             25,869      LLC-load-misses          
+I0428 21:13:02.539310 168369 solver.cpp:218] Iteration 1300 (11.5287 iter/s, 8.674s/100 iters), loss = 0.0213864
+I0428 21:13:02.539450 168369 solver.cpp:237]     Train net output #0: loss = 0.0213863 (* 1 = 0.0213863 loss)
+I0428 21:13:02.539458 168369 sgd_solver.cpp:105] Iteration 1300, lr = 0.00912412
+   130.023518011          2,794,449      LLC-stores               
+   130.023518011             22,668      LLC-load-misses          
+   131.023690599          2,854,269      LLC-stores               
+   131.023690599             24,232      LLC-load-misses          
+   132.023889800          2,789,972      LLC-stores               
+   132.023889800             22,931      LLC-load-misses          
+   133.024063762          2,877,015      LLC-stores               
+   133.024063762             73,460      LLC-load-misses          
+   134.024245120          2,778,625      LLC-stores               
+   134.024245120             23,722      LLC-load-misses          
+   135.024423150          2,880,039      LLC-stores               
+   135.024423150             26,015      LLC-load-misses          
+   136.024605871          2,757,849      LLC-stores               
+   136.024605871             23,245      LLC-load-misses          
+   137.024793161          2,891,032      LLC-stores               
+   137.024793161             24,704      LLC-load-misses          
+   138.024975672          2,803,742      LLC-stores               
+   138.024975672             49,812      LLC-load-misses          
+I0428 21:13:11.215467 168369 solver.cpp:218] Iteration 1400 (11.526 iter/s, 8.676s/100 iters), loss = 0.00787492
+I0428 21:13:11.215495 168369 solver.cpp:237]     Train net output #0: loss = 0.00787483 (* 1 = 0.00787483 loss)
+I0428 21:13:11.215502 168369 sgd_solver.cpp:105] Iteration 1400, lr = 0.00906403
+   139.025157312          2,846,946      LLC-stores               
+   139.025157312             25,780      LLC-load-misses          
+   140.025299051          2,838,682      LLC-stores               
+   140.025299051             24,488      LLC-load-misses          
+   141.025473978          2,818,635      LLC-stores               
+   141.025473978             24,021      LLC-load-misses          
+   142.025661723          2,826,354      LLC-stores               
+   142.025661723             25,969      LLC-load-misses          
+   143.025833945          2,805,905      LLC-stores               
+   143.025833945             37,562      LLC-load-misses          
+   144.026005511          2,842,068      LLC-stores               
+   144.026005511             26,075      LLC-load-misses          
+   145.026178702          2,790,808      LLC-stores               
+   145.026178702             23,212      LLC-load-misses          
+   146.026355492          2,851,729      LLC-stores               
+   146.026355492             24,766      LLC-load-misses          
+I0428 21:13:19.801048 168369 solver.cpp:330] Iteration 1500, Testing net (#0)
+   147.026545797          2,773,836      LLC-stores               
+   147.026545797             26,720      LLC-load-misses          
+   148.026727067          2,663,505      LLC-stores               
+   148.026727067             25,793      LLC-load-misses          
+   149.026906542          2,602,958      LLC-stores               
+   149.026906542             21,303      LLC-load-misses          
+   150.027082798          2,635,227      LLC-stores               
+   150.027082798             20,454      LLC-load-misses          
+#           time             counts unit events
+   151.027259335          2,656,661      LLC-stores               
+   151.027259335             20,195      LLC-load-misses          
+I0428 21:13:25.040626 168372 data_layer.cpp:73] Restarting data prefetching from start.
+   152.027445408          2,634,280      LLC-stores               
+   152.027445408             21,832      LLC-load-misses          
+I0428 21:13:25.257863 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9833
+I0428 21:13:25.257885 168369 solver.cpp:397]     Test net output #1: loss = 0.0526055 (* 1 = 0.0526055 loss)
+I0428 21:13:25.343137 168369 solver.cpp:218] Iteration 1500 (7.07864 iter/s, 14.127s/100 iters), loss = 0.0873206
+I0428 21:13:25.343158 168369 solver.cpp:237]     Train net output #0: loss = 0.0873204 (* 1 = 0.0873204 loss)
+I0428 21:13:25.343163 168369 sgd_solver.cpp:105] Iteration 1500, lr = 0.00900485
+   153.027617277          2,783,613      LLC-stores               
+   153.027617277             61,440      LLC-load-misses          
+   154.027785866          2,872,990      LLC-stores               
+   154.027785866             25,152      LLC-load-misses          
+   155.027965374          2,821,117      LLC-stores               
+   155.027965374             24,968      LLC-load-misses          
+   156.028135189          2,809,655      LLC-stores               
+   156.028135189             23,167      LLC-load-misses          
+   157.028314933          2,832,005      LLC-stores               
+   157.028314933             24,492      LLC-load-misses          
+   158.028489168          2,806,921      LLC-stores               
+   158.028489168             38,571      LLC-load-misses          
+   159.028663041          2,848,645      LLC-stores               
+   159.028663041             25,493      LLC-load-misses          
+   160.028833649          2,791,654      LLC-stores               
+   160.028833649             23,156      LLC-load-misses          
+I0428 21:13:34.015867 168369 solver.cpp:218] Iteration 1600 (11.5314 iter/s, 8.672s/100 iters), loss = 0.0951709
+I0428 21:13:34.016043 168369 solver.cpp:237]     Train net output #0: loss = 0.0951707 (* 1 = 0.0951707 loss)
+I0428 21:13:34.016052 168369 sgd_solver.cpp:105] Iteration 1600, lr = 0.00894657
+   161.029026584          2,859,743      LLC-stores               
+   161.029026584             24,222      LLC-load-misses          
+   162.029208605          2,771,562      LLC-stores               
+   162.029208605             23,155      LLC-load-misses          
+   163.029376384          2,883,775      LLC-stores               
+   163.029376384             73,985      LLC-load-misses          
+   164.029548022          2,756,941      LLC-stores               
+   164.029548022             23,883      LLC-load-misses          
+   165.029716655          2,884,536      LLC-stores               
+   165.029716655             25,155      LLC-load-misses          
+   166.029896103          2,803,076      LLC-stores               
+   166.029896103             22,023      LLC-load-misses          
+   167.030080354          2,845,085      LLC-stores               
+   167.030080354             26,292      LLC-load-misses          
+   168.030254352          2,793,719      LLC-stores               
+   168.030254352             51,459      LLC-load-misses          
+   169.030429939          2,854,418      LLC-stores               
+   169.030429939             25,854      LLC-load-misses          
+I0428 21:13:42.693248 168369 solver.cpp:218] Iteration 1700 (11.5247 iter/s, 8.677s/100 iters), loss = 0.0336895
+I0428 21:13:42.693279 168369 solver.cpp:237]     Train net output #0: loss = 0.0336894 (* 1 = 0.0336894 loss)
+I0428 21:13:42.693286 168369 sgd_solver.cpp:105] Iteration 1700, lr = 0.00888916
+   170.030609982          2,838,158      LLC-stores               
+   170.030609982             24,358      LLC-load-misses          
+   171.030799529          2,817,723      LLC-stores               
+   171.030799529             23,621      LLC-load-misses          
+   172.031031218          2,839,743      LLC-stores               
+   172.031031218             25,219      LLC-load-misses          
+   173.031214285          2,816,665      LLC-stores               
+   173.031214285             36,614      LLC-load-misses          
+   174.031387561          2,831,976      LLC-stores               
+   174.031387561             24,994      LLC-load-misses          
+   175.031558035          2,789,223      LLC-stores               
+   175.031558035             23,093      LLC-load-misses          
+#           time             counts unit events
+   176.031774079          2,845,339      LLC-stores               
+   176.031774079             23,702      LLC-load-misses          
+   177.031969297          2,789,000      LLC-stores               
+   177.031969297             22,841      LLC-load-misses          
+   178.032138153          2,871,270      LLC-stores               
+   178.032138153             69,592      LLC-load-misses          
+I0428 21:13:51.367072 168369 solver.cpp:218] Iteration 1800 (11.53 iter/s, 8.673s/100 iters), loss = 0.0144093
+I0428 21:13:51.367101 168369 solver.cpp:237]     Train net output #0: loss = 0.0144092 (* 1 = 0.0144092 loss)
+I0428 21:13:51.367106 168369 sgd_solver.cpp:105] Iteration 1800, lr = 0.0088326
+   179.032320925          2,773,609      LLC-stores               
+   179.032320925             25,295      LLC-load-misses          
+   180.032505350          2,874,010      LLC-stores               
+   180.032505350             24,070      LLC-load-misses          
+   181.032675867          2,753,170      LLC-stores               
+   181.032675867             23,072      LLC-load-misses          
+   182.032903704          2,887,409      LLC-stores               
+   182.032903704             25,181      LLC-load-misses          
+   183.033077322          2,800,274      LLC-stores               
+   183.033077322             51,185      LLC-load-misses          
+   184.033251522          2,842,757      LLC-stores               
+   184.033251522             26,262      LLC-load-misses          
+I0428 21:13:57.442169 168371 data_layer.cpp:73] Restarting data prefetching from start.
+   185.033428813          2,785,808      LLC-stores               
+   185.033428813             23,350      LLC-load-misses          
+   186.033605109          2,862,976      LLC-stores               
+   186.033605109             24,368      LLC-load-misses          
+I0428 21:14:00.040838 168369 solver.cpp:218] Iteration 1900 (11.53 iter/s, 8.673s/100 iters), loss = 0.114937
+I0428 21:14:00.040869 168369 solver.cpp:237]     Train net output #0: loss = 0.114937 (* 1 = 0.114937 loss)
+I0428 21:14:00.040875 168369 sgd_solver.cpp:105] Iteration 1900, lr = 0.00877687
+   187.033785053          2,826,042      LLC-stores               
+   187.033785053             24,668      LLC-load-misses          
+   188.033956144          2,817,719      LLC-stores               
+   188.033956144             56,066      LLC-load-misses          
+   189.034125721          2,839,678      LLC-stores               
+   189.034125721             25,673      LLC-load-misses          
+   190.034294398          2,808,658      LLC-stores               
+   190.034294398             21,420      LLC-load-misses          
+   191.034463358          2,835,682      LLC-stores               
+   191.034463358             23,831      LLC-load-misses          
+   192.034677826          2,801,531      LLC-stores               
+   192.034677826             22,947      LLC-load-misses          
+   193.034853331          2,861,155      LLC-stores               
+   193.034853331             65,305      LLC-load-misses          
+   194.035028005          2,781,944      LLC-stores               
+   194.035028005             23,689      LLC-load-misses          
+   195.035203636          2,876,473      LLC-stores               
+   195.035203636             26,033      LLC-load-misses          
+I0428 21:14:08.628198 168369 solver.cpp:330] Iteration 2000, Testing net (#0)
+   196.035379776          2,768,099      LLC-stores               
+   196.035379776             25,555      LLC-load-misses          
+   197.035626408          2,613,101      LLC-stores               
+   197.035626408             21,341      LLC-load-misses          
+   198.035806437          2,637,818      LLC-stores               
+   198.035806437             26,537      LLC-load-misses          
+   199.035983421          2,652,304      LLC-stores               
+   199.035983421             19,461      LLC-load-misses          
+   200.036158313          2,608,963      LLC-stores               
+   200.036158313             21,699      LLC-load-misses          
+I0428 21:14:13.864133 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:14:14.081017 168369 solver.cpp:397]     Test net output #0: accuracy = 0.986
+I0428 21:14:14.081040 168369 solver.cpp:397]     Test net output #1: loss = 0.0406935 (* 1 = 0.0406935 loss)
+I0428 21:14:14.166471 168369 solver.cpp:218] Iteration 2000 (7.07965 iter/s, 14.125s/100 iters), loss = 0.00784599
+I0428 21:14:14.166491 168369 solver.cpp:237]     Train net output #0: loss = 0.00784593 (* 1 = 0.00784593 loss)
+I0428 21:14:14.166497 168369 sgd_solver.cpp:105] Iteration 2000, lr = 0.00872196
+#           time             counts unit events
+   201.036357836          2,625,676      LLC-stores               
+   201.036357836             28,416      LLC-load-misses          
+   202.036542632          2,837,598      LLC-stores               
+   202.036542632             26,081      LLC-load-misses          
+   203.036714749          2,810,561      LLC-stores               
+   203.036714749             36,263      LLC-load-misses          
+   204.036885157          2,844,518      LLC-stores               
+   204.036885157             25,861      LLC-load-misses          
+   205.037053276          2,791,490      LLC-stores               
+   205.037053276             22,571      LLC-load-misses          
+   206.037228296          2,864,834      LLC-stores               
+   206.037228296             23,036      LLC-load-misses          
+   207.037410291          2,760,879      LLC-stores               
+   207.037410291             22,648      LLC-load-misses          
+   208.037587201          2,889,973      LLC-stores               
+   208.037587201             68,016      LLC-load-misses          
+   209.037762002          2,755,745      LLC-stores               
+   209.037762002             23,581      LLC-load-misses          
+I0428 21:14:22.841184 168369 solver.cpp:218] Iteration 2100 (11.5287 iter/s, 8.674s/100 iters), loss = 0.0212087
+I0428 21:14:22.841215 168369 solver.cpp:237]     Train net output #0: loss = 0.0212086 (* 1 = 0.0212086 loss)
+I0428 21:14:22.841222 168369 sgd_solver.cpp:105] Iteration 2100, lr = 0.00866784
+   210.037936737          2,891,397      LLC-stores               
+   210.037936737             26,291      LLC-load-misses          
+   211.038110371          2,793,982      LLC-stores               
+   211.038110371             22,349      LLC-load-misses          
+   212.038292573          2,845,521      LLC-stores               
+   212.038292573             24,675      LLC-load-misses          
+   213.038463173          2,798,917      LLC-stores               
+   213.038463173             51,503      LLC-load-misses          
+   214.038632576          2,865,466      LLC-stores               
+   214.038632576             25,581      LLC-load-misses          
+   215.038801972          2,832,326      LLC-stores               
+   215.038801972             25,728      LLC-load-misses          
+   216.038974450          2,811,666      LLC-stores               
+   216.038974450             22,202      LLC-load-misses          
+   217.039154267          2,832,162      LLC-stores               
+   217.039154267             24,836      LLC-load-misses          
+   218.039325840          2,810,566      LLC-stores               
+   218.039325840             47,945      LLC-load-misses          
+I0428 21:14:31.516332 168369 solver.cpp:218] Iteration 2200 (11.5274 iter/s, 8.675s/100 iters), loss = 0.0252661
+I0428 21:14:31.516365 168369 solver.cpp:237]     Train net output #0: loss = 0.0252661 (* 1 = 0.0252661 loss)
+I0428 21:14:31.516371 168369 sgd_solver.cpp:105] Iteration 2200, lr = 0.0086145
+   219.039501521          2,836,278      LLC-stores               
+   219.039501521             26,518      LLC-load-misses          
+   220.039672289          2,802,792      LLC-stores               
+   220.039672289             23,769      LLC-load-misses          
+   221.039844187          2,848,098      LLC-stores               
+   221.039844187             26,078      LLC-load-misses          
+   222.040021096          2,799,054      LLC-stores               
+   222.040021096             23,086      LLC-load-misses          
+   223.040198498          2,865,093      LLC-stores               
+   223.040198498             56,592      LLC-load-misses          
+   224.040367199          2,780,755      LLC-stores               
+   224.040367199             23,822      LLC-load-misses          
+   225.040536803          2,878,190      LLC-stores               
+   225.040536803             25,094      LLC-load-misses          
+#           time             counts unit events
+   226.040704917          2,765,758      LLC-stores               
+   226.040704917             23,149      LLC-load-misses          
+I0428 21:14:40.194154 168369 solver.cpp:218] Iteration 2300 (11.5247 iter/s, 8.677s/100 iters), loss = 0.0897823
+I0428 21:14:40.194293 168369 solver.cpp:237]     Train net output #0: loss = 0.0897823 (* 1 = 0.0897823 loss)
+I0428 21:14:40.194300 168369 sgd_solver.cpp:105] Iteration 2300, lr = 0.00856192
+   227.040901720          2,886,834      LLC-stores               
+   227.040901720             27,075      LLC-load-misses          
+   228.041072225          2,754,298      LLC-stores               
+   228.041072225             46,940      LLC-load-misses          
+   229.041242543          2,882,287      LLC-stores               
+   229.041242543             28,202      LLC-load-misses          
+   230.041415092          2,799,917      LLC-stores               
+   230.041415092             23,250      LLC-load-misses          
+   231.041586405          2,832,118      LLC-stores               
+   231.041586405             25,320      LLC-load-misses          
+   232.041791943          2,784,884      LLC-stores               
+   232.041791943             23,058      LLC-load-misses          
+   233.041922463          2,857,873      LLC-stores               
+   233.041922463             74,407      LLC-load-misses          
+   234.042094526          2,835,781      LLC-stores               
+   234.042094526             25,524      LLC-load-misses          
+   235.042266191          2,817,913      LLC-stores               
+   235.042266191             22,485      LLC-load-misses          
+I0428 21:14:48.870326 168369 solver.cpp:218] Iteration 2400 (11.526 iter/s, 8.676s/100 iters), loss = 0.00828694
+I0428 21:14:48.870359 168369 solver.cpp:237]     Train net output #0: loss = 0.00828694 (* 1 = 0.00828694 loss)
+I0428 21:14:48.870364 168369 sgd_solver.cpp:105] Iteration 2400, lr = 0.00851008
+   236.042438336          2,839,742      LLC-stores               
+   236.042438336             24,572      LLC-load-misses          
+   237.042619417          2,805,830      LLC-stores               
+   237.042619417             22,417      LLC-load-misses          
+   238.042791690          2,842,988      LLC-stores               
+   238.042791690             53,022      LLC-load-misses          
+   239.042967774          2,791,727      LLC-stores               
+   239.042967774             23,514      LLC-load-misses          
+   240.043138434          2,855,537      LLC-stores               
+   240.043138434             25,663      LLC-load-misses          
+   241.043315254          2,774,837      LLC-stores               
+   241.043315254             24,041      LLC-load-misses          
+   242.043502633          2,878,832      LLC-stores               
+   242.043502633             25,145      LLC-load-misses          
+   243.043678832          2,764,115      LLC-stores               
+   243.043678832             39,210      LLC-load-misses          
+   244.043870124          2,880,877      LLC-stores               
+   244.043870124             25,050      LLC-load-misses          
+I0428 21:14:57.456149 168369 solver.cpp:330] Iteration 2500, Testing net (#0)
+   245.044049842          2,697,400      LLC-stores               
+   245.044049842             26,131      LLC-load-misses          
+   246.044244968          2,613,350      LLC-stores               
+   246.044244968             20,435      LLC-load-misses          
+   247.044479226          2,640,334      LLC-stores               
+   247.044479226             20,399      LLC-load-misses          
+   248.044660785          2,617,446      LLC-stores               
+   248.044660785             26,279      LLC-load-misses          
+   249.044823454          2,614,092      LLC-stores               
+   249.044823454             20,657      LLC-load-misses          
+I0428 21:15:02.695432 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:15:02.912377 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9818
+I0428 21:15:02.912401 168369 solver.cpp:397]     Test net output #1: loss = 0.0539587 (* 1 = 0.0539587 loss)
+I0428 21:15:02.997771 168369 solver.cpp:218] Iteration 2500 (7.07864 iter/s, 14.127s/100 iters), loss = 0.035598
+I0428 21:15:02.997792 168369 solver.cpp:237]     Train net output #0: loss = 0.035598 (* 1 = 0.035598 loss)
+I0428 21:15:02.997799 168369 sgd_solver.cpp:105] Iteration 2500, lr = 0.00845897
+   250.044987457          2,687,555      LLC-stores               
+   250.044987457             30,930      LLC-load-misses          
+#           time             counts unit events
+   251.045159870          2,837,775      LLC-stores               
+   251.045159870             25,444      LLC-load-misses          
+   252.045344534          2,788,418      LLC-stores               
+   252.045344534             22,901      LLC-load-misses          
+   253.045520955          2,861,235      LLC-stores               
+   253.045520955             54,345      LLC-load-misses          
+   254.045693962          2,781,788      LLC-stores               
+   254.045693962             23,798      LLC-load-misses          
+   255.045868305          2,868,361      LLC-stores               
+   255.045868305             25,604      LLC-load-misses          
+   256.046050610          2,763,065      LLC-stores               
+   256.046050610             23,450      LLC-load-misses          
+   257.046235763          2,874,664      LLC-stores               
+   257.046235763             24,846      LLC-load-misses          
+   258.046413624          2,801,747      LLC-stores               
+   258.046413624             41,197      LLC-load-misses          
+I0428 21:15:11.673776 168369 solver.cpp:218] Iteration 2600 (11.5274 iter/s, 8.675s/100 iters), loss = 0.0843124
+I0428 21:15:11.673938 168369 solver.cpp:237]     Train net output #0: loss = 0.0843124 (* 1 = 0.0843124 loss)
+I0428 21:15:11.673945 168369 sgd_solver.cpp:105] Iteration 2600, lr = 0.00840857
+   259.046590340          2,845,667      LLC-stores               
+   259.046590340             25,875      LLC-load-misses          
+   260.046762973          2,798,645      LLC-stores               
+   260.046762973             22,830      LLC-load-misses          
+   261.046934954          2,848,696      LLC-stores               
+   261.046934954             25,192      LLC-load-misses          
+   262.047130458          2,813,579      LLC-stores               
+   262.047130458             24,435      LLC-load-misses          
+   263.047321527          2,849,389      LLC-stores               
+   263.047321527             73,388      LLC-load-misses          
+   264.047492742          2,828,807      LLC-stores               
+   264.047492742             25,649      LLC-load-misses          
+   265.047665435          2,798,127      LLC-stores               
+   265.047665435             22,965      LLC-load-misses          
+   266.047864062          2,829,728      LLC-stores               
+   266.047864062             25,275      LLC-load-misses          
+   267.048051148          2,797,973      LLC-stores               
+   267.048051148             23,731      LLC-load-misses          
+I0428 21:15:20.351836 168369 solver.cpp:218] Iteration 2700 (11.5247 iter/s, 8.677s/100 iters), loss = 0.0580453
+I0428 21:15:20.351866 168369 solver.cpp:237]     Train net output #0: loss = 0.0580453 (* 1 = 0.0580453 loss)
+I0428 21:15:20.351872 168369 sgd_solver.cpp:105] Iteration 2700, lr = 0.00835886
+   268.048231744          2,851,534      LLC-stores               
+   268.048231744             53,609      LLC-load-misses          
+   269.048420715          2,800,926      LLC-stores               
+   269.048420715             25,556      LLC-load-misses          
+   270.048600617          2,853,487      LLC-stores               
+   270.048600617             24,156      LLC-load-misses          
+   271.048773948          2,783,944      LLC-stores               
+   271.048773948             21,844      LLC-load-misses          
+   272.048956297          2,874,549      LLC-stores               
+   272.048956297             24,719      LLC-load-misses          
+   273.049126911          2,784,983      LLC-stores               
+   273.049126911             36,049      LLC-load-misses          
+   274.049310026          2,890,742      LLC-stores               
+   274.049310026             25,466      LLC-load-misses          
+   275.049477160          2,802,714      LLC-stores               
+   275.049477160             23,315      LLC-load-misses          
+I0428 21:15:29.023375 168369 solver.cpp:218] Iteration 2800 (11.5327 iter/s, 8.671s/100 iters), loss = 0.00268367
+I0428 21:15:29.023406 168369 solver.cpp:237]     Train net output #0: loss = 0.00268368 (* 1 = 0.00268368 loss)
+I0428 21:15:29.023412 168369 sgd_solver.cpp:105] Iteration 2800, lr = 0.00830984
+#           time             counts unit events
+   276.049645548          2,843,175      LLC-stores               
+   276.049645548             24,922      LLC-load-misses          
+I0428 21:15:29.719496 168371 data_layer.cpp:73] Restarting data prefetching from start.
+   277.049826000          2,802,024      LLC-stores               
+   277.049826000             22,619      LLC-load-misses          
+   278.049999465          2,856,296      LLC-stores               
+   278.049999465             69,091      LLC-load-misses          
+   279.050172188          2,796,566      LLC-stores               
+   279.050172188             24,942      LLC-load-misses          
+   280.050346246          2,851,837      LLC-stores               
+   280.050346246             24,086      LLC-load-misses          
+   281.050515917          2,835,194      LLC-stores               
+   281.050515917             24,776      LLC-load-misses          
+   282.050696080          2,809,230      LLC-stores               
+   282.050696080             22,426      LLC-load-misses          
+   283.050870351          2,839,305      LLC-stores               
+   283.050870351             53,099      LLC-load-misses          
+   284.051044483          2,798,937      LLC-stores               
+   284.051044483             23,687      LLC-load-misses          
+I0428 21:15:37.699616 168369 solver.cpp:218] Iteration 2900 (11.526 iter/s, 8.676s/100 iters), loss = 0.0330842
+I0428 21:15:37.699647 168369 solver.cpp:237]     Train net output #0: loss = 0.0330842 (* 1 = 0.0330842 loss)
+I0428 21:15:37.699653 168369 sgd_solver.cpp:105] Iteration 2900, lr = 0.00826148
+   285.051218226          2,843,994      LLC-stores               
+   285.051218226             25,808      LLC-load-misses          
+   286.051394218          2,801,529      LLC-stores               
+   286.051394218             22,873      LLC-load-misses          
+   287.051632274          2,857,508      LLC-stores               
+   287.051632274             26,380      LLC-load-misses          
+   288.051821144          2,800,120      LLC-stores               
+   288.051821144             60,002      LLC-load-misses          
+   289.051999615          2,877,598      LLC-stores               
+   289.051999615             24,925      LLC-load-misses          
+   290.052171651          2,767,795      LLC-stores               
+   290.052171651             22,124      LLC-load-misses          
+   291.052346831          2,884,019      LLC-stores               
+   291.052346831             24,594      LLC-load-misses          
+   292.052530359          2,799,369      LLC-stores               
+   292.052530359             22,809      LLC-load-misses          
+   293.052713278          2,851,789      LLC-stores               
+   293.052713278             63,318      LLC-load-misses          
+I0428 21:15:46.288297 168369 solver.cpp:330] Iteration 3000, Testing net (#0)
+   294.052894814          2,654,727      LLC-stores               
+   294.052894814             24,511      LLC-load-misses          
+   295.053061957          2,658,767      LLC-stores               
+   295.053061957             19,810      LLC-load-misses          
+   296.053223219          2,619,800      LLC-stores               
+   296.053223219             20,927      LLC-load-misses          
+   297.053396904          2,614,954      LLC-stores               
+   297.053396904             19,792      LLC-load-misses          
+   298.053589442          2,667,525      LLC-stores               
+   298.053589442             26,140      LLC-load-misses          
+I0428 21:15:51.526592 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:15:51.743619 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9892
+I0428 21:15:51.743644 168369 solver.cpp:397]     Test net output #1: loss = 0.0351378 (* 1 = 0.0351378 loss)
+I0428 21:15:51.828824 168369 solver.cpp:218] Iteration 3000 (7.07764 iter/s, 14.129s/100 iters), loss = 0.0142644
+I0428 21:15:51.828845 168369 solver.cpp:237]     Train net output #0: loss = 0.0142644 (* 1 = 0.0142644 loss)
+I0428 21:15:51.828852 168369 sgd_solver.cpp:105] Iteration 3000, lr = 0.00821377
+   299.053775723          2,683,170      LLC-stores               
+   299.053775723             31,699      LLC-load-misses          
+   300.053941599          2,855,595      LLC-stores               
+   300.053941599             24,644      LLC-load-misses          
+#           time             counts unit events
+   301.054110667          2,775,920      LLC-stores               
+   301.054110667             23,750      LLC-load-misses          
+   302.054291717          2,878,096      LLC-stores               
+   302.054291717             24,907      LLC-load-misses          
+   303.054456640          2,775,984      LLC-stores               
+   303.054456640             36,308      LLC-load-misses          
+   304.054623309          2,893,529      LLC-stores               
+   304.054623309             24,877      LLC-load-misses          
+   305.054786236          2,789,046      LLC-stores               
+   305.054786236             22,051      LLC-load-misses          
+   306.054982899          2,840,636      LLC-stores               
+   306.054982899             24,087      LLC-load-misses          
+   307.055174997          2,784,173      LLC-stores               
+   307.055174997             23,851      LLC-load-misses          
+I0428 21:16:00.499038 168369 solver.cpp:218] Iteration 3100 (11.534 iter/s, 8.67s/100 iters), loss = 0.0352674
+I0428 21:16:00.499068 168369 solver.cpp:237]     Train net output #0: loss = 0.0352674 (* 1 = 0.0352674 loss)
+I0428 21:16:00.499074 168369 sgd_solver.cpp:105] Iteration 3100, lr = 0.0081667
+   308.055342481          2,871,993      LLC-stores               
+   308.055342481             66,738      LLC-load-misses          
+   309.055508129          2,824,581      LLC-stores               
+   309.055508129             25,949      LLC-load-misses          
+   310.055676549          2,807,466      LLC-stores               
+   310.055676549             22,943      LLC-load-misses          
+   311.055872986          2,838,442      LLC-stores               
+   311.055872986             24,926      LLC-load-misses          
+   312.056047856          2,799,310      LLC-stores               
+   312.056047856             22,901      LLC-load-misses          
+   313.056216268          2,844,868      LLC-stores               
+   313.056216268             52,900      LLC-load-misses          
+   314.056390228          2,800,801      LLC-stores               
+   314.056390228             22,614      LLC-load-misses          
+   315.056562525          2,856,709      LLC-stores               
+   315.056562525             25,670      LLC-load-misses          
+I0428 21:16:09.173229 168369 solver.cpp:218] Iteration 3200 (11.5287 iter/s, 8.674s/100 iters), loss = 0.00925814
+I0428 21:16:09.173267 168369 solver.cpp:237]     Train net output #0: loss = 0.00925817 (* 1 = 0.00925817 loss)
+I0428 21:16:09.173274 168369 sgd_solver.cpp:105] Iteration 3200, lr = 0.00812025
+   316.056736664          2,785,563      LLC-stores               
+   316.056736664             22,925      LLC-load-misses          
+   317.056928793          2,870,608      LLC-stores               
+   317.056928793             26,212      LLC-load-misses          
+   318.057103990          2,776,658      LLC-stores               
+   318.057103990             48,076      LLC-load-misses          
+   319.057276652          2,886,042      LLC-stores               
+   319.057276652             26,081      LLC-load-misses          
+   320.057445081          2,792,805      LLC-stores               
+   320.057445081             22,494      LLC-load-misses          
+   321.057617825          2,841,165      LLC-stores               
+   321.057617825             24,378      LLC-load-misses          
+   322.057804324          2,795,829      LLC-stores               
+   322.057804324             24,012      LLC-load-misses          
+   323.057972873          2,852,964      LLC-stores               
+   323.057972873             65,372      LLC-load-misses          
+   324.058140275          2,836,587      LLC-stores               
+   324.058140275             26,277      LLC-load-misses          
+I0428 21:16:17.845942 168369 solver.cpp:218] Iteration 3300 (11.5314 iter/s, 8.672s/100 iters), loss = 0.0349799
+I0428 21:16:17.846089 168369 solver.cpp:237]     Train net output #0: loss = 0.03498 (* 1 = 0.03498 loss)
+I0428 21:16:17.846096 168369 sgd_solver.cpp:105] Iteration 3300, lr = 0.00807442
+   325.058310978          2,816,403      LLC-stores               
+   325.058310978             24,411      LLC-load-misses          
+#           time             counts unit events
+   326.058486551          2,840,366      LLC-stores               
+   326.058486551             24,927      LLC-load-misses          
+   327.058685192          2,783,611      LLC-stores               
+   327.058685192             23,223      LLC-load-misses          
+   328.058860670          2,848,835      LLC-stores               
+   328.058860670             52,501      LLC-load-misses          
+   329.059043376          2,802,577      LLC-stores               
+   329.059043376             23,808      LLC-load-misses          
+   330.059221523          2,864,078      LLC-stores               
+   330.059221523             26,740      LLC-load-misses          
+   331.059403178          2,780,678      LLC-stores               
+   331.059403178             24,315      LLC-load-misses          
+   332.059590850          2,885,689      LLC-stores               
+   332.059590850             25,051      LLC-load-misses          
+   333.059786284          2,779,289      LLC-stores               
+   333.059786284             59,898      LLC-load-misses          
+I0428 21:16:26.517107 168369 solver.cpp:218] Iteration 3400 (11.5327 iter/s, 8.671s/100 iters), loss = 0.0105559
+I0428 21:16:26.517138 168369 solver.cpp:237]     Train net output #0: loss = 0.010556 (* 1 = 0.010556 loss)
+I0428 21:16:26.517143 168369 sgd_solver.cpp:105] Iteration 3400, lr = 0.00802918
+   334.059959530          2,882,940      LLC-stores               
+   334.059959530             26,878      LLC-load-misses          
+   335.060131749          2,795,026      LLC-stores               
+   335.060131749             23,303      LLC-load-misses          
+   336.060315787          2,845,623      LLC-stores               
+   336.060315787             24,049      LLC-load-misses          
+   337.060569336          2,843,908      LLC-stores               
+   337.060569336             24,113      LLC-load-misses          
+   338.060749808          2,825,694      LLC-stores               
+   338.060749808             63,478      LLC-load-misses          
+   339.060932544          2,834,739      LLC-stores               
+   339.060932544             26,195      LLC-load-misses          
+   340.061116228          2,800,106      LLC-stores               
+   340.061116228             23,482      LLC-load-misses          
+   341.061282231          2,839,241      LLC-stores               
+   341.061282231             24,056      LLC-load-misses          
+I0428 21:16:35.097882 168369 solver.cpp:330] Iteration 3500, Testing net (#0)
+   342.061529885          2,820,968      LLC-stores               
+   342.061529885             27,043      LLC-load-misses          
+   343.061698337          2,641,617      LLC-stores               
+   343.061698337             28,281      LLC-load-misses          
+   344.061865483          2,605,913      LLC-stores               
+   344.061865483             20,596      LLC-load-misses          
+   345.062029756          2,640,738      LLC-stores               
+   345.062029756             20,002      LLC-load-misses          
+   346.062200144          2,617,164      LLC-stores               
+   346.062200144             21,245      LLC-load-misses          
+   347.062373548          2,597,334      LLC-stores               
+   347.062373548             20,550      LLC-load-misses          
+I0428 21:16:40.336963 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:16:40.554129 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9877
+I0428 21:16:40.554152 168369 solver.cpp:397]     Test net output #1: loss = 0.0375377 (* 1 = 0.0375377 loss)
+I0428 21:16:40.639879 168369 solver.cpp:218] Iteration 3500 (7.08115 iter/s, 14.122s/100 iters), loss = 0.00821564
+I0428 21:16:40.639900 168369 solver.cpp:237]     Train net output #0: loss = 0.00821568 (* 1 = 0.00821568 loss)
+I0428 21:16:40.639909 168369 sgd_solver.cpp:105] Iteration 3500, lr = 0.00798454
+   348.062544781          2,752,664      LLC-stores               
+   348.062544781             45,048      LLC-load-misses          
+   349.062719518          2,865,946      LLC-stores               
+   349.062719518             26,164      LLC-load-misses          
+   350.062892202          2,824,263      LLC-stores               
+   350.062892202             24,139      LLC-load-misses          
+#           time             counts unit events
+   351.063067611          2,814,135      LLC-stores               
+   351.063067611             22,746      LLC-load-misses          
+   352.063253188          2,838,858      LLC-stores               
+   352.063253188             25,276      LLC-load-misses          
+   353.063430635          2,809,612      LLC-stores               
+   353.063430635             66,874      LLC-load-misses          
+   354.063615002          2,840,071      LLC-stores               
+   354.063615002             25,269      LLC-load-misses          
+   355.063790542          2,786,931      LLC-stores               
+   355.063790542             23,621      LLC-load-misses          
+   356.063955774          2,855,201      LLC-stores               
+   356.063955774             25,059      LLC-load-misses          
+I0428 21:16:49.313555 168369 solver.cpp:218] Iteration 3600 (11.53 iter/s, 8.673s/100 iters), loss = 0.0348601
+I0428 21:16:49.313694 168369 solver.cpp:237]     Train net output #0: loss = 0.0348601 (* 1 = 0.0348601 loss)
+I0428 21:16:49.313701 168369 sgd_solver.cpp:105] Iteration 3600, lr = 0.00794046
+   357.064153111          2,782,712      LLC-stores               
+   357.064153111             23,342      LLC-load-misses          
+   358.064323490          2,882,813      LLC-stores               
+   358.064323490             52,725      LLC-load-misses          
+   359.064492581          2,764,117      LLC-stores               
+   359.064492581             24,224      LLC-load-misses          
+   360.064630181          2,890,580      LLC-stores               
+   360.064630181             25,113      LLC-load-misses          
+   361.064834477          2,803,331      LLC-stores               
+   361.064834477             24,252      LLC-load-misses          
+   362.065027524          2,839,188      LLC-stores               
+   362.065027524             24,870      LLC-load-misses          
+   363.065215477          2,803,859      LLC-stores               
+   363.065215477             36,510      LLC-load-misses          
+   364.065386041          2,869,464      LLC-stores               
+   364.065386041             26,020      LLC-load-misses          
+I0428 21:16:57.984989 168369 solver.cpp:218] Iteration 3700 (11.5327 iter/s, 8.671s/100 iters), loss = 0.0152035
+I0428 21:16:57.985020 168369 solver.cpp:237]     Train net output #0: loss = 0.0152035 (* 1 = 0.0152035 loss)
+I0428 21:16:57.985026 168369 sgd_solver.cpp:105] Iteration 3700, lr = 0.00789695
+   365.065521611          2,837,975      LLC-stores               
+   365.065521611             25,119      LLC-load-misses          
+   366.065695721          2,810,225      LLC-stores               
+   366.065695721             22,626      LLC-load-misses          
+   367.065884000          2,839,160      LLC-stores               
+   367.065884000             24,833      LLC-load-misses          
+   368.066050939          2,819,742      LLC-stores               
+   368.066050939             66,704      LLC-load-misses          
+I0428 21:17:01.892652 168371 data_layer.cpp:73] Restarting data prefetching from start.
+   369.066212852          2,842,827      LLC-stores               
+   369.066212852             25,296      LLC-load-misses          
+   370.066377521          2,786,839      LLC-stores               
+   370.066377521             23,348      LLC-load-misses          
+   371.066551773          2,855,674      LLC-stores               
+   371.066551773             24,483      LLC-load-misses          
+   372.066734177          2,781,236      LLC-stores               
+   372.066734177             22,988      LLC-load-misses          
+   373.066924284          2,868,495      LLC-stores               
+   373.066924284             53,831      LLC-load-misses          
+I0428 21:17:06.661298 168369 solver.cpp:218] Iteration 3800 (11.526 iter/s, 8.676s/100 iters), loss = 0.0118157
+I0428 21:17:06.661327 168369 solver.cpp:237]     Train net output #0: loss = 0.0118157 (* 1 = 0.0118157 loss)
+I0428 21:17:06.661332 168369 sgd_solver.cpp:105] Iteration 3800, lr = 0.007854
+   374.067099137          2,775,368      LLC-stores               
+   374.067099137             23,572      LLC-load-misses          
+   375.067275556          2,879,706      LLC-stores               
+   375.067275556             24,606      LLC-load-misses          
+#           time             counts unit events
+   376.067451797          2,752,008      LLC-stores               
+   376.067451797             22,524      LLC-load-misses          
+   377.067638916          2,885,008      LLC-stores               
+   377.067638916             25,674      LLC-load-misses          
+   378.067813588          2,801,517      LLC-stores               
+   378.067813588             70,488      LLC-load-misses          
+   379.067986364          2,838,700      LLC-stores               
+   379.067986364             27,292      LLC-load-misses          
+   380.068156240          2,792,298      LLC-stores               
+   380.068156240             22,338      LLC-load-misses          
+   381.068329782          2,845,603      LLC-stores               
+   381.068329782             24,412      LLC-load-misses          
+   382.068511687          2,812,872      LLC-stores               
+   382.068511687             23,478      LLC-load-misses          
+I0428 21:17:15.337725 168369 solver.cpp:218] Iteration 3900 (11.526 iter/s, 8.676s/100 iters), loss = 0.0205043
+I0428 21:17:15.337754 168369 solver.cpp:237]     Train net output #0: loss = 0.0205044 (* 1 = 0.0205044 loss)
+I0428 21:17:15.337759 168369 sgd_solver.cpp:105] Iteration 3900, lr = 0.00781158
+   383.068681059          2,842,125      LLC-stores               
+   383.068681059             54,986      LLC-load-misses          
+   384.068862485          2,821,079      LLC-stores               
+   384.068862485             25,602      LLC-load-misses          
+   385.069031431          2,812,122      LLC-stores               
+   385.069031431             22,813      LLC-load-misses          
+   386.069226675          2,841,013      LLC-stores               
+   386.069226675             23,642      LLC-load-misses          
+   387.069414349          2,796,744      LLC-stores               
+   387.069414349             23,159      LLC-load-misses          
+   388.069588465          2,839,260      LLC-stores               
+   388.069588465             44,286      LLC-load-misses          
+   389.069762241          2,801,632      LLC-stores               
+   389.069762241             23,335      LLC-load-misses          
+   390.069935635          2,851,756      LLC-stores               
+   390.069935635             24,530      LLC-load-misses          
+I0428 21:17:23.927536 168369 solver.cpp:330] Iteration 4000, Testing net (#0)
+   391.070108747          2,787,031      LLC-stores               
+   391.070108747             26,112      LLC-load-misses          
+   392.070338917          2,620,450      LLC-stores               
+   392.070338917             21,472      LLC-load-misses          
+   393.070511315          2,677,181      LLC-stores               
+   393.070511315             24,961      LLC-load-misses          
+   394.070677922          2,650,117      LLC-stores               
+   394.070677922             20,580      LLC-load-misses          
+   395.070866791          2,609,437      LLC-stores               
+   395.070866791             20,530      LLC-load-misses          
+I0428 21:17:29.162885 168372 data_layer.cpp:73] Restarting data prefetching from start.
+   396.071036547          2,642,709      LLC-stores               
+   396.071036547             20,625      LLC-load-misses          
+I0428 21:17:29.379933 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9901
+I0428 21:17:29.379957 168369 solver.cpp:397]     Test net output #1: loss = 0.0308714 (* 1 = 0.0308714 loss)
+I0428 21:17:29.465322 168369 solver.cpp:218] Iteration 4000 (7.07864 iter/s, 14.127s/100 iters), loss = 0.0193816
+I0428 21:17:29.465343 168369 solver.cpp:237]     Train net output #0: loss = 0.0193816 (* 1 = 0.0193816 loss)
+I0428 21:17:29.465350 168369 sgd_solver.cpp:105] Iteration 4000, lr = 0.0077697
+   397.071216929          2,801,697      LLC-stores               
+   397.071216929             34,163      LLC-load-misses          
+   398.071396394          2,815,903      LLC-stores               
+   398.071396394             62,485      LLC-load-misses          
+   399.071575087          2,835,530      LLC-stores               
+   399.071575087             25,543      LLC-load-misses          
+   400.071750151          2,793,069      LLC-stores               
+   400.071750151             22,975      LLC-load-misses          
+#           time             counts unit events
+   401.071925758          2,862,398      LLC-stores               
+   401.071925758             23,902      LLC-load-misses          
+   402.072116173          2,768,294      LLC-stores               
+   402.072116173             23,331      LLC-load-misses          
+   403.072295330          2,880,904      LLC-stores               
+   403.072295330             53,396      LLC-load-misses          
+   404.072474798          2,752,878      LLC-stores               
+   404.072474798             22,615      LLC-load-misses          
+I0428 21:17:38.135236 168369 solver.cpp:218] Iteration 4100 (11.5354 iter/s, 8.669s/100 iters), loss = 0.00958872
+I0428 21:17:38.135267 168369 solver.cpp:237]     Train net output #0: loss = 0.00958876 (* 1 = 0.00958876 loss)
+I0428 21:17:38.135273 168369 sgd_solver.cpp:105] Iteration 4100, lr = 0.00772833
+   405.072652136          2,894,653      LLC-stores               
+   405.072652136             23,969      LLC-load-misses          
+   406.072828555          2,796,353      LLC-stores               
+   406.072828555             23,090      LLC-load-misses          
+   407.073015022          2,841,500      LLC-stores               
+   407.073015022             25,763      LLC-load-misses          
+   408.073200956          2,799,449      LLC-stores               
+   408.073200956             65,935      LLC-load-misses          
+   409.073404352          2,859,999      LLC-stores               
+   409.073404352             28,844      LLC-load-misses          
+   410.073588945          2,824,567      LLC-stores               
+   410.073588945             23,047      LLC-load-misses          
+   411.073760925          2,810,945      LLC-stores               
+   411.073760925             21,893      LLC-load-misses          
+   412.073943377          2,837,992      LLC-stores               
+   412.073943377             24,036      LLC-load-misses          
+   413.074108497          2,811,314      LLC-stores               
+   413.074108497             62,701      LLC-load-misses          
+I0428 21:17:46.805936 168369 solver.cpp:218] Iteration 4200 (11.534 iter/s, 8.67s/100 iters), loss = 0.0132322
+I0428 21:17:46.805968 168369 solver.cpp:237]     Train net output #0: loss = 0.0132322 (* 1 = 0.0132322 loss)
+I0428 21:17:46.805974 168369 sgd_solver.cpp:105] Iteration 4200, lr = 0.00768748
+   414.074272402          2,843,707      LLC-stores               
+   414.074272402             26,532      LLC-load-misses          
+   415.074435973          2,789,268      LLC-stores               
+   415.074435973             23,713      LLC-load-misses          
+   416.074641860          2,868,861      LLC-stores               
+   416.074641860             25,365      LLC-load-misses          
+   417.074821587          2,774,246      LLC-stores               
+   417.074821587             23,672      LLC-load-misses          
+   418.075002037          2,891,496      LLC-stores               
+   418.075002037             53,141      LLC-load-misses          
+   419.075173760          2,753,161      LLC-stores               
+   419.075173760             24,206      LLC-load-misses          
+   420.075344590          2,893,075      LLC-stores               
+   420.075344590             25,317      LLC-load-misses          
+   421.075516109          2,804,283      LLC-stores               
+   421.075516109             23,203      LLC-load-misses          
+   422.075766978          2,841,932      LLC-stores               
+   422.075766978             26,601      LLC-load-misses          
+I0428 21:17:55.478024 168369 solver.cpp:218] Iteration 4300 (11.5314 iter/s, 8.672s/100 iters), loss = 0.0545197
+I0428 21:17:55.478159 168369 solver.cpp:237]     Train net output #0: loss = 0.0545198 (* 1 = 0.0545198 loss)
+I0428 21:17:55.478166 168369 sgd_solver.cpp:105] Iteration 4300, lr = 0.00764712
+   423.075940775          2,799,756      LLC-stores               
+   423.075940775             70,701      LLC-load-misses          
+   424.076117384          2,860,853      LLC-stores               
+   424.076117384             25,889      LLC-load-misses          
+   425.076302181          2,824,835      LLC-stores               
+   425.076302181             25,874      LLC-load-misses          
+#           time             counts unit events
+   426.076486871          2,813,411      LLC-stores               
+   426.076486871             22,135      LLC-load-misses          
+   427.076676193          2,832,752      LLC-stores               
+   427.076676193             24,583      LLC-load-misses          
+   428.076854495          2,806,644      LLC-stores               
+   428.076854495             52,813      LLC-load-misses          
+   429.077034458          2,843,505      LLC-stores               
+   429.077034458             26,016      LLC-load-misses          
+   430.077214500          2,794,049      LLC-stores               
+   430.077214500             22,800      LLC-load-misses          
+I0428 21:18:04.150930 168369 solver.cpp:218] Iteration 4400 (11.5314 iter/s, 8.672s/100 iters), loss = 0.0158817
+I0428 21:18:04.150961 168369 solver.cpp:237]     Train net output #0: loss = 0.0158817 (* 1 = 0.0158817 loss)
+I0428 21:18:04.150969 168369 sgd_solver.cpp:105] Iteration 4400, lr = 0.00760726
+   431.077395741          2,864,846      LLC-stores               
+   431.077395741             25,271      LLC-load-misses          
+   432.077623458          2,767,640      LLC-stores               
+   432.077623458             22,875      LLC-load-misses          
+   433.077813071          2,881,937      LLC-stores               
+   433.077813071             51,988      LLC-load-misses          
+   434.077987829          2,806,962      LLC-stores               
+   434.077987829             22,381      LLC-load-misses          
+   435.078158671          2,845,394      LLC-stores               
+   435.078158671             24,182      LLC-load-misses          
+   436.078331196          2,794,952      LLC-stores               
+   436.078331196             22,086      LLC-load-misses          
+   437.078514390          2,866,169      LLC-stores               
+   437.078514390             25,060      LLC-load-misses          
+   438.078686934          2,843,930      LLC-stores               
+   438.078686934             63,157      LLC-load-misses          
+   439.078860816          2,808,955      LLC-stores               
+   439.078860816             23,422      LLC-load-misses          
+I0428 21:18:12.733042 168369 solver.cpp:330] Iteration 4500, Testing net (#0)
+   440.079046856          2,782,195      LLC-stores               
+   440.079046856             26,603      LLC-load-misses          
+   441.079217836          2,621,326      LLC-stores               
+   441.079217836             21,193      LLC-load-misses          
+   442.079394602          2,624,191      LLC-stores               
+   442.079394602             20,500      LLC-load-misses          
+   443.079571307          2,656,340      LLC-stores               
+   443.079571307             24,976      LLC-load-misses          
+   444.079758499          2,616,640      LLC-stores               
+   444.079758499             20,986      LLC-load-misses          
+I0428 21:18:17.962783 168372 data_layer.cpp:73] Restarting data prefetching from start.
+I0428 21:18:18.179833 168369 solver.cpp:397]     Test net output #0: accuracy = 0.9883
+I0428 21:18:18.179858 168369 solver.cpp:397]     Test net output #1: loss = 0.0371458 (* 1 = 0.0371458 loss)
+   445.079890387          2,602,689      LLC-stores               
+   445.079890387             22,493      LLC-load-misses          
+I0428 21:18:18.265482 168369 solver.cpp:218] Iteration 4500 (7.08516 iter/s, 14.114s/100 iters), loss = 0.00653604
+I0428 21:18:18.265501 168369 solver.cpp:237]     Train net output #0: loss = 0.00653609 (* 1 = 0.00653609 loss)
+I0428 21:18:18.265508 168369 sgd_solver.cpp:105] Iteration 4500, lr = 0.00756788
+   446.080082068          2,852,266      LLC-stores               
+   446.080082068             32,505      LLC-load-misses          
+   447.080264977          2,816,672      LLC-stores               
+   447.080264977             26,256      LLC-load-misses          
+   448.080439907          2,820,349      LLC-stores               
+   448.080439907             99,249      LLC-load-misses          
+   449.080613427          2,831,846      LLC-stores               
+   449.080613427             25,317      LLC-load-misses          
+   450.080787800          2,801,497      LLC-stores               
+   450.080787800             22,566      LLC-load-misses          
+#           time             counts unit events
+   451.080957027          2,843,012      LLC-stores               
+   451.080957027             24,013      LLC-load-misses          
+   452.081150267          2,798,042      LLC-stores               
+   452.081150267             22,946      LLC-load-misses          
+   453.081336335          2,858,459      LLC-stores               
+   453.081336335             37,428      LLC-load-misses          
+I0428 21:18:26.940891 168369 solver.cpp:218] Iteration 4600 (11.5274 iter/s, 8.675s/100 iters), loss = 0.0191057
+I0428 21:18:26.941026 168369 solver.cpp:237]     Train net output #0: loss = 0.0191058 (* 1 = 0.0191058 loss)
+I0428 21:18:26.941032 168369 sgd_solver.cpp:105] Iteration 4600, lr = 0.00752897
+   454.081503652          2,792,593      LLC-stores               
+   454.081503652             24,230      LLC-load-misses          
+   455.081679154          2,858,822      LLC-stores               
+   455.081679154             25,188      LLC-load-misses          
+   456.081847749          2,769,477      LLC-stores               
+   456.081847749             22,555      LLC-load-misses          
+   457.082029309          2,878,758      LLC-stores               
+   457.082029309             24,115      LLC-load-misses          
+   458.082201563          2,758,737      LLC-stores               
+   458.082201563             69,017      LLC-load-misses          
+   459.082375673          2,887,521      LLC-stores               
+   459.082375673             24,451      LLC-load-misses          
+   460.082546449          2,796,877      LLC-stores               
+   460.082546449             22,511      LLC-load-misses          
+I0428 21:18:34.139436 168371 data_layer.cpp:73] Restarting data prefetching from start.
+   461.082723336          2,862,511      LLC-stores               
+   461.082723336             23,270      LLC-load-misses          
+   462.082982568          2,840,114      LLC-stores               
+   462.082982568             24,320      LLC-load-misses          
+I0428 21:18:35.609299 168369 solver.cpp:218] Iteration 4700 (11.5367 iter/s, 8.668s/100 iters), loss = 0.0105918
+I0428 21:18:35.609330 168369 solver.cpp:237]     Train net output #0: loss = 0.0105918 (* 1 = 0.0105918 loss)
+I0428 21:18:35.609336 168369 sgd_solver.cpp:105] Iteration 4700, lr = 0.00749052
+   463.083176811          2,819,267      LLC-stores               
+   463.083176811             50,039      LLC-load-misses          
+   464.083356820          2,844,196      LLC-stores               
+   464.083356820             24,682      LLC-load-misses          
+   465.083535611          2,795,639      LLC-stores               
+   465.083535611             22,298      LLC-load-misses          
+   466.083712573          2,850,820      LLC-stores               
+   466.083712573             23,734      LLC-load-misses          
+   467.083921795          2,777,145      LLC-stores               
+   467.083921795             23,359      LLC-load-misses          
+   468.084105288          2,865,663      LLC-stores               
+   468.084105288             37,926      LLC-load-misses          
+   469.084281455          2,761,217      LLC-stores               
+   469.084281455             22,058      LLC-load-misses          
+   470.084458957          2,886,401      LLC-stores               
+   470.084458957             24,426      LLC-load-misses          
+   471.084640182          2,797,771      LLC-stores               
+   471.084640182             22,174      LLC-load-misses          
+I0428 21:18:44.274864 168369 solver.cpp:218] Iteration 4800 (11.5407 iter/s, 8.665s/100 iters), loss = 0.0145899
+I0428 21:18:44.274893 168369 solver.cpp:237]     Train net output #0: loss = 0.01459 (* 1 = 0.01459 loss)
+I0428 21:18:44.274899 168369 sgd_solver.cpp:105] Iteration 4800, lr = 0.00745253
+   472.084929957          2,848,749      LLC-stores               
+   472.084929957             25,040      LLC-load-misses          
+   473.085103274          2,803,192      LLC-stores               
+   473.085103274             72,278      LLC-load-misses          
+   474.085276935          2,862,364      LLC-stores               
+   474.085276935             24,595      LLC-load-misses          
+   475.085458337          2,829,292      LLC-stores               
+   475.085458337             23,993      LLC-load-misses          
+#           time             counts unit events
+   476.085628467          2,806,691      LLC-stores               
+   476.085628467             22,165      LLC-load-misses          
+   477.085813073          2,833,758      LLC-stores               
+   477.085813073             24,474      LLC-load-misses          
+   478.085984858          2,803,347      LLC-stores               
+   478.085984858             52,110      LLC-load-misses          
+   479.086162720          2,846,998      LLC-stores               
+   479.086162720             24,986      LLC-load-misses          
+I0428 21:18:52.942783 168369 solver.cpp:218] Iteration 4900 (11.538 iter/s, 8.667s/100 iters), loss = 0.00478365
+I0428 21:18:52.942823 168369 solver.cpp:237]     Train net output #0: loss = 0.00478368 (* 1 = 0.00478368 loss)
+I0428 21:18:52.942831 168369 sgd_solver.cpp:105] Iteration 4900, lr = 0.00741498
+   480.086340578          2,788,351      LLC-stores               
+   480.086340578             22,774      LLC-load-misses          
+   481.086508663          2,887,232      LLC-stores               
+   481.086508663             24,662      LLC-load-misses          
+   482.086691917          2,810,557      LLC-stores               
+   482.086691917             22,264      LLC-load-misses          
+   483.086864492          2,851,941      LLC-stores               
+   483.086864492             49,998      LLC-load-misses          
+   484.087036050          2,793,890      LLC-stores               
+   484.087036050             23,004      LLC-load-misses          
+   485.087205341          2,861,669      LLC-stores               
+   485.087205341             24,012      LLC-load-misses          
+   486.087377092          2,833,052      LLC-stores               
+   486.087377092             23,723      LLC-load-misses          
+   487.087559331          2,802,726      LLC-stores               
+   487.087559331             22,766      LLC-load-misses          
+   488.087752030          2,858,096      LLC-stores               
+   488.087752030             67,320      LLC-load-misses          
+I0428 21:19:01.521306 168369 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_5000.caffemodel
+F0428 21:19:01.530037 168369 io.cpp:69] Check failed: proto.SerializeToOstream(&output) 
+*** Check failure stack trace: ***
+    @     0x7fd65da2d5cd  google::LogMessage::Fail()
+    @     0x7fd65da2f433  google::LogMessage::SendToLog()
+    @     0x7fd65da2d15b  google::LogMessage::Flush()
+    @     0x7fd65da2fe1e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fd65ddd7e55  caffe::WriteProtoToBinaryFile()
+    @     0x7fd65df1d076  caffe::Solver<>::SnapshotToBinaryProto()
+    @     0x7fd65df1d17a  caffe::Solver<>::Snapshot()
+    @     0x7fd65df20ce6  caffe::Solver<>::Step()
+    @     0x7fd65df2172a  caffe::Solver<>::Solve()
+    @           0x40a5c4  train()
+    @           0x406fa0  main
+    @     0x7fd65c99e830  __libc_start_main
+    @           0x4077c9  _start
+    @              (nil)  (unknown)
+Aborted (core dumped)
+   488.917042962            694,593      LLC-stores               
+   488.917042962              9,159      LLC-load-misses          
